@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://1ufv6vajaxt3"]
+
+[ext_resource type="Script" uid="uid://bldt2w7nrardq" path="res://scripts/circuit_editor.gd" id="1_ks6h5"]
+[ext_resource type="Script" uid="uid://bqns55ri5mqa5" path="res://scripts/circuit_cam.gd" id="1_n5154"]
+[ext_resource type="Script" uid="uid://bqjg6ygvlfpbi" path="res://scripts/circuit_background.gd" id="2_2xstj"]
+[ext_resource type="Script" uid="uid://vxeeuljabon5" path="res://scripts/grid.gd" id="2_kg2i1"]
+[ext_resource type="Script" uid="uid://y6nreclkpn6v" path="res://scripts/sandbox.gd" id="2_s76oy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
+
+[node name="CircuitEditor" type="PanelContainer" unique_id=1639356317]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ks6h5")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1607630667]
+layout_mode = 2
+mouse_filter = 0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1375753901]
+disable_3d = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Sandbox" type="Node2D" parent="SubViewportContainer/SubViewport" unique_id=345735980]
+script = ExtResource("2_s76oy")
+
+[node name="Background" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1616028031]
+script = ExtResource("2_2xstj")
+color = Color(0.07086415, 0.5497127, 0.81251293, 1)
+
+[node name="Grid" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1642791617]
+script = ExtResource("2_kg2i1")
+
+[node name="GateLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
+
+[node name="WireLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1908283756]
+position = Vector2(0, 1)
+
+[node name="DragLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1505791159]
+
+[node name="CircuitCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
+script = ExtResource("1_n5154")
+
+[node name="Area2D" type="Area2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=2121176238]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/Area2D" unique_id=401609003]
+shape = SubResource("RectangleShape2D_eofqg")

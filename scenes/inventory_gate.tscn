@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://dinaa4hu5artv"]
+
+[ext_resource type="Script" uid="uid://senr1aa86wfh" path="res://scripts/inventory_gate.gd" id="1_1k65l"]
+[ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="2_1k65l"]
+[ext_resource type="PackedScene" uid="uid://vyyk4mr2crhe" path="res://scenes/circuit_gate.tscn" id="2_7jh40"]
+
+[node name="InventoryGate" type="Panel" unique_id=2018287429]
+custom_minimum_size = Vector2(130, 130)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -65.0
+offset_top = -65.0
+offset_right = 65.0
+offset_bottom = 65.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1k65l")
+gate_scene = ExtResource("2_7jh40")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1374748965]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_pivot_ratio = Vector2(0, 0)
+offset_transform_visual_only = false
+texture = ExtResource("2_1k65l")

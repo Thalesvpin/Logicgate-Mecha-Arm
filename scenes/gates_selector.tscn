@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://drl4m0lil85ek"]
+
+[ext_resource type="PackedScene" uid="uid://dinaa4hu5artv" path="res://scenes/inventory_gate.tscn" id="1_llgc5"]
+
+[node name="GatesSelector" type="PanelContainer" unique_id=1904067160]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1835518545]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer" unique_id=811896343]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="FlowContainer" type="FlowContainer" parent="MarginContainer/ScrollContainer" unique_id=792447867]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+last_wrap_alignment = 2
+
+[node name="Gate" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=2018287429 instance=ExtResource("1_llgc5")]
+layout_mode = 2
+
+[node name="Gate2" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=51022213 instance=ExtResource("1_llgc5")]
+layout_mode = 2
+
+[node name="Gate3" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=634861922 instance=ExtResource("1_llgc5")]
+layout_mode = 2
+
+[node name="Gate4" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=115118493 instance=ExtResource("1_llgc5")]
+layout_mode = 2
+
+[node name="Gate5" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=669043320 instance=ExtResource("1_llgc5")]
+layout_mode = 2
+
+[node name="Gate6" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=769238296 instance=ExtResource("1_llgc5")]
+layout_mode = 2
+
+[node name="Gate7" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1045240319 instance=ExtResource("1_llgc5")]
+layout_mode = 2
