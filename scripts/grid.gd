@@ -4,7 +4,7 @@ const STEP = 32
 
 func _draw():
 	var limite = 4000
-	
+	draw_circle(Vector2.ZERO, 5, 'red')
 	for x in range(-limite, limite, STEP):
 		draw_line(
 			Vector2(x,-limite),

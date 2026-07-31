@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://5kcau6t2fh6b"]
+
+[ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_mhkjh"]
+[ext_resource type="Texture2D" uid="uid://bubep8qo1qyu1" path="res://assets/or-gate-md.png" id="1_o1n8t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p14ax"]
+size = Vector2(128, 128)
+
+[node name="OrGate" type="Area2D" unique_id=1665822000]
+script = ExtResource("1_mhkjh")
+type = "OR"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1482000578]
+scale = Vector2(0.43097642, 0.83660126)
+texture = ExtResource("1_o1n8t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1167494633]
+shape = SubResource("RectangleShape2D_p14ax")
+
+[node name="InputA" type="Marker2D" parent="." unique_id=608491772]
+position = Vector2(-62, -30)
+
+[node name="InputB" type="Marker2D" parent="." unique_id=1644515371]
+position = Vector2(-62, 32)
+
+[node name="Output" type="Marker2D" parent="." unique_id=35191834]
+position = Vector2(62, 0)
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

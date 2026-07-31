@@ -2,7 +2,11 @@
 
 [ext_resource type="Script" uid="uid://senr1aa86wfh" path="res://scripts/inventory_gate.gd" id="1_1k65l"]
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="2_1k65l"]
-[ext_resource type="PackedScene" uid="uid://vyyk4mr2crhe" path="res://scenes/circuit_gate.tscn" id="2_7jh40"]
+[ext_resource type="Texture2D" uid="uid://c2nhw5yvcj4jo" path="res://assets/and-gate-icon.png" id="2_7jh40"]
+[ext_resource type="Texture2D" uid="uid://bubep8qo1qyu1" path="res://assets/or-gate-md.png" id="3_31bf4"]
+[ext_resource type="PackedScene" uid="uid://vyyk4mr2crhe" path="res://scenes/gates/and_gate.tscn" id="5_eikod"]
+[ext_resource type="PackedScene" uid="uid://5kcau6t2fh6b" path="res://scenes/gates/or_gate.tscn" id="6_h6g2d"]
+[ext_resource type="PackedScene" uid="uid://dwy7lw2tmtyko" path="res://scenes/gates/def_gate.tscn" id="7_4dm03"]
 
 [node name="InventoryGate" type="Panel" unique_id=2018287429]
 custom_minimum_size = Vector2(130, 130)
@@ -18,9 +22,15 @@ offset_bottom = 65.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1k65l")
-gate_scene = ExtResource("2_7jh40")
+and_icon = ExtResource("2_7jh40")
+or_icon = ExtResource("3_31bf4")
+def_icon = ExtResource("2_1k65l")
+and_scene = ExtResource("5_eikod")
+or_scene = ExtResource("6_h6g2d")
+def_scene = ExtResource("7_4dm03")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1374748965]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1096496680]
+custom_maximum_size = Vector2(130, -1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

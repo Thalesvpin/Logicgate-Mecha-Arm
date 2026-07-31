@@ -31,21 +31,28 @@ last_wrap_alignment = 2
 
 [node name="Gate" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=2018287429 instance=ExtResource("1_llgc5")]
 layout_mode = 2
+type = "AND"
 
 [node name="Gate2" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=51022213 instance=ExtResource("1_llgc5")]
 layout_mode = 2
+type = "OR"
 
 [node name="Gate3" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=634861922 instance=ExtResource("1_llgc5")]
 layout_mode = 2
+type = "DEF"
 
-[node name="Gate4" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=115118493 instance=ExtResource("1_llgc5")]
+[node name="Gate4" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=641957154 instance=ExtResource("1_llgc5")]
 layout_mode = 2
+type = "DEF"
 
-[node name="Gate5" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=669043320 instance=ExtResource("1_llgc5")]
+[node name="Gate5" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=352144007 instance=ExtResource("1_llgc5")]
 layout_mode = 2
+type = "DEF"
 
-[node name="Gate6" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=769238296 instance=ExtResource("1_llgc5")]
+[node name="Gate6" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1646065089 instance=ExtResource("1_llgc5")]
 layout_mode = 2
+type = "DEF"
 
-[node name="Gate7" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1045240319 instance=ExtResource("1_llgc5")]
+[node name="Gate7" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1617492420 instance=ExtResource("1_llgc5")]
 layout_mode = 2
+type = "DEF"

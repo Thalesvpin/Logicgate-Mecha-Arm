@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://y6nreclkpn6v" path="res://scripts/sandbox.gd" id="2_s76oy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
+size = Vector2(1169, 663)
 
 [node name="CircuitEditor" type="PanelContainer" unique_id=1639356317]
 anchors_preset = 15
@@ -26,6 +27,7 @@ stretch = true
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1375753901]
 disable_3d = true
 handle_input_locally = false
+physics_object_picking = true
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
@@ -47,9 +49,15 @@ position = Vector2(0, 1)
 [node name="DragLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1505791159]
 
 [node name="CircuitCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
+anchor_mode = 0
 script = ExtResource("1_n5154")
 
-[node name="Area2D" type="Area2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=2121176238]
+[node name="Area2D" type="Area2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/Area2D" unique_id=401609003]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
+position = Vector2(574.5, 321.5)
 shape = SubResource("RectangleShape2D_eofqg")
+
+[connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
+[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_exited"]

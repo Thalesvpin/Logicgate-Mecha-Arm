@@ -5,3 +5,20 @@ var dragged_scene : PackedScene
 var preview : Node2D
 var gate_type := ""
 var source_icon
+var original_node
+
+func drag(node: Node2D, from_inv: bool = false):
+	dragging = true
+	original_node = node
+	if !from_inv:
+		Global.circuit_editor.gate_layer.remove_child(node)
+	Global.circuit_editor.drag_layer.add_child(node)
+
+func drop(cursor_in: bool):
+	Global.circuit_editor.drag_layer.remove_child(original_node)
+	if cursor_in:
+		Global.circuit_editor.gate_layer.add_child(original_node)
+	else:
+		original_node.queue_free()
+	dragging = false
+	original_node = null

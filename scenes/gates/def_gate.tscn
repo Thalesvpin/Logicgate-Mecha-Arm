@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://dwy7lw2tmtyko"]
+
+[ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_gc247"]
+[ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_ut0yk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p14ax"]
+size = Vector2(128, 128)
+
+[node name="DefGate" type="Area2D" unique_id=1309805774]
+script = ExtResource("1_gc247")
+gate_scene = null
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1489639253]
+texture = ExtResource("1_ut0yk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1852536834]
+shape = SubResource("RectangleShape2D_p14ax")
+
+[node name="InputA" type="Marker2D" parent="." unique_id=1793307418]
+position = Vector2(-62, -30)
+
+[node name="InputB" type="Marker2D" parent="." unique_id=1166078554]
+position = Vector2(-62, 32)
+
+[node name="Output" type="Marker2D" parent="." unique_id=2095360654]
+position = Vector2(62, 0)
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

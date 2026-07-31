@@ -1,17 +1,47 @@
 extends Panel
 
-var type = "AND"
-@export var icon = preload("res://icon.svg")
+@onready var texture_rect: TextureRect = $TextureRect
 
-@export var gate_scene : PackedScene
+#enum Types: String {"AND", "OR", "DEF"} 
+
+@export_enum("AND", "OR", "DEF") var type: String
+@export_group('Sprites')
+@export var and_icon: Texture2D
+@export var or_icon: Texture2D
+@export var def_icon: Texture2D
+var icon: Texture2D
+@export_group('')
+
+@export_group('Scenes')
+@export var and_scene: PackedScene
+@export var or_scene: PackedScene
+@export var def_scene: PackedScene
+var scene: PackedScene
+@export_group('')
+
+func _ready() -> void:
+	load_data()
+
+func load_data():
+	match type.to_lower():
+		"and":
+			icon = and_icon
+			scene = and_scene
+		"or":
+			icon = or_icon
+			scene = or_scene
+		"def":
+			icon = def_icon
+			scene = def_scene
+	texture_rect.texture = icon
 
 func _gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
-				DragManager.dragging = true
-				DragManager.dragged_scene = gate_scene
-				DragManager.gate_type = type
+				#DragManager.drag(null, scene, type)
+				DragManager.drag(scene.instantiate(), true)
+				pass
 
 #Ensure the selected gate will display over everything
 func _get_drag_data(at_position):

@@ -1,16 +1,15 @@
 extends Camera2D
 
 const SPEED = 500
+var camera_drag: bool = false
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			camera_drag = event.pressed
+	
+	if event is InputEventMouseMotion && camera_drag:
+		position -= event.relative
 
 func _process(delta):
-	if Input.is_action_pressed("ui_left"):
-		position.x -= SPEED*delta
-	
-	if Input.is_action_pressed("ui_right"):
-		position.x += SPEED*delta
-	
-	if Input.is_action_pressed("ui_up"):
-		position.y -= SPEED*delta
-	
-	if Input.is_action_pressed("ui_down"):
-		position.y += SPEED*delta
+	pass

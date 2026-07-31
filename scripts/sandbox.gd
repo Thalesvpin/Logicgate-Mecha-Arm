@@ -3,8 +3,12 @@ extends Node2D
 @onready var gate_layer: Node2D = $GateLayer
 @onready var wire_layer: Node2D = $WireLayer
 @onready var drag_layer: Node2D = $DragLayer
+@onready var collision_shape_2d: CollisionShape2D = $CircuitCamera/Area2D/CollisionShape2D
+
+var line := preload("res://scenes/cable.tscn")
 
 var was_pressed := false
+var cursor_in: bool = false
 
 func _process(delta):
 	update_drag()
@@ -18,18 +22,39 @@ func update_drag():
 	if !DragManager.dragging:
 		return
 	
-	if DragManager.preview == null:
-		DragManager.preview = DragManager.dragged_scene.instantiate()
-		drag_layer.add_child(DragManager.preview)
-	
-	DragManager.preview.global_position = get_global_mouse_position()
+	DragManager.original_node.global_position = get_global_mouse_position()
 
 func end_drag():
-	DragManager.dragging = false
+	DragManager.drop(cursor_in)
+
+var point_a = null
+var point_b = null
+func trace_line(point):
+	print('recieved')
+	if point_a == null:
+		print('Point A set')
+		point_a = point
+	elif point_b == null:
+		print('Point B set')
+		point_b = point
 	
-	if DragManager.preview == null:
-		return
-	
-	drag_layer.remove_child(DragManager.preview)
-	gate_layer.add_child(DragManager.preview)
-	DragManager.preview = null
+	if point_a && point_b:
+		print('Line drawn')
+		var _line = line.instantiate()
+		_line.point_a = point_a
+		_line.point_b = point_b
+		wire_layer.add_child(_line)
+		
+		point_a = null
+		point_b = null
+
+func _on_area_2d_mouse_entered() -> void:
+	cursor_in = true
+
+func _on_area_2d_mouse_exited() -> void:
+	cursor_in = false
+
+func _on_gate_layer_child_entered_tree(node: Node) -> void:
+	for connector in node.connectors:
+		print('connected')
+		connector.clicked.connect(trace_line)

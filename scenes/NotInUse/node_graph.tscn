@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://df7euhw07n3aj"]
+
+[ext_resource type="Script" uid="uid://b1y5afjjlyot8" path="res://scripts/node_graph.gd" id="1_uvmlu"]
+[ext_resource type="PackedScene" uid="uid://b8x3ucxma174l" path="res://scenes/and_gate.tscn" id="2_r0vxb"]
+
+[node name="Control" type="Control" unique_id=1477100399]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_uvmlu")
+
+[node name="AndGate" parent="." unique_id=1378241812 instance=ExtResource("2_r0vxb")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 9.0
+offset_bottom = 55.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="GraphNode" type="GraphNode" parent="." unique_id=2046391449]
+visible = false
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 55.0
+mouse_filter = 1
+
+[node name="GraphEdit" type="GraphEdit" parent="." unique_id=1628623867]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+minimap_enabled = false
