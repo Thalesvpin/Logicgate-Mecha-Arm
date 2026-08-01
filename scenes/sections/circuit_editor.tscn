@@ -48,6 +48,10 @@ position = Vector2(0, 1)
 
 [node name="DragLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1505791159]
 
+[node name="InputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1794198084]
+
+[node name="OutputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1776893234]
+
 [node name="CircuitCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
 anchor_mode = 0
 script = ExtResource("1_n5154")

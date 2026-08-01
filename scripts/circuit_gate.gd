@@ -7,6 +7,13 @@ const gate_scene := preload("res://scenes/gates/and_gate.tscn")
 @onready var output: Area2D = $Output
 
 var dragging := false
+##Stores the last dropped position inside sandbox
+var last_position: Vector2
+##Inputs and output array
+var connectors: Array
+var input_nodes: Array
+##Signals beign inputed in top-down order
+var input_values: Array
 
 func _ready() -> void:
 	map_pins()
@@ -20,7 +27,6 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if is_topmost_gate_at(get_global_mouse_position()):
 				DragManager.drag(self)
-				
 
 func is_topmost_gate_at(point: Vector2) -> bool:
 	var params := PhysicsPointQueryParameters2D.new()
@@ -46,10 +52,60 @@ func draw_rank(node: Node2D) -> int:
 	print('z-index: ', sibling_idx)
 	return node.z_index * 100000 + sibling_idx
 
-var connectors: Array
 func map_pins():
 	for child in v_box_container.get_children():
 		if child.name == "Spacing":
 			continue
 		connectors.append(child.get_child(0))
+	input_nodes = connectors
 	connectors.append(output)
+
+func calculate_output() -> bool:
+	for inp in input_nodes:
+		if inp.connected_gate != null:
+			input_values.append(inp.connected_gate.calculate_output())
+		else:
+			input_values.append(null)
+	
+	var null_free_array = input_values.filter(func(element): return element != null)
+	match type.to_upper():
+		"AND":
+			for i in null_free_array:
+				if !i:
+					return false
+			return true
+		"OR":
+			for i in null_free_array:
+				if i:
+					return true
+			return false
+		"NOT":
+			return !null_free_array[0]
+		"NAND":
+			for i in null_free_array:
+				if !i:
+					return true
+			return false
+		"NOR":
+			for i in null_free_array:
+				if i:
+					return false
+			return true
+		"XOR":
+			var count = 0
+			
+			for i in null_free_array:
+				if i:
+					count += 1
+			
+			#abordagem exatamente 1
+			if count > 1:
+				return false
+			return true
+			
+			#abordagem impar
+			return count % 2 == 1
+		"XNOR":
+			pass
+	
+	return false

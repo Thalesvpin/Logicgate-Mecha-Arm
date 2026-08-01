@@ -30,23 +30,26 @@ func end_drag():
 var point_a = null
 var point_b = null
 func trace_line(point):
-	print('recieved')
-	if point_a == null:
-		print('Point A set')
+	if point.type.to_lower() == "output":
 		point_a = point
-	elif point_b == null:
-		print('Point B set')
+	if point.type.to_lower() == "input":
 		point_b = point
 	
 	if point_a && point_b:
-		print('Line drawn')
-		var _line = line.instantiate()
-		_line.point_a = point_a
-		_line.point_b = point_b
-		wire_layer.add_child(_line)
-		
-		point_a = null
-		point_b = null
+		if point_a.owner != point_b.owner:
+			print('Line drawn')
+			var _line = line.instantiate()
+			_line.point_a = point_a
+			_line.point_b = point_b
+			wire_layer.add_child(_line)
+			
+			point_a = null
+			point_b = null
+		else:
+			if point == point_a:
+				point_a = null
+			if point == point_b:
+				point_b = null
 
 func _on_area_2d_mouse_entered() -> void:
 	cursor_in = true
@@ -55,6 +58,7 @@ func _on_area_2d_mouse_exited() -> void:
 	cursor_in = false
 
 func _on_gate_layer_child_entered_tree(node: Node) -> void:
+	node.last_position = node.global_position
 	for connector in node.connectors:
 		print('connected')
 		connector.clicked.connect(trace_line)
