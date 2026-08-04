@@ -21,7 +21,7 @@ var point_b: Node2D
 @export var direction_b: Vector2 = Vector2.LEFT
 
 @export var width: float = 4.0
-@export var color: Color = Color(0.65, 0.35, 0.9)
+#@export var color: Color = Color(0.65, 0.35, 0.9)
 
 var _line: Line2D
 
@@ -29,11 +29,12 @@ var _line: Line2D
 func _ready() -> void:
 	_line = Line2D.new()
 	_line.width = width
-	_line.default_color = color
+	_line.default_color = Color(randf(),randf(),randf())
 	_line.joint_mode = Line2D.LINE_JOINT_ROUND
 	_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	_line.end_cap_mode = Line2D.LINE_CAP_ROUND
 	_line.antialiased = true
+	print(_line.default_color)
 	add_child(_line)
 
 
@@ -45,6 +46,7 @@ func _process(_delta: float) -> void:
 		print(self)
 		print('Point a: ', point_a)
 		print('Point b: ', point_b)
+
 
 
 func _update_curve() -> void:

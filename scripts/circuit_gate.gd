@@ -10,10 +10,11 @@ var dragging := false
 ##Stores the last dropped position inside sandbox
 var last_position: Vector2
 ##Inputs and output array
-var connectors: Array
-var input_nodes: Array
+var connectors: Array[Node2D]
+##Gate's internal input nodes
+var input_nodes: Array[Node2D]
 ##Signals beign inputed in top-down order
-var input_values: Array
+var input_values: Array[bool]
 
 func _ready() -> void:
 	map_pins()
@@ -38,7 +39,7 @@ func is_topmost_gate_at(point: Vector2) -> bool:
 	var top_rank := -1
 	for hit in hits:
 		var area := hit.collider as Area2D
-		if area == null:
+		if area == null || area == Global.circuit_editor.circuit_camera.area_2d:
 			continue
 		var rank := draw_rank(area)
 		if rank > top_rank:
@@ -49,7 +50,6 @@ func is_topmost_gate_at(point: Vector2) -> bool:
 func draw_rank(node: Node2D) -> int:
 	var parent := node.get_parent()
 	var sibling_idx := parent.get_children().find(node) if parent else 0
-	print('z-index: ', sibling_idx)
 	return node.z_index * 100000 + sibling_idx
 
 func map_pins():

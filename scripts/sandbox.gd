@@ -4,11 +4,21 @@ extends Node2D
 @onready var wire_layer: Node2D = $WireLayer
 @onready var drag_layer: Node2D = $DragLayer
 @onready var collision_shape_2d: CollisionShape2D = $CircuitCamera/Area2D/CollisionShape2D
+@onready var game_output_manager: VBoxContainer = $GameOutputManager
+@onready var game_input_manager: VBoxContainer = $GameInputManager
 
 var line := preload("res://scenes/cable.tscn")
 
 var was_pressed := false
 var cursor_in: bool = false
+
+func _ready() -> void:
+	var inputs = game_input_manager.get_children()
+	var outputs = game_output_manager.get_children()
+	for input in inputs:
+		input.get_child(0).clicked.connect(trace_line)
+	for output in outputs:
+		output.get_child(0).clicked.connect(trace_line)
 
 func _process(delta):
 	update_drag()
@@ -37,11 +47,11 @@ func trace_line(point):
 	
 	if point_a && point_b:
 		if point_a.owner != point_b.owner:
-			print('Line drawn')
 			var _line = line.instantiate()
 			_line.point_a = point_a
 			_line.point_b = point_b
 			wire_layer.add_child(_line)
+			point_b.connected_gate = point_a
 			
 			point_a = null
 			point_b = null
@@ -60,5 +70,4 @@ func _on_area_2d_mouse_exited() -> void:
 func _on_gate_layer_child_entered_tree(node: Node) -> void:
 	node.last_position = node.global_position
 	for connector in node.connectors:
-		print('connected')
 		connector.clicked.connect(trace_line)

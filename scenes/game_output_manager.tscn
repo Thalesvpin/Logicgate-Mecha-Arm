@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bwu5fuinlw5ui"]
+
+[ext_resource type="Script" uid="uid://dkw156yl3b3wx" path="res://scripts/game_output_manager.gd" id="1_1mcfq"]
+[ext_resource type="PackedScene" uid="uid://dpl15hcdqkpwb" path="res://scenes/game_output.tscn" id="2_7gfb1"]
+
+[node name="GameOutputManager" type="VBoxContainer" unique_id=1090849083]
+custom_minimum_size = Vector2(0, 400)
+custom_maximum_size = Vector2(-1, 400)
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1mcfq")
+
+[node name="FinalOutput" parent="." unique_id=704266001 instance=ExtResource("2_7gfb1")]
+layout_mode = 2
+
+[node name="FinalOutput2" parent="." unique_id=300974725 instance=ExtResource("2_7gfb1")]
+layout_mode = 2
+
+[node name="FinalOutput3" parent="." unique_id=1586215514 instance=ExtResource("2_7gfb1")]
+layout_mode = 2
+
+[node name="FinalOutput4" parent="." unique_id=1985145479 instance=ExtResource("2_7gfb1")]
+layout_mode = 2

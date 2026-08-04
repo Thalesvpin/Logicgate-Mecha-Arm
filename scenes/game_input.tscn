@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://blg1fesb54byg"]
+
+[ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="1_j5f2y"]
+[ext_resource type="Script" uid="uid://0q530hdn8fua" path="res://scripts/game_input.gd" id="1_q7tpq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eofqg"]
+
+[node name="GameInput" type="Control" unique_id=1380455050]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1595492650]
+script = ExtResource("1_q7tpq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=808901032]
+shape = SubResource("CircleShape2D_eofqg")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D" unique_id=1791370775]
+scale = Vector2(0.007, 0.007)
+texture = ExtResource("1_j5f2y")
+
+[connection signal="mouse_entered" from="Area2D" to="Area2D" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="Area2D" method="_on_mouse_exited"]

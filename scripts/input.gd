@@ -2,9 +2,10 @@ extends Area2D
 
 var sprite: Sprite2D
 var collision: CollisionShape2D
+
 var type: String = "input"
 var connected_gate: Area2D = null
-var input_value: bool
+var input_gate: Node2D
 
 signal clicked(pin)
 
