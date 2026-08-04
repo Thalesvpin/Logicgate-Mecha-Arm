@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bqjg6ygvlfpbi" path="res://scripts/circuit_background.gd" id="2_2xstj"]
 [ext_resource type="Script" uid="uid://vxeeuljabon5" path="res://scripts/grid.gd" id="2_kg2i1"]
 [ext_resource type="Script" uid="uid://y6nreclkpn6v" path="res://scripts/sandbox.gd" id="2_s76oy"]
+[ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="6_4ke2v"]
 [ext_resource type="PackedScene" uid="uid://bwu5fuinlw5ui" path="res://scenes/game_output_manager.tscn" id="6_7i7tw"]
 [ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/game_input_manager.tscn" id="6_lwkx8"]
 
@@ -55,16 +56,18 @@ position = Vector2(0, 1)
 [node name="OutputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1776893234]
 
 [node name="CircuitCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
-anchor_mode = 0
-zoom = Vector2(1.265, 1.265)
 script = ExtResource("1_n5154")
 
 [node name="Area2D" type="Area2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
-position = Vector2(574.5, 321.5)
 shape = SubResource("RectangleShape2D_eofqg")
 debug_color = Color(0, 1, 0, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=593074557]
+position = Vector2(7.6293945e-06, 2)
+scale = Vector2(0.079687476, 0.079687476)
+texture = ExtResource("6_4ke2v")
 
 [node name="GameInputManager" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1991601480 instance=ExtResource("6_lwkx8")]
 custom_minimum_size = Vector2(0, 400)
@@ -72,19 +75,19 @@ custom_maximum_size = Vector2(-1, 400)
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 67.0
-offset_top = 61.0
-offset_right = 67.0
-offset_bottom = 461.0
+offset_left = -470.0
+offset_top = -219.0
+offset_right = -470.0
+offset_bottom = 181.0
 grow_horizontal = 1
 grow_vertical = 1
 
 [node name="GameOutputManager" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1090849083 instance=ExtResource("6_7i7tw")]
 anchors_preset = 15
-offset_left = 975.0
-offset_top = 61.0
-offset_right = 975.0
-offset_bottom = 461.0
+offset_left = 438.0
+offset_top = -219.0
+offset_right = 438.0
+offset_bottom = 181.0
 
 [connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
 [connection signal="mouse_entered" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]
