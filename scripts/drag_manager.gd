@@ -18,7 +18,9 @@ func drag(node: Node2D, from_inv: bool = false):
 func drop(cursor_in: bool):
 	Global.circuit_editor.drag_layer.remove_child(original_node)
 	if !cursor_in:
-		if original_node.last_position:
+		if Global.sell_gate:
+			original_node.queue_free()
+		elif original_node.last_position:
 			original_node.position = original_node.last_position
 		else:
 			original_node.queue_free()
