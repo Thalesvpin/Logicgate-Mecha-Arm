@@ -19,7 +19,7 @@ func drop(cursor_in: bool):
 	Global.circuit_editor.drag_layer.remove_child(original_node)
 	if !cursor_in:
 		if Global.sell_gate:
-			original_node.queue_free()
+			original_node.delete_gate()
 		elif original_node.last_position:
 			original_node.position = original_node.last_position
 		else:

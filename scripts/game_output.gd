@@ -6,6 +6,7 @@ signal clicked(pin)
 
 var type: String = "input"
 var connected_gate
+var connected_wires: Array
 
 func _input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:

@@ -15,6 +15,7 @@ var connectors: Array[Node2D]
 var input_nodes: Array[Node2D]
 ##Signals beign inputed in top-down order
 var input_values: Array[bool]
+var connected_wires: Array
 
 func _ready() -> void:
 	map_pins()
@@ -98,14 +99,30 @@ func calculate_output() -> bool:
 				if i:
 					count += 1
 			
-			#abordagem exatamente 1
 			if count > 1:
 				return false
 			return true
-			
-			#abordagem impar
-			return count % 2 == 1
 		"XNOR":
 			pass
 	
 	return false
+
+func disconnect_wires() -> void:
+	for wire in connected_wires:
+		if self == wire.point_a.owner:
+			wire.point_b.connected_gate = null
+			if wire.point_b.owner is Area2D:
+				wire.point_b.owner.connected_wires.filter(func(element): return element != wire)
+			else:
+				wire.point_b.connected_wires.filter(func(element): return element != wire)
+		else:
+			if wire.point_a.owner is Area2D:
+				wire.point_a.owner.connected_wires.filter(func(element): return element != wire)
+			else:
+				wire.point_a.connected_wires.filter(func(element): return element != wire)
+		
+		wire.queue_free()
+
+func delete_gate() -> void:
+	disconnect_wires()
+	queue_free()
