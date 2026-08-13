@@ -24,12 +24,13 @@ var point_b: Node2D
 #@export var color: Color = Color(0.65, 0.35, 0.9)
 
 var _line: Line2D
-
+var is_active: bool = false
 
 func _ready() -> void:
 	_line = Line2D.new()
 	_line.width = width
-	_line.default_color = Color(randf(),randf(),randf())
+	_line.default_color = Color('red')
+	#_line.default_color = Color(randf(),randf(),randf())
 	_line.joint_mode = Line2D.LINE_JOINT_ROUND
 	_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	_line.end_cap_mode = Line2D.LINE_CAP_ROUND
@@ -37,17 +38,24 @@ func _ready() -> void:
 	print(_line.default_color)
 	add_child(_line)
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("test"):
+		set_active(!is_active)
 
 func _process(_delta: float) -> void:
 	if point_a != null and point_b != null:
 		_update_curve()
 	
-	if Input.is_action_just_pressed("test"):
-		print(self)
-		print('Point a: ', point_a)
-		print('Point b: ', point_b)
+	check_input_value()
 
-
+func check_input_value() -> void:
+	set_active(point_a.is_active)
+	
+	if is_active:
+		_line.default_color = Color("green")
+	if !is_active:
+		_line.default_color = Color("red")
+	
 
 func _update_curve() -> void:
 	var p0 := to_local(point_a.global_position)
@@ -62,9 +70,11 @@ func _update_curve() -> void:
 
 	_line.points = curve.get_baked_points()
 
-
 ## Chame isso se trocar point_a/point_b em tempo de execução
 ## (ex.: quando o jogador cria o fio clicando em dois objetos).
 func setup(a: Node2D, b: Node2D) -> void:
 	point_a = a
 	point_b = b
+
+func set_active(value: bool):
+	is_active = value

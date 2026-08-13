@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dinaa4hu5artv" path="res://scenes/inventory_gate.tscn" id="1_llgc5"]
 [ext_resource type="Script" uid="uid://badjj82igaj2l" path="res://scripts/gates_selector.gd" id="1_rn4rn"]
+[ext_resource type="PackedScene" uid="uid://iopwhmejcr8b" path="res://addons/RadialMenu/RadialMenu.tscn" id="3_v66ra"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
 font_size = 41
@@ -92,3 +93,6 @@ text = "Vender"
 label_settings = SubResource("LabelSettings_eofqg")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="RadialMenu" parent="." unique_id=1073261170 instance=ExtResource("3_v66ra")]
+layout_mode = 2

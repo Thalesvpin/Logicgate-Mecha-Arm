@@ -16,7 +16,7 @@ func _ready() -> void:
 	var inputs = game_input_manager.get_children()
 	var outputs = game_output_manager.get_children()
 	for input in inputs:
-		input.get_child(0).clicked.connect(trace_line)
+		input.get_child(1).clicked.connect(trace_line)
 	for output in outputs:
 		output.get_child(0).clicked.connect(trace_line)
 

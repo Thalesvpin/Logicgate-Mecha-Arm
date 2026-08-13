@@ -1,13 +1,33 @@
 [gd_scene format=3 uid="uid://blg1fesb54byg"]
 
+[ext_resource type="Texture2D" uid="uid://bvwjdfco3a1t3" path="res://assets/test.png" id="1_c2qax"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="1_j5f2y"]
 [ext_resource type="Script" uid="uid://0q530hdn8fua" path="res://scripts/game_input.gd" id="1_q7tpq"]
+[ext_resource type="Texture2D" uid="uid://cjy6aep0m00wt" path="res://assets/test_dark_small.png" id="2_e5d38"]
+[ext_resource type="Texture2D" uid="uid://ctmnksayj12gc" path="res://assets/test_dark.png" id="3_nshf5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eofqg"]
 
 [node name="GameInput" type="Control" unique_id=1380455050]
 layout_mode = 3
 anchors_preset = 0
+
+[node name="TextureButton" type="TextureButton" parent="." unique_id=1829391352]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -23.0
+offset_right = -21.0
+offset_bottom = 23.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("1_c2qax")
+texture_pressed = ExtResource("2_e5d38")
+texture_hover = ExtResource("3_nshf5")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1595492650]
 script = ExtResource("1_q7tpq")
@@ -19,5 +39,6 @@ shape = SubResource("CircleShape2D_eofqg")
 scale = Vector2(0.007, 0.007)
 texture = ExtResource("1_j5f2y")
 
+[connection signal="button_up" from="TextureButton" to="Area2D" method="_on_texture_button_button_up"]
 [connection signal="mouse_entered" from="Area2D" to="Area2D" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="Area2D" method="_on_mouse_exited"]
