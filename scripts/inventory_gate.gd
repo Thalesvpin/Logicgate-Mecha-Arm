@@ -40,7 +40,7 @@ func _gui_input(event):
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				#DragManager.drag(null, scene, type)
-				DragManager.drag(scene.instantiate(), true)
+				DragManager.drag_gate(scene.instantiate(), true)
 				pass
 
 #Ensure the selected gate will display over everything

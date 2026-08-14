@@ -2,12 +2,13 @@ extends Area2D
 
 @export_enum("AND", "OR", "DEF") var type: String = "DEF"
 #@export var gate_scene : PackedScene
-const gate_scene := preload("res://scenes/gates/and_gate.tscn")
+const gate_scene := preload("uid://vyyk4mr2crhe")
 @onready var v_box_container: VBoxContainer = $VBoxContainer
 @onready var output: Area2D = $Output
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
+##Not ideal, but circuit_gate can only be created as a Sandbox's grandchild
+@onready var sandbox: Node2D = $"./../.."
 
-var dragging := false
 ##Stores the last dropped position inside sandbox
 var last_position: Vector2
 ##Inputs and output array
@@ -17,21 +18,29 @@ var input_nodes: Array[Node2D]
 ##Signals beign inputed in top-down order
 var input_values: Array[bool]
 var connected_wires: Array
+var was_pressed: bool = false
 
 func _ready() -> void:
+	print(sandbox)
 	map_pins()
 
 func _process(delta):
-	if dragging:
-		global_position = get_global_mouse_position()
-	
 	output.set_active(calculate_output())
+	handle_drag()
+
+func handle_drag() -> void:
+	if DragManager.dragging:
+		DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position()
+		var is_pressed = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		if was_pressed && !is_pressed:
+			DragManager.drop_gate(sandbox.cursor_in)
+		was_pressed = is_pressed
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if is_topmost_gate_at(get_global_mouse_position()):
-				DragManager.drag(self)
+				DragManager.drag_gate(self)
 	
 	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
 		var radial_menu = RADIAL_MENU.instantiate()

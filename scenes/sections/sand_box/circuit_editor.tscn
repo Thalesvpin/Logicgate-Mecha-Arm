@@ -43,26 +43,6 @@ color = Color(0.07086415, 0.5497127, 0.81251293, 1)
 [node name="Grid" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1642791617]
 script = ExtResource("2_kg2i1")
 
-[node name="GateLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
-
-[node name="WireLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1908283756]
-position = Vector2(0, 1)
-
-[node name="DragLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1505791159]
-
-[node name="InputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1794198084]
-
-[node name="OutputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1776893234]
-
-[node name="CircuitCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
-script = ExtResource("1_n5154")
-
-[node name="Area2D" type="Area2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
-shape = SubResource("RectangleShape2D_eofqg")
-debug_color = Color(0, 1, 0, 0.41960785)
-
 [node name="GameInputManager" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1991601480 instance=ExtResource("6_lwkx8")]
 custom_minimum_size = Vector2(0, 400)
 custom_maximum_size = Vector2(-1, 400)
@@ -81,6 +61,26 @@ offset_left = 438.0
 offset_top = -147.0
 offset_right = 458.0
 offset_bottom = 253.0
+
+[node name="WireLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1908283756]
+position = Vector2(0, 1)
+
+[node name="GateLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
+
+[node name="DragLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1505791159]
+
+[node name="InputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1794198084]
+
+[node name="OutputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1776893234]
+
+[node name="CircuitCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
+script = ExtResource("1_n5154")
+
+[node name="Area2D" type="Area2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
+shape = SubResource("RectangleShape2D_eofqg")
+debug_color = Color(0, 1, 0, 0.41960785)
 
 [connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
 [connection signal="mouse_entered" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]

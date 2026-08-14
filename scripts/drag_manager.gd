@@ -1,15 +1,23 @@
 extends Node
 
 var dragging := false
-#var dragged_scene : PackedScene
-var preview : Node2D
 var gate_type := ""
-var source_icon
 var original_node
 
-func drag(node: Node2D, from_inv: bool = false):
+func setup(node: Node) -> void:
 	dragging = true
 	original_node = node
+
+func reset() -> void:
+	dragging = false
+	original_node = null
+
+func drag_gate(node: Node2D, from_inv: bool = false) -> void:
+	setup(node)
+	if from_inv:
+		Global.circuit_editor.gate_layer.add_child(node)
+		Global.circuit_editor.gate_layer.remove_child(node)
+	
 	if !from_inv:
 		Global.circuit_editor.gate_layer.remove_child(node)
 		Global.gates_selector.sell_overlay.show()
@@ -20,7 +28,7 @@ func drag(node: Node2D, from_inv: bool = false):
 	#game board
 	get_tree().current_scene.add_child(node)
 
-func drop(cursor_in: bool):
+func drop_gate(cursor_in: bool) -> void:
 	#sandbox only
 	#Global.circuit_editor.drag_layer.remove_child(original_node)
 	
@@ -31,7 +39,6 @@ func drop(cursor_in: bool):
 	original_node.position = get_tree().current_scene.find_child("Sandbox").get_global_mouse_position()
 	#original_node.position = get_tree().current_scene.find_child("Sandbox").get_viewport().get_mouse_position()
 	
-	
 	if !cursor_in:
 		if Global.sell_gate:
 			original_node.delete_gate()
@@ -41,5 +48,12 @@ func drop(cursor_in: bool):
 			original_node.queue_free()
 	Global.circuit_editor.gate_layer.add_child(original_node)
 	Global.gates_selector.sell_overlay.hide()
-	dragging = false
-	original_node = null
+	reset()
+
+func drag_inputs_outputs(node: Control) -> void:
+	setup(node)
+	
+
+func drop_inputs_outputs() -> void:
+	
+	reset()

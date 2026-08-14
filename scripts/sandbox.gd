@@ -28,26 +28,26 @@ func _ready() -> void:
 		if output.get_class() == "Control":
 			output.get_child(0).clicked.connect(trace_line)
 
-func _process(delta):
-	update_drag()
-	if DragManager.dragging:
-		var is_pressed = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
-		if was_pressed && !is_pressed:
-			end_drag()
-		was_pressed = is_pressed
-
-func update_drag():
-	if !DragManager.dragging:
-		return
-	
-	#sandbox only
-	#DragManager.original_node.global_position = get_global_mouse_position()
-	
-	#game board
-	DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position()
-
-func end_drag():
-	DragManager.drop(cursor_in)
+#func _process(delta):
+	#update_drag()
+	#if DragManager.dragging:
+		#var is_pressed = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		#if was_pressed && !is_pressed:
+			#end_drag()
+		#was_pressed = is_pressed
+#
+#func update_drag():
+	#if !DragManager.dragging:
+		#return
+	#
+	##sandbox only
+	##DragManager.original_node.global_position = get_global_mouse_position()
+	#
+	##game board
+	#DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position()
+#
+#func end_drag():
+	#DragManager.drop_gate(cursor_in)
 
 var point_a = null
 var point_b = null

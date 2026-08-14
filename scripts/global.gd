@@ -17,45 +17,45 @@ var sell_gate: bool = false
 #display order: ↑ → ↓ ←
 var gate_options = [
 	{
+		'texture': INFO, 
+		'title': 'Informações', 
+		'id': 'idx_1'
+	},
+	{
 		'texture': CLEAR_CONNECTIONS, 
 		'title': 'Limpar Conexões', 
 		'id': 'idx_0'
 	},
 	{
-		'texture': INFO, 
-		'title': 'Informações', 
-		'id': 'idx_1'
+		'texture': CANCEL, 
+		'title': 'Cancelar', 
+		'id': 'idx_3'
 	},
 	{
 		'texture': SELL, 
 		'title': 'Vender porta', 
 		'id': 'idx_2'
 	},
-	{
-		'texture': CANCEL, 
-		'title': 'Cancelar', 
-		'id': 'idx_3'
-	},
 ]
 var inventory_options = [
-	{
-		'texture': CLEAR_CONNECTIONS, 
-		'title': 'Limpar Conexões', 
-		'id': 'idx_0'
-	},
 	{
 		'texture': INFO, 
 		'title': 'Informações', 
 		'id': 'idx_1'
 	},
 	{
-		'texture': SELL, 
-		'title': 'Vender portas', 
-		'id': 'idx_2'
+		'texture': CLEAR_CONNECTIONS, 
+		'title': 'Limpar Conexões', 
+		'id': 'idx_0'
 	},
 	{
 		'texture': CANCEL, 
 		'title': 'Cancelar', 
 		'id': 'idx_3'
+	},
+	{
+		'texture': SELL, 
+		'title': 'Vender portas', 
+		'id': 'idx_2'
 	},
 ]

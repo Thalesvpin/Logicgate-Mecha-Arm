@@ -86,19 +86,13 @@ func _update_curve() -> void:
 	
 	var dist := p0.distance_to(p3)
 	var offset := dist * curve_strength
-
+	
 	var curve := Curve2D.new()
 	# out do primeiro ponto e in do segundo ponto controlam a curvatura
 	curve.add_point(p0, Vector2.ZERO, direction_a.normalized() * offset)
 	curve.add_point(p3, direction_b.normalized() * offset, Vector2.ZERO)
-
+	
 	_line.points = curve.get_baked_points()
-
-## Chame isso se trocar point_a/point_b em tempo de execução
-## (ex.: quando o jogador cria o fio clicando em dois objetos).
-func setup(a: Node2D, b: Node2D) -> void:
-	point_a = a
-	point_b = b
 
 func set_active(value: bool):
 	is_active = value
