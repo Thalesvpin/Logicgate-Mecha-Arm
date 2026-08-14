@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://dtalsdrf6cd7n" path="res://scripts/input.gd" id="3_06rm6"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="4_oajpa"]
 [ext_resource type="Script" uid="uid://c6ivqjlx2f15x" path="res://scripts/output.gd" id="5_n7umk"]
-[ext_resource type="PackedScene" uid="uid://iopwhmejcr8b" path="res://addons/RadialMenu/RadialMenu.tscn" id="6_oajpa"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p14ax"]
 size = Vector2(128, 128)
@@ -75,8 +74,6 @@ shape = SubResource("CircleShape2D_mls3i")
 [node name="Sprite2D" type="Sprite2D" parent="Output" unique_id=2024024492]
 scale = Vector2(0.0066406247, 0.0066406247)
 texture = ExtResource("4_oajpa")
-
-[node name="RadialMenu" parent="." unique_id=1073261170 instance=ExtResource("6_oajpa")]
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

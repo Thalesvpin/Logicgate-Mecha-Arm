@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dcgt60u8ek4ic"]
+
+[ext_resource type="Script" uid="uid://bonivj2tilamu" path="res://scripts/game_input_manager.gd" id="1_uesrh"]
+[ext_resource type="PackedScene" uid="uid://blg1fesb54byg" path="res://scenes/sections/sand_box/game_input.tscn" id="2_qe8nc"]
+
+[node name="GameInputManager" type="VBoxContainer" unique_id=1991601480]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_uesrh")
+
+[node name="DragBar" type="ColorRect" parent="." unique_id=318664044]
+custom_minimum_size = Vector2(20, 10)
+layout_mode = 2
+color = Color(1, 0, 1, 1)
+
+[node name="GameInput" parent="." unique_id=1380455050 instance=ExtResource("2_qe8nc")]
+layout_mode = 2
+
+[node name="GameInput2" parent="." unique_id=992473289 instance=ExtResource("2_qe8nc")]
+layout_mode = 2
+
+[node name="GameInput3" parent="." unique_id=297995562 instance=ExtResource("2_qe8nc")]
+layout_mode = 2
+
+[node name="GameInput4" parent="." unique_id=431762415 instance=ExtResource("2_qe8nc")]
+layout_mode = 2

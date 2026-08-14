@@ -5,7 +5,7 @@ extends Area2D
 const gate_scene := preload("res://scenes/gates/and_gate.tscn")
 @onready var v_box_container: VBoxContainer = $VBoxContainer
 @onready var output: Area2D = $Output
-@onready var radial_menu: Control = $RadialMenu
+const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 
 var dragging := false
 ##Stores the last dropped position inside sandbox
@@ -20,7 +20,6 @@ var connected_wires: Array
 
 func _ready() -> void:
 	map_pins()
-	radial_menu.item_selected.connect(handle_radial_menu_selection)
 
 func _process(delta):
 	if dragging:
@@ -35,11 +34,12 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 				DragManager.drag(self)
 	
 	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
+		var radial_menu = RADIAL_MENU.instantiate()
 		radial_menu.set_items(Global.gate_options)
-		var m = get_local_mouse_position()
-		# Pass the center position to open_menu as a Vector2!
+		radial_menu.item_selected.connect(handle_radial_menu_selection)
+		get_tree().current_scene.add_child(radial_menu)
+		var m = get_tree().current_scene.get_global_mouse_position()
 		radial_menu.open_menu(m)
-		# Make sure we don't handle the click again anywhere else...
 		get_viewport().set_input_as_handled()
 
 func is_topmost_gate_at(point: Vector2) -> bool:
@@ -84,7 +84,6 @@ func calculate_output() -> bool:
 			if !input_values:
 				return false
 			for i in input_values:
-				print('inp val: ', i)
 				if !i:
 					return false
 			return true

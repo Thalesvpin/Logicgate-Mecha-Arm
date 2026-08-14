@@ -28,6 +28,10 @@ func _input(event: InputEvent) -> void:
 			camera_drag = event.pressed
 	
 	if event is InputEventMouseMotion && camera_drag:
+		if !Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+			camera_drag = false
+			return
+		
 		var new_range: Vector2 = position - event.relative / zoom
 		var new_limit = (circuit_editor.size/zoom)/2
 		

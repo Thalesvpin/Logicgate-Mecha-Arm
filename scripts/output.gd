@@ -19,10 +19,6 @@ func _input_event(_viewport, event, _shape_idx):
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
 			clicked.emit(self)
 
-func _process(delta: float) -> void:
-	if is_active:
-		print('aunn')
-
 func set_active(value: bool) -> void:
 	is_active = value
 

@@ -56,10 +56,34 @@ func check_input_value() -> void:
 	if !is_active:
 		_line.default_color = Color("red")
 	
+func dragged_point_position(connector: Node2D):
+	var gate := DragManager.original_node as Node2D
+	var sandbox := get_tree().current_scene.find_child("Sandbox") as Node2D
+	
+	# offset do connector em relação ao gate (não muda durante o arrasto)
+	var connector_in_gate := gate.global_transform.affine_inverse() * connector.global_transform.origin
+	
+	# onde o gate deveria estar: mouse no espaço do Sandbox
+	var gate_at_mouse := sandbox.get_global_mouse_position()
+	var gate_xform := gate.global_transform
+	gate_xform.origin = gate_at_mouse
+	var connector_global := gate_xform * connector_in_gate
+	return to_local(connector_global)
 
 func _update_curve() -> void:
-	var p0 := to_local(point_a.global_position)
-	var p3 := to_local(point_b.global_position)
+	var p0: Vector2
+	var p3: Vector2
+	if DragManager.dragging && (DragManager.original_node == point_a.owner || DragManager.original_node == point_b.owner):
+		if DragManager.original_node == point_a.owner:
+			p0 = dragged_point_position(point_a)
+			p3 = to_local(point_b.global_position)
+		if DragManager.original_node == point_b.owner:
+			p0 = to_local(point_a.global_position)
+			p3 = dragged_point_position(point_b)
+	else:
+		p0 = to_local(point_a.global_position)
+		p3 = to_local(point_b.global_position)
+	
 	var dist := p0.distance_to(p3)
 	var offset := dist * curve_strength
 

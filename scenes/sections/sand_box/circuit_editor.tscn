@@ -5,8 +5,8 @@
 [ext_resource type="Script" uid="uid://bqjg6ygvlfpbi" path="res://scripts/circuit_background.gd" id="2_2xstj"]
 [ext_resource type="Script" uid="uid://vxeeuljabon5" path="res://scripts/grid.gd" id="2_kg2i1"]
 [ext_resource type="Script" uid="uid://y6nreclkpn6v" path="res://scripts/sandbox.gd" id="2_s76oy"]
-[ext_resource type="PackedScene" uid="uid://bwu5fuinlw5ui" path="res://scenes/game_output_manager.tscn" id="6_7i7tw"]
-[ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/game_input_manager.tscn" id="6_lwkx8"]
+[ext_resource type="PackedScene" uid="uid://bwu5fuinlw5ui" path="res://scenes/sections/sand_box/game_output_manager.tscn" id="6_7i7tw"]
+[ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/sections/sand_box/game_input_manager.tscn" id="6_lwkx8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
 size = Vector2(1169, 663)
@@ -71,16 +71,15 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 offset_left = -470.0
 offset_top = -147.0
-offset_right = -470.0
+offset_right = -450.0
 offset_bottom = 253.0
 grow_horizontal = 1
 grow_vertical = 1
 
 [node name="GameOutputManager" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1090849083 instance=ExtResource("6_7i7tw")]
-anchors_preset = 15
 offset_left = 438.0
 offset_top = -147.0
-offset_right = 438.0
+offset_right = 458.0
 offset_bottom = 253.0
 
 [connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]

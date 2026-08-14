@@ -1,4 +1,6 @@
 extends Node
+
+#radial menu textures
 const SELL = preload("uid://dvxmvtj7hrqrw")
 const CLEAR_CONNECTIONS = preload("uid://jjqybhx6ejot")
 const INFO = preload("uid://3dcqftonh2pd")

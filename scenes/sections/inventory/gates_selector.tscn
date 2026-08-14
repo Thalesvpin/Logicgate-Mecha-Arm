@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://drl4m0lil85ek"]
 
-[ext_resource type="PackedScene" uid="uid://dinaa4hu5artv" path="res://scenes/inventory_gate.tscn" id="1_llgc5"]
+[ext_resource type="PackedScene" uid="uid://dinaa4hu5artv" path="res://scenes/sections/inventory/inventory_gate.tscn" id="1_llgc5"]
 [ext_resource type="Script" uid="uid://badjj82igaj2l" path="res://scripts/gates_selector.gd" id="1_rn4rn"]
-[ext_resource type="PackedScene" uid="uid://iopwhmejcr8b" path="res://addons/RadialMenu/RadialMenu.tscn" id="3_v66ra"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
 font_size = 41
@@ -37,31 +36,31 @@ size_flags_vertical = 3
 alignment = 1
 last_wrap_alignment = 2
 
-[node name="Gate" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=2018287429 instance=ExtResource("1_llgc5")]
+[node name="InventoryGate" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=2018287429 instance=ExtResource("1_llgc5")]
 layout_mode = 2
 type = "AND"
 
-[node name="Gate2" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=51022213 instance=ExtResource("1_llgc5")]
+[node name="InventoryGate2" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1996500217 instance=ExtResource("1_llgc5")]
 layout_mode = 2
 type = "OR"
 
-[node name="Gate3" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=634861922 instance=ExtResource("1_llgc5")]
+[node name="InventoryGate3" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1789753972 instance=ExtResource("1_llgc5")]
 layout_mode = 2
 type = "DEF"
 
-[node name="Gate4" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=641957154 instance=ExtResource("1_llgc5")]
+[node name="InventoryGate4" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1008198893 instance=ExtResource("1_llgc5")]
 layout_mode = 2
 type = "DEF"
 
-[node name="Gate5" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=352144007 instance=ExtResource("1_llgc5")]
+[node name="InventoryGate5" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1833420702 instance=ExtResource("1_llgc5")]
 layout_mode = 2
 type = "DEF"
 
-[node name="Gate6" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1646065089 instance=ExtResource("1_llgc5")]
+[node name="InventoryGate6" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1649248226 instance=ExtResource("1_llgc5")]
 layout_mode = 2
 type = "DEF"
 
-[node name="Gate7" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1617492420 instance=ExtResource("1_llgc5")]
+[node name="InventoryGate7" parent="MarginContainer/ScrollContainer/FlowContainer" unique_id=1220327291 instance=ExtResource("1_llgc5")]
 layout_mode = 2
 type = "DEF"
 
@@ -93,6 +92,3 @@ text = "Vender"
 label_settings = SubResource("LabelSettings_eofqg")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="RadialMenu" parent="." unique_id=1073261170 instance=ExtResource("3_v66ra")]
-layout_mode = 2

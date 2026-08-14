@@ -7,18 +7,26 @@ extends Node2D
 @onready var game_output_manager: VBoxContainer = $GameOutputManager
 @onready var game_input_manager: VBoxContainer = $GameInputManager
 
-var line := preload("res://scenes/cable.tscn")
+var line := preload("res://scenes/sections/sand_box/cable.tscn")
 
 var was_pressed := false
 var cursor_in: bool = false
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("test"):
+		pass
+
 func _ready() -> void:
+	print("sandbox.gd - _input test")
+	
 	var inputs = game_input_manager.get_children()
 	var outputs = game_output_manager.get_children()
 	for input in inputs:
-		input.get_child(1).clicked.connect(trace_line)
+		if input.get_class() == "Control":
+			input.get_child(1).clicked.connect(trace_line)
 	for output in outputs:
-		output.get_child(0).clicked.connect(trace_line)
+		if output.get_class() == "Control":
+			output.get_child(0).clicked.connect(trace_line)
 
 func _process(delta):
 	update_drag()
@@ -32,7 +40,11 @@ func update_drag():
 	if !DragManager.dragging:
 		return
 	
-	DragManager.original_node.global_position = get_global_mouse_position()
+	#sandbox only
+	#DragManager.original_node.global_position = get_global_mouse_position()
+	
+	#game board
+	DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position()
 
 func end_drag():
 	DragManager.drop(cursor_in)
@@ -40,7 +52,6 @@ func end_drag():
 var point_a = null
 var point_b = null
 func trace_line(point):
-	print(point.name, point.owner)
 	if point.type.to_lower() == "output":
 		point_a = point
 	if point.type.to_lower() == "input":
