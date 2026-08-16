@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://dkw156yl3b3wx" path="res://scripts/game_output_manager.gd" id="1_1mcfq"]
 [ext_resource type="PackedScene" uid="uid://dpl15hcdqkpwb" path="res://scenes/sections/sand_box/game_output.tscn" id="2_7gfb1"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_csqvs"]
+size = Vector2(50, 400)
+
 [node name="GameOutputManager" type="VBoxContainer" unique_id=1090849083]
 custom_minimum_size = Vector2(0, 400)
 custom_maximum_size = Vector2(-1, 400)
@@ -13,10 +16,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1mcfq")
 
-[node name="DragBar" type="ColorRect" parent="." unique_id=1620669707]
-custom_minimum_size = Vector2(20, 10)
-layout_mode = 2
-color = Color(1, 0, 1, 1)
+[node name="DragArea" type="Area2D" parent="." unique_id=872200294]
+position = Vector2(0, 201)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DragArea" unique_id=1085413125]
+shape = SubResource("RectangleShape2D_csqvs")
+debug_color = Color(0.96168846, 1.540184e-06, 0.51167804, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="DragArea" unique_id=1954998917]
 
 [node name="FinalOutput" parent="." unique_id=704266001 instance=ExtResource("2_7gfb1")]
 layout_mode = 2
@@ -29,3 +36,5 @@ layout_mode = 2
 
 [node name="FinalOutput4" parent="." unique_id=1985145479 instance=ExtResource("2_7gfb1")]
 layout_mode = 2
+
+[connection signal="input_event" from="DragArea" to="." method="_on_drag_area_input_event"]

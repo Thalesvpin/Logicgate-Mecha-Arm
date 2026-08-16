@@ -36,7 +36,7 @@ func drop_gate(cursor_in: bool) -> void:
 	get_tree().current_scene.remove_child(original_node)
 	
 	#original_node.position = get_global_mouse_position()
-	original_node.position = get_tree().current_scene.find_child("Sandbox").get_global_mouse_position()
+	original_node.position = get_tree().current_scene.find_child("Sandbox").get_global_mouse_position() - original_node.cursor_offset
 	#original_node.position = get_tree().current_scene.find_child("Sandbox").get_viewport().get_mouse_position()
 	
 	if !cursor_in:
@@ -52,8 +52,16 @@ func drop_gate(cursor_in: bool) -> void:
 
 func drag_inputs_outputs(node: Control) -> void:
 	setup(node)
-	
 
 func drop_inputs_outputs() -> void:
-	
+	var is_inside_sandbox = Global.circuit_editor.sandbox.cursor_in
+	if !is_inside_sandbox:
+		if original_node.last_position:
+			original_node.position = original_node.last_position
+		else:
+			original_node.position = Vector2.ZERO
+			original_node.last_position = Vector2.ZERO
 	reset()
+
+func am_i_dragged(node: Node) -> bool:
+	return dragging && original_node == node

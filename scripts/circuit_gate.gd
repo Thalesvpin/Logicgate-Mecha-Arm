@@ -19,6 +19,7 @@ var input_nodes: Array[Node2D]
 var input_values: Array[bool]
 var connected_wires: Array
 var was_pressed: bool = false
+var cursor_offset: Vector2
 
 func _ready() -> void:
 	print(sandbox)
@@ -29,8 +30,8 @@ func _process(delta):
 	handle_drag()
 
 func handle_drag() -> void:
-	if DragManager.dragging:
-		DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position()
+	if DragManager.am_i_dragged(self):
+		DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position() - cursor_offset
 		var is_pressed = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 		if was_pressed && !is_pressed:
 			DragManager.drop_gate(sandbox.cursor_in)
@@ -40,7 +41,11 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if is_topmost_gate_at(get_global_mouse_position()):
+				cursor_offset = get_global_mouse_position() - global_position
 				DragManager.drag_gate(self)
+	
+	if event.is_action_pressed("test"):
+		print(get_tree().current_scene.get_global_mouse_position())
 	
 	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
 		var radial_menu = RADIAL_MENU.instantiate()
