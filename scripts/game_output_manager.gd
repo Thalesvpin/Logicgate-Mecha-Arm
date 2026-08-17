@@ -3,12 +3,19 @@ extends IOBar
 @onready var drag_area: Area2D = $DragArea
 
 func ready() -> void:
-	pass
+	Global.output_manager = self
 
 func process() -> void:
 	pass
 
-func prevent_click(value: bool):
+func submit() -> void:
+	var result := 0
+	for child in children:
+		result = result << 1 | int(child.output)
+	
+	print('output: ', result)
+
+func prevent_click(value: bool) -> void:
 	drag_area.input_pickable = !value
 
 func _on_drag_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:

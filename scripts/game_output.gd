@@ -15,6 +15,10 @@ func _input_event(_viewport, event, _shape_idx):
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
 			clicked.emit(self)
 
+func _process(delta: float) -> void:
+	if connected_gate:
+		owner.output = connected_gate.is_active
+
 func _on_mouse_entered() -> void:
 	sprite.scale = Vector2(0.02,0.02)
 	owner.owner.prevent_click(true)

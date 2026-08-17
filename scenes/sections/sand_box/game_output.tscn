@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dpl15hcdqkpwb"]
 
+[ext_resource type="Script" uid="uid://bh1sw1lrwxk63" path="res://scripts/game_output_control.gd" id="1_pttyu"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="2_n6vm6"]
 [ext_resource type="Script" uid="uid://b0bricmtflhee" path="res://scripts/game_output.gd" id="2_wejxx"]
 
@@ -8,6 +9,7 @@
 [node name="GameOutput" type="Control" unique_id=704266001]
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_pttyu")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=732927441]
 script = ExtResource("2_wejxx")

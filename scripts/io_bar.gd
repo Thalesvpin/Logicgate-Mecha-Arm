@@ -5,10 +5,11 @@ class_name IOBar
 var last_position: Vector2
 var was_pressed
 var cursor_offset: Vector2
+var children: Array[Control]
 
 func _ready() -> void:
-	setup()
 	ready()
+	setup()
 
 func _process(delta: float) -> void:
 	handle_drag()
@@ -18,6 +19,7 @@ func setup():
 	for child in get_children():
 		if child is Control: 
 			child.size_flags_vertical = Control.SIZE_EXPAND
+			children.append(child)
 	
 	last_position = position
 

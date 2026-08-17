@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://blg1fesb54byg"]
 
 [ext_resource type="Texture2D" uid="uid://bvwjdfco3a1t3" path="res://assets/test.png" id="1_bd603"]
+[ext_resource type="Script" uid="uid://c3bix3mhn0dht" path="res://scripts/game_input_control.gd" id="1_e4ut6"]
 [ext_resource type="Texture2D" uid="uid://cjy6aep0m00wt" path="res://assets/test_dark_small.png" id="2_e4ut6"]
 [ext_resource type="Texture2D" uid="uid://ctmnksayj12gc" path="res://assets/test_dark.png" id="3_x3gbg"]
 [ext_resource type="Script" uid="uid://0q530hdn8fua" path="res://scripts/game_input.gd" id="4_7i22f"]
@@ -11,6 +12,7 @@
 [node name="GameInput" type="Control" unique_id=1380455050]
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_e4ut6")
 
 [node name="TextureButton" type="TextureButton" parent="." unique_id=1829391352]
 layout_mode = 1

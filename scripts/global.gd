@@ -9,6 +9,8 @@ const CANCEL = preload("uid://dmewb6qo64t7g")
 #self assigned variables
 var circuit_editor
 var gates_selector
+var input_manager
+var output_manager
 
 #control variables
 var sell_gate: bool = false
