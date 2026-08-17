@@ -1,6 +1,6 @@
 extends Area2D
 
-@export_enum("AND", "OR", "DEF") var type: String = "DEF"
+@export_enum("AND", "OR", "NOT", "NAND", "NOR", "XOR", "XNOR", "DEF") var type: String = "DEF"
 #@export var gate_scene : PackedScene
 const gate_scene := preload("uid://vyyk4mr2crhe")
 @onready var v_box_container: VBoxContainer = $VBoxContainer
@@ -22,7 +22,6 @@ var was_pressed: bool = false
 var cursor_offset: Vector2
 
 func _ready() -> void:
-	print(sandbox)
 	map_pins()
 
 func _process(delta):
@@ -43,9 +42,6 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 			if is_topmost_gate_at(get_global_mouse_position()):
 				cursor_offset = get_global_mouse_position() - global_position
 				DragManager.drag_gate(self)
-	
-	if event.is_action_pressed("test"):
-		print(get_tree().current_scene.get_global_mouse_position())
 	
 	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
 		var radial_menu = RADIAL_MENU.instantiate()
@@ -124,7 +120,6 @@ func calculate_output() -> bool:
 			return true
 		"XOR":
 			var count = 0
-			
 			for i in input_values:
 				if i:
 					count += 1
@@ -133,7 +128,14 @@ func calculate_output() -> bool:
 				return false
 			return true
 		"XNOR":
-			pass
+			var count = 0
+			for i in input_values:
+				if i:
+					count += 1
+			
+			if count == 1:
+				return false
+			return true
 	
 	return false
 

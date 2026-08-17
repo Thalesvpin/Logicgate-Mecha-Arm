@@ -42,7 +42,6 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("scroll_up"):
 		zoom += Vector2(zoom_factor, zoom_factor)
-		#print('zoom: ', collision_shape_2d.shape.size)
 		is_out_of_bounds(position)
 		is_out_of_bounds(position)
 	
