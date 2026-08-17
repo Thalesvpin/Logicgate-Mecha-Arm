@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://y6nreclkpn6v" path="res://scripts/sandbox.gd" id="2_s76oy"]
 [ext_resource type="PackedScene" uid="uid://bwu5fuinlw5ui" path="res://scenes/sections/sand_box/game_output_manager.tscn" id="6_7i7tw"]
 [ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/sections/sand_box/game_input_manager.tscn" id="6_lwkx8"]
+[ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/sandbox_action_panel.tscn" id="8_rsy7x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
 size = Vector2(1169, 663)
@@ -21,29 +22,33 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_ks6h5")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1607630667]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1591948817]
 layout_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer" unique_id=1607630667]
+layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 0
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1375753901]
+[node name="SubViewport" type="SubViewport" parent="HBoxContainer/SubViewportContainer" unique_id=1375753901]
 disable_3d = true
 handle_input_locally = false
 physics_object_picking = true
-size = Vector2i(1152, 648)
+size = Vector2i(1004, 648)
 render_target_update_mode = 4
 
-[node name="Sandbox" type="Node2D" parent="SubViewportContainer/SubViewport" unique_id=345735980]
+[node name="Sandbox" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport" unique_id=345735980]
 script = ExtResource("2_s76oy")
 
-[node name="Background" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1616028031]
+[node name="Background" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1616028031]
 script = ExtResource("2_2xstj")
 color = Color(0.07086415, 0.5497127, 0.81251293, 1)
 
-[node name="Grid" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1642791617]
+[node name="Grid" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1642791617]
 script = ExtResource("2_kg2i1")
 
-[node name="GameInputManager" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1991601480 instance=ExtResource("6_lwkx8")]
+[node name="GameInputManager" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1991601480 instance=ExtResource("6_lwkx8")]
 custom_minimum_size = Vector2(0, 400)
 custom_maximum_size = Vector2(-1, 400)
 anchors_preset = 0
@@ -56,32 +61,31 @@ offset_bottom = 253.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="GameOutputManager" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1090849083 instance=ExtResource("6_7i7tw")]
+[node name="GameOutputManager" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1090849083 instance=ExtResource("6_7i7tw")]
 offset_left = 438.0
 offset_top = -147.0
 offset_right = 458.0
 offset_bottom = 253.0
 
-[node name="WireLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1908283756]
+[node name="WireLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1908283756]
 position = Vector2(0, 1)
 
-[node name="GateLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
+[node name="GateLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
 
-[node name="DragLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1505791159]
+[node name="DragLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1505791159]
 
-[node name="InputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1794198084]
-
-[node name="OutputsLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1776893234]
-
-[node name="CircuitCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
+[node name="CircuitCamera" type="Camera2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
 script = ExtResource("1_n5154")
 
-[node name="Area2D" type="Area2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
+[node name="Area2D" type="Area2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
 shape = SubResource("RectangleShape2D_eofqg")
 debug_color = Color(0, 1, 0, 0.41960785)
 
-[connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
-[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_exited"]
+[node name="SandboxActionPanel" parent="HBoxContainer" unique_id=1689072548 instance=ExtResource("8_rsy7x")]
+layout_mode = 2
+
+[connection signal="child_entered_tree" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/GateLayer" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
+[connection signal="mouse_entered" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_exited"]

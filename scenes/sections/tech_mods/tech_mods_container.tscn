@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://b2lwrx75npshp"]
+
+[ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_1lvlk"]
+[ext_resource type="LabelSettings" uid="uid://du6amkwtjx7mk" path="res://ui_elements/ui_list_titles.tres" id="1_7qnlp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1lvlk"]
+bg_color = Color(0.15294118, 0.15294118, 0.15294118, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0, 0, 0.8, 1)
+
+[node name="TechModsContainer" type="PanelContainer" unique_id=565464093]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1lvlk")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1697997430]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1197091821]
+layout_mode = 2
+
+[node name="TitleBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=272391951]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TitleBar" unique_id=1210377697]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Tech Mods"
+label_settings = ExtResource("1_7qnlp")
+uppercase = true
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/TitleBar" unique_id=359532344]
+custom_minimum_size = Vector2(25, 25)
+custom_maximum_size = Vector2(25, 25)
+layout_mode = 2
+texture = ExtResource("1_1lvlk")
+expand_mode = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TitleBar" unique_id=1917093783]
+layout_mode = 2
+text = "4/5"
+label_settings = ExtResource("1_7qnlp")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1035097425]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=124306139]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1121780806]
+layout_mode = 2
+texture = ExtResource("1_1lvlk")
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=803231497]
+layout_mode = 2
+texture = ExtResource("1_1lvlk")
+
+[node name="TextureRect3" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1319315942]
+layout_mode = 2
+texture = ExtResource("1_1lvlk")
+
+[node name="TextureRect4" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1017344617]
+layout_mode = 2
+texture = ExtResource("1_1lvlk")
+
+[node name="TextureRect5" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1758873150]
+layout_mode = 2
+texture = ExtResource("1_1lvlk")

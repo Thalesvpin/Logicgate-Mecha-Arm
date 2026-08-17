@@ -1,5 +1,5 @@
 extends Camera2D
-@onready var circuit_editor: PanelContainer = $"../../../.."
+@onready var circuit_editor: PanelContainer = $"../../../../.."
 
 @onready var area_2d: Area2D = $Area2D
 @onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
