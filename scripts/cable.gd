@@ -9,6 +9,8 @@ class_name Wire2D
 ## Os dois objetos que o fio conecta.
 var point_a: Node2D
 var point_b: Node2D
+var point_c: Node2D
+const LINE_POINT_C = preload("uid://d3cka70ni1duu")
 
 ## O quanto a curva "estica" para os lados, em fração da distância entre os
 ## pontos (0 = linha reta, 0.5 = curva bem pronunciada, como no Blueprint).
@@ -39,13 +41,70 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("test"):
-		set_active(!is_active)
+		print(Global.circuit_editor.hovered_pin)
 
 func _process(_delta: float) -> void:
-	if point_a != null and point_b != null:
+	if point_a != null && point_b != null:
 		_update_curve()
 	
+	if point_c:
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			point_c.position = get_global_mouse_position()
+		else:
+			if (Global.circuit_editor.hovered_pin == null) || \
+					(point_a != point_c && Global.circuit_editor.hovered_pin.type.to_lower() == "output") || \
+					(point_b != point_c && Global.circuit_editor.hovered_pin.type.to_lower() == "input") || \
+					(point_a != point_c && Global.circuit_editor.hovered_pin.owner == point_a.owner) || \
+					(point_b != point_c && Global.circuit_editor.hovered_pin.owner == point_b.owner):
+				self_delete()
+				return
+			
+			var point
+			if (point_a == point_c):
+				set_point_a(Global.circuit_editor.hovered_pin)
+				point = point_a
+			if (point_b == point_c):
+				set_point_b(Global.circuit_editor.hovered_pin)
+				point = point_b
+			
+			if point.owner is Area2D:
+				point.owner.connected_wires.append(_line)
+			else:
+				point.connected_wires.append(_line)
+	
+	if !point_c:
+		if point_a && point_b == null:
+			set_point_c()
+			point_b = point_c
+		if point_b && point_a == null:
+			set_point_c()
+			point_a = point_c
+	
 	check_input_value()
+
+func set_point_c(reset: bool = false):
+	if reset:
+		point_c.queue_free()
+		point_c = null
+		return
+	point_c = LINE_POINT_C.instantiate()
+	point_c.position = get_global_mouse_position()
+	Global.circuit_editor.wire_layer.add_child(point_c)
+
+func set_point_a(node: Node2D):
+	point_a = node
+	if point_b && point_c:
+		point_b.connected_gate = point_a
+		set_point_c(true)
+
+func set_point_b(node: Node2D):
+	point_b = node
+	if point_a && point_c:
+		point_b.connected_gate = point_a
+		set_point_c(true)
+
+func connect_to_cursor():
+	pass
 
 func check_input_value() -> void:
 	set_active(point_a.is_active)
@@ -96,6 +155,21 @@ func _update_curve() -> void:
 func set_active(value: bool):
 	is_active = value
 
+func self_delete():
+	if point_b != point_c:
+		point_b.connected_gate = null
+		if point_b.owner is Area2D:
+			point_b.owner.connected_wires.erase(_line)
+		else:
+			point_b.connected_wires.erase(_line)
+	
+	if point_a != point_c:
+		if point_a.owner is Area2D:
+			point_a.owner.connected_wires.erase(_line)
+		else:
+			point_a.connected_wires.erase(_line)
+	
+	queue_free()
 
 
 

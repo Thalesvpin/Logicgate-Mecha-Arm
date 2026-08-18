@@ -4,6 +4,10 @@ var dragging := false
 var gate_type := ""
 var original_node
 
+func _process(delta: float) -> void:
+	if original_node && original_node.get_class() == "Area2D":
+		original_node.scale_gate(Global.circuit_editor.circuit_camera.zoom)
+
 func setup(node: Node) -> void:
 	dragging = true
 	original_node = node
@@ -26,8 +30,7 @@ func drag_gate(node: Node2D, from_inv: bool = false) -> void:
 	
 	#print(node.sprite.scale)
 	#print(Global.circuit_editor.circuit_camera.zoom)
-	#node.sprite.scale *= Global.circuit_editor.circuit_camera.zoom
-	node.scale_gate(Global.circuit_editor.circuit_camera.zoom)
+	#node.scale_gate(Global.circuit_editor.circuit_camera.zoom)
 	
 	#sandbox only
 	#Global.circuit_editor.drag_layer.add_child(node)
@@ -36,9 +39,11 @@ func drag_gate(node: Node2D, from_inv: bool = false) -> void:
 	get_tree().current_scene.add_child(node)
 
 func drop_gate(cursor_in: bool) -> void:
+	original_node.scale_gate()
+	
 	#sandbox only
 	#Global.circuit_editor.drag_layer.remove_child(original_node)
-	original_node.scale_gate(original_node.original_scale)
+	
 	#game board
 	get_tree().current_scene.remove_child(original_node)
 	

@@ -7,11 +7,12 @@ extends Node2D
 @onready var game_output_manager: VBoxContainer = $GameOutputManager
 @onready var game_input_manager: VBoxContainer = $GameInputManager
 
-var line := preload("res://scenes/sections/sand_box/cable.tscn")
-var was_pressed := false
+var line := preload("uid://64o4r0ww4ft2")
+var was_pressed: bool = false
 var cursor_in: bool = false
-var point_a = null
-var point_b = null
+var point_a: Node2D = null
+var point_b: Node2D = null
+var _line: Node2D = null
 
 func _ready() -> void:
 	var inputs = game_input_manager.get_children()
@@ -24,6 +25,26 @@ func _ready() -> void:
 			output.get_child(0).clicked.connect(trace_line)
 
 func trace_line(point):
+	if !_line:
+		_line = line.instantiate()
+		wire_layer.add_child(_line)
+	
+	#Point A
+	if point.type.to_lower() == "output":
+		_line.set_point_a(point)
+	#Point B
+	if point.type.to_lower() == "input":
+		_line.set_point_b(point)
+		point.connected_gate = _line.point_a
+	
+	if point.owner is Area2D:
+		point.owner.connected_wires.append(_line)
+	else:
+		point.connected_wires.append(_line)
+	
+	_line = null
+
+func trace_line_OLD(point):
 	if point.type.to_lower() == "output":
 		point_a = point
 	if point.type.to_lower() == "input":

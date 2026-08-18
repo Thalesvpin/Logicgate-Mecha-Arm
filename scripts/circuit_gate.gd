@@ -21,16 +21,21 @@ var input_values: Array[bool]
 var connected_wires: Array
 var was_pressed: bool = false
 var cursor_offset: Vector2
-var original_scale: Vector2
+var original_scale: Vector2 = Vector2.ZERO
 
-func scale_gate(value: Vector2):
-	for child in get_children(true):
-		if child.get_class() == "CollisionShpae2D" || child.get_class() == "Sprite2D":
-			child.scale *= value
+##Leave value empty to reset the scale to it's default
+func scale_gate(value: Vector2 = Vector2.ZERO):
+	if original_scale == Vector2.ZERO:
+		original_scale = scale
+		scale *= value
+	elif value != Vector2.ZERO:
+		scale = original_scale * value
+	else:
+		scale = original_scale
+		original_scale = Vector2.ZERO
 
 func _ready() -> void:
 	map_pins()
-	original_scale = sprite.scale
 
 func _process(delta):
 	output.set_active(calculate_output())

@@ -21,10 +21,14 @@ func set_active(value: bool):
 func _on_mouse_entered() -> void:
 	sprite.scale = Vector2(0.02,0.02)
 	owner.owner.prevent_click(true)
+	Global.circuit_editor.hovered_pin = self
 
 func _on_mouse_exited() -> void:
 	sprite.scale = Vector2(0.007,0.007)
 	owner.owner.prevent_click(false)
+	Global.circuit_editor.hovered_pin = self
+	if Global.circuit_editor.hovered_pin == self:
+		Global.circuit_editor.hovered_pin = null
 
 func _on_texture_button_button_up() -> void:
 	set_active(!is_active)

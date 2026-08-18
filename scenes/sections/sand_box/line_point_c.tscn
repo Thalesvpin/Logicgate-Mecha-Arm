@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://d3cka70ni1duu"]
+
+[ext_resource type="Script" uid="uid://dm60t2y2k4qui" path="res://scripts/line_point_c.gd" id="1_tkggd"]
+
+[node name="LinePointC" type="Node2D" unique_id=1272759562]
+script = ExtResource("1_tkggd")
