@@ -24,16 +24,16 @@ func _process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.button_index == MOUSE_BUTTON_MIDDLE:
 			camera_drag = event.pressed
 	
 	if event is InputEventMouseMotion && camera_drag:
-		if !Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+		if !Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 			camera_drag = false
 			return
 		
 		var new_range: Vector2 = position - event.relative / zoom
-		var new_limit = (circuit_editor.size/zoom)/2
+		var new_limit = (get_viewport_rect().size/zoom)/2
 		
 		if new_range.x <= area_limit.x-new_limit.x && new_range.x >= new_limit.x-area_limit.x:
 			position.x = new_range.x

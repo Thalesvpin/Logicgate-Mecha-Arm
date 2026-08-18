@@ -8,6 +8,7 @@ const gate_scene := preload("uid://vyyk4mr2crhe")
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 ##Not ideal, but circuit_gate can only be created as a Sandbox's grandchild
 @onready var sandbox: Node2D = $"./../.."
+@onready var sprite: Sprite2D = $Sprite2D
 
 ##Stores the last dropped position inside sandbox
 var last_position: Vector2
@@ -20,9 +21,16 @@ var input_values: Array[bool]
 var connected_wires: Array
 var was_pressed: bool = false
 var cursor_offset: Vector2
+var original_scale: Vector2
+
+func scale_gate(value: Vector2):
+	for child in get_children(true):
+		if child.get_class() == "CollisionShpae2D" || child.get_class() == "Sprite2D":
+			child.scale *= value
 
 func _ready() -> void:
 	map_pins()
+	original_scale = sprite.scale
 
 func _process(delta):
 	output.set_active(calculate_output())

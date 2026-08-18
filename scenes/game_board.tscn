@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://btv7b87fvwj4y"]
 
 [ext_resource type="PackedScene" uid="uid://b2lwrx75npshp" path="res://scenes/sections/tech_mods/tech_mods_container.tscn" id="1_0jtfi"]
+[ext_resource type="LabelSettings" uid="uid://d4akgm58t2tcb" path="res://ui_elements/ui_telemetry.tres" id="1_cmh4g"]
 [ext_resource type="PackedScene" uid="uid://drl4m0lil85ek" path="res://scenes/sections/inventory/gates_selector.tscn" id="1_tqoos"]
 [ext_resource type="PackedScene" uid="uid://1ufv6vajaxt3" path="res://scenes/sections/sand_box/circuit_editor.tscn" id="2_3wu0g"]
 [ext_resource type="PackedScene" uid="uid://cchi80u45kivh" path="res://scenes/sections/bio_hacks/bio_hacks_container.tscn" id="2_mq2xb"]
+[ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/sandbox_action_panel.tscn" id="6_qmxhh"]
 
 [node name="GameBoard" type="Control" unique_id=862493716]
 propagate_maximum_size = true
@@ -16,14 +18,41 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VSplitContainer" type="VSplitContainer" parent="." unique_id=1589264868]
-propagate_maximum_size = false
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=152356891]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=2006108287]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer" unique_id=799160054]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=898661847]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "  _ ANTE 4 - BATALHA DIFÍCIL (15) - Stake 3 ℹ"
+label_settings = ExtResource("1_cmh4g")
+
+[node name="GameName" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=1963108977]
+layout_mode = 2
+text = "Logicgate Mecha Arm v1.2.4  ● "
+label_settings = ExtResource("1_cmh4g")
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=2142673573]
+layout_mode = 2
+text = "Tempo da run: 01:15:42 | BATERIA: 69% | hora: 22:48:13 | fps: 120   "
+label_settings = ExtResource("1_cmh4g")
+uppercase = true
+
+[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer" unique_id=1589264868]
+propagate_maximum_size = false
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_colors/touch_dragger_color = Color(0, 1, 0, 1)
 theme_override_colors/touch_dragger_pressed_color = Color(0, 0, 1, 1)
 theme_override_colors/touch_dragger_hover_color = Color(1, 0, 0, 1)
@@ -32,11 +61,11 @@ theme_override_constants/minimum_grab_thickness = 6
 drag_nested_intersections = true
 drag_area_highlight_in_editor = true
 
-[node name="cima" type="Control" parent="VSplitContainer" unique_id=583631780]
+[node name="cima" type="Control" parent="VBoxContainer/VSplitContainer" unique_id=583631780]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer/cima" unique_id=1487900312]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/cima" unique_id=1487900312]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -46,29 +75,29 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 drag_nested_intersections = true
 
-[node name="TechModsContainer" parent="VSplitContainer/cima/HSplitContainer" unique_id=565464093 instance=ExtResource("1_0jtfi")]
+[node name="TechModsContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=565464093 instance=ExtResource("1_0jtfi")]
 layout_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer/cima/HSplitContainer" unique_id=443510318]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=443510318]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.66
 theme_override_constants/separation = 0
 drag_nested_intersections = true
 
-[node name="mid" type="ColorRect" parent="VSplitContainer/cima/HSplitContainer/HSplitContainer" unique_id=721911496]
+[node name="mid" type="ColorRect" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer/HSplitContainer" unique_id=721911496]
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(1, 0, 0, 1)
 
-[node name="BioHacksContainer" parent="VSplitContainer/cima/HSplitContainer/HSplitContainer" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
+[node name="BioHacksContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer/HSplitContainer" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
 layout_mode = 2
 
-[node name="baixo" type="Control" parent="VSplitContainer" unique_id=1751607510]
+[node name="baixo" type="Control" parent="VBoxContainer/VSplitContainer" unique_id=1751607510]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer/baixo" unique_id=67540516]
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/baixo" unique_id=67540516]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -79,9 +108,16 @@ theme_override_constants/separation = 0
 drag_nested_intersections = true
 drag_area_highlight_in_editor = true
 
-[node name="GatesSelector" parent="VSplitContainer/baixo/HSplitContainer" unique_id=1904067160 instance=ExtResource("1_tqoos")]
+[node name="GatesSelector" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer" unique_id=1904067160 instance=ExtResource("1_tqoos")]
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="CircuitEditor" parent="VSplitContainer/baixo/HSplitContainer" unique_id=1881903153 instance=ExtResource("2_3wu0g")]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer" unique_id=1657022003]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CircuitEditor" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer/HBoxContainer" unique_id=1881903153 instance=ExtResource("2_3wu0g")]
+layout_mode = 2
+
+[node name="SandboxActionPanel" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer/HBoxContainer" unique_id=1689072548 instance=ExtResource("6_qmxhh")]
 layout_mode = 2

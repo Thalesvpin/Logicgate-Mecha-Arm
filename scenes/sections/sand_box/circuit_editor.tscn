@@ -35,7 +35,7 @@ stretch = true
 disable_3d = true
 handle_input_locally = false
 physics_object_picking = true
-size = Vector2i(1004, 648)
+size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
 [node name="Sandbox" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport" unique_id=345735980]
@@ -84,6 +84,7 @@ shape = SubResource("RectangleShape2D_eofqg")
 debug_color = Color(0, 1, 0, 0.41960785)
 
 [node name="SandboxActionPanel" parent="HBoxContainer" unique_id=1689072548 instance=ExtResource("8_rsy7x")]
+visible = false
 layout_mode = 2
 
 [connection signal="child_entered_tree" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/GateLayer" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]

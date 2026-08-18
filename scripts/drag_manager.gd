@@ -22,6 +22,13 @@ func drag_gate(node: Node2D, from_inv: bool = false) -> void:
 		Global.circuit_editor.gate_layer.remove_child(node)
 		Global.gates_selector.sell_overlay.show()
 	
+	#guardar a scale original antes de trocar
+	
+	#print(node.sprite.scale)
+	#print(Global.circuit_editor.circuit_camera.zoom)
+	#node.sprite.scale *= Global.circuit_editor.circuit_camera.zoom
+	node.scale_gate(Global.circuit_editor.circuit_camera.zoom)
+	
 	#sandbox only
 	#Global.circuit_editor.drag_layer.add_child(node)
 	
@@ -31,7 +38,7 @@ func drag_gate(node: Node2D, from_inv: bool = false) -> void:
 func drop_gate(cursor_in: bool) -> void:
 	#sandbox only
 	#Global.circuit_editor.drag_layer.remove_child(original_node)
-	
+	original_node.scale_gate(original_node.original_scale)
 	#game board
 	get_tree().current_scene.remove_child(original_node)
 	
