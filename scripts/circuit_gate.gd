@@ -32,8 +32,9 @@ func _process(delta):
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT:
+		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed :
 			if is_topmost_gate_at(get_global_mouse_position()):
+				get_viewport().set_input_as_handled()
 				cursor_offset = get_global_mouse_position() - global_position
 				DragManager.drag_gate(self)
 	
