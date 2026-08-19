@@ -5,7 +5,7 @@ var collision: CollisionShape2D
 var type: String = "output"
 var is_active: bool = false
 
-signal clicked(pin)
+signal new_wire(pin)
 
 func _ready() -> void:
 	for child in get_children():
@@ -17,7 +17,7 @@ func _ready() -> void:
 func _input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
-			clicked.emit(self)
+			new_wire.emit(self)
 
 func set_active(value: bool) -> void:
 	is_active = value

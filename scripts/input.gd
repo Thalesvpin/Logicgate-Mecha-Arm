@@ -9,7 +9,8 @@ var connected_gate: Area2D = null
 var is_active: bool = false
 #var input_gate: Node2D
 
-signal clicked(pin)
+signal new_wire(pin)
+signal unplug_wire
 
 func _ready() -> void:
 	for child in get_children():
@@ -21,7 +22,12 @@ func _ready() -> void:
 func _input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
-			clicked.emit(self)
+			if connected_gate != null:
+				for wire in owner.connected_wires:
+					if wire.point_b == self:
+						unplug_wire.emit()
+			else:
+				new_wire.emit(self)
 
 func _process(delta: float) -> void:
 	check_input_value()
@@ -38,7 +44,6 @@ func _on_mouse_entered() -> void:
 	Global.circuit_editor.hovered_pin = self
 
 func _on_mouse_exited() -> void:
-	print('input exit')
 	sprite.scale = Vector2(0.007,0.007)
 	if Global.circuit_editor.hovered_pin == self:
 		Global.circuit_editor.hovered_pin = null

@@ -23,31 +23,12 @@ var was_pressed: bool = false
 var cursor_offset: Vector2
 var original_scale: Vector2 = Vector2.ZERO
 
-##Leave value empty to reset the scale to it's default
-func scale_gate(value: Vector2 = Vector2.ZERO):
-	if original_scale == Vector2.ZERO:
-		original_scale = scale
-		scale *= value
-	elif value != Vector2.ZERO:
-		scale = original_scale * value
-	else:
-		scale = original_scale
-		original_scale = Vector2.ZERO
-
 func _ready() -> void:
 	map_pins()
 
 func _process(delta):
 	output.set_active(calculate_output())
 	handle_drag()
-
-func handle_drag() -> void:
-	if DragManager.am_i_dragged(self):
-		DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position() - cursor_offset
-		var is_pressed = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
-		if was_pressed && !is_pressed:
-			DragManager.drop_gate(sandbox.cursor_in)
-		was_pressed = is_pressed
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
@@ -64,6 +45,25 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		var m = get_tree().current_scene.get_global_mouse_position()
 		radial_menu.open_menu(m)
 		get_viewport().set_input_as_handled()
+
+##Leave value empty to reset the scale to it's default
+func scale_gate(value: Vector2 = Vector2.ZERO):
+	if original_scale == Vector2.ZERO:
+		original_scale = scale
+		scale *= value
+	elif value != Vector2.ZERO:
+		scale = original_scale * value
+	else:
+		scale = original_scale
+		original_scale = Vector2.ZERO
+
+func handle_drag() -> void:
+	if DragManager.am_i_dragged(self):
+		DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position() - cursor_offset
+		var is_pressed = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		if was_pressed && !is_pressed:
+			DragManager.drop_gate(sandbox.cursor_in)
+		was_pressed = is_pressed
 
 func is_topmost_gate_at(point: Vector2) -> bool:
 	var params := PhysicsPointQueryParameters2D.new()
@@ -154,6 +154,7 @@ func calculate_output() -> bool:
 
 func disconnect_wires() -> void:
 	for wire in connected_wires:
+		print('AA: ', wire)
 		if self == wire.point_a.owner:
 			wire.point_b.connected_gate = null
 			if wire.point_b.owner is Area2D:
@@ -184,3 +185,6 @@ func handle_radial_menu_selection(id: String, position: Vector2):
 			delete_gate()
 		'idx_3':	#Cancel
 			pass
+
+func disconnect_wire(wire: Node2D):
+	connected_wires.erase(wire)

@@ -19,10 +19,10 @@ func _ready() -> void:
 	var outputs = game_output_manager.get_children()
 	for input in inputs:
 		if input.get_class() == "Control":
-			input.get_child(1).clicked.connect(trace_line)
+			input.get_child(1).new_wire.connect(trace_line)
 	for output in outputs:
 		if output.get_class() == "Control":
-			output.get_child(0).clicked.connect(trace_line)
+			output.get_child(0).new_wire.connect(trace_line)
 
 func trace_line(point):
 	if !_line:
@@ -35,7 +35,6 @@ func trace_line(point):
 	#Point B
 	if point.type.to_lower() == "input":
 		_line.set_point_b(point)
-		point.connected_gate = _line.point_a
 	
 	if point.owner is Area2D:
 		point.owner.connected_wires.append(_line)
@@ -83,4 +82,4 @@ func _on_area_2d_mouse_exited() -> void:
 func _on_gate_layer_child_entered_tree(node: Node) -> void:
 	node.last_position = node.global_position
 	for connector in node.connectors:
-		connector.clicked.connect(trace_line)
+		connector.new_wire.connect(trace_line)

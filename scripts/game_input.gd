@@ -2,7 +2,7 @@ extends Area2D
 
 @onready var sprite: Sprite2D = $Sprite2D
 
-signal clicked(pin)
+signal new_wire(pin)
 
 var type: String = "output"
 var connected_gate: Array
@@ -13,7 +13,7 @@ func _input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		get_viewport().set_input_as_handled()
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
-			clicked.emit(self)
+			new_wire.emit(self)
 
 func set_active(value: bool):
 	is_active = value
