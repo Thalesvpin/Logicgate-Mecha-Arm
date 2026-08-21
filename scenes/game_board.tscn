@@ -5,7 +5,20 @@
 [ext_resource type="PackedScene" uid="uid://drl4m0lil85ek" path="res://scenes/sections/inventory/gates_selector.tscn" id="1_tqoos"]
 [ext_resource type="PackedScene" uid="uid://1ufv6vajaxt3" path="res://scenes/sections/sand_box/circuit_editor.tscn" id="2_3wu0g"]
 [ext_resource type="PackedScene" uid="uid://cchi80u45kivh" path="res://scenes/sections/bio_hacks/bio_hacks_container.tscn" id="2_mq2xb"]
+[ext_resource type="PackedScene" uid="uid://dio5bonyon16v" path="res://scenes/sections/combat_screen/combat_screen.tscn" id="3_8nsfp"]
 [ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/sandbox_action_panel.tscn" id="6_qmxhh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmxhh"]
+bg_color = Color(0.12156863, 0.12156863, 0.12156863, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6784314, 0.7019608, 0.7647059, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qmxhh"]
+font_size = 20
+font_color = Color(0.92156863, 0.92156863, 0.92156863, 1)
 
 [node name="GameBoard" type="Control" unique_id=862493716]
 propagate_maximum_size = true
@@ -28,6 +41,7 @@ grow_vertical = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=2006108287]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qmxhh")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer" unique_id=799160054]
 layout_mode = 2
@@ -36,7 +50,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 text = "  _ ANTE 4 - BATALHA DIFÍCIL (15) - Stake 3 ℹ"
-label_settings = ExtResource("1_cmh4g")
+label_settings = SubResource("LabelSettings_qmxhh")
 
 [node name="GameName" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=1963108977]
 layout_mode = 2
@@ -73,24 +87,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
+split_offsets = PackedInt32Array(234, -222)
 drag_nested_intersections = true
+split_offset = 234
 
 [node name="TechModsContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=565464093 instance=ExtResource("1_0jtfi")]
 layout_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=443510318]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.66
-theme_override_constants/separation = 0
-drag_nested_intersections = true
-
-[node name="mid" type="ColorRect" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer/HSplitContainer" unique_id=721911496]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=161669147]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(1, 0, 0, 1)
 
-[node name="BioHacksContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer/HSplitContainer" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
+[node name="CombatScreen" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BioHacksContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
 layout_mode = 2
 
 [node name="baixo" type="Control" parent="VBoxContainer/VSplitContainer" unique_id=1751607510]

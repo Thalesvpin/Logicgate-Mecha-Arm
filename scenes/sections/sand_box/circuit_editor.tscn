@@ -72,8 +72,6 @@ position = Vector2(0, 1)
 
 [node name="GateLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
 
-[node name="DragLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1505791159]
-
 [node name="CircuitCamera" type="Camera2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
 script = ExtResource("1_n5154")
 

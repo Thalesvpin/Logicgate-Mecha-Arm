@@ -1,0 +1,147 @@
+[gd_scene format=3 uid="uid://bbk5wegsq6ymc"]
+
+[ext_resource type="Script" uid="uid://ciirxpddf72m4" path="res://scripts/enemy_status_bar.gd" id="1_ryokx"]
+[ext_resource type="Texture2D" uid="uid://cdeyfpq76q6sw" path="res://assets/enemystatusbar_frame_PLACEHOLDER.png" id="2_vvvff"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ryokx"]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8577502, 0.23203188, 0.3014317, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjqua"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+
+[node name="EnemyStatusBar" type="PanelContainer" unique_id=1067671728]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ryokx")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1389436291]
+custom_maximum_size = Vector2(347, -1)
+layout_mode = 2
+texture = ExtResource("2_vvvff")
+stretch_mode = 4
+
+[node name="Shield" type="Control" parent="." unique_id=1822168179]
+visible = false
+layout_mode = 2
+
+[node name="ShieldVerticalLBar" type="TextureProgressBar" parent="Shield" unique_id=733726050]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+min_value = 60.0
+allow_greater = true
+allow_lesser = true
+fill_mode = 3
+
+[node name="ShieldVerticalRBar" type="TextureProgressBar" parent="Shield" unique_id=675785251]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+min_value = 60.0
+allow_greater = true
+allow_lesser = true
+fill_mode = 3
+
+[node name="ShieldCurveLBar" type="TextureProgressBar" parent="Shield" unique_id=728663951]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+min_value = 20.0
+max_value = 60.0
+allow_greater = true
+allow_lesser = true
+fill_mode = 4
+
+[node name="ShieldCurveRBar" type="TextureProgressBar" parent="Shield" unique_id=669840287]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+min_value = 20.0
+max_value = 60.0
+allow_greater = true
+allow_lesser = true
+fill_mode = 5
+
+[node name="ShieldHorizontalLBar" type="TextureProgressBar" parent="Shield" unique_id=114164018]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+max_value = 20.0
+allow_greater = true
+allow_lesser = true
+fill_mode = 1
+
+[node name="ShieldHorizontalRBar" type="TextureProgressBar" parent="Shield" unique_id=1849060457]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+max_value = 20.0
+allow_greater = true
+allow_lesser = true
+
+[node name="ShieldCounter" type="Label" parent="Shield" unique_id=818120244]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="Health" type="Control" parent="." unique_id=1398218498]
+visible = false
+layout_mode = 2
+
+[node name="HealthBar" type="TextureProgressBar" parent="Health" unique_id=1270199460]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HealthCounter" type="Label" parent="Health" unique_id=979506857]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="AfflictedElement" type="Control" parent="." unique_id=2030047135]
+visible = false
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="AfflictedElement" unique_id=1286274568]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ryokx")
+
+[node name="TextureRect" type="TextureRect" parent="AfflictedElement/PanelContainer" unique_id=1695227691]
+layout_mode = 2
+
+[node name="NumberBg" type="PanelContainer" parent="AfflictedElement" unique_id=2097709231]
+layout_mode = 0
+offset_left = -19.49
+offset_top = 22.75
+offset_right = 8.51
+offset_bottom = 45.75
+offset_transform_position = Vector2(-16.89, 24.475)
+theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
+
+[node name="Label" type="Label" parent="AfflictedElement/NumberBg" unique_id=1656860947]
+layout_mode = 2
+text = "340"
+horizontal_alignment = 2
+
+[node name="NaturalElement" type="Control" parent="." unique_id=746040879]
+visible = false
+layout_mode = 2

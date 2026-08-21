@@ -1,0 +1,15 @@
+raridade: 37x37px
+
+mod icon: 92x92px
+
+ativador: 84x37px
+
+card: 114px (altura)
+
+espaço entre cards: 12px
+
+espaço entre raridade etc: 4px
+
+
+
+barra do inimigo: 350x78px
