@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://umiblb5s8sum"]
+
+[ext_resource type="Script" uid="uid://dyahuuxn33ems" path="res://scripts/elemental_panel.gd" id="1_srban"]
+[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="2_l7h74"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u22wb"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_srban"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l7h74"]
+bg_color = Color(0.6199255, 0.18310907, 0, 1)
+border_width_left = 40
+border_width_top = 40
+border_width_right = 40
+border_width_bottom = 40
+border_color = Color(0.96862745, 0.30980393, 0, 0.7176471)
+border_blend = true
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_4p1xl"]
+font_color = Color(1, 1, 0, 1)
+
+[node name="ElementalPanel" type="Control" unique_id=936421524]
+custom_minimum_size = Vector2(370, 150)
+custom_maximum_size = Vector2(370, 150)
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 370.0
+offset_bottom = 150.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+script = ExtResource("1_srban")
+elemental_offset = 155
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1093596042]
+custom_minimum_size = Vector2(370, 150)
+custom_maximum_size = Vector2(370, 150)
+layout_mode = 0
+offset_right = 370.0
+offset_bottom = 150.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_u22wb")
+
+[node name="Control" type="Control" parent="PanelContainer" unique_id=167225928]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/Control" unique_id=1173568756]
+custom_minimum_size = Vector2(200, 122)
+custom_maximum_size = Vector2(200, 122)
+layout_mode = 0
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 212.0
+offset_bottom = 128.0
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_srban")
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/Control/PanelContainer2" unique_id=2141913348]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_l7h74")
+
+[node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/PanelContainer" unique_id=455825662]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/Control/PanelContainer2/PanelContainer/Control" unique_id=1757116833]
+custom_maximum_size = Vector2(245.925, -1)
+layout_mode = 0
+offset_left = -30.0
+offset_top = -26.0
+offset_right = 159.0
+offset_bottom = 61.0
+text = "Ataque Carregado
+Elemental: Nostalgia
+Lvl. 3"
+label_settings = SubResource("LabelSettings_4p1xl")
+autowrap_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/Control" unique_id=954476235]
+layout_mode = 0
+offset_left = 223.0
+offset_top = 11.0
+offset_right = 339.0
+offset_bottom = 127.0
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/Control/GridContainer" unique_id=1280458586]
+layout_mode = 2
+texture = ExtResource("2_l7h74")
+
+[node name="TextureRect2" type="TextureRect" parent="PanelContainer/Control/GridContainer" unique_id=596549667]
+layout_mode = 2
+texture = ExtResource("2_l7h74")
+
+[node name="TextureRect3" type="TextureRect" parent="PanelContainer/Control/GridContainer" unique_id=452650769]
+layout_mode = 2
+texture = ExtResource("2_l7h74")
+
+[node name="TextureRect4" type="TextureRect" parent="PanelContainer/Control/GridContainer" unique_id=170487219]
+layout_mode = 2
+texture = ExtResource("2_l7h74")

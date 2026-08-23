@@ -12,6 +12,27 @@ extends PanelContainer
 		#print("cabe")
 
 func check_h_size():
-	if scroll_container.get_h_scroll_bar().visible:
-		scroll_container.get_h_scroll_bar().visible = false
-		print('maior')
+	pass
+	#print(size.x/aux.get_child(0).size.x)
+	#if aux.get_child(0):
+		#if size.x < 347:
+			#aux.get_child(0).set_template(1)
+		#if size.x/aux.get_child(0).size.x > 1.067:
+			#change_to_next(-1)
+
+var template_idx: int = 1
+func change_to_next(amount: int):
+	template_idx += amount
+	if template_idx > 3:
+		template_idx = 3
+	if template_idx < 1:
+		template_idx = 1
+	
+	aux.get_child(0).set_template(template_idx)
+
+@onready var aux: VBoxContainer = $MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer
+func _process(delta: float) -> void:
+	#print(size.x,' -  ', aux.get_child(0).size.x)
+	check_h_size()
+	
+	

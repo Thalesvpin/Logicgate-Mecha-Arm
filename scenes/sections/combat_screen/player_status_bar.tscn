@@ -1,0 +1,197 @@
+[gd_scene format=3 uid="uid://bxfhcehr6iuwn"]
+
+[ext_resource type="Texture2D" uid="uid://cdeyfpq76q6sw" path="res://assets/enemystatusbar_frame_PLACEHOLDER.png" id="1_mwn6y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvvff"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bsxa0"]
+bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mwn6y"]
+bg_color = Color(0, 0.5882353, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bsxa0"]
+font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
+bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.8039216, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_mwn6y"]
+font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjqua"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_top = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a4jf8"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="LabelSettings" id="LabelSettings_a4jf8"]
+font_size = 24
+
+[node name="PlayerStatusBar" type="PanelContainer" unique_id=1684298736]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 10
+theme_override_styles/panel = SubResource("StyleBoxFlat_vvvff")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1779848349]
+layout_mode = 2
+texture = ExtResource("1_mwn6y")
+stretch_mode = 2
+flip_v = true
+
+[node name="ColorRect" type="ColorRect" parent="TextureRect" unique_id=1131031414]
+layout_mode = 0
+offset_left = 57.0
+offset_top = 33.0
+offset_right = 637.0
+offset_bottom = 153.0
+color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+
+[node name="Shield" type="Control" parent="." unique_id=387301954]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="Shield" unique_id=1474457037]
+layout_mode = 0
+offset_left = 194.0
+offset_top = 23.0
+offset_right = 519.0
+offset_bottom = 63.0
+theme_override_styles/background = SubResource("StyleBoxFlat_bsxa0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_mwn6y")
+value = 66.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="Shield/ProgressBar" unique_id=542877620]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 2.0
+offset_right = 69.0
+offset_bottom = 36.0
+text = "10"
+label_settings = SubResource("LabelSettings_bsxa0")
+
+[node name="Label2" type="Label" parent="Shield/ProgressBar" unique_id=1365292707]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 3.0
+offset_right = 169.0
+offset_bottom = 37.0
+text = "10"
+label_settings = SubResource("LabelSettings_bsxa0")
+
+[node name="Label3" type="Label" parent="Shield/ProgressBar" unique_id=1704669771]
+layout_mode = 0
+offset_left = 231.0
+offset_top = 4.0
+offset_right = 271.0
+offset_bottom = 38.0
+text = "10"
+label_settings = SubResource("LabelSettings_bsxa0")
+
+[node name="Health" type="Control" parent="." unique_id=1965056564]
+layout_mode = 2
+
+[node name="ProgressBar2" type="ProgressBar" parent="Health" unique_id=201692447]
+layout_mode = 0
+offset_left = 194.0
+offset_top = 61.0
+offset_right = 519.0
+offset_bottom = 101.0
+theme_override_styles/background = SubResource("StyleBoxFlat_cqbp4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_eofqg")
+value = 100.0
+show_percentage = false
+
+[node name="Label2" type="Label" parent="Health/ProgressBar2" unique_id=472786109]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 3.0
+offset_right = 170.0
+offset_bottom = 37.0
+text = "1000"
+label_settings = SubResource("LabelSettings_mwn6y")
+
+[node name="Name" type="Control" parent="." unique_id=1512841193]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Name" unique_id=1422679739]
+custom_minimum_size = Vector2(300, 40)
+custom_maximum_size = Vector2(300, 40)
+layout_mode = 0
+offset_left = 203.0
+offset_top = 108.0
+offset_right = 503.0
+offset_bottom = 148.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
+
+[node name="Name" type="Label" parent="Name/PanelContainer" unique_id=429157835]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "PLAYER_NAME"
+
+[node name="PanelContainer2" type="PanelContainer" parent="Name" unique_id=408661168]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 106.0
+offset_right = 219.0
+offset_bottom = 150.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_a4jf8")
+
+[node name="Label4" type="Label" parent="Name/PanelContainer2" unique_id=1360045812]
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_a4jf8")
+horizontal_alignment = 1
+
+[node name="PanelContainer3" type="PanelContainer" parent="Name" unique_id=1049316037]
+layout_mode = 0
+offset_left = 491.0
+offset_top = 106.0
+offset_right = 535.0
+offset_bottom = 150.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_a4jf8")
+
+[node name="Label4" type="Label" parent="Name/PanelContainer3" unique_id=1333779627]
+layout_mode = 2
+text = "3"
+label_settings = SubResource("LabelSettings_a4jf8")
+horizontal_alignment = 1

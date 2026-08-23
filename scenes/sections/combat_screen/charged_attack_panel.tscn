@@ -1,0 +1,199 @@
+[gd_scene format=3 uid="uid://ds4l1rshegbqx"]
+
+[ext_resource type="Script" uid="uid://c8ndbsgmqhhqf" path="res://scripts/charged_attack_panel.gd" id="1_dpixr"]
+[ext_resource type="Shader" uid="uid://dulb1o24l1kpl" path="res://shaders/progress_bar.gdshader" id="1_quj11"]
+[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="3_rd4y6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjqua"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
+bg_color = Color(0.12538925, 0.35663092, 0.124891646, 1)
+border_width_left = 400
+border_width_top = 400
+border_width_right = 400
+border_width_bottom = 400
+border_color = Color(0.4, 1, 0.21568628, 0.41568628)
+border_blend = true
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
+font_size = 19
+font_color = Color(0.62352943, 1, 0.5921569, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_2a2wo"]
+font_size = 35
+font_color = Color(0.62352943, 1, 0.5921569, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dpixr"]
+shader = ExtResource("1_quj11")
+shader_parameter/bar_mode = 0
+shader_parameter/fill_mode = 0
+shader_parameter/segment_count = 4
+shader_parameter/discrete_fill_amount = 4
+shader_parameter/fade_fill_amount = 1.0
+shader_parameter/pour_fill_amount = 1.0
+shader_parameter/animation_speed = 1.0
+shader_parameter/flash_type = 0
+shader_parameter/flash_segment = 0
+shader_parameter/flash_intensity = 0.0
+shader_parameter/single_segment_previous_fill = 1.0
+shader_parameter/single_segment_current_fill = 1.0
+shader_parameter/single_segment_flash_intensity = 0.8
+shader_parameter/flash_from_segment = 0
+shader_parameter/flash_to_segment = 0
+shader_parameter/single_segment_fade_from = 1.0
+shader_parameter/single_segment_fade_to = 1.0
+shader_parameter/single_segment_fade_progress = 0.0
+shader_parameter/drain_previous_fill = 1.0
+shader_parameter/drain_current_fill = 1.0
+shader_parameter/drain_time_progress = 0.0
+shader_parameter/background_color = Color(0.1, 0.1, 0.1, 1)
+shader_parameter/filled_color = Color(0, 0.8509804, 0, 1)
+shader_parameter/border_color = Color(0, 0, 0, 1)
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/drain_flash_color = Color(1, 1, 1, 1)
+shader_parameter/custom_frame = false
+shader_parameter/frame_trim = 0.0
+shader_parameter/alpha_threshold = 0.69
+shader_parameter/scan_steps = 15
+shader_parameter/edge_smoothness = 0.02
+shader_parameter/mask_expansion = 0.0
+shader_parameter/frame_edge_opacity = 0.9
+shader_parameter/fluid_base_color = Color(0.2, 0.6, 1, 1)
+shader_parameter/fluid_highlight_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/fluid_shadow_color = Color(0.1, 0.3, 0.6, 1)
+shader_parameter/fluid_flow_speed = 1.5
+shader_parameter/fluid_turbulence = 1.0
+shader_parameter/fluid_noise_scale = 6.0
+shader_parameter/gas_mode = false
+shader_parameter/gas_intensity = 0.8
+shader_parameter/effect_mode = 0
+shader_parameter/effect_strength = 0.19600000931
+shader_parameter/effect_speed = 0.5450000226276199
+shader_parameter/wave_thickness = 0.1
+shader_parameter/bubbles_aspect_ratio = 1.0
+shader_parameter/vertical_gradient = true
+shader_parameter/V_gradient_strength = 0.6
+shader_parameter/horizontal_gradient = false
+shader_parameter/H_gradient_strength = 0.75
+shader_parameter/segment_gap = 0.05
+shader_parameter/universal_border_size = 0.1
+shader_parameter/horizontal_border_size = 1.0
+shader_parameter/inner_border_thickness_multiplier = 1.0
+shader_parameter/outer_border_size = 3.0
+shader_parameter/slant_amount = 0.0
+shader_parameter/scale = 0.0
+shader_parameter/slant_clip_margin = 0.0
+
+[node name="ChargedAttackPanel" type="Control" unique_id=1918303625]
+custom_minimum_size = Vector2(370, 150)
+custom_maximum_size = Vector2(370, 150)
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 370.0
+offset_bottom = 150.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+script = ExtResource("1_dpixr")
+charged_offset = 155
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=463135577]
+custom_minimum_size = Vector2(370, 150)
+custom_maximum_size = Vector2(370, 150)
+layout_mode = 0
+offset_right = 370.0
+offset_bottom = 150.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[node name="Control" type="Control" parent="PanelContainer" unique_id=941147724]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/Control" unique_id=2061478362]
+custom_minimum_size = Vector2(200, 122)
+custom_maximum_size = Vector2(200, 122)
+layout_mode = 0
+offset_left = 150.0
+offset_top = 8.0
+offset_right = 350.0
+offset_bottom = 130.0
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
+
+[node name="TextBox" type="PanelContainer" parent="PanelContainer/Control/PanelContainer2" unique_id=853178644]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
+
+[node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/TextBox" unique_id=1806823322]
+layout_mode = 2
+
+[node name="Text" type="Label" parent="PanelContainer/Control/PanelContainer2/TextBox/Control" unique_id=38195934]
+custom_maximum_size = Vector2(245.925, -1)
+layout_mode = 0
+offset_left = -388.0
+offset_top = -395.0
+offset_right = -221.0
+offset_bottom = -338.0
+text = "Carga Do
+Ataque Carregado"
+label_settings = SubResource("LabelSettings_eofqg")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Percentage" type="Label" parent="PanelContainer/Control/PanelContainer2/TextBox/Control" unique_id=1695553146]
+layout_mode = 0
+offset_left = -348.0
+offset_top = -341.0
+offset_right = -262.0
+offset_bottom = -282.0
+text = "25%"
+label_settings = SubResource("LabelSettings_2a2wo")
+horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/Control" unique_id=1949165257]
+material = SubResource("ShaderMaterial_dpixr")
+layout_mode = 0
+offset_left = 20.0
+offset_top = 123.0
+offset_right = 130.0
+offset_bottom = 173.0
+rotation = -1.5707964
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="PanelContainer/Control" unique_id=185004033]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+fill_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/Control" unique_id=1261505371]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 41.0
+offset_right = 140.0
+offset_bottom = 97.0
+texture = ExtResource("3_rd4y6")

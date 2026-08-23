@@ -1,17 +1,85 @@
 [gd_scene format=3 uid="uid://dio5bonyon16v"]
 
 [ext_resource type="PackedScene" uid="uid://bbk5wegsq6ymc" path="res://scenes/sections/combat_screen/enemy_status_bar.tscn" id="1_h43is"]
+[ext_resource type="Script" uid="uid://ldot6iyuc8pk" path="res://scripts/combat_screen.gd" id="1_lvmae"]
+[ext_resource type="PackedScene" uid="uid://bxfhcehr6iuwn" path="res://scenes/sections/combat_screen/player_status_bar.tscn" id="3_n1e1p"]
+[ext_resource type="PackedScene" uid="uid://ds4l1rshegbqx" path="res://scenes/sections/combat_screen/charged_attack_panel.tscn" id="4_iibci"]
+[ext_resource type="PackedScene" uid="uid://umiblb5s8sum" path="res://scenes/sections/combat_screen/elemental_panel.tscn" id="5_lobgv"]
+[ext_resource type="PackedScene" uid="uid://cdxof33uj775k" path="res://scenes/sections/combat_screen/player_afflicted.tscn" id="5_nwxw2"]
+[ext_resource type="PackedScene" uid="uid://d3en6qadq15b" path="res://scenes/sections/combat_screen/enemy_name_bar.tscn" id="6_rn7nk"]
 
-[node name="CombatScreen" type="PanelContainer" unique_id=2005128029]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+
+[node name="CombatScreen" type="PanelContainer" unique_id=982127176]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+script = ExtResource("1_lvmae")
 
-[node name="EnemyStatusBar" parent="." unique_id=1067671728 instance=ExtResource("1_h43is")]
+[node name="FlowContainer" type="FlowContainer" parent="." unique_id=1193544972]
+layout_mode = 2
+alignment = 1
+
+[node name="Spacer" type="Control" parent="FlowContainer" unique_id=1809217938]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="EnemyStatusBar" parent="FlowContainer" unique_id=1067671728 instance=ExtResource("1_h43is")]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=378393532]
-visible = false
+[node name="Spacer2" type="Control" parent="FlowContainer" unique_id=1810429053]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EnemyStatusBar2" parent="FlowContainer" unique_id=582637811 instance=ExtResource("1_h43is")]
+layout_mode = 2
+
+[node name="Spacer3" type="Control" parent="FlowContainer" unique_id=904662632]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EnemyStatusBar3" parent="FlowContainer" unique_id=928021984 instance=ExtResource("1_h43is")]
+layout_mode = 2
+
+[node name="Spacer4" type="Control" parent="FlowContainer" unique_id=1016861226]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="MidBottomPanels" type="VBoxContainer" parent="." unique_id=845414275]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/separation = 21
+
+[node name="EnemyNameBar" parent="MidBottomPanels" unique_id=1251090961 instance=ExtResource("6_rn7nk")]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PlayerStatusBar" parent="MidBottomPanels" unique_id=1684298736 instance=ExtResource("3_n1e1p")]
+layout_mode = 2
+
+[node name="ChargedAttackPanel" parent="." unique_id=1885342446 instance=ExtResource("4_iibci")]
+layout_mode = 2
+
+[node name="LeftBottomPanels" type="VBoxContainer" parent="." unique_id=1617303371]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="PlayerAfflicted" parent="LeftBottomPanels" unique_id=329325505 instance=ExtResource("5_nwxw2")]
+layout_mode = 2
+
+[node name="ElementalPanel" parent="LeftBottomPanels" unique_id=337277702 instance=ExtResource("5_lobgv")]
+layout_mode = 2
+size_flags_horizontal = 0

@@ -87,12 +87,3 @@ size_flags_vertical = 3
 
 [node name="ModifierCard" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("3_daej8")]
 layout_mode = 2
-
-[node name="ModifierCard2" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1105974090 instance=ExtResource("3_daej8")]
-layout_mode = 2
-
-[node name="ModifierCard3" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=988381641 instance=ExtResource("3_daej8")]
-layout_mode = 2
-
-[node name="ModifierCard4" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1442248976 instance=ExtResource("3_daej8")]
-layout_mode = 2

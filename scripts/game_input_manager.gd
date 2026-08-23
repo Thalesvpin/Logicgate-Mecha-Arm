@@ -18,14 +18,14 @@ func submit(queue_idx: int) -> void:
 	var value: int = generated_inputs[queue_idx]
 	var str = str(value)
 	var aux
-	#children.reverse()
+	
+	for child in children:
+		child.set_value(false)
+	
 	for i in children.size():
 		await get_tree().create_timer(0.8).timeout
 		aux = int(str[i])
 		children[i].set_value(bool(aux))
-		#children[i].set_value(bool(value%10))
-		#value /= 10
-	#children.reverse()
 	
 	await get_tree().create_timer(0.1).timeout
 	Global.output_manager.submit()
