@@ -129,6 +129,9 @@ var moved_to_position					# this is the actual center of the menu
 var active_submenu_idx = -1
 var last_selected_submenu_idx = -1
 
+@export var inside_limit: int = 100
+@export var center_text: String
+
 func _set_radius(new_radius):
 	radius = new_radius
 	_calc_new_geometry()		
@@ -184,6 +187,9 @@ func _set_decorator_ring_position(new_pos):
 	decorator_ring_position = new_pos
 	_calc_new_geometry()	
 	queue_redraw()	
+
+func set_center_ring_text(value: String) -> void:
+	center_text = value
 
 func _calc_new_geometry():	
 	var n = menu_items.size()
@@ -365,13 +371,40 @@ func _draw_center_ring():
 	
 	draw_circle(center_offset, center_radius, bg)
 	draw_arc(center_offset, center_radius, 0, 2*PI, center_radius, fg, 2, true)
-		
+	
 	if not show_titles or selected == -1:
-		var tex = _get_texture("Close")
-		#if active_submenu_idx != -1:
-		#	tex = BACK_TEXTURE
-		draw_texture(tex, center_offset-tex.get_size()/2, _get_color("IconModulation"))
+		if center_text == '':
+			var tex = _get_texture("Close")
+			#if active_submenu_idx != -1:
+			#	tex = BACK_TEXTURE
+			draw_texture(tex, center_offset-tex.get_size()/2, _get_color("IconModulation"))
+		else:
+			
+			var text := center_text
+			var font := ThemeDB.fallback_font
+			var font_size := 16
+			var text_width := font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
 
+			draw_string(
+				font,
+				center_offset + Vector2(-text_width / 2.0, font_size / 2.0),
+				text,
+				HORIZONTAL_ALIGNMENT_LEFT,
+				-1,
+				font_size,
+				_get_color("IconModulation")
+			)
+
+
+			#draw_string(
+				#ThemeDB.fallback_font,
+				#center_offset + Vector2(-20, 6),
+				#center_text,
+				#HORIZONTAL_ALIGNMENT_LEFT,
+				#-1,
+				#16,
+				#_get_color("IconModulation")
+			#)
 
 func _draw_label():	
 	var text
@@ -417,7 +450,8 @@ func get_selected_by_mouse() -> int:
 	var s = selected
 	var mpos = get_local_mouse_position() - center_offset
 	var lsq = mpos.length_squared()
-	var inner_limit = min((radius-width)*(radius-width), 400)
+	#var inner_limit = min((radius-width)*(radius-width), 400)
+	var inner_limit = inside_limit
 	var outer_limit = (radius+width*outside_selection_factor)*(radius+width*outside_selection_factor)
 	if is_submenu :
 		inner_limit = pow(get_inner_outer()[0], 2)

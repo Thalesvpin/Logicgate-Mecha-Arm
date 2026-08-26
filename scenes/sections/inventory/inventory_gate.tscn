@@ -4,12 +4,23 @@
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="2_1k65l"]
 [ext_resource type="Texture2D" uid="uid://c2nhw5yvcj4jo" path="res://assets/and-gate-icon.png" id="2_7jh40"]
 [ext_resource type="Texture2D" uid="uid://bubep8qo1qyu1" path="res://assets/or-gate-md.png" id="3_31bf4"]
+[ext_resource type="Texture2D" uid="uid://d3cb0vwsro0yi" path="res://assets/not-gate.png" id="4_wun44"]
 [ext_resource type="PackedScene" uid="uid://vyyk4mr2crhe" path="res://scenes/gates/and_gate.tscn" id="5_eikod"]
+[ext_resource type="Texture2D" uid="uid://dv7hnm4felokt" path="res://assets/nand_gate.png" id="5_kx48m"]
 [ext_resource type="PackedScene" uid="uid://5kcau6t2fh6b" path="res://scenes/gates/or_gate.tscn" id="6_h6g2d"]
+[ext_resource type="Texture2D" uid="uid://bwxyu28n3bmaq" path="res://assets/nor_gate.png" id="6_yqjsl"]
 [ext_resource type="PackedScene" uid="uid://dwy7lw2tmtyko" path="res://scenes/gates/def_gate.tscn" id="7_4dm03"]
+[ext_resource type="Texture2D" uid="uid://b6ilyfnr1wne1" path="res://assets/xor_gate.png" id="7_5pjsd"]
+[ext_resource type="Texture2D" uid="uid://b32cwmg64bvym" path="res://assets/xnor_gate.png" id="8_1h7xg"]
+[ext_resource type="PackedScene" uid="uid://ltgxfgk3ysyf" path="res://scenes/gates/not_gate.tscn" id="12_47mhl"]
+[ext_resource type="PackedScene" uid="uid://bvb54vh0q6ukq" path="res://scenes/gates/nand_gate.tscn" id="13_04ahp"]
+[ext_resource type="PackedScene" uid="uid://b7xt4eo5rn4tt" path="res://scenes/gates/nor_gate.tscn" id="14_lgv0f"]
+[ext_resource type="PackedScene" uid="uid://b44ep74kw45m4" path="res://scenes/gates/xor_gate.tscn" id="15_58uri"]
+[ext_resource type="PackedScene" uid="uid://d2v4gydixspon" path="res://scenes/gates/xnor_gate.tscn" id="16_aira5"]
 
 [node name="InventoryGate" type="Panel" unique_id=2018287429]
 custom_minimum_size = Vector2(130, 130)
+clip_contents = true
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -24,9 +35,19 @@ grow_vertical = 2
 script = ExtResource("1_1k65l")
 and_icon = ExtResource("2_7jh40")
 or_icon = ExtResource("3_31bf4")
+not_icon = ExtResource("4_wun44")
+nand_icon = ExtResource("5_kx48m")
+nor_icon = ExtResource("6_yqjsl")
+xor_icon = ExtResource("7_5pjsd")
+xnor_icon = ExtResource("8_1h7xg")
 def_icon = ExtResource("2_1k65l")
 and_scene = ExtResource("5_eikod")
 or_scene = ExtResource("6_h6g2d")
+not_scene = ExtResource("12_47mhl")
+nand_scene = ExtResource("13_04ahp")
+nor_scene = ExtResource("14_lgv0f")
+xor_scene = ExtResource("15_58uri")
+xnor_scene = ExtResource("16_aira5")
 def_scene = ExtResource("7_4dm03")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1096496680]

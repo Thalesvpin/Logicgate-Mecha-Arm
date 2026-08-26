@@ -25,33 +25,33 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_lvmae")
 
-[node name="FlowContainer" type="FlowContainer" parent="." unique_id=1193544972]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1591174762]
 layout_mode = 2
-alignment = 1
+size_flags_vertical = 0
 
-[node name="Spacer" type="Control" parent="FlowContainer" unique_id=1809217938]
+[node name="Spacer" type="Control" parent="HBoxContainer" unique_id=1288280074]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 
-[node name="EnemyStatusBar" parent="FlowContainer" unique_id=1067671728 instance=ExtResource("1_h43is")]
+[node name="EnemyStatusBar" parent="HBoxContainer" unique_id=1067671728 instance=ExtResource("1_h43is")]
 layout_mode = 2
 
-[node name="Spacer2" type="Control" parent="FlowContainer" unique_id=1810429053]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="EnemyStatusBar2" parent="FlowContainer" unique_id=582637811 instance=ExtResource("1_h43is")]
-layout_mode = 2
-
-[node name="Spacer3" type="Control" parent="FlowContainer" unique_id=904662632]
+[node name="Spacer2" type="Control" parent="HBoxContainer" unique_id=331242526]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="EnemyStatusBar3" parent="FlowContainer" unique_id=928021984 instance=ExtResource("1_h43is")]
+[node name="EnemyStatusBar2" parent="HBoxContainer" unique_id=1219616546 instance=ExtResource("1_h43is")]
 layout_mode = 2
 
-[node name="Spacer4" type="Control" parent="FlowContainer" unique_id=1016861226]
+[node name="Spacer3" type="Control" parent="HBoxContainer" unique_id=290057607]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EnemyStatusBar3" parent="HBoxContainer" unique_id=1057226659 instance=ExtResource("1_h43is")]
+layout_mode = 2
+
+[node name="Spacer4" type="Control" parent="HBoxContainer" unique_id=912163424]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3

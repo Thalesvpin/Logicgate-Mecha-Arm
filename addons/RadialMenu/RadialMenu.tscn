@@ -20,3 +20,5 @@ circle_coverage = 1.0
 center_angle = 0.78525
 show_animation = true
 ignore_title_size = true
+inside_limit = 3500
+center_text = null

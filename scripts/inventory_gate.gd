@@ -4,10 +4,15 @@ extends Panel
 
 #enum Types: String {"AND", "OR", "DEF"} 
 
-@export_enum("AND", "OR", "DEF") var type: String
+@export_enum("AND", "OR", "NOT", "NAND", "NOR", "XOR", "XNOR", "DEF") var type: String
 @export_group('Sprites')
 @export var and_icon: Texture2D
 @export var or_icon: Texture2D
+@export var not_icon: Texture2D
+@export var nand_icon: Texture2D
+@export var nor_icon: Texture2D
+@export var xor_icon: Texture2D
+@export var xnor_icon: Texture2D
 @export var def_icon: Texture2D
 var icon: Texture2D
 @export_group('')
@@ -15,6 +20,11 @@ var icon: Texture2D
 @export_group('Scenes')
 @export var and_scene: PackedScene
 @export var or_scene: PackedScene
+@export var not_scene: PackedScene
+@export var nand_scene: PackedScene
+@export var nor_scene: PackedScene
+@export var xor_scene: PackedScene
+@export var xnor_scene: PackedScene
 @export var def_scene: PackedScene
 var scene: PackedScene
 @export_group('')
@@ -30,6 +40,21 @@ func load_data():
 		"or":
 			icon = or_icon
 			scene = or_scene
+		"not":
+			icon = not_icon
+			scene = not_scene
+		"nand":
+			icon = nand_icon
+			scene = nand_scene
+		"nor":
+			icon = nor_icon
+			scene = nor_scene
+		"xor":
+			icon = xor_icon
+			scene = xor_scene
+		"xnor":
+			icon = xnor_icon
+			scene = xnor_scene
 		"def":
 			icon = def_icon
 			scene = def_scene

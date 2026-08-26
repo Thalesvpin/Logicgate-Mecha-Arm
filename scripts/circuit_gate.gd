@@ -37,15 +37,21 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 				get_viewport().set_input_as_handled()
 				cursor_offset = get_global_mouse_position() - global_position
 				DragManager.drag_gate(self)
+				DragManager.original_node.global_position = get_tree().current_scene.get_global_mouse_position() - cursor_offset
 	
 	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
-		var radial_menu = RADIAL_MENU.instantiate()
-		radial_menu.set_items(Global.gate_options)
-		radial_menu.item_selected.connect(handle_radial_menu_selection)
-		get_tree().current_scene.add_child(radial_menu)
-		var m = get_tree().current_scene.get_global_mouse_position()
-		radial_menu.open_menu(m)
-		get_viewport().set_input_as_handled()
+		open_radial_menu()
+
+func open_radial_menu() -> void:
+	var radial_menu = RADIAL_MENU.instantiate()
+	radial_menu.set_items(Global.gate_options)
+	print(str(type))
+	radial_menu.set_center_ring_text(str(type))
+	radial_menu.item_selected.connect(handle_radial_menu_selection)
+	get_tree().current_scene.add_child(radial_menu)
+	var m = get_tree().current_scene.get_global_mouse_position()
+	radial_menu.open_menu(m)
+	get_viewport().set_input_as_handled()
 
 ##Leave value empty to reset the scale to it's default
 func scale_gate(value: Vector2 = Vector2.ZERO):

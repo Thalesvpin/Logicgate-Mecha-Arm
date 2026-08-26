@@ -1,7 +1,17 @@
 [gd_scene format=3 uid="uid://d2wxpuaj88jlh"]
 
+[ext_resource type="Script" uid="uid://b84g2j5iwlbtv" path="res://scripts/sandbox_action_panel.gd" id="1_mufj8"]
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_pmrxt"]
 [ext_resource type="LabelSettings" uid="uid://bu1qr5thhtdmy" path="res://ui_elements/ui_execution_list_number.tres" id="2_wvfaq"]
+[ext_resource type="Shader" uid="uid://ddtcjrx2hj74g" path="res://shaders/texture_progress.gdshader" id="4_tosqn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eijvj"]
+shader = ExtResource("4_tosqn")
+shader_parameter/progress = 1.0
+shader_parameter/saturation = 0.0
+shader_parameter/lightness = 0.662000031445
+shader_parameter/terminator_color = Color(1, 1, 1, 1)
+shader_parameter/terminator_size_px = 0.0
 
 [node name="SandboxActionPanel" type="PanelContainer" unique_id=1689072548]
 clip_contents = true
@@ -11,6 +21,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
+script = ExtResource("1_mufj8")
+hold_run_duration = 1.0
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=569691240]
 layout_mode = 2
@@ -27,54 +39,61 @@ vertical_scroll_mode = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer" unique_id=583125266]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1352902236]
+[node name="ExecutionContainer1" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1352902236]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer" unique_id=1937044660]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=1937044660]
 layout_mode = 2
 texture = ExtResource("1_pmrxt")
 expand_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer" unique_id=1589670455]
+[node name="ExecutionLabel1" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=1589670455]
 layout_mode = 2
 text = "1001"
 label_settings = ExtResource("2_wvfaq")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=799125768]
+[node name="ExecutionContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=799125768]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2" unique_id=431468705]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=431468705]
 layout_mode = 2
 texture = ExtResource("1_pmrxt")
 expand_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer2" unique_id=1155639323]
+[node name="ExecutionLabel2" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=1155639323]
 layout_mode = 2
 text = "1100"
 label_settings = ExtResource("2_wvfaq")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=857185412]
+[node name="ExecutionContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=857185412]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3" unique_id=878446564]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=878446564]
 layout_mode = 2
 texture = ExtResource("1_pmrxt")
 expand_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer3" unique_id=786689787]
+[node name="ExecutionLabel3" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=786689787]
 layout_mode = 2
 text = "0010"
 label_settings = ExtResource("2_wvfaq")
+autowrap_trim_flags = 0
 
-[node name="TextureButton" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1424465683]
+[node name="RunBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1424465683]
+material = SubResource("ShaderMaterial_eijvj")
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_rotation = 1.5707964
 tooltip_text = "Submit"
 texture_normal = ExtResource("1_pmrxt")
 
-[node name="TextureButton2" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=2133727861]
+[node name="InfoBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=2133727861]
 layout_mode = 2
 texture_normal = ExtResource("1_pmrxt")
 
-[node name="TextureButton3" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=446604005]
+[node name="PauseBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=446604005]
 layout_mode = 2
 texture_normal = ExtResource("1_pmrxt")
+
+[connection signal="button_down" from="MarginContainer/ScrollContainer/VBoxContainer/RunBtn" to="." method="_on_run_btn_button_down"]
+[connection signal="button_up" from="MarginContainer/ScrollContainer/VBoxContainer/RunBtn" to="." method="_on_run_btn_button_up"]

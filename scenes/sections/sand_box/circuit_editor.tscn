@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://y6nreclkpn6v" path="res://scripts/sandbox.gd" id="2_s76oy"]
 [ext_resource type="PackedScene" uid="uid://bwu5fuinlw5ui" path="res://scenes/sections/sand_box/game_output_manager.tscn" id="6_7i7tw"]
 [ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/sections/sand_box/game_input_manager.tscn" id="6_lwkx8"]
-[ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/sandbox_action_panel.tscn" id="8_rsy7x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
 size = Vector2(1169, 663)
@@ -54,18 +53,18 @@ custom_maximum_size = Vector2(-1, 400)
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = -470.0
-offset_top = -147.0
-offset_right = -450.0
-offset_bottom = 253.0
+offset_left = -474.0
+offset_top = -179.0
+offset_right = -454.0
+offset_bottom = 221.0
 grow_horizontal = 1
 grow_vertical = 1
 
 [node name="GameOutputManager" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1090849083 instance=ExtResource("6_7i7tw")]
-offset_left = 438.0
-offset_top = -147.0
-offset_right = 458.0
-offset_bottom = 253.0
+offset_left = 434.0
+offset_top = -179.0
+offset_right = 454.0
+offset_bottom = 221.0
 
 [node name="WireLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1908283756]
 position = Vector2(0, 1)
@@ -73,6 +72,7 @@ position = Vector2(0, 1)
 [node name="GateLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
 
 [node name="CircuitCamera" type="Camera2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
+position = Vector2(1, 3)
 script = ExtResource("1_n5154")
 
 [node name="Area2D" type="Area2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
@@ -81,9 +81,77 @@ script = ExtResource("1_n5154")
 shape = SubResource("RectangleShape2D_eofqg")
 debug_color = Color(0, 1, 0, 0.41960785)
 
-[node name="SandboxActionPanel" parent="HBoxContainer" unique_id=1689072548 instance=ExtResource("8_rsy7x")]
-visible = false
-layout_mode = 2
+[node name="Attack" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=1125852690]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -331.0
+offset_top = -251.0
+offset_right = -331.0
+offset_bottom = -251.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack" unique_id=38606537]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Ataque"
+
+[node name="Label2" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack" unique_id=3152845]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 21.0
+offset_right = 48.0
+offset_bottom = 44.0
+text = "1111"
+
+[node name="ShieldRegen" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2097592777]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -254.0
+offset_top = -251.0
+offset_right = -254.0
+offset_bottom = -251.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen" unique_id=376081284]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Regen Escudo"
+
+[node name="Label2" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen" unique_id=1927303794]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 21.0
+offset_right = 72.0
+offset_bottom = 44.0
+text = "1111"
+
+[node name="SelfDamage" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=308548882]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -115.0
+offset_top = -251.0
+offset_right = -115.0
+offset_bottom = -251.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage" unique_id=838713022]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Dano próprio"
+
+[node name="Label2" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage" unique_id=158288340]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 21.0
+offset_right = 72.0
+offset_bottom = 44.0
+text = "1111"
 
 [connection signal="child_entered_tree" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/GateLayer" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
 [connection signal="mouse_entered" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]

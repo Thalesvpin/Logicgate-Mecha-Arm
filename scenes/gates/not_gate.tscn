@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://ltgxfgk3ysyf"]
+
+[ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_2kvkf"]
+[ext_resource type="Texture2D" uid="uid://d3cb0vwsro0yi" path="res://assets/not-gate.png" id="2_0gshw"]
+[ext_resource type="Script" uid="uid://dtalsdrf6cd7n" path="res://scripts/input.gd" id="3_5mdsm"]
+[ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="4_h4jpu"]
+[ext_resource type="Script" uid="uid://c6ivqjlx2f15x" path="res://scripts/output.gd" id="5_8quce"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sw6uh"]
+size = Vector2(128, 128)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eofqg"]
+
+[node name="NotGate" type="Area2D" unique_id=798829331]
+script = ExtResource("1_2kvkf")
+type = "NOT"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
+scale = Vector2(0.68, 1.12)
+texture = ExtResource("2_0gshw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=283406698]
+shape = SubResource("RectangleShape2D_sw6uh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1744309605]
+custom_minimum_size = Vector2(0, 128)
+custom_maximum_size = Vector2(-1, 128)
+offset_left = -74.0
+offset_top = -64.0
+offset_right = -74.0
+offset_bottom = 64.0
+
+[node name="Spacing" type="Control" parent="VBoxContainer" unique_id=1917199605]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="VBoxContainer" unique_id=1142989406]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="InputA" type="Area2D" parent="VBoxContainer/Control" unique_id=82682060]
+script = ExtResource("3_5mdsm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/Control/InputA" unique_id=1843317954]
+shape = SubResource("CircleShape2D_eofqg")
+
+[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/Control/InputA" unique_id=1897595869]
+scale = Vector2(0.007, 0.007)
+texture = ExtResource("4_h4jpu")
+
+[node name="Output" type="Area2D" parent="." unique_id=1664330507]
+position = Vector2(73, 0)
+script = ExtResource("5_8quce")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Output" unique_id=327915693]
+shape = SubResource("CircleShape2D_eofqg")
+
+[node name="Sprite2D" type="Sprite2D" parent="Output" unique_id=1309416252]
+scale = Vector2(0.0066406247, 0.0066406247)
+texture = ExtResource("4_h4jpu")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="VBoxContainer/Control/InputA" to="VBoxContainer/Control/InputA" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/Control/InputA" to="VBoxContainer/Control/InputA" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="Output" to="Output" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="Output" to="Output" method="_on_mouse_exited"]

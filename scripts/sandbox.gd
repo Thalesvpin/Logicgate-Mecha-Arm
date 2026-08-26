@@ -43,36 +43,6 @@ func trace_line(point):
 	
 	_line = null
 
-func trace_line_OLD(point):
-	if point.type.to_lower() == "output":
-		point_a = point
-	if point.type.to_lower() == "input":
-		point_b = point
-	
-	if point_a && point_b:
-		if point_a.owner != point_b.owner:
-			var _line = line.instantiate()
-			_line.point_a = point_a
-			_line.point_b = point_b
-			wire_layer.add_child(_line)
-			point_b.connected_gate = point_a
-			if point_a.owner is Area2D:
-				point_a.owner.connected_wires.append(_line)
-			else:
-				point_a.connected_wires.append(_line)
-			if point_b.owner is Area2D:
-				point_b.owner.connected_wires.append(_line)
-			else:
-				point_b.connected_wires.append(_line)
-			
-			point_a = null
-			point_b = null
-		else:
-			if point == point_a:
-				point_a = null
-			if point == point_b:
-				point_b = null
-
 func _on_area_2d_mouse_entered() -> void:
 	cursor_in = true
 

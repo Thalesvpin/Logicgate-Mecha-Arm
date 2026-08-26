@@ -2,6 +2,14 @@
 
 [ext_resource type="Script" uid="uid://ciirxpddf72m4" path="res://scripts/enemy_status_bar.gd" id="1_ryokx"]
 [ext_resource type="Texture2D" uid="uid://cdeyfpq76q6sw" path="res://assets/enemystatusbar_frame_PLACEHOLDER.png" id="2_vvvff"]
+[ext_resource type="Texture2D" uid="uid://dfg11yr0hn6qp" path="res://assets/left_top.png" id="3_rl6i7"]
+[ext_resource type="Texture2D" uid="uid://cdrk14hnig25f" path="res://assets/left_top2.png" id="3_vrh0u"]
+[ext_resource type="Texture2D" uid="uid://bwpeev30m6jsb" path="res://assets/left_curve.png" id="4_ptbck"]
+[ext_resource type="Texture2D" uid="uid://cdq6rsnmi2u1j" path="res://assets/left_bot.png" id="5_vrh0u"]
+[ext_resource type="Texture2D" uid="uid://c8hgunu7rtuy3" path="res://assets/right_top.png" id="6_3ifu1"]
+[ext_resource type="Texture2D" uid="uid://bxhoa4em6i6wm" path="res://assets/right_top2.png" id="7_3ifu1"]
+[ext_resource type="Texture2D" uid="uid://bsq4hrq0bfrhg" path="res://assets/right_curve.png" id="7_bfrdx"]
+[ext_resource type="Texture2D" uid="uid://b84t21kgtuq2e" path="res://assets/right_bot.png" id="8_kcuf8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rgupk"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -56,64 +64,112 @@ stretch_mode = 4
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="ShieldVerticalLBar" type="TextureProgressBar" parent="Shield" unique_id=733726050]
+[node name="TextureRect" type="TextureRect" parent="Shield" unique_id=451030082]
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-min_value = 60.0
-value = 60.0
-allow_greater = true
-allow_lesser = true
-fill_mode = 3
+offset_left = 204.0
+offset_top = 10.0
+offset_right = 295.0
+offset_bottom = 127.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_3ifu1")
 
-[node name="ShieldVerticalRBar" type="TextureProgressBar" parent="Shield" unique_id=675785251]
+[node name="ShieldVerticalLBar" type="TextureProgressBar" parent="Shield" unique_id=733726050]
+custom_minimum_size = Vector2(80, 80)
+custom_maximum_size = Vector2(80, 80)
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+offset_left = 98.0
+offset_top = 11.0
+offset_right = 178.0
+offset_bottom = 91.0
+scale = Vector2(0.5, 0.5)
 min_value = 60.0
-value = 60.0
+value = 100.0
 allow_greater = true
 allow_lesser = true
 fill_mode = 3
+texture_under = ExtResource("3_vrh0u")
+texture_progress = ExtResource("3_rl6i7")
 
 [node name="ShieldCurveLBar" type="TextureProgressBar" parent="Shield" unique_id=728663951]
+custom_minimum_size = Vector2(70, 70)
+custom_maximum_size = Vector2(70, 70)
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+offset_left = 98.0
+offset_top = 44.0
+offset_right = 168.0
+offset_bottom = 114.0
+scale = Vector2(0.5, 0.5)
 min_value = 20.0
 max_value = 60.0
-value = 20.0
+value = 60.0
 allow_greater = true
 allow_lesser = true
 fill_mode = 4
+texture_progress = ExtResource("4_ptbck")
 
-[node name="ShieldCurveRBar" type="TextureProgressBar" parent="Shield" unique_id=669840287]
+[node name="ShieldHorizontalLBar" type="TextureProgressBar" parent="Shield" unique_id=114164018]
+custom_minimum_size = Vector2(70, 70)
+custom_maximum_size = Vector2(70, 70)
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-min_value = 20.0
-max_value = 60.0
+offset_left = 97.0
+offset_top = 10.0
+offset_right = 167.0
+offset_bottom = 80.0
+scale = Vector2(0.5, 0.5)
+max_value = 20.0
 value = 20.0
 allow_greater = true
 allow_lesser = true
-fill_mode = 5
+fill_mode = 1
+texture_progress = ExtResource("5_vrh0u")
 
-[node name="ShieldHorizontalLBar" type="TextureProgressBar" parent="Shield" unique_id=114164018]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
-max_value = 20.0
+[node name="ShieldVerticalRBar" type="TextureProgressBar" parent="Shield" unique_id=675785251]
+custom_minimum_size = Vector2(80, 80)
+custom_maximum_size = Vector2(80, 80)
+layout_mode = 1
+offset_left = 244.0
+offset_top = 10.0
+offset_right = 324.0
+offset_bottom = 90.0
+scale = Vector2(0.5, 0.5)
+min_value = 60.0
+value = 100.0
 allow_greater = true
 allow_lesser = true
-fill_mode = 1
+fill_mode = 3
+texture_progress = ExtResource("6_3ifu1")
+
+[node name="ShieldCurveRBar" type="TextureProgressBar" parent="Shield" unique_id=669840287]
+custom_minimum_size = Vector2(40, 40)
+custom_maximum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 227.0
+offset_top = 43.0
+offset_right = 267.0
+offset_bottom = 83.0
+scale = Vector2(0.5, 0.5)
+min_value = 20.0
+max_value = 60.0
+value = 60.0
+allow_greater = true
+allow_lesser = true
+fill_mode = 5
+texture_progress = ExtResource("7_bfrdx")
 
 [node name="ShieldHorizontalRBar" type="TextureProgressBar" parent="Shield" unique_id=1849060457]
+custom_minimum_size = Vector2(40, 40)
+custom_maximum_size = Vector2(40, 40)
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+offset_left = 204.0
+offset_top = 61.0
+offset_right = 244.0
+offset_bottom = 101.0
+scale = Vector2(0.5, 0.5)
 max_value = 20.0
+value = 20.0
 allow_greater = true
 allow_lesser = true
+texture_progress = ExtResource("8_kcuf8")
 
 [node name="ShieldCounter" type="Label" parent="Shield" unique_id=818120244]
 layout_mode = 0

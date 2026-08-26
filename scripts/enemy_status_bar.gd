@@ -20,7 +20,7 @@ var current_health_value: int
 
 @export var max_shield: int = 100
 ##Must be converted to % in the graph display
-var current_shield_value: int
+var current_shield_value: int = 100
 #endregion
 
 #region AFFLICTED
@@ -38,6 +38,12 @@ var afflicted_element
 var element
 #endregion
 
+var tween_duration := 0.8
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("test"):
+		subtract_from_shield(10)
+
 func check_elemental_counters() -> void:
 	if afflicted_counter < 10:
 		afflicted_number_bg.position.x = 32
@@ -49,8 +55,7 @@ func check_elemental_counters() -> void:
 		afflicted_number_bg.position.x = 14
 		afflicted_number_bg.size.x = 28
 
-func set_health_value(value: int) -> void:
-	@warning_ignore("integer_division")
+func set_health_value(value: float) -> void:
 	var percentage = (value/max_health)*100
 	health_bar.value = percentage
 	health_counter.text = str(value)
@@ -65,16 +70,23 @@ func subtract_from_health(value: int) -> void:
 	current_health_value = max(current_health_value, 0)
 	set_health_value(current_health_value)
 
-func set_shield_value(value: int) -> void:
-	@warning_ignore("integer_division")
+func set_shield_value(value: float) -> void:
 	var percentage = (value/max_shield)*100
-	shield_vertical_l_bar.value = percentage
-	shield_vertical_r_bar.value = percentage
-	shield_curve_l_bar.value = percentage
-	shield_curve_r_bar.value = percentage
-	shield_horizontal_l_bar.value = percentage
-	shield_horizontal_r_bar.value = percentage
-	shield_counter.text = str(value)
+	var array = [shield_vertical_l_bar
+				,shield_vertical_r_bar
+				,shield_curve_l_bar
+				,shield_curve_r_bar
+				,shield_horizontal_l_bar
+				,shield_horizontal_r_bar]
+	
+	var tween = create_tween().set_parallel(true)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_CUBIC)
+	
+	for piece in array:
+		tween.tween_property(piece, "value", percentage, tween_duration)
+	
+	tween.tween_method(func(v): shield_counter.text = str(int(v)), int(shield_counter.text), value, tween_duration)
 
 func add_to_shield(value: int) -> void:
 	current_shield_value += value

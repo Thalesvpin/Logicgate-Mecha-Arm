@@ -111,23 +111,23 @@ type = "OR"
 
 [node name="InventoryGate3" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1789753972 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "DEF"
+type = "NOT"
 
 [node name="InventoryGate4" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1008198893 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "DEF"
+type = "NAND"
 
 [node name="InventoryGate5" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1833420702 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "DEF"
+type = "NOR"
 
 [node name="InventoryGate6" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1649248226 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "DEF"
+type = "XOR"
 
 [node name="InventoryGate7" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1220327291 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "DEF"
+type = "XNOR"
 
 [node name="SellOverlay" type="Control" parent="." unique_id=2024746708]
 visible = false

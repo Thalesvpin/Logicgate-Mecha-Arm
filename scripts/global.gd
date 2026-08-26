@@ -14,6 +14,8 @@ var output_manager
 
 #control variables
 var sell_gate: bool = false
+var seed: int = 0
+var random = PcgRandom.new()
 
 #radial menu presets
 #display order: ↑ → ↓ ←
@@ -61,3 +63,34 @@ var inventory_options = [
 		'id': 'idx_2'
 	},
 ]
+
+func dec_to_bin(decimal: int) -> int:
+	var result := 0
+	var place := 1
+	var bit := 0
+	
+	while decimal > 0:
+		bit = decimal & 1
+		result += bit * place
+		place *= 10
+		decimal >>= 1
+	
+	return result
+
+func unique_random_binary_list(amount: int, size: int) -> Array[int]:
+	var prev: Array[int] = []
+	var num
+	while prev.size() < amount:
+		num = Global.rand_binary(size)
+		if num not in prev:
+			prev.append(num)
+	return prev
+
+func rand_binary(size: int) -> int:
+	var num = random.next()
+	var result = Global.dec_to_bin(num%(2**size))
+	return result
+
+func set_new_seed():
+	seed = randi()
+	random.set_seed(seed)

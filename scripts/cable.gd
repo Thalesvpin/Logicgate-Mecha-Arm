@@ -110,7 +110,6 @@ func reset_point_b():
 	point_b = null
 
 func unplug():
-	print('UNPLUG')
 	reset_point_b()
 
 func check_input_value() -> void:
@@ -128,8 +127,9 @@ func dragged_point_position(connector: Node2D):
 	# offset do connector em relação ao gate (não muda durante o arrasto)
 	var connector_in_gate := gate.global_transform.affine_inverse() * connector.global_transform.origin
 	
+	var mouse_offset: Vector2 = gate.get_global_mouse_position() - gate.global_position
 	# onde o gate deveria estar: mouse no espaço do Sandbox
-	var gate_at_mouse := sandbox.get_global_mouse_position()
+	var gate_at_mouse := sandbox.get_global_mouse_position() - mouse_offset
 	var gate_xform := gate.global_transform
 	gate_xform.origin = gate_at_mouse
 	var connector_global := gate_xform * connector_in_gate
