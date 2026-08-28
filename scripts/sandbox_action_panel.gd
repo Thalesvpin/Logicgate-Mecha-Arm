@@ -23,18 +23,10 @@ func submit() -> void:
 	get_tree().current_scene.randomize_binaries()
 
 func generate_execution_sequence() -> void:
-	var prev = []
-	var num
-	
-	while prev.size() < execution_labels.size():
-		num = Global.rand_binary(4)
-		if num not in prev:
-			prev.append(num)
-	
-	var list = Global.unique_random_binary_list(execution_labels.size(), 4)
+	var list = Global.unique_random_list(execution_labels.size(), 4)
 	
 	for i in execution_labels.size():
-		execution_labels[i].text = '%04d' % list[i]
+		execution_labels[i].text = '%04d' % Global.dec_to_bin(list[i])
 
 ##Duration in seconds
 func start_timer() -> void:

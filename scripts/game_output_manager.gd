@@ -2,6 +2,8 @@ extends IOBar
 
 @onready var drag_area: Area2D = $DragArea
 
+var output: int
+
 func ready() -> void:
 	Global.output_manager = self
 
@@ -13,7 +15,9 @@ func submit() -> void:
 	for child in children:
 		result = result << 1 | int(child.output)
 	
-	print('output: ', result)
+	output = result
+	print('output: ', output)
+	Global.circuit_editor.compare_output(output)
 
 func prevent_click(value: bool) -> void:
 	drag_area.input_pickable = !value

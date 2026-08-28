@@ -11,11 +11,14 @@ var circuit_editor
 var gates_selector
 var input_manager
 var output_manager
+var combat_screen
 
 #control variables
 var sell_gate: bool = false
 var seed: int = 0
 var random = PcgRandom.new()
+
+signal _null
 
 #radial menu presets
 #display order: ↑ → ↓ ←
@@ -64,6 +67,31 @@ var inventory_options = [
 	},
 ]
 
+
+var action_attack: Dictionary = new_action(0, true, _null)
+var action_heal_shield: Dictionary = new_action(0, true, _null)
+var action_self_damage: Dictionary = new_action(0, true, _null)
+var action_charge_charged_attack: Dictionary = new_action(0, true, _null)
+var action_charged_attack: Dictionary = new_action(0, true, _null)
+var action_heal_life: Dictionary = new_action(0, true, _null)
+##Duplicate to edit (no signal linked yet)
+var all_actions: Dictionary = {
+	'attack': action_attack,
+	'heal_shield': action_heal_shield,
+	'self_damage': action_self_damage,
+	'charge_charged_attack': action_charge_charged_attack,
+	'charged_attack': action_charged_attack,
+	'heal_life': action_heal_life,
+}
+
+func new_action(id: int, active: bool, _signal: Signal) -> Dictionary:
+	var template: Dictionary = {
+		'id': id,
+		'active': active,
+		'signal': _signal,
+	}
+	return template
+
 func dec_to_bin(decimal: int) -> int:
 	var result := 0
 	var place := 1
@@ -77,11 +105,14 @@ func dec_to_bin(decimal: int) -> int:
 	
 	return result
 
-func unique_random_binary_list(amount: int, size: int) -> Array[int]:
+##bits_size is the max number of bits each number may have aka the random max range
+##[br]
+##bits_size = 4 -> range(0, 15) inclusive
+func unique_random_list(list_size: int, bits_size: int) -> Array[int]:
 	var prev: Array[int] = []
 	var num
-	while prev.size() < amount:
-		num = Global.rand_binary(size)
+	while prev.size() < list_size:
+		num = random.next() % (2**bits_size)
 		if num not in prev:
 			prev.append(num)
 	return prev
