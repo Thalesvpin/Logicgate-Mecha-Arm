@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Global="*uid://dm7cdkjuqd51y"
 DragManager="*uid://y2qyjxt2q80c"
+LivePaletteRuntime="*uid://d31r5bjbh1oer"
 
 [display]
 
@@ -30,7 +31,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ui_builder/plugin.cfg")
+enabled=PackedStringArray("res://addons/live_palette/plugin.cfg", "res://addons/ui_builder/plugin.cfg")
 
 [input]
 

@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="LivePaletteData" format=3 uid="uid://c6ad483u3wj14"]
+
+[ext_resource type="Script" uid="uid://dsi5a626rvsik" path="res://addons/live_palette/palette.gd" id="1_rsjlv"]
+
+[resource]
+script = ExtResource("1_rsjlv")
+entries = Array[Dictionary]([{
+"colors": {
+"Default": Color(0, 0.8627451, 0.05882353, 1)
+},
+"id": "ddbxb",
+"name": "COMMON"
+}, {
+"colors": {
+"Default": Color(0.105882354, 0.60784316, 0.81960785, 1)
+},
+"id": "rsjlv",
+"name": "RARE"
+}, {
+"colors": {
+"Default": Color(0.84705883, 0, 1, 1)
+},
+"id": "lcvmx",
+"name": "ULTRA_RARE"
+}, {
+"colors": {
+"Default": Color(1, 0.5019608, 0, 1)
+},
+"id": "q7jwe",
+"name": "LEGENDARY"
+}])
+variants = PackedStringArray("Default")

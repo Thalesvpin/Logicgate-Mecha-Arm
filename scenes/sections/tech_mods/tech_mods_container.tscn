@@ -4,6 +4,7 @@
 [ext_resource type="LabelSettings" uid="uid://du6amkwtjx7mk" path="res://ui_elements/ui_list_titles.tres" id="1_7qnlp"]
 [ext_resource type="Script" uid="uid://bl6ay1dh4jaea" path="res://scripts/tech_mods_container.gd" id="1_ihy3r"]
 [ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/modifier_card.tscn" id="3_daej8"]
+[ext_resource type="Resource" uid="uid://3gmr422layic" path="res://resources/techmod_test.tres" id="5_jnc7b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1lvlk"]
 bg_color = Color(0, 0, 0, 1)
@@ -87,3 +88,4 @@ size_flags_vertical = 3
 
 [node name="ModifierCard" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("3_daej8")]
 layout_mode = 2
+resource = ExtResource("5_jnc7b")

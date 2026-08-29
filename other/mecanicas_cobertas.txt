@@ -1,0 +1,32 @@
+Mecanicas cobertas:
+
+1 aumento de tokens
+1 quantidade de portas
+2 repetição de input
+6 estimular variedade de portas
+1 interação entre techmods
+1 interação entre techmod->biohack
+2 interação entre biohacks
+1 interação entre biohack->techmod
+1 leitura de raridade - cortavel
+5 leitura de turnos
+1 scaling
+2 scaling temporario
+2 manipulação de turno
+8 buff temporário
+7 escudo
+5 manipulação de loja
+3 multi target
+6 buff passivo
+3 leitura de output
+1 manipulação de ação por turno
+1 dano proprio
+1 resposta a inimigo
+1 alteração de atributo
+6 vida
+1 recompensa de chefe
+4 dinheiro
+1 segunda chance
+1 interação com chefe
+1 interação corrompido
+

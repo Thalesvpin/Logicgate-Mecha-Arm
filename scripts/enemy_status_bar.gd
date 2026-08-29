@@ -41,6 +41,10 @@ var element
 
 var enemy = null
 @export var swap_bar_tween_duration: float = 0.8 
+var original_position: Vector2
+
+func _ready() -> void:
+	original_position = position
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("test"):
@@ -50,12 +54,12 @@ func update() -> void:
 	var tween = create_tween()
 	tween.set_parallel(false)
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, 'position', Vector2(position.x, position.y-size.y), swap_bar_tween_duration)
+	tween.tween_property(self, 'position', Vector2(position.x, original_position.y-size.y), swap_bar_tween_duration)
 	#set_health_value(enemy['health'])
 	#set_shield_value(enemy['shield'])
 	#set_afflicted_element(enemy['afflicted_element'], enemy['afflicted_count'])
 	#set_elemental(enemy['elemental'], enemy['elemental_lvl'])
-	tween.tween_property(self, 'position', Vector2(position.x, position.y), swap_bar_tween_duration)
+	tween.tween_property(self, 'position', Vector2(position.x, original_position.y), swap_bar_tween_duration)
 	
 
 func check_elemental_counters() -> void:

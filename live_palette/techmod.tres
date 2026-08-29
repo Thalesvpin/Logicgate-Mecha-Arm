@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LivePaletteData" format=3 uid="uid://bcdyipsqvtdqu"]
+
+[ext_resource type="Script" uid="uid://dsi5a626rvsik" path="res://addons/live_palette/palette.gd" id="1_a7lv4"]
+
+[resource]
+script = ExtResource("1_a7lv4")
+entries = Array[Dictionary]([{
+"colors": {
+"Default": Color(0.3647059, 0.3647059, 0.3647059, 1)
+},
+"id": "gtatl",
+"name": "Background"
+}, {
+"colors": {
+"Default": Color(1, 1, 1, 1)
+},
+"id": "a7lv4",
+"name": "ContainerTitle"
+}, {
+"colors": {
+"Default": Color(1, 1, 1, 1)
+},
+"id": "e4srk",
+"name": "ModText"
+}])
+variants = PackedStringArray("Default")

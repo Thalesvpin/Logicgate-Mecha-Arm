@@ -89,7 +89,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
-split_offsets = PackedInt32Array(234, -218)
+split_offsets = PackedInt32Array(234, 0)
 drag_nested_intersections = true
 split_offset = 234
 

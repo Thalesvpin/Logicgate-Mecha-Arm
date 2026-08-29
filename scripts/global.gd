@@ -1,5 +1,9 @@
 extends Node
 
+const RARITY_PLACEHOLDER = preload("uid://b8l68f41218q5")
+
+
+
 #radial menu textures
 const SELL = preload("uid://dvxmvtj7hrqrw")
 const CLEAR_CONNECTIONS = preload("uid://jjqybhx6ejot")
@@ -18,6 +22,7 @@ var sell_gate: bool = false
 var seed: int = 0
 var random = PcgRandom.new()
 
+enum Rarity {COMMON, RARE, ULTRA_RARE, LEGENDARY}
 signal _null
 
 #radial menu presets
@@ -67,6 +72,12 @@ var inventory_options = [
 	},
 ]
 
+var rarity_textures: Dictionary[Rarity, Texture2D] = {
+	Rarity.COMMON: RARITY_PLACEHOLDER,
+	Rarity.RARE: RARITY_PLACEHOLDER,
+	Rarity.ULTRA_RARE: RARITY_PLACEHOLDER,
+	Rarity.LEGENDARY: RARITY_PLACEHOLDER,
+}
 
 var action_attack: Dictionary = new_action(0, true, _null)
 var action_heal_shield: Dictionary = new_action(0, true, _null)

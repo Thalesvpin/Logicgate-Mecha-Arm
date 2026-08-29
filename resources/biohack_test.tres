@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Modifier" format=3 uid="uid://dd06rohyycdlt"]
+
+[ext_resource type="Script" uid="uid://cdbe6qk6387ax" path="res://scripts/classes/conditions.gd" id="1_ag3a4"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://resources/modifier.gd" id="2_q6kuy"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="3_q6kuy"]
+
+[sub_resource type="Resource" id="Resource_a7lv4"]
+script = ExtResource("1_ag3a4")
+if_value = "dsge"
+metadata/_custom_type_script = "uid://cdbe6qk6387ax"
+
+[resource]
+script = ExtResource("2_q6kuy")
+name = "Eita Giovana"
+type = 1
+texture = ExtResource("3_q6kuy")
+rarity = 3
+conditions = Array[ExtResource("1_ag3a4")]([SubResource("Resource_a7lv4")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

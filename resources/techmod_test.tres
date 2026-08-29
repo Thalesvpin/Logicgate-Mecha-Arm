@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Modifier" format=3 uid="uid://3gmr422layic"]
+
+[ext_resource type="Script" uid="uid://cdbe6qk6387ax" path="res://scripts/classes/conditions.gd" id="1_k1e14"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://resources/modifier.gd" id="1_kc61v"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="3_iy1s6"]
+
+[sub_resource type="Resource" id="Resource_a7lv4"]
+script = ExtResource("1_k1e14")
+if_value = "dsge"
+metadata/_custom_type_script = "uid://cdbe6qk6387ax"
+
+[resource]
+script = ExtResource("1_kc61v")
+name = "Jubileu ta estranho"
+texture = ExtResource("3_iy1s6")
+corrupted = true
+consumable = true
+uses_amount = 3
+conditions = Array[ExtResource("1_k1e14")]([SubResource("Resource_a7lv4")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

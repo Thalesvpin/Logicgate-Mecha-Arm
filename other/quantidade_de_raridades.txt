@@ -1,0 +1,33 @@
+Quantidade de raridades:
+Biohacks:
+
+12 comum
+10 raro
+9 ultra raro
+3 lendario
+6 corrompido
+6 consumivel
+0 elemental
+
+*desejavel:
+-3 elementais
+-+1 scaling 
+
+
+
+Techmods:
+12 comum
+13 raro
+3 ultra raro
+3 lendario
+3 corrompido
+3 consumivel
+0 elemental
+
+*desejavel:
+-5 ultra raros total
+-5 corrompidos total
+-4 consumiveis total
+-4 elementais
+-+1 manipulação de turno
+-+1 interação corrompido
