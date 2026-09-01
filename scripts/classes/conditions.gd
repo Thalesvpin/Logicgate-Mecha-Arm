@@ -1,5 +1,5 @@
 extends Resource
-class_name Condition
+class_name Condition_
 
 @export var if_value: String = ""
 enum ConditionOperator {

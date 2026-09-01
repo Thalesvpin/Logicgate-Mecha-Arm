@@ -7,7 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://1ufv6vajaxt3" path="res://scenes/sections/sand_box/circuit_editor.tscn" id="2_3wu0g"]
 [ext_resource type="PackedScene" uid="uid://cchi80u45kivh" path="res://scenes/sections/bio_hacks/bio_hacks_container.tscn" id="2_mq2xb"]
 [ext_resource type="PackedScene" uid="uid://dio5bonyon16v" path="res://scenes/sections/combat_screen/combat_screen.tscn" id="3_8nsfp"]
+[ext_resource type="PackedScene" uid="uid://g87fqnshpu3e" path="res://scenes/sections/shop/shop.tscn" id="6_c1to4"]
 [ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/sandbox_action_panel.tscn" id="6_qmxhh"]
+[ext_resource type="Script" uid="uid://bmaes5uv667va" path="res://scripts/run_stats.gd" id="9_cwqdw"]
+[ext_resource type="Script" uid="uid://dj2asdx675yqe" path="res://scripts/modifier_manager.gd" id="10_04ve2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmxhh"]
 bg_color = Color(0.12156863, 0.12156863, 0.12156863, 1)
@@ -89,9 +92,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
-split_offsets = PackedInt32Array(234, 0)
+split_offsets = PackedInt32Array(230, -222)
 drag_nested_intersections = true
-split_offset = 234
+split_offset = 230
 
 [node name="TechModsContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=565464093 instance=ExtResource("1_0jtfi")]
 layout_mode = 2
@@ -113,7 +116,14 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="Shop" parent="VBoxContainer/VSplitContainer/baixo" unique_id=669677562 instance=ExtResource("6_c1to4")]
+layout_mode = 1
+offset_left = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/baixo" unique_id=67540516]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -138,3 +148,9 @@ layout_mode = 2
 [node name="SandboxActionPanel" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer/HBoxContainer" unique_id=1689072548 instance=ExtResource("6_qmxhh")]
 layout_mode = 2
 size_flags_horizontal = 8
+
+[node name="RunStats" type="Node" parent="." unique_id=855585272]
+script = ExtResource("9_cwqdw")
+
+[node name="ModifierManager" type="Node" parent="." unique_id=1876090002]
+script = ExtResource("10_04ve2")

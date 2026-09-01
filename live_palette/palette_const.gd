@@ -145,6 +145,56 @@ class RARITY:
 		return PackedStringArray(VARIANTS.keys())
 
 
+## From res://live_palette/shop.tres.
+class SHOP:
+	## The constants are the "Default" variant; switching variants at runtime goes
+	## through the LivePaletteRuntime autoload, which re-applies bound properties.
+	const OUTLINE := Color(0.48235294, 0.18039216, 0.65882355, 1)
+	const PACKOUTLINE := Color(0.6745098, 0.6745098, 0.6745098, 1)
+	const REROLL := Color(0, 0.6, 0.50980395, 1)
+
+	## Palette name -> color, for lookups by a name held in a variable.
+	## Prefer the constants above: they are checked at compile time.
+	const BY_NAME := {
+		"Outline": OUTLINE,
+		"PackOutline": PACKOUTLINE,
+		"Reroll": REROLL,
+	}
+
+	## Variant name -> {name -> color}, for reading a variant you are not on.
+	const VARIANTS := {
+		"Default": {
+			"Outline": Color(0.48235294, 0.18039216, 0.65882355, 1),
+			"PackOutline": Color(0.6745098, 0.6745098, 0.6745098, 1),
+			"Reroll": Color(0, 0.6, 0.50980395, 1),
+		},
+	}
+
+
+	static func color(p_name: StringName) -> Color:
+		var key := str(p_name)
+		if BY_NAME.has(key):
+			return BY_NAME[key]
+		push_warning("LivePalette.SHOP: no color named '%s'" % p_name)
+		return Color.WHITE
+
+
+	static func has_color(p_name: StringName) -> bool:
+		return BY_NAME.has(str(p_name))
+
+
+	## A color from a specific variant, falling back to the base variant.
+	static func color_in(p_variant: StringName, p_name: StringName) -> Color:
+		var table: Dictionary = VARIANTS.get(str(p_variant), {})
+		if table.has(str(p_name)):
+			return table[str(p_name)]
+		return color(p_name)
+
+
+	static func variant_names() -> PackedStringArray:
+		return PackedStringArray(VARIANTS.keys())
+
+
 ## From res://live_palette/techmod.tres.
 class TECHMOD:
 	## The constants are the "Default" variant; switching variants at runtime goes

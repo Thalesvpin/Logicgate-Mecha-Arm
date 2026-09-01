@@ -173,6 +173,7 @@ texture_normal = ExtResource("5_ylh2a")
 stretch_mode = 4
 
 [node name="CompactVersion" type="GridContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1818323556]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4

@@ -1,0 +1,13 @@
+extends Node
+class_name Trigger
+
+enum Type {
+	BATTLE_START,
+	BATTLE_END,
+	DAMAGE_TAKEN,
+	DAMAGE_DEALT,
+	CRITICAL_HIT,
+	ENEMY_DEFEATED,
+	TURN_START,
+	TURN_END,
+}

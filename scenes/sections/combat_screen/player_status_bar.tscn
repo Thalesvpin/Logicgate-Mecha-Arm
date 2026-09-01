@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://bxfhcehr6iuwn"]
 
+[ext_resource type="Script" uid="uid://00atl68lg1t0" path="res://scripts/player_status_bar.gd" id="1_bsxa0"]
 [ext_resource type="Texture2D" uid="uid://cdeyfpq76q6sw" path="res://assets/enemystatusbar_frame_PLACEHOLDER.png" id="1_mwn6y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvvff"]
@@ -27,6 +28,7 @@ font_size = 24
 bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
 border_width_left = 4
 border_width_top = 4
+border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 
@@ -71,6 +73,7 @@ grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 10
 theme_override_styles/panel = SubResource("StyleBoxFlat_vvvff")
+script = ExtResource("1_bsxa0")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1779848349]
 layout_mode = 2
@@ -130,7 +133,7 @@ label_settings = SubResource("LabelSettings_bsxa0")
 [node name="Health" type="Control" parent="." unique_id=1965056564]
 layout_mode = 2
 
-[node name="ProgressBar2" type="ProgressBar" parent="Health" unique_id=201692447]
+[node name="Healthbar" type="ProgressBar" parent="Health" unique_id=201692447]
 layout_mode = 0
 offset_left = 194.0
 offset_top = 61.0
@@ -141,11 +144,11 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_eofqg")
 value = 100.0
 show_percentage = false
 
-[node name="Label2" type="Label" parent="Health/ProgressBar2" unique_id=472786109]
+[node name="HealthLabel" type="Label" parent="Health/Healthbar" unique_id=472786109]
 layout_mode = 0
-offset_left = 115.0
+offset_left = 130.0
 offset_top = 3.0
-offset_right = 170.0
+offset_right = 185.0
 offset_bottom = 37.0
 text = "1000"
 label_settings = SubResource("LabelSettings_mwn6y")

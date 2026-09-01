@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://d01w178fktqku"]
+
+[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="1_8xwfd"]
+[ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_2wkne"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxj5a"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.84705883, 0, 1, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+metadata/_live_palette_bindings = {
+"border_color": "lcvmx"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b6vwg"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.84705883, 0, 1, 1)
+metadata/_live_palette_bindings = {
+"border_color": "lcvmx"
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_xehhd"]
+font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ptto7"]
+bg_color = Color(0.6745098, 0.6745098, 0.6745098, 0)
+border_width_top = 3
+border_width_bottom = 3
+border_color = Color(0.84705883, 0, 1, 1)
+metadata/_live_palette_bindings = {
+"border_color": "lcvmx"
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_nqthw"]
+font_size = 30
+font_color = Color(0.84705883, 0, 1, 1)
+metadata/_live_palette_bindings = {
+"font_color": "lcvmx"
+}
+
+[node name="ElementalCard" type="PanelContainer" unique_id=1025698057]
+custom_minimum_size = Vector2(200, 300)
+custom_maximum_size = Vector2(200, 300)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fxj5a")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1097779520]
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer" unique_id=525632801]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_b6vwg")
+
+[node name="Price" type="Label" parent="VBoxContainer/PanelContainer2" unique_id=110228847]
+layout_mode = 2
+text = "$200"
+label_settings = SubResource("LabelSettings_xehhd")
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1641365322]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ptto7")
+
+[node name="Type" type="Label" parent="VBoxContainer/PanelContainer" unique_id=1050307941]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "ELEMENTAL"
+label_settings = SubResource("LabelSettings_nqthw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer" unique_id=1375076411]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("1_8xwfd")
+stretch_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer" unique_id=1205518319]
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("2_2wkne")

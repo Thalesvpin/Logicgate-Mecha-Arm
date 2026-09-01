@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://cchi80u45kivh"]
 
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_m31pt"]
-[ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/modifier_card.tscn" id="2_0j75a"]
-[ext_resource type="Resource" uid="uid://dd06rohyycdlt" path="res://resources/biohack_test.tres" id="4_snh1h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0, 0, 0, 1)
@@ -90,19 +88,3 @@ horizontal_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="ModifierCard" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("2_0j75a")]
-layout_mode = 2
-resource = ExtResource("4_snh1h")
-
-[node name="ModifierCard2" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=929467608 instance=ExtResource("2_0j75a")]
-layout_mode = 2
-resource = ExtResource("4_snh1h")
-
-[node name="ModifierCard3" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=2023710791 instance=ExtResource("2_0j75a")]
-layout_mode = 2
-resource = ExtResource("4_snh1h")
-
-[node name="ModifierCard4" parent="MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer" unique_id=1006992480 instance=ExtResource("2_0j75a")]
-layout_mode = 2
-resource = ExtResource("4_snh1h")

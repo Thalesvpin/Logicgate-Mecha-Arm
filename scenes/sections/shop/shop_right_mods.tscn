@@ -1,0 +1,168 @@
+[gd_scene format=3 uid="uid://bap1wppk0gxk1"]
+
+[ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/modifier_card.tscn" id="1_mg6di"]
+[ext_resource type="Resource" uid="uid://dd06rohyycdlt" path="res://resources/biohack_test.tres" id="2_x303r"]
+[ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="3_mhth8"]
+[ext_resource type="Texture2D" uid="uid://4863qjfn8thl" path="res://assets/shop_mod_bracket.png" id="4_cigdh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjqua"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_bottom = 3
+border_color = Color(1, 0.5019608, 0, 1)
+corner_radius_top_left = 15
+corner_radius_bottom_left = 15
+metadata/_live_palette_bindings = {
+"border_color": "q7jwe"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.105882354, 0.60784316, 0.81960785, 1)
+metadata/_live_palette_bindings = {
+"border_color": "rsjlv"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q26rv"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_bottom = 3
+border_color = Color(0.84705883, 0, 1, 1)
+corner_radius_top_left = 15
+corner_radius_bottom_left = 15
+metadata/_live_palette_bindings = {
+"border_color": "lcvmx"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tx2gb"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0.8627451, 0.05882353, 1)
+metadata/_live_palette_bindings = {
+"border_color": "ddbxb"
+}
+
+[node name="ShopRightMods" type="PanelContainer" unique_id=817944177]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -416.0
+offset_bottom = 394.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1755067959]
+layout_mode = 2
+
+[node name="Bracket" type="TextureRect" parent="HBoxContainer" unique_id=459778703]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1, 0.8)
+texture = ExtResource("4_cigdh")
+expand_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1964218931]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TopMod" type="PanelContainer" parent="HBoxContainer/VBoxContainer" unique_id=1445759604]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/TopMod" unique_id=1800008178]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer" unique_id=724395233]
+custom_minimum_size = Vector2(325, 0)
+custom_maximum_size = Vector2(325, -1)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ModifierCard" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("1_mg6di")]
+layout_mode = 2
+resource = ExtResource("2_x303r")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer" unique_id=688399323]
+layout_mode = 2
+
+[node name="BuyBtn" type="TextureButton" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=572361647]
+layout_mode = 2
+texture_normal = ExtResource("3_mhth8")
+
+[node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1266093395]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=462555826]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer" unique_id=2049771558]
+layout_mode = 2
+text = "$500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=603196838]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BotMod" type="PanelContainer" parent="HBoxContainer/VBoxContainer" unique_id=177601462]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_q26rv")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/BotMod" unique_id=408608074]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer" unique_id=921968128]
+custom_minimum_size = Vector2(280, 0)
+custom_maximum_size = Vector2(280, -1)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ModifierCard" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer" unique_id=264805819 instance=ExtResource("1_mg6di")]
+layout_mode = 2
+resource = ExtResource("2_x303r")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer" unique_id=489968335]
+layout_mode = 2
+
+[node name="BuyBtn" type="TextureButton" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=97161656]
+layout_mode = 2
+texture_normal = ExtResource("3_mhth8")
+
+[node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=342980313]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=222231241]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tx2gb")
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer" unique_id=1108201951]
+layout_mode = 2
+text = "$500"
+horizontal_alignment = 1
+vertical_alignment = 1

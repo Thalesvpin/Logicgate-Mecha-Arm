@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="LivePaletteData" format=3 uid="uid://dxof8scrysiuw"]
+
+[ext_resource type="Script" uid="uid://dsi5a626rvsik" path="res://addons/live_palette/palette.gd" id="1_bglhr"]
+
+[resource]
+script = ExtResource("1_bglhr")
+entries = Array[Dictionary]([{
+"colors": {
+"Default": Color(0.48235294, 0.18039216, 0.65882355, 1)
+},
+"id": "fxmsn",
+"name": "Outline"
+}, {
+"colors": {
+"Default": Color(0.6745098, 0.6745098, 0.6745098, 1)
+},
+"id": "2pjy5",
+"name": "PackOutline"
+}, {
+"colors": {
+"Default": Color(0, 0.6, 0.50980395, 1)
+},
+"id": "cqbp4",
+"name": "Reroll"
+}])
+variants = PackedStringArray("Default")

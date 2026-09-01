@@ -39,11 +39,7 @@ func _ready() -> void:
 	is_loaded = true
 	load_resource()
 	apply_resource()
-	
-	
-	#modifier_texture.texture = texture
-	#modifier_name_label.text = _name
-	#rarity_texture.texture = 
+	_on_resized()
 
 func load_resource() -> void:
 	type = resource.type
@@ -53,7 +49,6 @@ func load_resource() -> void:
 	is_consumable = resource.consumable
 	uses_amount = resource.uses_amount
 	texture = resource.texture
-	
 
 func apply_resource() -> void:
 	add_theme_stylebox_override("panel", BIOHACK_BG_STYLEBOX_FLAT if type else TECHMOD_BG_STYLEBOX_FLAT)

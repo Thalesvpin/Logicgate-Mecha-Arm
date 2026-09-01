@@ -16,6 +16,7 @@ var gates_selector
 var input_manager
 var output_manager
 var combat_screen
+var run_stats
 
 #control variables
 var sell_gate: bool = false

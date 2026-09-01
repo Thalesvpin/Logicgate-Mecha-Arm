@@ -1,0 +1,17 @@
+extends ModifierEffect
+class_name HealEffect
+
+@export var amount: int = 0:
+	set(value):
+		amount = max(value, 0)
+
+func apply() -> void:
+	var result = add_to_player_stats(Stats.List.CURRENT_HEALTH, amount, greater, Global.run_stats.player_stats[Stats.List.MAX_HEALTH])
+	#var result = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH] + amount
+	#if result > Global.run_stats.player_stats[Stats.List.MAX_HEALTH]:
+		#result = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
+	#Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH] = result
+	EventBus.healed.emit(result)
+
+func revert() -> void:
+	pass
