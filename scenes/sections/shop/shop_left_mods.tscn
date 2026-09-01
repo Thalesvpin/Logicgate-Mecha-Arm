@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/modifier_card.tscn" id="1_qqgo0"]
 [ext_resource type="Resource" uid="uid://dd06rohyycdlt" path="res://resources/biohack_test.tres" id="2_7vs21"]
+[ext_resource type="Resource" uid="uid://3gmr422layic" path="res://resources/techmod_test.tres" id="2_fxc5n"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="3_fxc5n"]
 [ext_resource type="Texture2D" uid="uid://4863qjfn8thl" path="res://assets/shop_mod_bracket.png" id="4_p1i3i"]
 
@@ -80,14 +81,14 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer" unique_id=724395233]
-custom_minimum_size = Vector2(325, 0)
-custom_maximum_size = Vector2(325, -1)
+custom_minimum_size = Vector2(0, 0)
+custom_maximum_size = Vector2(-1, -1)
 layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="ModifierCard" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("1_qqgo0")]
 layout_mode = 2
-resource = ExtResource("2_7vs21")
+resource = ExtResource("2_fxc5n")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer" unique_id=688399323]
 layout_mode = 2
@@ -126,8 +127,8 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer" unique_id=921968128]
-custom_minimum_size = Vector2(280, 0)
-custom_maximum_size = Vector2(280, -1)
+custom_minimum_size = Vector2(0, 0)
+custom_maximum_size = Vector2(-1, -1)
 layout_mode = 2
 theme_override_constants/separation = 10
 
