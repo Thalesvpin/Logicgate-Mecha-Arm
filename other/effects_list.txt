@@ -1,0 +1,104 @@
+Effects:
+-add tokens
+-add max tokens
+-duplicate pulse (qual)
+-gate cost reduction (random gate) 
+========================== (who)
+-add dmg percent
+-add dmg flat
+-add crit dmg flat
+-add crit dmg percent
+-add crit chance flat
+-add crit chance percent
+-set crit chance
+-add heal flat
+-add heal percent
+-add self dmg flat
+-add self dmg percent
+-add shield repair flat
+-add shield repair percent
+-heal
+-repair shield
+-add shield mitigation percent
+-add shield count
+-add max shield count
+-add shield durability percent
+-add shield durability flat
+-add max health percent
+-add max health flat
+-add shield dmg percent
+-add elemental lvl percent
+-add elemental lvl flat
+=================================
+-add max tech mod amount
+-add max bio hack amount
+-copy tech mod effect
+-copy bio hack effect
+-enable store duplicates (do q ja tem equipado)
+-add tech mod effectiveness percet
+-add bio hack effectiveness percet
+-add tech mod/bio hack (where)
+-remove tech mod/bio hack
+-add corruption
+-remove all corruption
+-skip turn (who)
+-add action
+-remove action
+-disable action
+-charge charged attack
+-add store item spwan chance (raridade/corrompido/lvl)
+-add store item price
+-set store item price
+-add ante
+-add consumable count
+-duplicate consumable effect
+-activate elemental effect (qual)
+-add elemental burst effectiveness percent
+-set output value (qual e valor)
+-lock output value (qual)
+-add action effectiveness percent
+-add action per turn (who)
+-add pack item amount
+-add action binary trigger
+-add pack pickable rewards amount
+-add enemy shield mitigation
+-add dmg bonus against boss/non-boss
+-add buff (qual e quem)
+-add ascension module item spawn chance (raridade/corrompido/lvl)
+-add ascension module item amount
+-add ascension module pickable rewards amount
+-add money amount flat
+-add money amount percent
+-add special hability charge
+-add shield additional dmg percent
+-disable tech mod/bio hack
+-mark enemy
+-skip battle
+-add tech mod/bio hack sell value
+-change battle modifier
+-reroll boss
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -101,14 +101,6 @@ resource = ExtResource("2_x303r")
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer" unique_id=688399323]
 layout_mode = 2
 
-[node name="BuyBtn" type="TextureButton" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=572361647]
-layout_mode = 2
-texture_normal = ExtResource("3_mhth8")
-
-[node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1266093395]
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=462555826]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
@@ -118,6 +110,14 @@ layout_mode = 2
 text = "$500"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1266093395]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BuyBtn" type="TextureButton" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=572361647]
+layout_mode = 2
+texture_normal = ExtResource("3_mhth8")
 
 [node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainer" unique_id=603196838]
 layout_mode = 2
@@ -145,14 +145,6 @@ resource = ExtResource("2_x303r")
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer" unique_id=489968335]
 layout_mode = 2
 
-[node name="BuyBtn" type="TextureButton" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=97161656]
-layout_mode = 2
-texture_normal = ExtResource("3_mhth8")
-
-[node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=342980313]
-layout_mode = 2
-size_flags_horizontal = 3
-
 [node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=222231241]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tx2gb")
@@ -162,3 +154,11 @@ layout_mode = 2
 text = "$500"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=342980313]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BuyBtn" type="TextureButton" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer/VBoxContainer/HBoxContainer" unique_id=97161656]
+layout_mode = 2
+texture_normal = ExtResource("3_mhth8")

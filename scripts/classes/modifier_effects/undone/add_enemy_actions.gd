@@ -1,8 +1,8 @@
 extends ModifierEffect
-class_name 
+#class_name 
 
-func apply(context) -> void:
+func apply() -> void:
 	pass
 
-func revert(context) -> void:
+func revert() -> void:
 	pass

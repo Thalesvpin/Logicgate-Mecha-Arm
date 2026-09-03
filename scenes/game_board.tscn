@@ -118,9 +118,8 @@ size_flags_vertical = 3
 
 [node name="Shop" parent="VBoxContainer/VSplitContainer/baixo" unique_id=669677562 instance=ExtResource("6_c1to4")]
 layout_mode = 1
-offset_left = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
+offset_right = 53.0
+offset_bottom = -108.0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/baixo" unique_id=67540516]
 visible = false

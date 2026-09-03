@@ -1,0 +1,40 @@
+Triggers:
+-start battle (normal/boss)
+-end battle (normal/boss)
+-submit circuit
+-consumable activation
+-take damage (ou enemy attack)
+-turn start (who)
+-turn end (who)
+-tech mod/bio hack activation
+-cause dmg
+-enemy killed
+-execute action
+-self dmg
+-shield break
+-buy item
+-crit dmg
+-charged attack
+-attack
+-elemental activation
+-elemental burst activation
+-open pack
+-stat upgraded
+-enemy elemental activation
+-boss killed
+-special hability activation
+-player death
+-health change
+-sell tech mod/bio hack
+-shield damage
+-change money
+-change tech mod/bio hack amount
+
+
+
+
+
+
+
+
+

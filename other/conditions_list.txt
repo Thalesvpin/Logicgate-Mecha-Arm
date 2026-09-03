@@ -1,0 +1,67 @@
+Conditions:
+-gates count
+-only one time per battle
+-chance
+-boss battle
+-normal battle
+-tech mod count
+-bio hack count
+-not consumable
+-consumable
+-not corrupted
+-corrupted
+-rarity count
+-rarity average
+-highest rarity
+-lowest rarity
+-augmentable (tech mod + bio hack)
+-activation count
+-battles ended count
+-consecutive turns
+-turn count (numero ou "next turn")
+-offensive action
+-inoffensive action
+-offensive action count
+-inoffensive action count
+-action count (qual)
+-don't take dmg (who)
+-shield count
+-active shield count
+-items bought count (per store or per run)
+-owned elementals
+-elemental activation count
+-enemy killed
+-output digit (qual e valor)
+-output digit count (valor)
+-output value count
+-valid output count
+-enemies attacked count
+-actions per turn amount
+-attacks taken count (who e quanto)
+-pulse count
+-unique gate count
+-individual gate count (qual e quanto)
+-output (equal to)
+-turn end
+-boss reward
+-kill count (battle and run)
+-special hability charged
+-enemy current health (greater/lesser/specific)
+-charged attack charge (percent, amount)
+-health amount percent
+-health amount flat
+-item rarity
+-tech mod/bio hack free slot count
+-marked enemy
+-alive enemy count
+
+
+
+
+
+
+
+
+
+
+
