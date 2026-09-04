@@ -1,5 +1,5 @@
 extends ModifierCondition
 class_name NoneCondition
 
-func is_met(context) -> bool:
+func is_met() -> bool:
 	return true

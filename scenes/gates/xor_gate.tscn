@@ -13,7 +13,7 @@ size = Vector2(128, 128)
 
 [node name="XorGate" type="Area2D" unique_id=798829331]
 script = ExtResource("1_po5il")
-type = "XOR"
+type = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
 position = Vector2(0, 3)

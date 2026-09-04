@@ -1,5 +1,5 @@
 extends ModifierEffect
-class_name AddCriticChance
+class_name AddCriticChanceFlat
 
 ##To subtract, insert a negative value
 @export var amount: float = 0.0

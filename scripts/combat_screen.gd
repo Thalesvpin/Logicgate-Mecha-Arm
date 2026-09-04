@@ -25,6 +25,8 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("test"):
 		swap_enemy(_enemy, Position.LEFT)
+	if event.is_action_pressed("test2"):
+		Global.circuit_editor.sandbox.game_output_manager.precalculate_output()
 
 func take_damage(value: float, enemy, mitigate: bool = true):
 	var min = 0
@@ -86,9 +88,9 @@ func enemy_heal_shield() -> void:
 #endregion
 
 func connect_action_signals(circuit_editor: PanelContainer) -> void:
-	circuit_editor.attack.connect(player_attack)
-	circuit_editor.charged_attack.connect(player_charged_attack)
-	circuit_editor.charge_charged_attack.connect(player_charge_charged_attack)
-	circuit_editor.self_damage.connect(player_self_damage)
-	circuit_editor.heal_health.connect(player_heal_health)
-	circuit_editor.heal_shield.connect(player_heal_shield)
+	EventBus.attacked.connect(player_attack)
+	EventBus.charged_attack_used.connect(player_charged_attack)
+	EventBus.charged_charged_attack.connect(player_charge_charged_attack)
+	EventBus.self_damage.connect(player_self_damage)
+	EventBus.healed.connect(player_heal_health)
+	EventBus.repaired_shield.connect(player_heal_shield)

@@ -29,7 +29,8 @@ Triggers:
 -shield damage
 -change money
 -change tech mod/bio hack amount
-
+-gate added to sandbox (qual)
+-gate removed from sandbox (qual)
 
 
 

@@ -13,7 +13,7 @@ size = Vector2(128, 128)
 
 [node name="NandGate" type="Area2D" unique_id=798829331]
 script = ExtResource("1_34kp8")
-type = "NAND"
+type = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
 scale = Vector2(0.8400009, 1.5599998)

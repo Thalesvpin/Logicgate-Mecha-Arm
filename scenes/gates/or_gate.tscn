@@ -15,7 +15,7 @@ size = Vector2(128, 128)
 
 [node name="OrGate" type="Area2D" unique_id=1665822000]
 script = ExtResource("1_mhkjh")
-type = "OR"
+type = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1482000578]
 scale = Vector2(0.43097642, 0.83660126)

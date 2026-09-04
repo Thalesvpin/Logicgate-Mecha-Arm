@@ -24,6 +24,7 @@ func submit() -> void:
 
 func generate_execution_sequence() -> void:
 	var list = Global.unique_random_list(execution_labels.size(), 4)
+	Global.circuit_editor.execution_sequence = list
 	
 	for i in execution_labels.size():
 		execution_labels[i].text = '%04d' % Global.dec_to_bin(list[i])

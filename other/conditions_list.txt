@@ -54,6 +54,7 @@ Conditions:
 -tech mod/bio hack free slot count
 -marked enemy
 -alive enemy count
+-times happened count
 
 
 

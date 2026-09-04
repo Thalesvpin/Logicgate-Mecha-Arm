@@ -117,12 +117,11 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Shop" parent="VBoxContainer/VSplitContainer/baixo" unique_id=669677562 instance=ExtResource("6_c1to4")]
+visible = false
 layout_mode = 1
-offset_right = 53.0
 offset_bottom = -108.0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/baixo" unique_id=67540516]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -150,6 +149,16 @@ size_flags_horizontal = 8
 
 [node name="RunStats" type="Node" parent="." unique_id=855585272]
 script = ExtResource("9_cwqdw")
+max_health = null
+base_heal = null
+max_shield = null
+max_charged_attack_charges = null
+attack_damage = null
+crit_chance = null
+crit_multiplier = null
+mitigation_percent = null
+max_tokens_amount = null
+charged_attack_max_charges = null
 
 [node name="ModifierManager" type="Node" parent="." unique_id=1876090002]
 script = ExtResource("10_04ve2")

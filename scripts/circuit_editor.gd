@@ -9,6 +9,7 @@ extends PanelContainer
 @onready var shield_regen: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen
 @onready var self_damage_container: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage
 
+var execution_sequence: Array
 var all_gate_inputs: Array
 var all_gate_outputs: Array
 var hovered_pin: Area2D
@@ -17,25 +18,17 @@ var action_list: Dictionary={
 	'charged_attack': 0,
 	'charge_charged_attack': 0,
 	'self_damage': 0,
-	'heal_health': 0,
-	'heal_shield': 0
+	'heal': 0,
+	'repair_shield': 0
 }
 var action_signals: Dictionary = {
-	'attack': attack,
-	'charged_attack': charged_attack,
-	'charge_charged_attack': charge_charged_attack,
-	'self_damage': self_damage,
-	'heal_health': heal_health,
-	'heal_shield': heal_shield
-	
+	'attack': EventBus.attacked,
+	'charged_attack': EventBus.charged_attack_used,
+	'charge_charged_attack': EventBus.charged_charged_attack,
+	'self_damage': EventBus.self_damage,
+	'heal': EventBus.healed,
+	'repair_shield': EventBus.repaired_shield
 }
-
-signal attack
-signal charged_attack
-signal charge_charged_attack
-signal self_damage
-signal heal_health
-signal heal_shield
 
 func _ready() -> void:
 	Global.circuit_editor = self
@@ -48,7 +41,7 @@ func generate_action_list() -> void:
 		aux += 1
 	
 	attack_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list['attack'])
-	shield_regen.get_child(1).text = '%04d' % Global.dec_to_bin(action_list['heal_shield'])
+	shield_regen.get_child(1).text = '%04d' % Global.dec_to_bin(action_list['repair_shield'])
 	self_damage_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list['self_damage'])
 
 func compare_output(output: int) -> void:

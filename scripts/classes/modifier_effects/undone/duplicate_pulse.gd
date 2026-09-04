@@ -1,5 +1,5 @@
 extends ModifierEffect
-#class_name 
+class_name DuplicatePulseEffect
 
 func apply() -> void:
 	pass

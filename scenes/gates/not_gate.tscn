@@ -13,7 +13,7 @@ size = Vector2(128, 128)
 
 [node name="NotGate" type="Area2D" unique_id=798829331]
 script = ExtResource("1_2kvkf")
-type = "NOT"
+type = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
 scale = Vector2(0.68, 1.12)

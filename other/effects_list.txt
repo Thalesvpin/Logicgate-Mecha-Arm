@@ -47,7 +47,8 @@ Effects:
 -disable action
 -charge charged attack
 -add store item spwan chance (raridade/corrompido/lvl)
--add store item price
+-add store item price flat
+-add store item price percent
 -set store item price
 -add ante
 -add consumable count

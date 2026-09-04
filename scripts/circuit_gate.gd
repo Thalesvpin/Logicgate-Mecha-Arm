@@ -1,7 +1,6 @@
 extends Area2D
 
-@export_enum("AND", "OR", "NOT", "NAND", "NOR", "XOR", "XNOR", "DEF") var type: String = "DEF"
-#@export var gate_scene : PackedScene
+@export var type: Gates.Type
 const gate_scene := preload("uid://vyyk4mr2crhe")
 @onready var v_box_container: VBoxContainer = $VBoxContainer
 @onready var output: Area2D = $Output
@@ -25,6 +24,7 @@ var original_scale: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	map_pins()
+	EventBus.gate_added_to_sandbox.emit(type)
 
 func _process(delta):
 	output.set_active(calculate_output())
@@ -45,8 +45,7 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 func open_radial_menu() -> void:
 	var radial_menu = RADIAL_MENU.instantiate()
 	radial_menu.set_items(Global.gate_options)
-	print(str(type))
-	radial_menu.set_center_ring_text(str(type))
+	radial_menu.set_center_ring_text(Gates.Type.keys()[type])
 	radial_menu.item_selected.connect(handle_radial_menu_selection)
 	get_tree().current_scene.add_child(radial_menu)
 	var m = get_tree().current_scene.get_global_mouse_position()
@@ -103,53 +102,81 @@ func map_pins():
 	input_nodes = connectors.duplicate()
 	connectors.append(output)
 
+func get_bit_from_execution_sequence(execution_number: int, bit_idx: int) -> bool:
+	var bin = Global.dec_to_bin(execution_number)
+	return bool(int(str(bin).substr(bit_idx)))
+
+func precalculate_output() -> Array[bool]:
+	var inputs: Array[Array]= []
+	var sequence_bits: Array[int]
+	for inp in input_nodes:
+		if inp.connected_gate != null:
+			if inp.connected_gate.owner.owner.name.to_lower() == "gameinputmanager":
+				var sequence = Global.circuit_editor.execution_sequence
+				sequence_bits = []
+				for ex in sequence:
+					sequence_bits.append(get_bit_from_execution_sequence(ex, inp.connected_gate.owner.get_index()))
+				inputs.append(sequence_bits.duplicate())
+			else:
+				inputs.append(inp.connected_gate.owner.preculculate_output())
+	
+	var parcial_result := []
+	var result := []
+	for bit in inputs[0].size():
+		for i in inputs:
+			parcial_result.append(i[bit])
+		result.append(apply_gate_logic(parcial_result))
+	return result
+
 func calculate_output() -> bool:
 	input_values = []
 	for inp in input_nodes:
 		if inp.connected_gate != null:
 			input_values.append(inp.connected_gate.is_active)
-	
-	match type.to_upper():
-		"AND":
-			if !input_values:
+	return apply_gate_logic(input_values)
+
+func apply_gate_logic(_input_values: Array) -> bool:
+	match type:
+		Gates.Type.AND:
+			if !_input_values:
 				return false
-			for i in input_values:
+			for i in _input_values:
 				if !i:
 					return false
 			return true
-		"OR":
-			for i in input_values:
+		Gates.Type.OR:
+			for i in _input_values:
 				if i:
 					return true
 			return false
-		"NOT":
-			if !input_values:
+		Gates.Type.NOT:
+			if !_input_values:
 				return true
-			return !input_values[0]
-		"NAND":
-			if !input_values:
+			return !_input_values[0]
+		Gates.Type.NAND:
+			if !_input_values:
 				return true
-			for i in input_values:
+			for i in _input_values:
 				if !i:
 					return true
 			return false
-		"NOR":
-			for i in input_values:
+		Gates.Type.NOR:
+			for i in _input_values:
 				if i:
 					return false
 			return true
-		"XOR":
+		Gates.Type.XOR:
 			var count = 0
-			for i in input_values:
+			for i in _input_values:
 				if i:
 					count += 1
 			
 			if count > 1:
 				return false
 			return true
-		"XNOR":
+		Gates.Type.XNOR:
 			var count = 0
-			for i in input_values:
+			for i in _input_values:
 				if i:
 					count += 1
 			
@@ -161,7 +188,6 @@ func calculate_output() -> bool:
 
 func disconnect_wires() -> void:
 	for wire in connected_wires:
-		print('AA: ', wire)
 		if self == wire.point_a.owner:
 			wire.point_b.connected_gate = null
 			if wire.point_b.owner is Area2D:
@@ -180,6 +206,7 @@ func disconnect_wires() -> void:
 
 func delete_gate() -> void:
 	disconnect_wires()
+	EventBus.gate_removed_from_sandbox.emit(type)
 	queue_free()
 
 func handle_radial_menu_selection(id: String, position: Vector2):

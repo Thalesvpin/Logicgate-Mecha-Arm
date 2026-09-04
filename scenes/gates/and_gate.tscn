@@ -13,7 +13,6 @@ size = Vector2(128, 128)
 
 [node name="AndGate" type="Area2D" unique_id=798829331]
 script = ExtResource("1_pwm32")
-type = "AND"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
 scale = Vector2(0.27999997, 0.64)

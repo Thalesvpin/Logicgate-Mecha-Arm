@@ -22,7 +22,7 @@ var run_stats
 var sell_gate: bool = false
 var seed: int = 0
 var random = PcgRandom.new()
-
+var execution_sequence: Array[int]
 enum Rarity {COMMON, RARE, ULTRA_RARE, LEGENDARY}
 signal _null
 

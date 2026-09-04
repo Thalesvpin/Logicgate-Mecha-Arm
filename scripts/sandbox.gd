@@ -13,6 +13,14 @@ var cursor_in: bool = false
 var point_a: Node2D = null
 var point_b: Node2D = null
 var _line: Node2D = null
+var and_count: int = 0
+var or_count: int = 0
+var not_count: int = 0
+var nand_count: int = 0
+var nor_count: int = 0
+var xor_count: int = 0
+var xnor_count: int = 0
+var total_gates_count: int = 0
 
 func _ready() -> void:
 	var inputs = game_input_manager.get_children()
@@ -23,6 +31,44 @@ func _ready() -> void:
 	for output in outputs:
 		if output.get_class() == "Control":
 			output.get_child(0).new_wire.connect(trace_line)
+	EventBus.gate_added_to_sandbox.connect(gate_added)
+	EventBus.gate_removed_from_sandbox.connect(gate_removed)
+
+func gate_added(type: Gates.Type) -> void:
+	match type:
+		Gates.Type.AND:
+			and_count += 1
+		Gates.Type.OR:
+			or_count += 1
+		Gates.Type.NOT:
+			not_count += 1
+		Gates.Type.NAND:
+			nand_count += 1
+		Gates.Type.NOR:
+			nor_count += 1
+		Gates.Type.XOR:
+			xor_count += 1
+		Gates.Type.XNOR:
+			xnor_count += 1
+	total_gates_count += 1
+
+func gate_removed(type: Gates.Type) -> void:
+	match type:
+		Gates.Type.AND:
+			and_count -= 1
+		Gates.Type.OR:
+			or_count -= 1
+		Gates.Type.NOT:
+			not_count -= 1
+		Gates.Type.NAND:
+			nand_count -= 1
+		Gates.Type.NOR:
+			nor_count -= 1
+		Gates.Type.XOR:
+			xor_count -= 1
+		Gates.Type.XNOR:
+			xnor_count -= 1
+	total_gates_count -= 1
 
 func trace_line(point):
 	if !_line:

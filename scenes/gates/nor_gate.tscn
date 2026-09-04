@@ -13,7 +13,7 @@ size = Vector2(128, 128)
 
 [node name="NorGate" type="Area2D" unique_id=798829331]
 script = ExtResource("1_bkjio")
-type = "NOR"
+type = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
 scale = Vector2(0.25, 0.51)
