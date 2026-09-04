@@ -38,16 +38,16 @@ func _on_mouse_exited() -> void:
 
 func get_bit_from_execution_sequence(execution_number: int, bit_idx: int) -> bool:
 	var bin = Global.dec_to_bin(execution_number)
-	print('bin: ', execution_number, ' - ', bin)
-	return bool(int(('%04d' % bin).substr(bit_idx)))
-	#return bool(int('%04d' % str(bin).substr(bit_idx)))
+	return bool(int(('%04d' % bin).substr(bit_idx,1)))
 
 func precalculate_output():
 	if connected_gate.owner.owner && connected_gate.owner.owner.name.to_lower() == "gameinputmanager":
 		var sequence = Global.circuit_editor.execution_sequence
+		print('sequence: ', sequence)
 		var sequence_bits = []
 		for ex in sequence:
 			sequence_bits.append(get_bit_from_execution_sequence(ex, connected_gate.owner.get_index()))
+		print('retornei: ', sequence_bits)
 		return sequence_bits
 	else:
 		return connected_gate.owner.precalculate_output()

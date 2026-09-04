@@ -25,8 +25,6 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("test"):
 		swap_enemy(_enemy, Position.LEFT)
-	if event.is_action_pressed("test2"):
-		Global.circuit_editor.sandbox.game_output_manager.precalculate_output()
 
 func take_damage(value: float, enemy, mitigate: bool = true):
 	var min = 0

@@ -104,25 +104,26 @@ func map_pins():
 
 func get_bit_from_execution_sequence(execution_number: int, bit_idx: int) -> bool:
 	var bin = Global.dec_to_bin(execution_number)
-	return bool(int(str(bin).substr(bit_idx)))
+	return bool(int(str(bin).substr(bit_idx, 1)))
 
 func precalculate_output() -> Array[bool]:
 	var inputs: Array[Array]= []
 	var sequence_bits: Array[int]
 	for inp in input_nodes:
 		if inp.connected_gate != null:
-			if inp.connected_gate.owner.owner.name.to_lower() == "gameinputmanager":
+			if inp.connected_gate.owner.owner && inp.connected_gate.owner.owner.name.to_lower() == "gameinputmanager":
 				var sequence = Global.circuit_editor.execution_sequence
 				sequence_bits = []
 				for ex in sequence:
-					sequence_bits.append(get_bit_from_execution_sequence(ex, inp.connected_gate.owner.get_index()))
+					sequence_bits.append(!!get_bit_from_execution_sequence(ex, inp.connected_gate.owner.get_index()))
 				inputs.append(sequence_bits.duplicate())
 			else:
-				inputs.append(inp.connected_gate.owner.preculculate_output())
+				inputs.append(inp.connected_gate.owner.precalculate_output())
 	
 	var parcial_result := []
 	var result := []
 	for bit in inputs[0].size():
+		parcial_result = []
 		for i in inputs:
 			parcial_result.append(i[bit])
 		result.append(apply_gate_logic(parcial_result))
