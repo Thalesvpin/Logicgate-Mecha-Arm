@@ -70,7 +70,7 @@ func player_self_damage() -> void:
 func player_heal_health() -> void:
 	pass
 
-func player_heal_shield() -> void:
+func player_repair_shield() -> void:
 	pass
 #endregion
 
@@ -91,4 +91,4 @@ func connect_action_signals(circuit_editor: PanelContainer) -> void:
 	EventBus.charged_charged_attack.connect(player_charge_charged_attack)
 	EventBus.self_damage.connect(player_self_damage)
 	EventBus.healed.connect(player_heal_health)
-	EventBus.repaired_shield.connect(player_heal_shield)
+	EventBus.repaired_shield.connect(player_repair_shield)

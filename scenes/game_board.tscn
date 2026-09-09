@@ -48,26 +48,6 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qmxhh")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer" unique_id=799160054]
-layout_mode = 2
-
-[node name="Label6" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=898661847]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "  _ ANTE 4 - BATALHA DIFÍCIL (15) - Stake 3 ℹ"
-label_settings = SubResource("LabelSettings_qmxhh")
-
-[node name="GameName" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=1963108977]
-layout_mode = 2
-text = "Logicgate Mecha Arm v1.2.4  ● "
-label_settings = ExtResource("1_cmh4g")
-
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=2142673573]
-layout_mode = 2
-text = "Tempo da run: 01:15:42 | BATERIA: 69% | hora: 22:48:13 | fps: 120   "
-label_settings = ExtResource("1_cmh4g")
-uppercase = true
-
 [node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer" unique_id=1589264868]
 propagate_maximum_size = false
 layout_mode = 2
@@ -146,6 +126,26 @@ layout_mode = 2
 [node name="SandboxActionPanel" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer/HBoxContainer" unique_id=1689072548 instance=ExtResource("6_qmxhh")]
 layout_mode = 2
 size_flags_horizontal = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=799160054]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=898661847]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "  _ ANTE 4 - BATALHA DIFÍCIL (15) - Stake 3 ℹ"
+label_settings = SubResource("LabelSettings_qmxhh")
+
+[node name="GameName" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1963108977]
+layout_mode = 2
+text = "Logicgate Mecha Arm v1.2.4  ● "
+label_settings = ExtResource("1_cmh4g")
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=2142673573]
+layout_mode = 2
+text = "Tempo da run: 01:15:42 | BATERIA: 69% | hora: 22:48:13 | fps: 120   "
+label_settings = ExtResource("1_cmh4g")
+uppercase = true
 
 [node name="RunStats" type="Node" parent="." unique_id=855585272]
 script = ExtResource("9_cwqdw")

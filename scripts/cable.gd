@@ -25,13 +25,17 @@ const LINE_POINT_C = preload("uid://d3cka70ni1duu")
 @export var width: float = 4.0
 #@export var color: Color = Color(0.65, 0.35, 0.9)
 
+var custom_color = null
+var inactive_color = Color('red')
+var active_color = Color('green')
+
 var _line: Line2D
 var is_active: bool = false
 
 func _ready() -> void:
 	_line = Line2D.new()
 	_line.width = width
-	_line.default_color = Color('red')
+	_line.default_color = inactive_color
 	#_line.default_color = Color(randf(),randf(),randf())
 	_line.joint_mode = Line2D.LINE_JOINT_ROUND
 	_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
@@ -116,10 +120,18 @@ func check_input_value() -> void:
 	set_active(point_a.is_active)
 	
 	if is_active:
-		_line.default_color = Color("green")
+		_line.default_color = active_color
 	if !is_active:
-		_line.default_color = Color("red")
-	
+		_line.default_color = inactive_color
+	if custom_color != null:
+		_line.default_color = custom_color
+
+func change_color(color: Color):
+	custom_color = color
+
+func default_color():
+	custom_color = null
+
 func dragged_point_position(connector: Node2D):
 	var gate := DragManager.original_node as Node2D
 	var sandbox := get_tree().current_scene.find_child("Sandbox") as Node2D

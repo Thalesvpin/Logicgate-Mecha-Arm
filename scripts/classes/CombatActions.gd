@@ -1,0 +1,23 @@
+extends Node
+class_name CombatActions
+
+enum List {
+	ATTACK,
+	CHARGED_ATTACK,
+	CHARGE_CHARGED_ATTACK,
+	SELF_DAMAGE,
+	HEAL,
+	REPAIR_SHIELD,
+}
+
+enum Persistent {
+	ATTACK,
+	CHARGED_ATTACK,
+	CHARGE_CHARGED_ATTACK,
+	SELF_DAMAGE,
+	HEAL,
+	REPAIR_SHIELD,
+	SPECIAL_ATTACK
+}
+
+enum Ocasional {}

@@ -39,8 +39,6 @@ var player_stats: Dictionary[Stats.List, Variant] = {
 }
 #endregion
 
-#@export var 
-
 #region RUN
 var current_ante: int
 var current_stake: int

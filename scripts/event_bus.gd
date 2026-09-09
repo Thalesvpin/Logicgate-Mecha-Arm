@@ -4,11 +4,12 @@ signal battle_started(type)
 signal battle_ended(type)
 signal turn_started(who)
 signal turn_ended(who)
-signal submit_circuit
+signal submit_circuit(execution_sequence_idx: int)
 signal gate_added_to_sandbox(gate)
 signal gate_removed_from_sandbox(gate)
 signal tick
 
+#region COMBAT
 signal damage_taken(amount)
 signal damage_dealt(amount)
 signal self_damage(amount)
@@ -18,16 +19,19 @@ signal healed()
 signal shield_break
 signal charged_attack_used
 signal charged_charged_attack
-
 signal enemy_defeated(who)
+signal repaired_shield(amount)
+signal elemental_applied(elemental, enemy)
+signal afflicted_by_elemental(elemental)
+#endregion
 
+#region SHOP
 signal tech_mod_added(mod)
 signal bio_hack_added(mod)
 signal item_bought
 signal pack_opened
-
-signal repaired_shield(amount)
 signal stat_changed(stat, new_value)
+#endregion
 
 var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.BATTLE_START: battle_started,

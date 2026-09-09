@@ -13,21 +13,21 @@ var execution_sequence: Array
 var all_gate_inputs: Array
 var all_gate_outputs: Array
 var hovered_pin: Area2D
-var action_list: Dictionary={
-	'attack': 0,
-	'charged_attack': 0,
-	'charge_charged_attack': 0,
-	'self_damage': 0,
-	'heal': 0,
-	'repair_shield': 0
+var action_list: Dictionary[CombatActions.List, int]={
+	CombatActions.List.ATTACK: 0,
+	CombatActions.List.CHARGED_ATTACK: 0,
+	CombatActions.List.CHARGE_CHARGED_ATTACK: 0,
+	CombatActions.List.SELF_DAMAGE: 0,
+	CombatActions.List.HEAL: 0,
+	CombatActions.List.REPAIR_SHIELD: 0
 }
-var action_signals: Dictionary = {
-	'attack': EventBus.attacked,
-	'charged_attack': EventBus.charged_attack_used,
-	'charge_charged_attack': EventBus.charged_charged_attack,
-	'self_damage': EventBus.self_damage,
-	'heal': EventBus.healed,
-	'repair_shield': EventBus.repaired_shield
+var action_signals: Dictionary[CombatActions.List, Signal] = {
+	CombatActions.List.ATTACK: EventBus.attacked,
+	CombatActions.List.CHARGED_ATTACK: EventBus.charged_attack_used,
+	CombatActions.List.CHARGE_CHARGED_ATTACK: EventBus.charged_charged_attack,
+	CombatActions.List.SELF_DAMAGE: EventBus.self_damage,
+	CombatActions.List.HEAL: EventBus.healed,
+	CombatActions.List.REPAIR_SHIELD: EventBus.repaired_shield
 }
 
 func _ready() -> void:
@@ -40,9 +40,9 @@ func generate_action_list() -> void:
 		action_list[action] = list[aux]
 		aux += 1
 	
-	attack_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list['attack'])
-	shield_regen.get_child(1).text = '%04d' % Global.dec_to_bin(action_list['repair_shield'])
-	self_damage_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list['self_damage'])
+	attack_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.ATTACK])
+	shield_regen.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.REPAIR_SHIELD])
+	self_damage_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.SELF_DAMAGE])
 
 func compare_output(output: int) -> void:
 	for action in action_list:

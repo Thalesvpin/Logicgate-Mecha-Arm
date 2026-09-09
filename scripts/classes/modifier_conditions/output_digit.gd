@@ -1,5 +1,5 @@
 extends Resource
-class_name ActiveShieldCountCondition
+#class_name ActiveShieldCountCondition
 
 ##From right to left
 @export var digit_position: int:

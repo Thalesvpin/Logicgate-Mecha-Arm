@@ -137,3 +137,13 @@ func rand_binary(size: int) -> int:
 func set_new_seed():
 	seed = randi()
 	random.set_seed(seed)
+
+func change_wires_color(color: Color) -> void:
+	for child in circuit_editor.wire_layer.get_children():
+		if child.get_child(0).get_class() == 'Line2D':
+			child.change_color(color)
+
+func reset_wires_color() -> void:
+	for child in circuit_editor.wire_layer.get_children():
+		if child.get_child(0).get_class() == 'Line2D':
+			child.default_color()

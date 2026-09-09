@@ -2,21 +2,18 @@ extends IOBar
 
 @onready var drag_area: Area2D = $DragArea
 
-@export var generated_inputs: Array[int]
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("test"):
-		submit(0)
-
 func ready() -> void:
 	Global.input_manager = self
+	EventBus.submit_circuit.connect(submit)
 
 func process() -> void:
 	pass
 
 func submit(queue_idx: int) -> void:
-	var value: int = generated_inputs[queue_idx]
-	var str = str(value)
+	print('input_mngr sequence: ', Global.circuit_editor.execution_sequence)
+	var value: int = Global.dec_to_bin(Global.circuit_editor.execution_sequence[queue_idx])
+	print('value: %04d' % value)
+	var str = '%04d' % value
 	var aux
 	
 	for child in children:

@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://6y2k6pdfjohj"]
+
+[ext_resource type="Script" uid="uid://uxyo2f0d6x2v" path="res://scripts/enemy.gd" id="1_6w5ur"]
+[ext_resource type="Texture2D" uid="uid://tdm62mawpb5d" path="res://assets/skeleton.png" id="1_87g8f"]
+
+[node name="Enemy" type="Control" unique_id=708486463]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_6w5ur")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1979474899]
+layout_mode = 0
+offset_right = 633.0
+offset_bottom = 1000.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_87g8f")
