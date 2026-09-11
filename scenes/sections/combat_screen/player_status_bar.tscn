@@ -2,24 +2,71 @@
 
 [ext_resource type="Script" uid="uid://00atl68lg1t0" path="res://scripts/player_status_bar.gd" id="1_bsxa0"]
 [ext_resource type="Texture2D" uid="uid://cdeyfpq76q6sw" path="res://assets/enemystatusbar_frame_PLACEHOLDER.png" id="1_mwn6y"]
+[ext_resource type="Shader" uid="uid://dulb1o24l1kpl" path="res://shaders/progress_bar.gdshader" id="3_a4jf8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvvff"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bsxa0"]
-bg_color = Color(0.1764706, 0.1764706, 0.1764706, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mwn6y"]
-bg_color = Color(0, 0.5882353, 1, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tt3tj"]
+shader = ExtResource("3_a4jf8")
+shader_parameter/bar_mode = 0
+shader_parameter/fill_mode = 2
+shader_parameter/segment_count = 3
+shader_parameter/discrete_fill_amount = 12
+shader_parameter/fade_fill_amount = 1.0
+shader_parameter/pour_fill_amount = 1.0
+shader_parameter/animation_speed = 1.0
+shader_parameter/flash_type = 0
+shader_parameter/flash_segment = 0
+shader_parameter/flash_intensity = 0.0
+shader_parameter/single_segment_previous_fill = 1.0
+shader_parameter/single_segment_current_fill = 1.0
+shader_parameter/single_segment_flash_intensity = 0.8
+shader_parameter/flash_from_segment = 0
+shader_parameter/flash_to_segment = 0
+shader_parameter/single_segment_fade_from = 1.0
+shader_parameter/single_segment_fade_to = 1.0
+shader_parameter/single_segment_fade_progress = 0.0
+shader_parameter/drain_previous_fill = 1.0
+shader_parameter/drain_current_fill = 1.0
+shader_parameter/drain_time_progress = 0.50000002375
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/filled_color = Color(0, 0.5882353, 1, 1)
+shader_parameter/border_color = Color(0, 0, 0, 1)
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/drain_flash_color = Color(1, 1, 1, 1)
+shader_parameter/custom_frame = false
+shader_parameter/frame_trim = 0.0
+shader_parameter/alpha_threshold = 0.69
+shader_parameter/scan_steps = 15
+shader_parameter/edge_smoothness = 0.02
+shader_parameter/mask_expansion = 0.0
+shader_parameter/frame_edge_opacity = 0.9
+shader_parameter/fluid_base_color = Color(0.2, 0.6, 1, 1)
+shader_parameter/fluid_highlight_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/fluid_shadow_color = Color(0.1, 0.3, 0.6, 1)
+shader_parameter/fluid_flow_speed = 1.5
+shader_parameter/fluid_turbulence = 1.0
+shader_parameter/fluid_noise_scale = 6.0
+shader_parameter/gas_mode = false
+shader_parameter/gas_intensity = 0.8
+shader_parameter/effect_mode = 0
+shader_parameter/effect_strength = 0.3
+shader_parameter/effect_speed = 1.5
+shader_parameter/wave_thickness = 0.1
+shader_parameter/bubbles_aspect_ratio = 1.0
+shader_parameter/vertical_gradient = true
+shader_parameter/V_gradient_strength = 0.6
+shader_parameter/horizontal_gradient = false
+shader_parameter/H_gradient_strength = 0.75
+shader_parameter/segment_gap = 0.0
+shader_parameter/universal_border_size = 0.1
+shader_parameter/horizontal_border_size = 1.0
+shader_parameter/inner_border_thickness_multiplier = 0.25
+shader_parameter/outer_border_size = 0.4
+shader_parameter/slant_amount = 0.0
+shader_parameter/scale = 0.0
+shader_parameter/slant_clip_margin = 0.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_bsxa0"]
 font_size = 24
@@ -92,43 +139,42 @@ color = Color(0.1764706, 0.1764706, 0.1764706, 1)
 [node name="Shield" type="Control" parent="." unique_id=387301954]
 layout_mode = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="Shield" unique_id=1474457037]
+[node name="ShieldBar" type="ColorRect" parent="Shield" unique_id=1358329858]
+material = SubResource("ShaderMaterial_tt3tj")
 layout_mode = 0
 offset_left = 194.0
-offset_top = 23.0
+offset_top = 19.0
 offset_right = 519.0
-offset_bottom = 63.0
-theme_override_styles/background = SubResource("StyleBoxFlat_bsxa0")
-theme_override_styles/fill = SubResource("StyleBoxFlat_mwn6y")
-value = 66.0
-show_percentage = false
+offset_bottom = 58.0
 
-[node name="Label" type="Label" parent="Shield/ProgressBar" unique_id=542877620]
-layout_mode = 0
-offset_left = 29.0
-offset_top = 2.0
-offset_right = 69.0
-offset_bottom = 36.0
+[node name="HBoxContainer" type="HBoxContainer" parent="Shield/ShieldBar" unique_id=1387543333]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Shield/ShieldBar/HBoxContainer" unique_id=542877620]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "10"
 label_settings = SubResource("LabelSettings_bsxa0")
+horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="Shield/ProgressBar" unique_id=1365292707]
-layout_mode = 0
-offset_left = 129.0
-offset_top = 3.0
-offset_right = 169.0
-offset_bottom = 37.0
+[node name="Label2" type="Label" parent="Shield/ShieldBar/HBoxContainer" unique_id=1365292707]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "10"
 label_settings = SubResource("LabelSettings_bsxa0")
+horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="Shield/ProgressBar" unique_id=1704669771]
-layout_mode = 0
-offset_left = 231.0
-offset_top = 4.0
-offset_right = 271.0
-offset_bottom = 38.0
+[node name="Label3" type="Label" parent="Shield/ShieldBar/HBoxContainer" unique_id=1704669771]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "10"
 label_settings = SubResource("LabelSettings_bsxa0")
+horizontal_alignment = 1
 
 [node name="Health" type="Control" parent="." unique_id=1965056564]
 layout_mode = 2
@@ -141,7 +187,7 @@ offset_right = 519.0
 offset_bottom = 101.0
 theme_override_styles/background = SubResource("StyleBoxFlat_cqbp4")
 theme_override_styles/fill = SubResource("StyleBoxFlat_eofqg")
-value = 100.0
+value = 50.0
 show_percentage = false
 
 [node name="HealthLabel" type="Label" parent="Health/Healthbar" unique_id=472786109]
@@ -150,8 +196,9 @@ offset_left = 130.0
 offset_top = 3.0
 offset_right = 185.0
 offset_bottom = 37.0
-text = "1000"
+text = "50"
 label_settings = SubResource("LabelSettings_mwn6y")
+horizontal_alignment = 1
 
 [node name="Name" type="Control" parent="." unique_id=1512841193]
 layout_mode = 2

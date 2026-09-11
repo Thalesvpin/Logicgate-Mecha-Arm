@@ -3,6 +3,7 @@ extends PanelContainer
 #region HEALTH
 @onready var health_bar: TextureProgressBar = $Health/HealthBar
 @onready var health_counter: Label = $Health/HealthCounter
+@onready var health_bar_placeholder: ProgressBar = $Health/HealthBarPlaceholder
 
 @export var max_health: int = 100
 ##Must be converted to % in the graph display
@@ -40,7 +41,8 @@ var element
 #endregion
 
 var enemy = null
-@export var swap_bar_tween_duration: float = 0.8 
+@export var swap_bar_tween_duration: float = 0.8
+@export var progress_bar_tween_duration: float = 0.8
 var original_position: Vector2
 
 func _ready() -> void:
@@ -50,6 +52,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("test"):
 		subtract_from_shield(10)
 
+##Enemy swap
 func update() -> void:
 	var tween = create_tween()
 	tween.set_parallel(false)
@@ -73,10 +76,21 @@ func check_elemental_counters() -> void:
 		afflicted_number_bg.position.x = 14
 		afflicted_number_bg.size.x = 28
 
+func progress_bar_animation(bar: Node, new_value: int) -> void:
+	var tween = create_tween()
+	tween.set_parallel(true)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(bar, 'value', new_value, progress_bar_tween_duration)
+
 func set_health_value(value: float) -> void:
 	var percentage = (value/max_health)*100
-	health_bar.value = percentage
+	progress_bar_animation(health_bar, percentage)
+	#health_bar.value = percentage
 	health_counter.text = str(value)
+	
+	progress_bar_animation(health_bar_placeholder, percentage)
+	#health_bar_placeholder.value = percentage
+	
 
 func add_to_health(value: int) -> void:
 	current_health_value += value

@@ -3,6 +3,9 @@ extends Control
 @onready var left_enemy_status_bar: PanelContainer = $HBoxContainer/LeftEnemyStatusBar
 @onready var center_enemy_status_bar: PanelContainer = $HBoxContainer/CenterEnemyStatusBar
 @onready var right_enemy_status_bar: PanelContainer = $HBoxContainer/RightEnemyStatusBar
+@onready var left_enemy_container: VBoxContainer = $VBoxContainer/HBoxContainer/LeftEnemyContainer
+@onready var center_enemy_container: VBoxContainer = $VBoxContainer/HBoxContainer/CenterEnemyContainer
+@onready var right_enemy_container: VBoxContainer = $VBoxContainer/HBoxContainer/RightEnemyContainer
 
 enum Position {LEFT, RIGHT, CENTER}
 
@@ -22,9 +25,9 @@ func _ready() -> void:
 	Global.combat_screen = self
 	_enemy['bar'] = center_enemy_status_bar
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("test"):
-		swap_enemy(_enemy, Position.LEFT)
+#func _input(event: InputEvent) -> void:
+	#if event.is_action_pressed("test"):
+		#swap_enemy(_enemy, Position.LEFT)
 
 func take_damage(value: float, enemy, mitigate: bool = true):
 	var min = 0

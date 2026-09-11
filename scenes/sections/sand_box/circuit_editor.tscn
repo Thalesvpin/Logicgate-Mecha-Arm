@@ -105,6 +105,30 @@ offset_right = 48.0
 offset_bottom = 44.0
 text = "1111"
 
+[node name="Heal" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=1783483027]
+layout_mode = 3
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -335.0
+offset_top = -169.0
+offset_right = -335.0
+offset_bottom = -169.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal" unique_id=1480961838]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Cura"
+
+[node name="Label2" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal" unique_id=6152281]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 21.0
+offset_right = 48.0
+offset_bottom = 44.0
+text = "1111"
+
 [node name="ShieldRegen" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2097592777]
 layout_mode = 3
 anchors_preset = 9

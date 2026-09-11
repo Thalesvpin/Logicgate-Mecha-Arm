@@ -10,13 +10,16 @@ const CLEAR_CONNECTIONS = preload("uid://jjqybhx6ejot")
 const INFO = preload("uid://3dcqftonh2pd")
 const CANCEL = preload("uid://dmewb6qo64t7g")
 
-#self assigned variables
+#region SELF ASSIGNED VARIABLES
 var circuit_editor
 var gates_selector
 var input_manager
 var output_manager
 var combat_screen
 var run_stats
+var player_stats_bar
+var charged_attack_panel
+#endregion
 
 #control variables
 var sell_gate: bool = false
@@ -24,7 +27,7 @@ var seed: int = 0
 var random = PcgRandom.new()
 var execution_sequence: Array[int]
 enum Rarity {COMMON, RARE, ULTRA_RARE, LEGENDARY}
-signal _null
+#signal _null
 
 #radial menu presets
 #display order: ↑ → ↓ ←
@@ -80,29 +83,29 @@ var rarity_textures: Dictionary[Rarity, Texture2D] = {
 	Rarity.LEGENDARY: RARITY_PLACEHOLDER,
 }
 
-var action_attack: Dictionary = new_action(0, true, _null)
-var action_heal_shield: Dictionary = new_action(0, true, _null)
-var action_self_damage: Dictionary = new_action(0, true, _null)
-var action_charge_charged_attack: Dictionary = new_action(0, true, _null)
-var action_charged_attack: Dictionary = new_action(0, true, _null)
-var action_heal_life: Dictionary = new_action(0, true, _null)
-##Duplicate to edit (no signal linked yet)
-var all_actions: Dictionary = {
-	'attack': action_attack,
-	'heal_shield': action_heal_shield,
-	'self_damage': action_self_damage,
-	'charge_charged_attack': action_charge_charged_attack,
-	'charged_attack': action_charged_attack,
-	'heal_life': action_heal_life,
-}
+#var action_attack: Dictionary = new_action(0, true, _null)
+#var action_heal_shield: Dictionary = new_action(0, true, _null)
+#var action_self_damage: Dictionary = new_action(0, true, _null)
+#var action_charge_charged_attack: Dictionary = new_action(0, true, _null)
+#var action_charged_attack: Dictionary = new_action(0, true, _null)
+#var action_heal_life: Dictionary = new_action(0, true, _null)
+###Duplicate to edit (no signal linked yet)
+#var all_actions: Dictionary = {
+	#'attack': action_attack,
+	#'heal_shield': action_heal_shield,
+	#'self_damage': action_self_damage,
+	#'charge_charged_attack': action_charge_charged_attack,
+	#'charged_attack': action_charged_attack,
+	#'heal_life': action_heal_life,
+#}
 
-func new_action(id: int, active: bool, _signal: Signal) -> Dictionary:
-	var template: Dictionary = {
-		'id': id,
-		'active': active,
-		'signal': _signal,
-	}
-	return template
+#func new_action(id: int, active: bool, _signal: Signal) -> Dictionary:
+	#var template: Dictionary = {
+		#'id': id,
+		#'active': active,
+		#'signal': _signal,
+	#}
+	#return template
 
 func dec_to_bin(decimal: int) -> int:
 	var result := 0

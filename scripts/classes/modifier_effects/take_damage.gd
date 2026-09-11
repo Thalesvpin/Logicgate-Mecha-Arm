@@ -6,13 +6,20 @@ class_name TakeDamageEffect
 		amount = max(value, 0)
 
 func apply() -> void:
-	add_to_player_stats(Stats.List.CURRENT_HEALTH, -amount, lesser, 0)
-
-	#var result = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH] - amount
-	#if result < 0:
-		#result = 0
-	#Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH] = result
-	EventBus.damage_taken.emit(amount)
+	var mitigation = calculate_mitigation()
+	add_to_player_stats(Stats.List.CURRENT_HEALTH, -(amount-mitigation), lesser, 0)
+	
+	Global.player_stats_bar.take_damage(amount-mitigation)
+	#EventBus.damage_taken.emit(amount)
 
 func revert() -> void:
+	pass
+
+func calculate_mitigation() -> int:
+	if Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT] > 0:
+		#return amount - 0
+		return 0
+	else:
+		return 0
+	
 	pass

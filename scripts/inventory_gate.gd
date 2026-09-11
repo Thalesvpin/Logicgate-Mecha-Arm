@@ -1,10 +1,11 @@
 extends Panel
 
 @onready var texture_rect: TextureRect = $TextureRect
+@onready var cost_label: Label = $CostLabel
 
 #enum Types: String {"AND", "OR", "DEF"} 
 
-@export_enum("AND", "OR", "NOT", "NAND", "NOR", "XOR", "XNOR", "DEF") var type: String
+@export var type: Gates.Type
 @export_group('Sprites')
 @export var and_icon: Texture2D
 @export var or_icon: Texture2D
@@ -27,54 +28,59 @@ var icon: Texture2D
 @export var xnor_scene: PackedScene
 @export var def_scene: PackedScene
 var scene: PackedScene
+var cost: int
 @export_group('')
 
 func _ready() -> void:
 	load_data()
 
 func load_data():
-	match type.to_lower():
-		"and":
+	match type:
+		Gates.Type.AND:
 			icon = and_icon
 			scene = and_scene
-		"or":
+			cost = Global.run_stats.gates_price[Gates.Type.AND]
+		Gates.Type.OR:
 			icon = or_icon
 			scene = or_scene
-		"not":
+			cost = Global.run_stats.gates_price[Gates.Type.OR]
+		Gates.Type.NOT:
 			icon = not_icon
 			scene = not_scene
-		"nand":
+			cost = Global.run_stats.gates_price[Gates.Type.NOT]
+		Gates.Type.NAND:
 			icon = nand_icon
 			scene = nand_scene
-		"nor":
+			cost = Global.run_stats.gates_price[Gates.Type.NAND]
+		Gates.Type.NOR:
 			icon = nor_icon
 			scene = nor_scene
-		"xor":
+			cost = Global.run_stats.gates_price[Gates.Type.NOR]
+		Gates.Type.XOR:
 			icon = xor_icon
 			scene = xor_scene
-		"xnor":
+			cost = Global.run_stats.gates_price[Gates.Type.XOR]
+		Gates.Type.XNOR:
 			icon = xnor_icon
 			scene = xnor_scene
-		"def":
-			icon = def_icon
-			scene = def_scene
+			cost = Global.run_stats.gates_price[Gates.Type.XNOR]
 	texture_rect.texture = icon
+	cost_label.text = str(cost)
 
 func _gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.pressed:
-				#DragManager.drag(null, scene, type)
+			if event.pressed && Global.run_stats.gates_price[type] <= Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS]:
 				DragManager.drag_gate(scene.instantiate(), true)
-				pass
+				Global.gates_selector.gate_bought(type)
 
 #Ensure the selected gate will display over everything
-func _get_drag_data(at_position):
-	var root := Control.new()
-	var preview := TextureRect.new()
-	preview.texture = icon
-	root.add_child(preview)
-	preview.position = -icon.get_size() / 2.0
-	set_drag_preview(root)
-	
-	return type
+#func _get_drag_data(at_position):
+	#var root := Control.new()
+	#var preview := TextureRect.new()
+	#preview.texture = icon
+	#root.add_child(preview)
+	#preview.position = -icon.get_size() / 2.0
+	#set_drag_preview(root)
+	#
+	#return type

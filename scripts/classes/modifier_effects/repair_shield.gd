@@ -1,5 +1,5 @@
 extends ModifierEffect
-class_name RepairShield
+class_name RepairShieldEffect
 
 @export var amount: int = 0:
 	set(value):
@@ -7,11 +7,9 @@ class_name RepairShield
 
 func apply() -> void:
 	add_to_player_stats(Stats.List.CURRENT_SHIELD, amount, greater, Global.run_stats.player_stats[Stats.List.MAX_SHIELD])
-	#var result = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD] + amount
-	#if result > Global.run_stats.player_stats[Stats.List.MAX_SHIELD]:
-		#result = Global.run_stats.player_stats[Stats.List.MAX_SHIELD]
-	#Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD] = result
-	EventBus.repaired_shield.emit(amount)
+	Global.player_stats_bar.repair_shield(amount)
+	
+	#EventBus.repaired_shield.emit(amount)
 
 func revert() -> void:
 	pass

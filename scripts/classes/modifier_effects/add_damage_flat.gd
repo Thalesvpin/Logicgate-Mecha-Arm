@@ -3,7 +3,7 @@ class_name AddDamageFlatEffect
 
 ##To subtract, insert a negative value
 @export var amount: float
-@export var who: Variant
+#@export var who: Variant
 
 func apply() -> void:
 	var result = add_to_player_stats(Stats.List.BASE_ATTACK_DAMAGE, amount, lesser, 0)

@@ -10,9 +10,7 @@ func process() -> void:
 	pass
 
 func submit(queue_idx: int) -> void:
-	print('input_mngr sequence: ', Global.circuit_editor.execution_sequence)
 	var value: int = Global.dec_to_bin(Global.circuit_editor.execution_sequence[queue_idx])
-	print('value: %04d' % value)
 	var str = '%04d' % value
 	var aux
 	

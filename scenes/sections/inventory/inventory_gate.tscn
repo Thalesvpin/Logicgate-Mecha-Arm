@@ -18,6 +18,9 @@
 [ext_resource type="PackedScene" uid="uid://b44ep74kw45m4" path="res://scenes/gates/xor_gate.tscn" id="15_58uri"]
 [ext_resource type="PackedScene" uid="uid://d2v4gydixspon" path="res://scenes/gates/xnor_gate.tscn" id="16_aira5"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
+font_size = 30
+
 [node name="InventoryGate" type="Panel" unique_id=2018287429]
 custom_minimum_size = Vector2(130, 130)
 clip_contents = true
@@ -68,3 +71,21 @@ offset_transform_enabled = true
 offset_transform_pivot_ratio = Vector2(0, 0)
 offset_transform_visual_only = false
 texture = ExtResource("2_1k65l")
+
+[node name="CostLabel" type="Label" parent="." unique_id=1687563777]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(-5, 0)
+text = "2"
+label_settings = SubResource("LabelSettings_eofqg")
+horizontal_alignment = 2
+vertical_alignment = 1

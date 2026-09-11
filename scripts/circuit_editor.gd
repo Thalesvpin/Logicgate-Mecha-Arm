@@ -8,6 +8,7 @@ extends PanelContainer
 @onready var attack_container: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack
 @onready var shield_regen: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen
 @onready var self_damage_container: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage
+@onready var heal_container: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal
 
 var execution_sequence: Array
 var all_gate_inputs: Array
@@ -20,14 +21,6 @@ var action_list: Dictionary[CombatActions.List, int]={
 	CombatActions.List.SELF_DAMAGE: 0,
 	CombatActions.List.HEAL: 0,
 	CombatActions.List.REPAIR_SHIELD: 0
-}
-var action_signals: Dictionary[CombatActions.List, Signal] = {
-	CombatActions.List.ATTACK: EventBus.attacked,
-	CombatActions.List.CHARGED_ATTACK: EventBus.charged_attack_used,
-	CombatActions.List.CHARGE_CHARGED_ATTACK: EventBus.charged_charged_attack,
-	CombatActions.List.SELF_DAMAGE: EventBus.self_damage,
-	CombatActions.List.HEAL: EventBus.healed,
-	CombatActions.List.REPAIR_SHIELD: EventBus.repaired_shield
 }
 
 func _ready() -> void:
@@ -43,11 +36,12 @@ func generate_action_list() -> void:
 	attack_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.ATTACK])
 	shield_regen.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.REPAIR_SHIELD])
 	self_damage_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.SELF_DAMAGE])
+	heal_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.HEAL])
 
 func compare_output(output: int) -> void:
 	for action in action_list:
 		if output == action_list[action]:
-			action_signals[action].emit()
+			CombatActions.list_signals[action].emit()
 
 func add_input(node):
 	all_gate_inputs.append(node)

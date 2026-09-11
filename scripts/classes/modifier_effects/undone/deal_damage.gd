@@ -1,5 +1,5 @@
 extends ModifierEffect
-#class_name AddMaxHealthEffect
+class_name DealDamageEffect
 
 ##To subtract add a nagative value
 @export var amount: int = 0

@@ -5,17 +5,21 @@
 
 [node name="Enemy" type="Control" unique_id=708486463]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
 grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 6
+size_flags_vertical = 3
 script = ExtResource("1_6w5ur")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1979474899]
-layout_mode = 0
-offset_right = 633.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.082
+anchor_right = 0.082
+offset_left = -157.44
+offset_right = 475.56
 offset_bottom = 1000.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_87g8f")

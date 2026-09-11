@@ -11,6 +11,10 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_civbc"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
@@ -18,6 +22,7 @@ border_width_bottom = 5
 border_color = Color(0, 0, 0, 1)
 
 [node name="CombatScreen" type="PanelContainer" unique_id=982127176]
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -30,30 +35,49 @@ script = ExtResource("1_lvmae")
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1591174762]
-clip_contents = true
 layout_mode = 2
-size_flags_vertical = 0
 
 [node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=1288280074]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 
-[node name="LeftEnemyStatusBar" parent="VBoxContainer/HBoxContainer" unique_id=1067671728 instance=ExtResource("1_h43is")]
+[node name="LeftEnemyContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=65830683]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="EnemyStatusBar" parent="VBoxContainer/HBoxContainer/LeftEnemyContainer" unique_id=1067671728 instance=ExtResource("1_h43is")]
+layout_mode = 2
+
+[node name="Enemy" parent="VBoxContainer/HBoxContainer/LeftEnemyContainer" unique_id=708486463 instance=ExtResource("3_civbc")]
 layout_mode = 2
 
 [node name="Spacer2" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=331242526]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CenterEnemyStatusBar" parent="VBoxContainer/HBoxContainer" unique_id=1219616546 instance=ExtResource("1_h43is")]
+[node name="CenterEnemyContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=1861981230]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="EnemyStatusBar" parent="VBoxContainer/HBoxContainer/CenterEnemyContainer" unique_id=1219616546 instance=ExtResource("1_h43is")]
+layout_mode = 2
+
+[node name="Enemy2" parent="VBoxContainer/HBoxContainer/CenterEnemyContainer" unique_id=1588981182 instance=ExtResource("3_civbc")]
 layout_mode = 2
 
 [node name="Spacer3" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=290057607]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RightEnemyStatusBar" parent="VBoxContainer/HBoxContainer" unique_id=1057226659 instance=ExtResource("1_h43is")]
+[node name="RightEnemyContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer" unique_id=786623814]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="EnemyStatusBar" parent="VBoxContainer/HBoxContainer/RightEnemyContainer" unique_id=1057226659 instance=ExtResource("1_h43is")]
+layout_mode = 2
+
+[node name="Enemy3" parent="VBoxContainer/HBoxContainer/RightEnemyContainer" unique_id=787882831 instance=ExtResource("3_civbc")]
 layout_mode = 2
 
 [node name="Spacer4" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=912163424]
@@ -62,6 +86,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 
 [node name="Enemies" type="Control" parent="VBoxContainer" unique_id=726521082]
+visible = false
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -83,22 +108,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 
-[node name="Enemy" parent="VBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=708486463 instance=ExtResource("3_civbc")]
-layout_mode = 2
-
 [node name="Spacer2" type="Control" parent="VBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=2115861744]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Enemy2" parent="VBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=1588981182 instance=ExtResource("3_civbc")]
-layout_mode = 2
-
 [node name="Spacer3" type="Control" parent="VBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=1936122622]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="Enemy3" parent="VBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=787882831 instance=ExtResource("3_civbc")]
-layout_mode = 2
 
 [node name="Spacer4" type="Control" parent="VBoxContainer/Enemies/MarginContainer/HBoxContainer" unique_id=577616873]
 layout_mode = 2
@@ -132,3 +148,7 @@ layout_mode = 2
 [node name="ElementalPanel" parent="LeftBottomPanels" unique_id=337277702 instance=ExtResource("5_lobgv")]
 layout_mode = 2
 size_flags_horizontal = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=542381246]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_civbc")

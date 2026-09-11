@@ -2,7 +2,7 @@ extends ModifierEffect
 class_name AddHealPercentEffect
 
 @export var amount: float
-@export var who: Variant
+#@export var who: Variant
 var percent: float
 
 func apply() -> void:

@@ -3,7 +3,7 @@ class_name AddMaxHealthFlatEffect
 
 ##To subtract, insert a nagative value
 @export var amount: int = 0
-@export var who: Variant
+#@export var who: Variant
 
 func apply() -> void:
 	var result = add_to_player_stats(Stats.List.MAX_HEALTH, amount, lesser, 1)

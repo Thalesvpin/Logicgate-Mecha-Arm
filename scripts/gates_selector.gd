@@ -1,10 +1,14 @@
 extends PanelContainer
 
 @onready var sell_overlay: Control = $SellOverlay
+@onready var tokens_label: Label = $MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/TokensLabel
+
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 
 func _ready() -> void:
 	Global.gates_selector = self
+	EventBus.gate_removed_from_sandbox.connect(gate_sold)
+	set_tokens_label()
 
 func _gui_input(event: InputEvent) -> void:
 	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
@@ -37,3 +41,32 @@ func handle_radial_menu_selection(id: String, position: Vector2):
 				gate.delete_gate()
 		'idx_3':	#Cancel
 			pass
+
+func set_tokens_label() -> void:
+	tokens_label.text = str(Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS])+'/'+str(Global.run_stats.player_stats[Stats.List.MAX_TOKENS_AMOUNT])
+
+func spend_tokens(amount: int) -> bool:
+	var curr = Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS]
+	var max = Global.run_stats.player_stats[Stats.List.MAX_TOKENS_AMOUNT]
+	
+	if curr - amount < 0:
+		return false
+	Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS] -= amount
+	set_tokens_label()
+	return true
+
+func add_tokens(amount: int) -> void:
+	var curr = Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS]
+	var max = Global.run_stats.player_stats[Stats.List.MAX_TOKENS_AMOUNT]
+	
+	if curr + amount > max:
+		Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS] = max
+	else:
+		Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS] += amount
+	set_tokens_label()
+
+func gate_sold(type: Gates.Type) -> void:
+	add_tokens(Global.run_stats.gates_price[type])
+
+func gate_bought(type: Gates.Type) -> void:
+	spend_tokens(Global.run_stats.gates_price[type])

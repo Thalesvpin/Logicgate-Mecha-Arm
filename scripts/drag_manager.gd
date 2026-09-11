@@ -40,16 +40,8 @@ func drag_gate(node: Node2D, from_inv: bool = false) -> void:
 
 func drop_gate(cursor_in: bool) -> void:
 	original_node.scale_gate()
-	
-	#sandbox only
-	#Global.circuit_editor.drag_layer.remove_child(original_node)
-	
-	#game board
 	get_tree().current_scene.remove_child(original_node)
-	
-	#original_node.position = get_global_mouse_position()
 	original_node.position = get_tree().current_scene.find_child("Sandbox").get_global_mouse_position() - original_node.cursor_offset
-	#original_node.position = get_tree().current_scene.find_child("Sandbox").get_viewport().get_mouse_position()
 	
 	if !cursor_in:
 		if Global.sell_gate:
@@ -57,6 +49,7 @@ func drop_gate(cursor_in: bool) -> void:
 		elif original_node.last_position:
 			original_node.position = original_node.last_position
 		else:
+			Global.gates_selector.gate_sold(original_node.type)
 			original_node.queue_free()
 	Global.circuit_editor.gate_layer.add_child(original_node)
 	Global.gates_selector.sell_overlay.hide()

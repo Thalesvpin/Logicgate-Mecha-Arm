@@ -84,7 +84,7 @@ size_flags_vertical = 4
 texture = ExtResource("2_3e3yi")
 expand_mode = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=427438005]
+[node name="TokensLabel" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=427438005]
 layout_mode = 2
 text = "12/30"
 label_settings = SubResource("LabelSettings_abqy0")
@@ -103,31 +103,30 @@ last_wrap_alignment = 2
 
 [node name="InventoryGate" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=2018287429 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "AND"
 
 [node name="InventoryGate2" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1996500217 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "OR"
+type = 1
 
 [node name="InventoryGate3" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1789753972 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "NOT"
+type = 2
 
 [node name="InventoryGate4" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1008198893 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "NAND"
+type = 3
 
 [node name="InventoryGate5" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1833420702 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "NOR"
+type = 4
 
 [node name="InventoryGate6" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1649248226 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "XOR"
+type = 5
 
 [node name="InventoryGate7" parent="MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1220327291 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = "XNOR"
+type = 6
 
 [node name="SellOverlay" type="Control" parent="." unique_id=2024746708]
 visible = false
