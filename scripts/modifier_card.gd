@@ -101,6 +101,8 @@ func _on_resized() -> void:
 		if size.x > 325:
 			set_template(1)
 		if size.x <= 325:
+			print('deveria: ', size.x)
 			set_template(2)
 		if size.x <= 278:
+			print('ue: ', size.x)
 			set_template(3)

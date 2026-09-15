@@ -18,25 +18,25 @@ metadata/_live_palette_bindings = {
 [sub_resource type="Gradient" id="Gradient_jrvab"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0.4, 1)
+colors = PackedColorArray(0.0627451, 0, 0.003921569, 1, 0.17254902, 0, 0.29411766, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_tjqua"]
 gradient = SubResource("Gradient_jrvab")
-fill_from = Vector2(0.4957265, 0)
-fill_to = Vector2(0.508547, 1)
+fill_from = Vector2(0.5, -1.385)
+fill_to = Vector2(0.5, 0.915)
 
 [node name="Shop" type="PanelContainer" unique_id=669677562]
 clip_contents = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 53.0
-offset_bottom = -670.0
+anchors_preset = -1
+anchor_right = 1.028
+anchor_bottom = 0.38000003
+offset_right = -0.76000977
+offset_bottom = -0.4000244
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1416740451]
-visible = false
 layout_mode = 2
 texture = SubResource("GradientTexture2D_tjqua")
 flip_v = true
@@ -46,6 +46,7 @@ layout_mode = 2
 
 [node name="ShopLeftMods" parent="HBoxContainer" unique_id=817944177 instance=ExtResource("1_emyvy")]
 layout_mode = 2
+size_flags_vertical = 4
 
 [node name="ShopMidSection" parent="HBoxContainer" unique_id=1089091699 instance=ExtResource("2_n8es3")]
 layout_mode = 2
@@ -53,3 +54,4 @@ size_flags_horizontal = 3
 
 [node name="ShopRightMods" parent="HBoxContainer" unique_id=1030358402 instance=ExtResource("2_yfiyx")]
 layout_mode = 2
+size_flags_vertical = 4

@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://c8so5fwil8lcm"]
+
+[ext_resource type="Theme" uid="uid://qghwmxll16y6" path="res://themes/stat_upgrade.tres" id="1_kkf05"]
+[ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="2_ca6cq"]
+
+[node name="LeftStatImprovementContainer" type="PanelContainer" unique_id=1221763294]
+offset_left = 200.0
+offset_top = 63.0
+offset_right = 240.0
+offset_bottom = 103.0
+theme = ExtResource("1_kkf05")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=904298958]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=343544579]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1176008596]
+layout_mode = 2
+alignment = 2
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1472995469]
+layout_mode = 2
+text = "Dano Base"
+horizontal_alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1186933452]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="CurrentValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=42870293]
+layout_mode = 2
+text = "(120"
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1575799643]
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_ca6cq")
+stretch_mode = 2
+
+[node name="BuyButton" type="TextureButton" parent="MarginContainer/HBoxContainer" unique_id=1237199004]
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("2_ca6cq")
+
+[node name="Price" type="Label" parent="MarginContainer/HBoxContainer" unique_id=191295128]
+layout_mode = 2
+text = "$500"

@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://ducsuhnfwhy16"]
+
+[ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="1_30413"]
+[ext_resource type="Theme" uid="uid://qghwmxll16y6" path="res://themes/stat_upgrade.tres" id="1_lpvf6"]
+
+[node name="RightStatImprovementContainer" type="PanelContainer" unique_id=109097967]
+theme = ExtResource("1_lpvf6")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=924212442]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1142370072]
+layout_mode = 2
+
+[node name="Price" type="Label" parent="MarginContainer/HBoxContainer" unique_id=781892700]
+layout_mode = 2
+text = "$500"
+
+[node name="BuyButton" type="TextureButton" parent="MarginContainer/HBoxContainer" unique_id=1740945905]
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("1_30413")
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=523169231]
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("1_30413")
+stretch_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1014529621]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=724421388]
+layout_mode = 2
+text = "Dano Base"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1768797470]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CurrentValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1465263440]
+layout_mode = 2
+text = "(120"

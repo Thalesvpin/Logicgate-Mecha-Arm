@@ -4,7 +4,6 @@
 [ext_resource type="StyleBox" uid="uid://dm33npd24kf11" path="res://resources/style_boxes/biohack_bg_stylebox_flat.tres" id="1_ylh2a"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="2_ylh2a"]
 [ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="4_bixym"]
-[ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="5_ylh2a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -49,6 +48,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("1_ylh2a")
 script = ExtResource("1_m466i")
 
@@ -128,7 +128,6 @@ texture = ExtResource("4_bixym")
 stretch_mode = 2
 
 [node name="CorruptedTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder" unique_id=1461488900]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("4_bixym")
@@ -169,7 +168,7 @@ vertical_alignment = 1
 
 [node name="ActivatorBtn" type="TextureButton" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=464088979]
 layout_mode = 2
-texture_normal = ExtResource("5_ylh2a")
+texture_normal = ExtResource("4_bixym")
 stretch_mode = 4
 
 [node name="CompactVersion" type="GridContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1818323556]

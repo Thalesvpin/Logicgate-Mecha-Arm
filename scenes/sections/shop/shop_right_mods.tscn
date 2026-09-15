@@ -55,14 +55,14 @@ metadata/_live_palette_bindings = {
 }
 
 [node name="ShopRightMods" type="PanelContainer" unique_id=817944177]
+custom_minimum_size = Vector2(336, 0)
+custom_maximum_size = Vector2(336, -1)
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -416.0
 offset_bottom = 394.0
 grow_horizontal = 0
-size_flags_horizontal = 8
-size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1755067959]
@@ -77,6 +77,7 @@ expand_mode = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1964218931]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="TopMod" type="PanelContainer" parent="HBoxContainer/VBoxContainer" unique_id=1445759604]

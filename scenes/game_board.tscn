@@ -1,29 +1,18 @@
 [gd_scene format=3 uid="uid://btv7b87fvwj4y"]
 
 [ext_resource type="PackedScene" uid="uid://b2lwrx75npshp" path="res://scenes/sections/tech_mods/tech_mods_container.tscn" id="1_0jtfi"]
-[ext_resource type="LabelSettings" uid="uid://d4akgm58t2tcb" path="res://ui_elements/ui_telemetry.tres" id="1_cmh4g"]
 [ext_resource type="Script" uid="uid://ckkcunhwy4kxg" path="res://scripts/game_board.gd" id="1_mmjnl"]
 [ext_resource type="PackedScene" uid="uid://drl4m0lil85ek" path="res://scenes/sections/inventory/gates_selector.tscn" id="1_tqoos"]
 [ext_resource type="PackedScene" uid="uid://1ufv6vajaxt3" path="res://scenes/sections/sand_box/circuit_editor.tscn" id="2_3wu0g"]
 [ext_resource type="PackedScene" uid="uid://cchi80u45kivh" path="res://scenes/sections/bio_hacks/bio_hacks_container.tscn" id="2_mq2xb"]
 [ext_resource type="PackedScene" uid="uid://dio5bonyon16v" path="res://scenes/sections/combat_screen/combat_screen.tscn" id="3_8nsfp"]
+[ext_resource type="PackedScene" uid="uid://b3fg1h6ititrl" path="res://scenes/telemetry_bar.tscn" id="3_sax53"]
+[ext_resource type="PackedScene" uid="uid://dsdnrm2c01ywo" path="res://scenes/sections/shop/stats_viewport.tscn" id="6_axant"]
 [ext_resource type="PackedScene" uid="uid://g87fqnshpu3e" path="res://scenes/sections/shop/shop.tscn" id="6_c1to4"]
 [ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/sandbox_action_panel.tscn" id="6_qmxhh"]
 [ext_resource type="Script" uid="uid://bmaes5uv667va" path="res://scripts/run_stats.gd" id="9_cwqdw"]
 [ext_resource type="Script" uid="uid://dj2asdx675yqe" path="res://scripts/modifier_manager.gd" id="10_04ve2"]
 [ext_resource type="Script" uid="uid://b5vmg22hb67p6" path="res://scripts/actions_handler.gd" id="12_w5uqb"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmxhh"]
-bg_color = Color(0.12156863, 0.12156863, 0.12156863, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.6784314, 0.7019608, 0.7647059, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_qmxhh"]
-font_size = 20
-font_color = Color(0.92156863, 0.92156863, 0.92156863, 1)
 
 [node name="GameBoard" type="Control" unique_id=862493716]
 propagate_maximum_size = true
@@ -56,29 +45,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=2006108287]
+[node name="TelemetryBar" parent="VBoxContainer" unique_id=2013472650 instance=ExtResource("3_sax53")]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_qmxhh")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer" unique_id=799160054]
-layout_mode = 2
-
-[node name="Label6" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=898661847]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "  _ ANTE 4 - BATALHA DIFÍCIL (15) - Stake 3 ℹ"
-label_settings = SubResource("LabelSettings_qmxhh")
-
-[node name="GameName" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=1963108977]
-layout_mode = 2
-text = "Logicgate Mecha Arm v1.2.4  ● "
-label_settings = ExtResource("1_cmh4g")
-
-[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer" unique_id=2142673573]
-layout_mode = 2
-text = "Tempo da run: 01:15:42 | BATERIA: 69% | hora: 22:48:13 | fps: 120   "
-label_settings = ExtResource("1_cmh4g")
-uppercase = true
 
 [node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer" unique_id=1589264868]
 propagate_maximum_size = false
@@ -104,42 +72,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
-split_offsets = PackedInt32Array(230, -222)
+split_offsets = PackedInt32Array(230, -218)
 drag_nested_intersections = true
 split_offset = 230
 
 [node name="TechModsContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=565464093 instance=ExtResource("1_0jtfi")]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=161669147]
+[node name="CombatScreen" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-color = Color(1, 0, 0, 1)
 
-[node name="CombatScreen" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
+[node name="StatsViewport" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=131166221 instance=ExtResource("6_axant")]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="BioHacksContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
 layout_mode = 2
 
-[node name="baixo" type="Control" parent="VBoxContainer/VSplitContainer" unique_id=1751607510]
+[node name="baixo" type="PanelContainer" parent="VBoxContainer/VSplitContainer" unique_id=702740337]
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Shop" parent="VBoxContainer/VSplitContainer/baixo" unique_id=669677562 instance=ExtResource("6_c1to4")]
-visible = false
-layout_mode = 1
-offset_bottom = -108.0
+layout_mode = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/baixo" unique_id=67540516]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+visible = false
+layout_mode = 2
 theme_override_constants/separation = 0
 drag_nested_intersections = true
 drag_area_highlight_in_editor = true

@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://dsdnrm2c01ywo"]
+
+[ext_resource type="PackedScene" uid="uid://18es3j8xhvkt" path="res://scenes/sections/shop/stats_viewport/basic_damage_container.tscn" id="1_l3ufi"]
+[ext_resource type="PackedScene" uid="uid://bbv5dfix8six7" path="res://scenes/sections/shop/stats_viewport/critic_damage_mult_container.tscn" id="2_b0rs0"]
+[ext_resource type="PackedScene" uid="uid://bisald530eldg" path="res://scenes/sections/shop/stats_viewport/critic_chance_container.tscn" id="3_s5khm"]
+[ext_resource type="PackedScene" uid="uid://clfirvbm13hri" path="res://scenes/sections/shop/stats_viewport/max_health_container.tscn" id="4_k8u8d"]
+[ext_resource type="PackedScene" uid="uid://dbxjoxyxc1l42" path="res://scenes/sections/shop/stats_viewport/shield_amount_container.tscn" id="5_qurlf"]
+[ext_resource type="PackedScene" uid="uid://k2ltjvdw5cpb" path="res://scenes/sections/shop/stats_viewport/shield_strength_container.tscn" id="6_pqe0e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.24705882, 0.6, 0.5882353, 1)
+
+[sub_resource type="Gradient" id="Gradient_rbl5t"]
+colors = PackedColorArray(0, 0.32151106, 0.32151103, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tjqua"]
+gradient = SubResource("Gradient_rbl5t")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[node name="StatsViewport" type="PanelContainer" unique_id=131166221]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1260472425]
+layout_mode = 2
+offset_transform_enabled = true
+texture = SubResource("GradientTexture2D_tjqua")
+
+[node name="Control" type="Control" parent="." unique_id=1561625618]
+layout_mode = 2
+
+[node name="BasicDamageContainer" parent="Control" unique_id=1221763294 instance=ExtResource("1_l3ufi")]
+layout_mode = 0
+offset_left = 244.0
+offset_top = 43.0
+offset_right = 523.0
+offset_bottom = 113.0
+
+[node name="CriticDamageMultContainer" parent="Control" unique_id=1271331401 instance=ExtResource("2_b0rs0")]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 136.0
+offset_right = 495.0
+offset_bottom = 240.0
+
+[node name="CriticChanceContainer" parent="Control" unique_id=1542546052 instance=ExtResource("3_s5khm")]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 271.0
+offset_right = 521.0
+offset_bottom = 375.0
+
+[node name="MaxHealthContainer" parent="Control" unique_id=109097967 instance=ExtResource("4_k8u8d")]
+layout_mode = 0
+offset_left = 977.0
+offset_top = 71.0
+offset_right = 1307.0
+offset_bottom = 141.0
+
+[node name="ShieldAmountContainer" parent="Control" unique_id=1663436132 instance=ExtResource("5_qurlf")]
+layout_mode = 0
+offset_left = 994.0
+offset_top = 162.0
+offset_right = 1305.0
+offset_bottom = 266.0
+
+[node name="ShieldStrengthContainer" parent="Control" unique_id=1020831994 instance=ExtResource("6_pqe0e")]
+layout_mode = 0
+offset_left = 976.0
+offset_top = 293.0
+offset_right = 1318.0
+offset_bottom = 398.0

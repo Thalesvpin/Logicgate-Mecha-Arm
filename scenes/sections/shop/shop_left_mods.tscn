@@ -56,17 +56,18 @@ metadata/_live_palette_bindings = {
 }
 
 [node name="ShopLeftMods" type="PanelContainer" unique_id=817944177]
-offset_right = 492.0
+custom_minimum_size = Vector2(336, 0)
+custom_maximum_size = Vector2(336, -1)
+offset_right = 336.0
 offset_bottom = 394.0
-size_flags_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1755067959]
 layout_mode = 2
-size_flags_horizontal = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1964218931]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
 [node name="TopMod" type="PanelContainer" parent="HBoxContainer/VBoxContainer" unique_id=1445759604]
@@ -81,8 +82,6 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/TopMod/MarginContainer" unique_id=724395233]
-custom_minimum_size = Vector2(0, 0)
-custom_maximum_size = Vector2(-1, -1)
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -127,8 +126,6 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/BotMod/MarginContainer" unique_id=921968128]
-custom_minimum_size = Vector2(0, 0)
-custom_maximum_size = Vector2(-1, -1)
 layout_mode = 2
 theme_override_constants/separation = 10
 
