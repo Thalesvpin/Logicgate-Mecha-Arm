@@ -19,6 +19,7 @@ var combat_screen
 var run_stats
 var player_stats_bar
 var charged_attack_panel
+var modifier_manager
 #endregion
 
 #control variables

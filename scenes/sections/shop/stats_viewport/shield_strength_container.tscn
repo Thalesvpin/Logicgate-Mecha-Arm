@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://k2ltjvdw5cpb"]
 
-[ext_resource type="PackedScene" uid="uid://ducsuhnfwhy16" path="res://scenes/sections/shop/stats_viewport/right_stat_improvement_container.tscn" id="1_acptt"]
+[ext_resource type="PackedScene" uid="uid://ducsuhnfwhy16" path="res://scenes/sections/shop/stats_viewport/template/right_stat_improvement_container.tscn" id="1_acptt"]
+[ext_resource type="Script" uid="uid://b7bnx0bx8qcwy" path="res://scripts/shield_strength_upgrade.gd" id="2_r5wt1"]
 
 [node name="ShieldStrengthContainer" unique_id=109097967 instance=ExtResource("1_acptt")]
+script = ExtResource("2_r5wt1")
 
 [node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1014529621) index="0" unique_id=724421388]
 custom_minimum_size = Vector2(201.1, 0)
@@ -22,6 +24,10 @@ text = "10/10"
 layout_mode = 2
 text = "2/10"
 
+[node name="CurrentValue4" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="3" unique_id=170828837]
+layout_mode = 2
+text = "2/10"
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1014529621) index="2" unique_id=1724723559]
 layout_mode = 2
 
@@ -32,3 +38,5 @@ text = "Mitigação"
 [node name="MitigationValueLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=713116560]
 layout_mode = 2
 text = "-30%"
+
+[connection signal="button_up" from="MarginContainer/HBoxContainer/BuyButton" to="." method="_on_buy_button_button_up"]

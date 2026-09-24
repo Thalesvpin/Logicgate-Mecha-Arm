@@ -1,7 +1,9 @@
 [gd_resource type="Resource" script_class="GatesCountCondition" format=3 uid="uid://57lltp436pg8"]
 
-[ext_resource type="Script" uid="uid://ttahp22h6pfp" path="res://scripts/classes/modifier_conditions/gates_count.gd" id="1_d1emq"]
+[ext_resource type="Script" uid="uid://ttahp22h6pfp" path="res://scripts/classes/implant_conditions/gates_count.gd" id="1_d1emq"]
 
 [resource]
 script = ExtResource("1_d1emq")
+gate_type = 7
+compared_value = 7
 metadata/_custom_type_script = "uid://ttahp22h6pfp"

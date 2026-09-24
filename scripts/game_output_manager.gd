@@ -25,9 +25,11 @@ func submit() -> void:
 	output = result
 	print('output: ', output)
 	Global.change_wires_color(Color('purple'))
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(1).timeout
 	Global.circuit_editor.compare_output(output)
+	await get_tree().create_timer(1).timeout
 	Global.reset_wires_color()
+	EventBus.tick.emit()
 
 func prevent_click(value: bool) -> void:
 	drag_area.input_pickable = !value

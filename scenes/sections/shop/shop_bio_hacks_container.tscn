@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bap1wppk0gxk1"]
+
+[ext_resource type="Script" uid="uid://bv0t2dr5e07j5" path="res://scripts/shop_bio_hacks_container.gd" id="1_ey3mi"]
+[ext_resource type="Texture2D" uid="uid://4863qjfn8thl" path="res://assets/shop_mod_bracket.png" id="1_kdyay"]
+[ext_resource type="PackedScene" uid="uid://biquah0t1pge8" path="res://scenes/sections/shop/shop_bio_hack_item.tscn" id="2_ey3mi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjqua"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="ShopBioHacksContainer" type="PanelContainer" unique_id=817944177]
+custom_minimum_size = Vector2(336, 0)
+custom_maximum_size = Vector2(336, -1)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -416.0
+offset_bottom = 394.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
+script = ExtResource("1_ey3mi")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1755067959]
+layout_mode = 2
+
+[node name="Bracket" type="TextureRect" parent="HBoxContainer" unique_id=459778703]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1, 0.8)
+texture = ExtResource("1_kdyay")
+expand_mode = 3
+
+[node name="ImplantsHolder" type="VBoxContainer" parent="HBoxContainer" unique_id=1964218931]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="SopeBioHackItem" parent="HBoxContainer/ImplantsHolder" unique_id=602144725 instance=ExtResource("2_ey3mi")]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="HBoxContainer/ImplantsHolder" unique_id=603196838]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SopeBioHackItem2" parent="HBoxContainer/ImplantsHolder" unique_id=45153369 instance=ExtResource("2_ey3mi")]
+layout_mode = 2

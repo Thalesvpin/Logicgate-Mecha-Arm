@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AddDamagePercentEffect" format=3 uid="uid://d4m73aywnrlow"]
+
+[ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="1_df50k"]
+
+[resource]
+script = ExtResource("1_df50k")
+amount = 200.0
+metadata/_custom_type_script = "uid://biswuy47k6e35"

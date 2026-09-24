@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://nsyghpwf7exu"]
+
+[ext_resource type="PackedScene" uid="uid://bujriyloqk8yx" path="res://scenes/sections/shop/stats_viewport/template/right_elemental_select_container.tscn" id="1_kanbu"]
+
+[node name="ShieldElementalContainer" unique_id=109097967 instance=ExtResource("1_kanbu")]
+
+[node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(960600147) index="0" unique_id=1005027653]
+text = "Elemental do Escudo"

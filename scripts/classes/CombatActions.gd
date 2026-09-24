@@ -17,7 +17,7 @@ enum Persistent {
 	SELF_DAMAGE,
 	HEAL,
 	REPAIR_SHIELD,
-	SPECIAL_ATTACK
+	#SPECIAL_ATTACK
 }
 
 enum Ocasional {}

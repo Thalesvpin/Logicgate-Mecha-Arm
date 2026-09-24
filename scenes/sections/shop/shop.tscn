@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://g87fqnshpu3e"]
 
-[ext_resource type="PackedScene" uid="uid://g1wibbx60ti6" path="res://scenes/sections/shop/shop_left_mods.tscn" id="1_emyvy"]
+[ext_resource type="PackedScene" uid="uid://g1wibbx60ti6" path="res://scenes/sections/shop/shop_tech_mods_container.tscn" id="1_emyvy"]
 [ext_resource type="PackedScene" uid="uid://b7hjsmnl3qf5k" path="res://scenes/sections/shop/shop_mid_section.tscn" id="2_n8es3"]
-[ext_resource type="PackedScene" uid="uid://bap1wppk0gxk1" path="res://scenes/sections/shop/shop_right_mods.tscn" id="2_yfiyx"]
+[ext_resource type="PackedScene" uid="uid://bap1wppk0gxk1" path="res://scenes/sections/shop/shop_bio_hacks_container.tscn" id="2_yfiyx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -27,7 +27,6 @@ fill_to = Vector2(0.5, 0.915)
 
 [node name="Shop" type="PanelContainer" unique_id=669677562]
 clip_contents = true
-anchors_preset = -1
 anchor_right = 1.028
 anchor_bottom = 0.38000003
 offset_right = -0.76000977

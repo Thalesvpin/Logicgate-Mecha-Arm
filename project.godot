@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 Global="*uid://dm7cdkjuqd51y"
 DragManager="*uid://y2qyjxt2q80c"
 EventBus="*uid://bldu8olkaqbs"
+LivePaletteRuntime="*uid://d31r5bjbh1oer"
 
 [display]
 
@@ -28,6 +29,10 @@ window/size/viewport_height=1080
 window/size/mode=2
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/live_palette/plugin.cfg")
 
 [input]
 

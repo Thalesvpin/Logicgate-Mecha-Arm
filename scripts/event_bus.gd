@@ -5,6 +5,7 @@ signal battle_ended(type)
 signal turn_started(who)
 signal turn_ended(who)
 signal submit_circuit(execution_sequence_idx: int)
+signal pulse(execution_sequence_idx: int)
 signal gate_added_to_sandbox(gate)
 signal gate_removed_from_sandbox(gate)
 signal tick
@@ -43,6 +44,7 @@ var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.TURN_START: turn_started,
 	Trigger.Type.TURN_END: turn_ended,
 	Trigger.Type.SUBMIT_CIRCUIT: submit_circuit,
+	Trigger.Type.PULSE: pulse,
 	Trigger.Type.SHIELD_BREAK: shield_break,
 	Trigger.Type.BUY_ITEM: item_bought,
 	Trigger.Type.CHARGED_ATTACK_USED: charged_attack_used,

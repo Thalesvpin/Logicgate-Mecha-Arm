@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AddMaxTokensEffect" format=3 uid="uid://la44h4u8ogxk"]
+
+[ext_resource type="Script" uid="uid://b0v8s4w71fv8r" path="res://scripts/classes/implant_effects/add_max_token.gd" id="1_04wed"]
+
+[resource]
+script = ExtResource("1_04wed")
+amount = 3
+metadata/_custom_type_script = "uid://b0v8s4w71fv8r"

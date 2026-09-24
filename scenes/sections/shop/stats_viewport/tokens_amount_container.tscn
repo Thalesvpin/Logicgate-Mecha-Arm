@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://di06vvgq8pav6"]
+
+[ext_resource type="PackedScene" uid="uid://dsy8krwkgf582" path="res://scenes/sections/shop/stats_viewport/template/left_elemental_select_container.tscn" id="1_afwak"]
+[ext_resource type="Script" uid="uid://da503gij7tasw" path="res://scripts/tokens_amount_container.gd" id="2_xy4bu"]
+[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="3_xy4bu"]
+
+[node name="TokensAmountContainer" unique_id=1221763294 instance=ExtResource("1_afwak")]
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 202.0
+offset_bottom = 104.0
+script = ExtResource("2_xy4bu")
+
+[node name="MarginContainer" parent="." index="0" unique_id=904298958]
+size_flags_vertical = 0
+
+[node name="HBoxContainer" parent="MarginContainer" index="0" unique_id=343544579]
+size_flags_vertical = 0
+
+[node name="VBoxContainer" parent="MarginContainer/HBoxContainer" index="0" unique_id=1176008596]
+size_flags_vertical = 0
+alignment = 0
+
+[node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" index="0" unique_id=1472995469]
+custom_minimum_size = Vector2(156.58, 0)
+text = "Tokens de Portas Lógicas"
+autowrap_mode = 2
+
+[node name="ElementButton" parent="MarginContainer/HBoxContainer" index="1" unique_id=1237199004]
+visible = false
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/HBoxContainer" index="2" unique_id=947115576]
+layout_mode = 2
+texture = ExtResource("3_xy4bu")
+stretch_mode = 5
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

@@ -4,7 +4,8 @@ extends IOBar
 
 func ready() -> void:
 	Global.input_manager = self
-	EventBus.submit_circuit.connect(submit)
+	#EventBus.submit_circuit.connect(submit)
+	EventBus.pulse.connect(submit)
 
 func process() -> void:
 	pass

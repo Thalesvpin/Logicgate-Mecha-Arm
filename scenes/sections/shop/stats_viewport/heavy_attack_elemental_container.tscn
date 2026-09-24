@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bmsoxsl6notlo"]
+
+[ext_resource type="PackedScene" uid="uid://dsy8krwkgf582" path="res://scenes/sections/shop/stats_viewport/template/left_elemental_select_container.tscn" id="1_p7odw"]
+[ext_resource type="Script" uid="uid://bkv77r25ma4nv" path="res://scripts/heavy_attack_elemental_container.gd" id="2_cspah"]
+
+[node name="HeavyAttackElementalContainer" unique_id=1221763294 instance=ExtResource("1_p7odw")]
+script = ExtResource("2_cspah")
+
+[node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1176008596) index="0" unique_id=1472995469]
+text = "Elemental do Ataque Pesado"
+
+[connection signal="button_up" from="MarginContainer/HBoxContainer/ElementButton" to="." method="_on_element_button_button_up"]

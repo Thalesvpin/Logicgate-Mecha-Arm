@@ -20,11 +20,12 @@ func _process(delta: float) -> void:
 
 func submit() -> void:
 	#Global.output_manager.submit()
-	EventBus.submit_circuit.emit(0)
+	EventBus.submit_circuit.emit()
+	EventBus.pulse.emit(0)
 	await get_tree().create_timer(4).timeout
-	EventBus.submit_circuit.emit(1)
+	EventBus.pulse.emit(1)
 	await get_tree().create_timer(4).timeout
-	EventBus.submit_circuit.emit(2)
+	EventBus.pulse.emit(2)
 	#get_tree().current_scene.randomize_binaries()
 
 func generate_execution_sequence() -> void:

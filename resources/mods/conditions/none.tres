@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="NoneCondition" format=3 uid="uid://bmxyhk5fk4fbb"]
 
-[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/modifier_conditions/none.gd" id="1_uokin"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="1_uokin"]
 
 [resource]
 script = ExtResource("1_uokin")

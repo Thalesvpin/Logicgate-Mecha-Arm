@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://clfirvbm13hri"]
 
-[ext_resource type="PackedScene" uid="uid://ducsuhnfwhy16" path="res://scenes/sections/shop/stats_viewport/right_stat_improvement_container.tscn" id="1_s7rpj"]
+[ext_resource type="PackedScene" uid="uid://ducsuhnfwhy16" path="res://scenes/sections/shop/stats_viewport/template/right_stat_improvement_container.tscn" id="1_s7rpj"]
+[ext_resource type="Script" uid="uid://wpup6ufvdlvp" path="res://scripts/max_health_upgrade.gd" id="2_yvr2v"]
 
 [node name="MaxHealthContainer" unique_id=109097967 instance=ExtResource("1_s7rpj")]
+script = ExtResource("2_yvr2v")
 
 [node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1014529621) index="0" unique_id=724421388]
 text = "Vida Máxima"
@@ -11,14 +13,20 @@ text = "Vida Máxima"
 layout_mode = 2
 text = "085 / 120"
 
-[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="1" unique_id=1465263440]
-text = " (100"
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="1" unique_id=754438359]
+layout_mode = 2
+text = " ("
 
-[node name="ImplantValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="2" unique_id=1314893026]
+[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="2" unique_id=1465263440]
+text = "100"
+
+[node name="ImplantValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="3" unique_id=1314893026]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.20392157, 0.9529412, 0, 1)
 text = "+20"
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="3" unique_id=754438359]
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="4" unique_id=1139033340]
 layout_mode = 2
 text = ")"
+
+[connection signal="button_up" from="MarginContainer/HBoxContainer/BuyButton" to="." method="_on_buy_button_button_up"]

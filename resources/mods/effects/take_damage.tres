@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TakeDamageEffect" format=3 uid="uid://d0e6rmx7snhcq"]
 
-[ext_resource type="Script" uid="uid://dlfsqf24i4dl" path="res://scripts/classes/modifier_effects/take_damage.gd" id="1_gvnhv"]
+[ext_resource type="Script" uid="uid://dlfsqf24i4dl" path="res://scripts/classes/implant_effects/take_damage.gd" id="1_gvnhv"]
 
 [resource]
 script = ExtResource("1_gvnhv")

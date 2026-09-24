@@ -24,7 +24,7 @@ const TECHMOD_BG_STYLEBOX_FLAT = preload("uid://dlegihcropccf")
 const ACTIVATOR = preload("uid://bb84g5o4b08f3")
 const RARITY_PLACEHOLDER = preload("uid://b8l68f41218q5")
 
-@export var resource: Modifier
+@export var resource: Implant
 var type: int
 var texture: Texture2D
 var modifier_name: String
@@ -101,8 +101,6 @@ func _on_resized() -> void:
 		if size.x > 325:
 			set_template(1)
 		if size.x <= 325:
-			print('deveria: ', size.x)
 			set_template(2)
 		if size.x <= 278:
-			print('ue: ', size.x)
 			set_template(3)

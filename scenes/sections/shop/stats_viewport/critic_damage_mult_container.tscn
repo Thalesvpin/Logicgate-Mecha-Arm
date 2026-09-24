@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://bbv5dfix8six7"]
 
-[ext_resource type="PackedScene" uid="uid://c8so5fwil8lcm" path="res://scenes/sections/shop/stats_viewport/left_stat_improvement_container.tscn" id="1_rhc35"]
+[ext_resource type="PackedScene" uid="uid://c8so5fwil8lcm" path="res://scenes/sections/shop/stats_viewport/template/left_stat_improvement_container.tscn" id="1_rhc35"]
+[ext_resource type="Script" uid="uid://cab6lwlg2wcxh" path="res://scripts/critic_damage_mult_upgrade.gd" id="2_rtpjr"]
 
 [node name="CriticDamageMultContainer" unique_id=1221763294 instance=ExtResource("1_rhc35")]
+script = ExtResource("2_rtpjr")
 
 [node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1176008596) index="0" unique_id=1472995469]
 custom_minimum_size = Vector2(186.595, 0)
@@ -11,3 +13,5 @@ autowrap_mode = 2
 
 [node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1186933452) index="0" unique_id=42870293]
 text = "x1.35"
+
+[connection signal="button_up" from="MarginContainer/HBoxContainer/BuyButton" to="." method="_on_buy_button_button_up"]

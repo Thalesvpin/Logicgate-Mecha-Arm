@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bujriyloqk8yx"]
+
+[ext_resource type="Theme" uid="uid://qghwmxll16y6" path="res://themes/stat_upgrade.tres" id="1_ffphb"]
+[ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="2_qgaa8"]
+
+[node name="RightElementalSelectContainer" type="PanelContainer" unique_id=109097967]
+theme = ExtResource("1_ffphb")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=35477174]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=797324321]
+layout_mode = 2
+
+[node name="ElementButton" type="TextureButton" parent="MarginContainer/HBoxContainer" unique_id=1666123369]
+layout_mode = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("2_qgaa8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=960600147]
+layout_mode = 2
+alignment = 2
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=1005027653]
+layout_mode = 2
+text = "Elemental do "
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" unique_id=154102869]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CurrentValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=2019279755]
+layout_mode = 2
+text = "-"

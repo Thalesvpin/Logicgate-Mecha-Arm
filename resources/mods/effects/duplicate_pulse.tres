@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DuplicatePulseEffect" format=3 uid="uid://byavny1jb210p"]
+
+[ext_resource type="Script" uid="uid://o1nr0uqt4xgo" path="res://scripts/classes/implant_effects/undone/duplicate_pulse.gd" id="1_eo4cx"]
+
+[resource]
+script = ExtResource("1_eo4cx")
+pulse_index = 3
+chance = 100.0
+metadata/_custom_type_script = "uid://o1nr0uqt4xgo"

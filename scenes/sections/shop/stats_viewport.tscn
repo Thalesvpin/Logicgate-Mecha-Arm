@@ -1,11 +1,21 @@
 [gd_scene format=3 uid="uid://dsdnrm2c01ywo"]
 
+[ext_resource type="Script" uid="uid://dxuf75loc2kor" path="res://scripts/stats_viewport.gd" id="1_bv6u5"]
 [ext_resource type="PackedScene" uid="uid://18es3j8xhvkt" path="res://scenes/sections/shop/stats_viewport/basic_damage_container.tscn" id="1_l3ufi"]
 [ext_resource type="PackedScene" uid="uid://bbv5dfix8six7" path="res://scenes/sections/shop/stats_viewport/critic_damage_mult_container.tscn" id="2_b0rs0"]
+[ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="2_te4um"]
 [ext_resource type="PackedScene" uid="uid://bisald530eldg" path="res://scenes/sections/shop/stats_viewport/critic_chance_container.tscn" id="3_s5khm"]
 [ext_resource type="PackedScene" uid="uid://clfirvbm13hri" path="res://scenes/sections/shop/stats_viewport/max_health_container.tscn" id="4_k8u8d"]
 [ext_resource type="PackedScene" uid="uid://dbxjoxyxc1l42" path="res://scenes/sections/shop/stats_viewport/shield_amount_container.tscn" id="5_qurlf"]
 [ext_resource type="PackedScene" uid="uid://k2ltjvdw5cpb" path="res://scenes/sections/shop/stats_viewport/shield_strength_container.tscn" id="6_pqe0e"]
+[ext_resource type="Theme" uid="uid://qghwmxll16y6" path="res://themes/stat_upgrade.tres" id="7_0y6mr"]
+[ext_resource type="PackedScene" uid="uid://cmqumgk5xljj7" path="res://scenes/sections/shop/stats_viewport/attack_elemental_container.tscn" id="8_1j0gq"]
+[ext_resource type="PackedScene" uid="uid://dt1dcxopxob8b" path="res://scenes/sections/shop/stats_viewport/health_elemental_container.tscn" id="9_te4um"]
+[ext_resource type="PackedScene" uid="uid://bmsoxsl6notlo" path="res://scenes/sections/shop/stats_viewport/heavy_attack_elemental_container.tscn" id="10_mcw5o"]
+[ext_resource type="PackedScene" uid="uid://nsyghpwf7exu" path="res://scenes/sections/shop/stats_viewport/shield_elemental_container.tscn" id="11_bv6u5"]
+[ext_resource type="Theme" uid="uid://ulhofgmwnknp" path="res://themes/selected_stats_tab.tres" id="14_yr5m8"]
+[ext_resource type="PackedScene" uid="uid://di06vvgq8pav6" path="res://scenes/sections/shop/stats_viewport/tokens_amount_container.tscn" id="15_icxht"]
+[ext_resource type="Shader" uid="uid://cqafv60pywcrq" path="res://shaders/test.gdshader" id="15_yr5m8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -23,60 +33,303 @@ gradient = SubResource("Gradient_rbl5t")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grjml"]
+shader = ExtResource("15_yr5m8")
+shader_parameter/fade_left_start = 0.0
+shader_parameter/fade_left_end = 0.2
+shader_parameter/fade_right_start = 0.8
+shader_parameter/fade_right_end = 1.0
+
 [node name="StatsViewport" type="PanelContainer" unique_id=131166221]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("7_0y6mr")
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+script = ExtResource("1_bv6u5")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1260472425]
 layout_mode = 2
 offset_transform_enabled = true
 texture = SubResource("GradientTexture2D_tjqua")
 
-[node name="Control" type="Control" parent="." unique_id=1561625618]
+[node name="Page1" type="Control" parent="." unique_id=1561625618]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="BasicDamageContainer" parent="Page1" unique_id=1221763294 instance=ExtResource("1_l3ufi")]
+layout_mode = 0
+offset_left = 217.0
+offset_top = 89.0
+offset_right = 496.0
+offset_bottom = 159.0
+stat = 10
+title = "Dano Base"
+
+[node name="CriticDamageMultContainer" parent="Page1" unique_id=1271331401 instance=ExtResource("2_b0rs0")]
+layout_mode = 0
+offset_left = 163.0
+offset_top = 174.0
+offset_right = 490.0
+offset_bottom = 278.0
+stat = 12
+title = "Multiplicador de Dano Crítico"
+
+[node name="CriticChanceContainer" parent="Page1" unique_id=1542546052 instance=ExtResource("3_s5khm")]
+layout_mode = 0
+offset_left = 225.0
+offset_top = 309.0
+offset_right = 516.0
+offset_bottom = 413.0
+stat = 11
+title = "Chance de Acerto Crítico"
+
+[node name="MaxHealthContainer" parent="Page1" unique_id=109097967 instance=ExtResource("4_k8u8d")]
+layout_mode = 0
+offset_left = 972.0
+offset_top = 109.0
+offset_right = 1302.0
+offset_bottom = 179.0
+title = "Vida Máxima"
+
+[node name="ShieldAmountContainer" parent="Page1" unique_id=1663436132 instance=ExtResource("5_qurlf")]
+layout_mode = 0
+offset_left = 989.0
+offset_top = 200.0
+offset_right = 1300.0
+offset_bottom = 304.0
+stat = 5
+title = "Quantidade de Escudos"
+
+[node name="ShieldStrengthContainer" parent="Page1" unique_id=1020831994 instance=ExtResource("6_pqe0e")]
+layout_mode = 0
+offset_left = 971.0
+offset_top = 331.0
+offset_right = 1313.0
+offset_bottom = 436.0
+stat = 3
+title = "Força dos Escudos"
+
+[node name="Page2" type="Control" parent="." unique_id=1794970679]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="AttackElementalContainer" parent="Page2" unique_id=1315937483 instance=ExtResource("8_1j0gq")]
+layout_mode = 0
+offset_left = 233.0
+offset_top = 123.0
+offset_right = 499.0
+offset_bottom = 193.0
+icon = ExtResource("2_te4um")
+
+[node name="HeavyAttackElementalContainer" parent="Page2" unique_id=1022021077 instance=ExtResource("10_mcw5o")]
+layout_mode = 0
+offset_left = 186.0
+offset_top = 289.0
+offset_right = 535.0
+offset_bottom = 359.0
+
+[node name="HealthElementalContainer" parent="Page2" unique_id=626989485 instance=ExtResource("9_te4um")]
+layout_mode = 0
+offset_left = 1024.0
+offset_top = 103.0
+offset_right = 1259.0
+offset_bottom = 173.0
+
+[node name="ShieldElementalContainer" parent="Page2" unique_id=1504707142 instance=ExtResource("11_bv6u5")]
+layout_mode = 0
+offset_left = 990.0
+offset_top = 274.0
+offset_right = 1255.0
+offset_bottom = 344.0
+
+[node name="Page3" type="Control" parent="." unique_id=956262551]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="AvaliableActions" type="PanelContainer" parent="Page3" unique_id=1625333793]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 115.0
+offset_right = 1215.0
+offset_bottom = 219.0
+theme = ExtResource("7_0y6mr")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Page3/AvaliableActions" unique_id=214107145]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="Spacer" type="Control" parent="Page3/AvaliableActions/VBoxContainer" unique_id=966961871]
 layout_mode = 2
 
-[node name="BasicDamageContainer" parent="Control" unique_id=1221763294 instance=ExtResource("1_l3ufi")]
-layout_mode = 0
-offset_left = 244.0
-offset_top = 43.0
-offset_right = 523.0
-offset_bottom = 113.0
+[node name="Label" type="Label" parent="Page3/AvaliableActions/VBoxContainer" unique_id=76042171]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "ações de combate disponíveis"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
-[node name="CriticDamageMultContainer" parent="Control" unique_id=1271331401 instance=ExtResource("2_b0rs0")]
-layout_mode = 0
-offset_left = 168.0
-offset_top = 136.0
-offset_right = 495.0
-offset_bottom = 240.0
+[node name="HBoxContainer" type="HBoxContainer" parent="Page3/AvaliableActions/VBoxContainer" unique_id=2060657039]
+layout_mode = 2
+theme_override_constants/separation = 50
 
-[node name="CriticChanceContainer" parent="Control" unique_id=1542546052 instance=ExtResource("3_s5khm")]
-layout_mode = 0
-offset_left = 230.0
-offset_top = 271.0
-offset_right = 521.0
-offset_bottom = 375.0
+[node name="Spacer" type="Control" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1276488936]
+layout_mode = 2
 
-[node name="MaxHealthContainer" parent="Control" unique_id=109097967 instance=ExtResource("4_k8u8d")]
-layout_mode = 0
-offset_left = 977.0
-offset_top = 71.0
-offset_right = 1307.0
-offset_bottom = 141.0
+[node name="Label" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=2004437476]
+custom_minimum_size = Vector2(144.04, 0)
+layout_mode = 2
+text = "Ataque leve"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
 
-[node name="ShieldAmountContainer" parent="Control" unique_id=1663436132 instance=ExtResource("5_qurlf")]
-layout_mode = 0
-offset_left = 994.0
-offset_top = 162.0
-offset_right = 1305.0
-offset_bottom = 266.0
+[node name="Label2" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=49716183]
+custom_minimum_size = Vector2(182.825, 0)
+layout_mode = 2
+text = "Ataque pesado"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
 
-[node name="ShieldStrengthContainer" parent="Control" unique_id=1020831994 instance=ExtResource("6_pqe0e")]
+[node name="Label3" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1835739516]
+custom_minimum_size = Vector2(182.825, 0)
+layout_mode = 2
+text = "carregar Ataque pesado"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
+
+[node name="Label4" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1199034616]
+custom_minimum_size = Vector2(132.76, 0)
+layout_mode = 2
+text = "curar vida"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
+
+[node name="Label5" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=52081117]
+custom_minimum_size = Vector2(133.36, 0)
+layout_mode = 2
+text = "consertar escudo"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
+
+[node name="Label6" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1709909248]
+custom_minimum_size = Vector2(169.27, 0)
+layout_mode = 2
+text = "dano prórpio"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
+
+[node name="Spacer2" type="Control" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1439163896]
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="Page3/AvaliableActions/VBoxContainer" unique_id=1719286819]
+layout_mode = 2
+
+[node name="TokensAmountContainer" parent="Page3" unique_id=1931450752 instance=ExtResource("15_icxht")]
 layout_mode = 0
-offset_left = 976.0
-offset_top = 293.0
-offset_right = 1318.0
-offset_bottom = 398.0
+offset_left = 572.0
+offset_top = 345.0
+offset_right = 774.0
+offset_bottom = 449.0
+
+[node name="Tabs" type="Control" parent="." unique_id=1955432439]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Top" type="HBoxContainer" parent="Tabs" unique_id=607773117]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 35.0
+grow_horizontal = 2
+theme_override_constants/separation = 35
+alignment = 1
+
+[node name="TopTabBtn1" type="Button" parent="Tabs/Top" unique_id=1238159048]
+layout_mode = 2
+theme = ExtResource("14_yr5m8")
+text = "MELHORIA DE ATRIBUTOS"
+
+[node name="TopTabBtn2" type="Button" parent="Tabs/Top" unique_id=1341065722]
+layout_mode = 2
+text = "EFEITOS ELEMENTAIS"
+
+[node name="TopTabBtn3" type="Button" parent="Tabs/Top" unique_id=1043945766]
+layout_mode = 2
+text = "AÇÕES DE BATALHA"
+
+[node name="Bottom" type="Control" parent="Tabs" unique_id=569795981]
+visible = false
+anchors_preset = 0
+offset_left = 335.0
+offset_top = 448.0
+offset_right = 454.0
+offset_bottom = 488.0
+
+[node name="SubViewport" type="SubViewport" parent="Tabs/Bottom" unique_id=1550921311]
+transparent_bg = true
+
+[node name="Control" type="Control" parent="Tabs/Bottom/SubViewport" unique_id=1323262460]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Tabs/Bottom/SubViewport/Control" unique_id=2091361511]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 29.0
+offset_right = 140.0
+offset_bottom = 69.0
+
+[node name="TextureRect" type="TextureRect" parent="Tabs/Bottom/SubViewport/Control/HBoxContainer" unique_id=254697740]
+layout_mode = 2
+offset_transform_enabled = true
+texture = ExtResource("2_te4um")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="Tabs/Bottom/SubViewport/Control/HBoxContainer" unique_id=167020844]
+layout_mode = 2
+offset_transform_enabled = true
+texture = ExtResource("2_te4um")
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="Tabs/Bottom/SubViewport/Control/HBoxContainer" unique_id=401001150]
+layout_mode = 2
+offset_transform_enabled = true
+texture = ExtResource("2_te4um")
+stretch_mode = 5
+
+[node name="TransparentGradient" type="TextureRect" parent="Tabs/Bottom" unique_id=711588401]
+material = SubResource("ShaderMaterial_grjml")
+layout_mode = 0
+offset_left = -301.0
+offset_top = -119.0
+offset_right = -182.0
+offset_bottom = -79.0
+
+[node name="CanvasGroup" type="CanvasGroup" parent="Tabs/Bottom" unique_id=860388532]
+visible = false
+
+[connection signal="pressed" from="Tabs/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
+[connection signal="pressed" from="Tabs/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]
+[connection signal="pressed" from="Tabs/Top/TopTabBtn3" to="." method="_on_top_tab_3_pressed"]

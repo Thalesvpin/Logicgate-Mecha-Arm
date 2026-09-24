@@ -37,6 +37,9 @@ _nor = 2
 _xor = 2
 _xnor = 2
 
+[node name="ModifierManager" type="Node" parent="." unique_id=1876090002]
+script = ExtResource("10_04ve2")
+
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=152356891]
 layout_mode = 1
 anchors_preset = 15
@@ -80,11 +83,11 @@ split_offset = 230
 layout_mode = 2
 
 [node name="CombatScreen" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="StatsViewport" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=131166221 instance=ExtResource("6_axant")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -96,10 +99,10 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Shop" parent="VBoxContainer/VSplitContainer/baixo" unique_id=669677562 instance=ExtResource("6_c1to4")]
+visible = false
 layout_mode = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/baixo" unique_id=67540516]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 drag_nested_intersections = true
@@ -119,9 +122,6 @@ layout_mode = 2
 [node name="SandboxActionPanel" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer/HBoxContainer" unique_id=1689072548 instance=ExtResource("6_qmxhh")]
 layout_mode = 2
 size_flags_horizontal = 8
-
-[node name="ModifierManager" type="Node" parent="." unique_id=1876090002]
-script = ExtResource("10_04ve2")
 
 [node name="ActionsHandler" type="Node" parent="." unique_id=330955696]
 script = ExtResource("12_w5uqb")
