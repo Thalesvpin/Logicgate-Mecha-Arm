@@ -1,14 +1,18 @@
 [gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dpmi2d3veyfmy"]
 
 [ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_4wr83"]
-[ext_resource type="Resource" uid="uid://bmxyhk5fk4fbb" path="res://resources/mods/conditions/none.tres" id="2_8rbls"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_8rbls"]
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="2_he5js"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="3_avt0q"]
-[ext_resource type="Script" uid="uid://o1nr0uqt4xgo" path="res://scripts/classes/implant_effects/undone/duplicate_pulse.gd" id="4_8rbls"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_he5js"]
+[ext_resource type="Script" uid="uid://o1nr0uqt4xgo" path="res://scripts/classes/implant_effects/duplicate_pulse.gd" id="4_ryrt6"]
 
-[sub_resource type="Resource" id="Resource_ryrt6"]
-script = ExtResource("4_8rbls")
+[sub_resource type="Resource" id="Resource_wmg6f"]
+script = ExtResource("2_8rbls")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_dn7y0"]
+script = ExtResource("4_ryrt6")
 pulse_index = 2
 chance = 20.0
 metadata/_custom_type_script = "uid://o1nr0uqt4xgo"
@@ -21,6 +25,6 @@ description = "toda vez que um Circuito é submetido, o Pulso de Input do segund
 texture = ExtResource("4_he5js")
 rarity = 3
 trigger = 8
-effect = Array[ExtResource("2_he5js")]([SubResource("Resource_ryrt6")])
-conditions = Array[ExtResource("1_4wr83")]([ExtResource("2_8rbls")])
+effect = Array[ExtResource("2_he5js")]([SubResource("Resource_dn7y0")])
+conditions = Array[ExtResource("1_4wr83")]([SubResource("Resource_wmg6f")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

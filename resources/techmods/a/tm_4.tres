@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://cgber4cjaov0l"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_ptmjm"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="2_7vkyy"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_m2oq4"]
+[ext_resource type="Script" uid="uid://c47csi3yt4rfd" path="res://scripts/classes/implant_effects/add_gate_cost.gd" id="3_m2oq4"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="3_uyt0a"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_7vkyy"]
+
+[sub_resource type="Resource" id="Resource_m2oq4"]
+script = ExtResource("2_m2oq4")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_w87wx"]
+script = ExtResource("3_m2oq4")
+gate = 7
+amount = -1.0
+metadata/_custom_type_script = "uid://c47csi3yt4rfd"
+
+[sub_resource type="Resource" id="Resource_6ha43"]
+script = ExtResource("3_m2oq4")
+gate = 7
+amount = -1.0
+metadata/_custom_type_script = "uid://c47csi3yt4rfd"
+
+[resource]
+script = ExtResource("3_uyt0a")
+id = 4
+name = "tech mod 4"
+description = "no começo de toda Batalha, duas Portas Lógicas aleatórias são sorteadas para custar -1 Token. Durante uma Batalha contra um Chefe, três Portas Lógicas aleatórias são sorteadas. Nenhuma Porta Lógica pode custar menos que 1 Token. Todas as Portas Lógicas voltam ao seu valor original assim que a Batalha acaba."
+texture = ExtResource("4_7vkyy")
+rarity = 1
+effect = Array[ExtResource("2_7vkyy")]([SubResource("Resource_w87wx"), SubResource("Resource_6ha43")])
+conditions = Array[ExtResource("1_ptmjm")]([SubResource("Resource_m2oq4")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

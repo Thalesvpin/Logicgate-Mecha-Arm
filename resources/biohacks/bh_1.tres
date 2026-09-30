@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://cdfw1je21a364"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_tpnvx"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_gc68e"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_x06xc"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_tub8o"]
+
+[sub_resource type="Resource" id="Resource_tpnvx"]
+script = ExtResource("2_gc68e")
+trigger = 4
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_tub8o")
+id = 1
+name = "bio hack 1"
+description = "toda vez que você leva Dano Próprio, dê o dobro do valor desse Dano em um inimigo vivo aleatório. O valor padrão da Ação de Dano Próprio é o mesmo do Dano do Ataque comum."
+type = 1
+rarity = 1
+config = Array[ExtResource("2_gc68e")]([SubResource("Resource_tpnvx")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

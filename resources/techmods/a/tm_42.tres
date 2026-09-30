@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dcq1ffaygsw7b"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_5j32f"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_1hm3y"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_1nd7n"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="3_2pnrm"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_2pnrm"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_1hm3y"]
+[ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="5_jdicx"]
+
+[sub_resource type="Resource" id="Resource_c04e8"]
+script = ExtResource("3_2pnrm")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_5ex5p"]
+script = ExtResource("5_jdicx")
+amount = 40.0
+metadata/_custom_type_script = "uid://biswuy47k6e35"
+
+[sub_resource type="Resource" id="Resource_2iv3x"]
+script = ExtResource("2_1hm3y")
+effect = Array[ExtResource("3_1nd7n")]([SubResource("Resource_5ex5p")])
+conditions = Array[ExtResource("1_5j32f")]([SubResource("Resource_c04e8")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_2pnrm")
+id = 42
+name = "tech mod 42"
+description = "o próximo Ataque do jogador terá um bônus de +40% de dano. Pode ser ativado até 3 vezes (por padrão)"
+texture = ExtResource("5_1hm3y")
+consumable = true
+uses_amount = 3
+config = Array[ExtResource("2_1hm3y")]([SubResource("Resource_2iv3x")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

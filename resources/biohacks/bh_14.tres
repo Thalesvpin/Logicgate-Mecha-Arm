@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://c4jll24tyqvx"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_nu5wt"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_6ta3r"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_0wbei"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_uuatk"]
+
+[resource]
+script = ExtResource("4_uuatk")
+id = 14
+description = "ao invés de apenas 3 opções de Recompensas serem oferecidas após abrir um Pacote de Módulos de Ascensão, com este Modifier no Inventário, 4 opções aparecem."
+type = 1
+rarity = 2
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

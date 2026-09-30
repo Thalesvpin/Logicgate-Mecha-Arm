@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AddCritDamagePercent" format=3 uid="uid://dmel034bwxuef"]
+
+[ext_resource type="Script" uid="uid://bfbbwqg3h5ki8" path="res://scripts/classes/implant_effects/add_crit_damage_percent.gd" id="1_ggxoh"]
+
+[resource]
+script = ExtResource("1_ggxoh")
+metadata/_custom_type_script = "uid://bfbbwqg3h5ki8"

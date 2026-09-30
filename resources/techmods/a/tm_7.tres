@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dytisrt6s3x5i"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_0y504"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_o7ebn"]
+[ext_resource type="Script" uid="uid://pandlhx2qcv2" path="res://scripts/classes/implant_conditions/specific_gate.gd" id="2_o355x"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_o355x"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_xo2qt"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_o7ebn"]
+[ext_resource type="Script" uid="uid://bfbbwqg3h5ki8" path="res://scripts/classes/implant_effects/add_crit_damage_percent.gd" id="5_xo2qt"]
+
+[sub_resource type="Resource" id="Resource_xo2qt"]
+script = ExtResource("2_o355x")
+gate = 2
+metadata/_custom_type_script = "uid://pandlhx2qcv2"
+
+[sub_resource type="Resource" id="Resource_dyd11"]
+script = ExtResource("5_xo2qt")
+amount = 5.0
+metadata/_custom_type_script = "uid://bfbbwqg3h5ki8"
+
+[sub_resource type="Resource" id="Resource_0dgx8"]
+script = ExtResource("2_o7ebn")
+effect = Array[ExtResource("3_o355x")]([SubResource("Resource_dyd11")])
+conditions = Array[ExtResource("1_0y504")]([SubResource("Resource_xo2qt")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[sub_resource type="Resource" id="Resource_2ikpn"]
+script = ExtResource("2_o7ebn")
+effect = Array[ExtResource("3_o355x")]([SubResource("Resource_dyd11")])
+conditions = Array[ExtResource("1_0y504")]([SubResource("Resource_xo2qt")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_xo2qt")
+id = 7
+name = "tech mod 7"
+description = "cada Porta X que o jogador adiciona ao Circuito aumenta o Dano Crítico em +X% neste Turno."
+texture = ExtResource("5_o7ebn")
+rarity = 1
+trigger = 16
+effect = Array[ExtResource("3_o355x")]([SubResource("Resource_dyd11")])
+conditions = Array[ExtResource("1_0y504")]([SubResource("Resource_xo2qt")])
+config = Array[ExtResource("2_o7ebn")]([SubResource("Resource_0dgx8"), SubResource("Resource_2ikpn")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

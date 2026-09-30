@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://c24lfewwtgac8"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_dsqq1"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_se3y5"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_dfpri"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_w6ext"]
+
+[resource]
+script = ExtResource("4_w6ext")
+id = 7
+name = "Primeiros Socorros"
+description = "quando ativado, este Modifier cura 20 pontos de Vida. Pode ser ativado até 2 vezes (por padrão)."
+type = 1
+consumable = true
+uses_amount = 2
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

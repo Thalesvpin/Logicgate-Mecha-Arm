@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://cyn55jyq7xqqi"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_et82d"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_1hkoy"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_dode1"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_i13is"]
+
+[sub_resource type="Resource" id="Resource_et82d"]
+script = ExtResource("2_1hkoy")
+trigger = 1
+effect = Array[ExtResource("3_dode1")]([null])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_i13is")
+id = 48
+name = "tech mod 48"
+description = "O primeiro item comprado em cada Loja tem um desconto significativo. Não inclui Melhorias de Atributos, apenas Bio Hacks, Tech Mods, Efeitos Elementais e Ataques Especiais"
+config = Array[ExtResource("2_1hkoy")]([SubResource("Resource_et82d")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

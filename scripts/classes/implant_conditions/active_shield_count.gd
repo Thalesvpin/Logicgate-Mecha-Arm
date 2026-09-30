@@ -4,7 +4,7 @@ class_name ActiveShieldCountCondition
 @export var compared_value: int
 @export var operator: Operators.Type
 
-func is_met() -> bool:
+func is_met(context = null) -> bool:
 	var result
 	match operator:
 		Operators.Type.EQUAL:

@@ -1,0 +1,56 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dm2y0nuwvhshu"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_fbvae"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="2_bqmeu"]
+[ext_resource type="Script" uid="uid://pandlhx2qcv2" path="res://scripts/classes/implant_conditions/specific_gate.gd" id="2_ces3q"]
+[ext_resource type="Resource" uid="uid://b8oeea2hi778j" path="res://resources/mods/conditions/specific_gate.tres" id="2_ufftt"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_btatt"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="3_df7q6"]
+[ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="3_r5lcd"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_bqmeu"]
+
+[sub_resource type="Resource" id="Resource_v58tt"]
+script = ExtResource("2_ces3q")
+metadata/_custom_type_script = "uid://pandlhx2qcv2"
+
+[sub_resource type="Resource" id="Resource_btatt"]
+script = ExtResource("3_r5lcd")
+amount = 20.0
+metadata/_custom_type_script = "uid://biswuy47k6e35"
+
+[sub_resource type="Resource" id="Resource_ces3q"]
+script = ExtResource("3_btatt")
+trigger = 16
+effect = Array[ExtResource("2_bqmeu")]([SubResource("Resource_btatt")])
+conditions = Array[ExtResource("1_fbvae")]([ExtResource("2_ufftt")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[sub_resource type="Resource" id="Resource_iog42"]
+script = ExtResource("3_r5lcd")
+amount = -20.0
+metadata/_custom_type_script = "uid://biswuy47k6e35"
+
+[sub_resource type="Resource" id="Resource_fenbc"]
+script = ExtResource("3_btatt")
+trigger = 17
+effect = Array[ExtResource("2_bqmeu")]([SubResource("Resource_iog42")])
+conditions = Array[ExtResource("1_fbvae")]([ExtResource("2_ufftt")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[sub_resource type="Resource" id="Resource_exnsd"]
+script = ExtResource("3_r5lcd")
+amount = 20.0
+metadata/_custom_type_script = "uid://biswuy47k6e35"
+
+[resource]
+script = ExtResource("3_df7q6")
+id = 6
+name = "tech mod 6"
+description = "cada Porta X que o jogador adiciona ao Circuito aumenta o Dano Base em +X% neste Turno."
+texture = ExtResource("4_bqmeu")
+rarity = 1
+trigger = 16
+effect = Array[ExtResource("2_bqmeu")]([SubResource("Resource_exnsd")])
+conditions = Array[ExtResource("1_fbvae")]([SubResource("Resource_v58tt")])
+config = Array[ExtResource("3_btatt")]([SubResource("Resource_ces3q"), SubResource("Resource_fenbc")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dya6ndjmles5q"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_6x485"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_v0w3m"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_bcgg4"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_ucg4b"]
+
+[resource]
+script = ExtResource("4_ucg4b")
+id = 19
+description = "quando ativado, este Bio Hack carrega a Carga do Ataque Carregado para 100%, caso esteja abaixo de 100%. Pode ser ativado até 3 vezes (por padrão)."
+type = 1
+consumable = true
+uses_amount = 3
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

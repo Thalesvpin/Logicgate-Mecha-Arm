@@ -5,7 +5,7 @@ class_name AddMaxHealthFlatEffect
 @export var amount: int = 0
 #@export var who: Variant
 
-func apply() -> void:
+func apply(context = null) -> void:
 	var result = add_to_player_stats(Stats.List.MAX_HEALTH, amount, lesser, 1)
 	EventBus.stat_changed.emit(Stats.List.MAX_HEALTH , result)
 

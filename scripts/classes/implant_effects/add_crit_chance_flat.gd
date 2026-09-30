@@ -4,7 +4,7 @@ class_name AddCriticChanceFlat
 ##To subtract, insert a negative value
 @export var amount: float = 0.0
 
-func apply() -> void:
+func apply(context = null) -> void:
 	var result = add_to_player_stats(Stats.List.CRITIC_CHANCE, amount, lesser, 0)
 	EventBus.stat_changed.emit(Stats.List.CRITIC_CHANCE, result)
 

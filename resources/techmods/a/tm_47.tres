@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://difi687gv8edj"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_8e6ev"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_btndn"]
+[ext_resource type="Script" uid="uid://rj6ra7cgqd2o" path="res://scripts/classes/implant_conditions/undone/shield_count.gd" id="3_btndn"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_nu3wg"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_1hrua"]
+[ext_resource type="Script" uid="uid://bih58ndmso5b6" path="res://scripts/classes/implant_conditions/times_can_happen.gd" id="4_nu3wg"]
+
+[sub_resource type="Resource" id="Resource_nu3wg"]
+script = ExtResource("3_btndn")
+metadata/_custom_type_script = "uid://rj6ra7cgqd2o"
+
+[sub_resource type="Resource" id="Resource_1hrua"]
+script = ExtResource("4_nu3wg")
+amount = 1
+metadata/_custom_type_script = "uid://bih58ndmso5b6"
+
+[sub_resource type="Resource" id="Resource_8e6ev"]
+script = ExtResource("2_btndn")
+trigger = 10
+conditions = Array[ExtResource("1_8e6ev")]([SubResource("Resource_nu3wg"), SubResource("Resource_1hrua")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_1hrua")
+id = 47
+description = "quando o último Escudo do jogador quebra, todos os inimigos perdem seu próximo Turno, efetivamente “perdendo a vez”. Só acontece uma vez por Batalha"
+config = Array[ExtResource("2_btndn")]([SubResource("Resource_8e6ev")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

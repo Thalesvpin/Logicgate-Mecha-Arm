@@ -5,7 +5,7 @@ class_name SelfDamageEffect
 	set(value):
 		amount = max(value, 0)
 
-func apply() -> void:
+func apply(context = null) -> void:
 	var mitigation = calculate_mitigation()
 	add_to_player_stats(Stats.List.CURRENT_HEALTH, -(amount-mitigation), lesser, 0)
 	

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://da510e6oxva36"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_rgeh5"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_ebmg0"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_to2j6"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_8v08k"]
+
+[resource]
+script = ExtResource("4_8v08k")
+id = 16
+description = "caso o primeiro Inimigo atacado numa Batalha também seja o primeiro a morrer, o Jogador ganha mais Dinheiro do que normalmente ganharia por matá-lo.	"
+type = 1
+rarity = 1
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

@@ -12,8 +12,8 @@ var current_active_charges: int
 @export var crit_chance: float
 @export var crit_multiplier: float
 @export var mitigation_percent: float
-@export var charged_attack_max_charges: int = 4
-@export var charged_attack_charge_amount: int = 1
+@export var heavy_attack_max_charges: int = 4
+@export var heavy_attack_charge_amount: int = 1
 @export_group('Gates Price')
 @export var max_tokens_amount: int
 @export var _and: int
@@ -33,7 +33,8 @@ var gates_price: Dictionary[Gates.Type, int]
 #region RUN
 var current_ante: int
 var current_stake: int
-var current_run_time
+var current_run_time: float
+var current_turn: int
 #endregion
 
 #region TECH MODS
@@ -62,8 +63,8 @@ func set_variables() -> void:
 		Stats.List.MAX_SHIELD_COUNT: 0,
 		Stats.List.CURRENT_SHIELD_COUNT: 0,
 		Stats.List.MAX_CHARGED_ATTACK_CHARGES: max_charged_attack_charges,
-		Stats.List.CURRENT_CHARGED_ATTACK_CHARGES: 0,
-		Stats.List.CHARGED_ATTACK_CHARGE_AMOUNT: charged_attack_charge_amount,
+		Stats.List.CURRENT_HEAVY_ATTACK_CHARGES: 0,
+		Stats.List.HEAVY_ATTACK_CHARGE_AMOUNT: heavy_attack_charge_amount,
 		Stats.List.BASE_ATTACK_DAMAGE: attack_damage,
 		Stats.List.CRITIC_CHANCE: crit_chance,
 		Stats.List.CRITIC_MULTIPLIER: crit_multiplier,
@@ -72,8 +73,8 @@ func set_variables() -> void:
 		Stats.List.CURRENT_TOKENS: max_tokens_amount,
 		Stats.List.CURRENT_MONEY: 0,
 		Stats.List.CURRENT_ELEMENTALS: [],
-		Stats.List.CHARGED_ATTACK_MAX_CHARGES: charged_attack_max_charges,
-		Stats.List.CHARGED_ATTACK_ACTIVE_CHARGES: 0,
+		Stats.List.HEAVY_ATTACK_MAX_CHARGES: heavy_attack_max_charges,
+		Stats.List.HEAVY_ATTACK_ACTIVE_CHARGES: 0,
 	}
 	gates_price = {
 		Gates.Type.AND: _and,

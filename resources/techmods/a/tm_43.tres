@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://fu1vmnu5rnwk"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_kpmrd"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_7fyh3"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_8kouu"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="3_8tc3u"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_8tc3u"]
+[ext_resource type="Script" uid="uid://bfbbwqg3h5ki8" path="res://scripts/classes/implant_effects/add_crit_damage_percent.gd" id="5_m8p8u"]
+
+[sub_resource type="Resource" id="Resource_5b6bj"]
+script = ExtResource("3_8tc3u")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_kv78q"]
+script = ExtResource("5_m8p8u")
+amount = 30.0
+metadata/_custom_type_script = "uid://bfbbwqg3h5ki8"
+
+[sub_resource type="Resource" id="Resource_gkpi0"]
+script = ExtResource("2_7fyh3")
+effect = Array[ExtResource("3_8kouu")]([SubResource("Resource_kv78q")])
+conditions = Array[ExtResource("1_kpmrd")]([SubResource("Resource_5b6bj")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[sub_resource type="Resource" id="Resource_rk0m6"]
+script = ExtResource("3_8tc3u")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_ico5e"]
+script = ExtResource("5_m8p8u")
+amount = -30.0
+metadata/_custom_type_script = "uid://bfbbwqg3h5ki8"
+
+[sub_resource type="Resource" id="Resource_iqd2h"]
+script = ExtResource("2_7fyh3")
+trigger = 4
+effect = Array[ExtResource("3_8kouu")]([SubResource("Resource_ico5e")])
+conditions = Array[ExtResource("1_kpmrd")]([SubResource("Resource_rk0m6")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_8tc3u")
+id = 43
+name = "tech mod 43"
+description = "o próximo Acerto Crítico do jogador terá um bônus de +30% de bônus de dano. Pode ser ativado até 3 vezes (por padrão)"
+consumable = true
+uses_amount = 3
+config = Array[ExtResource("2_7fyh3")]([SubResource("Resource_gkpi0"), SubResource("Resource_iqd2h")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ConsecutiveTurnsCondition" format=3 uid="uid://8gavq41ff1kj"]
+
+[ext_resource type="Script" uid="uid://c5rrromtmqep4" path="res://scripts/classes/implant_conditions/consecutive_turns.gd" id="1_xmywe"]
+
+[resource]
+script = ExtResource("1_xmywe")
+metadata/_custom_type_script = "uid://c5rrromtmqep4"

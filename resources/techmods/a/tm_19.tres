@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://yj4flmkwtf36"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_d8luv"]
+[ext_resource type="Script" uid="uid://1jg6twwhrhsd" path="res://scripts/classes/implant_conditions/unique_rarity.gd" id="2_h8tj2"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_mjf3q"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_kw7pp"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_h8tj2"]
+[ext_resource type="Script" uid="uid://bfbbwqg3h5ki8" path="res://scripts/classes/implant_effects/add_crit_damage_percent.gd" id="4_kw7pp"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_mjf3q"]
+
+[sub_resource type="Resource" id="Resource_a35s8"]
+script = ExtResource("2_h8tj2")
+implant = 1
+metadata/_custom_type_script = "uid://1jg6twwhrhsd"
+
+[sub_resource type="Resource" id="Resource_h8tj2"]
+script = ExtResource("4_kw7pp")
+metadata/_custom_type_script = "uid://bfbbwqg3h5ki8"
+
+[sub_resource type="Resource" id="Resource_oobrf"]
+script = ExtResource("2_mjf3q")
+trigger = 11
+effect = Array[ExtResource("3_kw7pp")]([SubResource("Resource_h8tj2")])
+conditions = Array[ExtResource("1_d8luv")]([SubResource("Resource_a35s8")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_h8tj2")
+id = 19
+name = "tech mod 19"
+description = "Ganhe +X de Dano Crítico para cada raridade diferente de Bio Hack presente no Inventário."
+texture = ExtResource("5_mjf3q")
+rarity = 1
+trigger = 11
+effect = Array[ExtResource("3_kw7pp")]([SubResource("Resource_h8tj2")])
+conditions = Array[ExtResource("1_d8luv")]([SubResource("Resource_a35s8")])
+config = Array[ExtResource("2_mjf3q")]([SubResource("Resource_oobrf")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

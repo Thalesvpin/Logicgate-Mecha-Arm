@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AddHealPercentEffect" format=3 uid="uid://db0xkr4d1d2tn"]
+
+[ext_resource type="Script" uid="uid://dabm4854t5omc" path="res://scripts/classes/implant_effects/add_heal_percent.gd" id="1_woybq"]
+
+[resource]
+script = ExtResource("1_woybq")
+metadata/_custom_type_script = "uid://dabm4854t5omc"

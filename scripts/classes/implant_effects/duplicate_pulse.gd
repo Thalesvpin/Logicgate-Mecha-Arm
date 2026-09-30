@@ -8,16 +8,12 @@ class_name DuplicatePulseEffect
 	set(value):
 		chance = value/100
 
-var count = 0
 var is_set: bool = true
 
-func apply() -> void:
-	print('pidx: ', pulse_index)
+func apply(context = null) -> void:
 	EventBus.pulse.connect(duplicate_pulse)
-	count += 1
 
 func duplicate_pulse(idx: int) -> void:
-	print('count: ', count, 'is set: ', is_set)
 	if is_set && pulse_index == idx && take_chance():
 		is_set = false
 		EventBus.pulse.emit(pulse_index)

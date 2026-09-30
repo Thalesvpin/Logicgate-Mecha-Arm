@@ -8,7 +8,7 @@ var greater = Operator.GREATER
 var range = Operator.RANGE
 
 ## Classe base — todo efeito, básico ou especial, herda daqui
-func apply() -> void:
+func apply(context = null) -> void:
 	push_error("apply() não implementado em %s" % get_script().resource_path)
 
 # opcional, útil pra buffs temporários que precisam ser desfeitos

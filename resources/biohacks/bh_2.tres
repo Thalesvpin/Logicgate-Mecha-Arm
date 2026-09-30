@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://bplnwsjpui2wl"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_ux3ow"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_mjs6h"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_1oek8"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_1xmet"]
+
+[resource]
+script = ExtResource("4_1xmet")
+id = 2
+name = "Carapuça Servindo Muito"
+description = "toda vez que você leva Dano de um inimigo, este mesmo inimigo leva uma porcentagem desse dano de volta. A porcentagem possível varia de 5% a 50% do dano, escolhida aleatoriamente."
+type = 1
+rarity = 1
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

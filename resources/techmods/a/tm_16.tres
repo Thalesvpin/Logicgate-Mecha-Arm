@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://c608np6txr6nk"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_ynbvg"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_63pdk"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_fihxu"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_63pdk"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_pgmkf"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_fihxu"]
+
+[sub_resource type="Resource" id="Resource_pgmkf"]
+script = ExtResource("2_63pdk")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_alu4x"]
+script = ExtResource("2_fihxu")
+conditions = Array[ExtResource("1_ynbvg")]([SubResource("Resource_pgmkf")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_pgmkf")
+id = 16
+name = "tech mod 16"
+description = "em cada Turno, este Tech Mod copia e executa os efeitos de outro Tech Mod não-consumível aleatório no Inventário."
+texture = ExtResource("5_fihxu")
+rarity = 2
+conditions = Array[ExtResource("1_ynbvg")]([SubResource("Resource_pgmkf")])
+config = Array[ExtResource("2_fihxu")]([SubResource("Resource_alu4x")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

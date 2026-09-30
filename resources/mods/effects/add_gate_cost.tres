@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AddGateCostEffect" format=3 uid="uid://dgssej4ykjua2"]
+
+[ext_resource type="Script" uid="uid://c47csi3yt4rfd" path="res://scripts/classes/implant_effects/add_gate_cost.gd" id="1_joyer"]
+
+[resource]
+script = ExtResource("1_joyer")
+metadata/_custom_type_script = "uid://c47csi3yt4rfd"

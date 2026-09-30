@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dao2lw7lx1c71"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_dkfwg"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_sxsx0"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_0aqpo"]
+[ext_resource type="Resource" uid="uid://bmxyhk5fk4fbb" path="res://resources/mods/conditions/none.tres" id="3_8xuaa"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_8xuaa"]
+[ext_resource type="Resource" uid="uid://bsxrkg20i5qmk" path="res://resources/mods/effects/charge_heavy_attack.tres" id="4_sxsx0"]
+
+[sub_resource type="Resource" id="Resource_dkfwg"]
+script = ExtResource("2_sxsx0")
+trigger = 7
+effect = Array[ExtResource("3_0aqpo")]([ExtResource("4_sxsx0")])
+conditions = Array[ExtResource("1_dkfwg")]([ExtResource("3_8xuaa")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_8xuaa")
+id = 40
+name = "tech mod 40"
+description = "a Carga do Ataque Carregado é passivamente carregada aos poucos, +25% a cada Turno, podendo chegar a 100% da Carga, fazendo com que o jogador não tenha que executar a Ação de Carregar o Ataque Carregado manualmente durante o combate. Existe uma pequena chance de este Modifier carregar +50% da Carga em um Turno, ao invés de só +25%"
+rarity = 1
+config = Array[ExtResource("2_sxsx0")]([SubResource("Resource_dkfwg")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

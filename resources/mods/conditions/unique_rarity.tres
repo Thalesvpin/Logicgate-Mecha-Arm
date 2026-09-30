@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="UniqueRarityCondition" format=3 uid="uid://dx0pmwiap0a2m"]
+
+[ext_resource type="Script" uid="uid://1jg6twwhrhsd" path="res://scripts/classes/implant_conditions/unique_rarity.gd" id="1_1eqw1"]
+
+[resource]
+script = ExtResource("1_1eqw1")
+metadata/_custom_type_script = "uid://1jg6twwhrhsd"

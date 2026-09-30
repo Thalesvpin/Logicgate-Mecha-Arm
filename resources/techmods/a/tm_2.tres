@@ -4,17 +4,17 @@
 [ext_resource type="Script" uid="uid://ttahp22h6pfp" path="res://scripts/classes/implant_conditions/gates_count.gd" id="2_js0my"]
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="2_sgwbv"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="3_c4bdw"]
-[ext_resource type="Script" uid="uid://cgkmf8n2ndb1w" path="res://scripts/classes/implant_conditions/times_per_battle.gd" id="3_oeix3"]
+[ext_resource type="Script" uid="uid://cgkmf8n2ndb1w" path="res://scripts/classes/implant_conditions/undone/times_per_battle.gd" id="3_oeix3"]
 [ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="4_oeix3"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_sgwbv"]
 
-[sub_resource type="Resource" id="Resource_kbhfa"]
+[sub_resource type="Resource" id="Resource_oeix3"]
 script = ExtResource("2_js0my")
 gate_type = 7
 compared_value = 7
 metadata/_custom_type_script = "uid://ttahp22h6pfp"
 
-[sub_resource type="Resource" id="Resource_5r42e"]
+[sub_resource type="Resource" id="Resource_kbhfa"]
 script = ExtResource("3_oeix3")
 amount = 1
 metadata/_custom_type_script = "uid://cgkmf8n2ndb1w"
@@ -32,5 +32,5 @@ description = "caso o seu Circuito tenha exatamente X Portas Lógicas, todo Dano
 texture = ExtResource("4_sgwbv")
 rarity = 2
 effect = Array[ExtResource("2_sgwbv")]([SubResource("Resource_hdsti")])
-conditions = Array[ExtResource("1_u6lna")]([SubResource("Resource_kbhfa"), SubResource("Resource_5r42e")])
+conditions = Array[ExtResource("1_u6lna")]([SubResource("Resource_oeix3"), SubResource("Resource_kbhfa")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

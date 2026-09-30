@@ -6,7 +6,7 @@ class_name SetCriticChanceEffect
 @export var who: Variant
 var old_value: float = 0
 
-func apply() -> void:
+func apply(context = null) -> void:
 	old_value = get_player_stat(Stats.List.CRITIC_CHANCE)
 	set_player_stat(Stats.List.CRITIC_CHANCE, amount)
 	EventBus.stat_changed.emit(Stats.List.CRITIC_CHANCE, amount)

@@ -29,12 +29,12 @@ func attack() -> void:
 
 func charged_attack() -> void:
 	print('Charged Attack')
-	var effect = ChargedAttackEffect.new()
+	var effect = HeavyAttackEffect.new()
 	effect.apply()
 
 func charge_attack() -> void:
 	print('Attack Charged')
-	var effect = ChargeChargedAttackEffect.new()
+	var effect = ChargeHeavyAttackEffect.new()
 	effect.apply()
 
 func self_dmg(value) -> void:

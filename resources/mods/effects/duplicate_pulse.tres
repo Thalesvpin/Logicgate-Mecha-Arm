@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="DuplicatePulseEffect" format=3 uid="uid://byavny1jb210p"]
 
-[ext_resource type="Script" uid="uid://o1nr0uqt4xgo" path="res://scripts/classes/implant_effects/undone/duplicate_pulse.gd" id="1_eo4cx"]
+[ext_resource type="Script" uid="uid://o1nr0uqt4xgo" path="res://scripts/classes/implant_effects/duplicate_pulse.gd" id="1_eo4cx"]
 
 [resource]
 script = ExtResource("1_eo4cx")

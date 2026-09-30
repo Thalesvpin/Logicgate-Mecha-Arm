@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TimesPerBattleCondition" format=3 uid="uid://b17anlmb61wea"]
 
-[ext_resource type="Script" uid="uid://cgkmf8n2ndb1w" path="res://scripts/classes/implant_conditions/times_per_battle.gd" id="1_w7oel"]
+[ext_resource type="Script" uid="uid://cgkmf8n2ndb1w" path="res://scripts/classes/implant_conditions/undone/times_per_battle.gd" id="1_w7oel"]
 
 [resource]
 script = ExtResource("1_w7oel")

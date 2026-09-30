@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://qx3dyanxqyph"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_nbawj"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_ioa6o"]
+[ext_resource type="Script" uid="uid://pandlhx2qcv2" path="res://scripts/classes/implant_conditions/specific_gate.gd" id="2_wu4fs"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_wu4fs"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_j36ua"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_ioa6o"]
+[ext_resource type="Script" uid="uid://dabm4854t5omc" path="res://scripts/classes/implant_effects/add_heal_percent.gd" id="5_j36ua"]
+
+[sub_resource type="Resource" id="Resource_j36ua"]
+script = ExtResource("2_wu4fs")
+gate = 3
+metadata/_custom_type_script = "uid://pandlhx2qcv2"
+
+[sub_resource type="Resource" id="Resource_wvw2d"]
+script = ExtResource("5_j36ua")
+metadata/_custom_type_script = "uid://dabm4854t5omc"
+
+[sub_resource type="Resource" id="Resource_lts4c"]
+script = ExtResource("2_ioa6o")
+trigger = 16
+effect = Array[ExtResource("3_wu4fs")]([SubResource("Resource_wvw2d")])
+conditions = Array[ExtResource("1_nbawj")]([SubResource("Resource_j36ua")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[sub_resource type="Resource" id="Resource_g5rry"]
+script = ExtResource("2_ioa6o")
+trigger = 17
+effect = Array[ExtResource("3_wu4fs")]([SubResource("Resource_wvw2d")])
+conditions = Array[ExtResource("1_nbawj")]([SubResource("Resource_j36ua")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_j36ua")
+id = 9
+name = "tech mod 9"
+description = "cada Porta X que o jogador adiciona ao Circuito aumenta os Pontos de Cura ganhos em +X% quando a Ação de Cura é executada neste Turno."
+texture = ExtResource("5_ioa6o")
+rarity = 1
+trigger = 16
+effect = Array[ExtResource("3_wu4fs")]([SubResource("Resource_wvw2d")])
+conditions = Array[ExtResource("1_nbawj")]([SubResource("Resource_j36ua")])
+config = Array[ExtResource("2_ioa6o")]([SubResource("Resource_lts4c"), SubResource("Resource_g5rry")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

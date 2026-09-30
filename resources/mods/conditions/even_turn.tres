@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="EvenTurnCondition" format=3 uid="uid://dwyxdgibg6ucj"]
+
+[ext_resource type="Script" uid="uid://sh0sianapr3p" path="res://scripts/classes/implant_conditions/even_turn.gd" id="1_cq8p0"]
+
+[resource]
+script = ExtResource("1_cq8p0")
+metadata/_custom_type_script = "uid://sh0sianapr3p"

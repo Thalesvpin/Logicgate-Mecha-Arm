@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://bvp8tt51e64tv"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_wkcuc"]
+[ext_resource type="Script" uid="uid://c5rrromtmqep4" path="res://scripts/classes/implant_conditions/consecutive_turns.gd" id="2_7x6ty"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_f086j"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_7x6ty"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_6h528"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_f086j"]
+
+[sub_resource type="Resource" id="Resource_6h528"]
+script = ExtResource("2_7x6ty")
+metadata/_custom_type_script = "uid://c5rrromtmqep4"
+
+[sub_resource type="Resource" id="Resource_7x6ty"]
+script = ExtResource("2_f086j")
+trigger = 3
+effect = Array[ExtResource("3_7x6ty")]([null])
+conditions = Array[ExtResource("1_wkcuc")]([SubResource("Resource_6h528")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_6h528")
+id = 26
+name = "tech mod 26"
+description = "Sempre que o jogador causar Dano em Turnos consecutivos, o Dano aumenta progressivamente. Este bônus de Dano é removido assim que a Batalha acaba, ou caso o jogador jogue um Turno sem efetuar nenhum ataque."
+texture = ExtResource("5_f086j")
+rarity = 1
+trigger = 3
+effect = Array[ExtResource("3_7x6ty")]([null])
+conditions = Array[ExtResource("1_wkcuc")]([SubResource("Resource_6h528")])
+config = Array[ExtResource("2_f086j")]([SubResource("Resource_7x6ty")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

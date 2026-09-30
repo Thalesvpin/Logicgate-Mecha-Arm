@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="SpecificTurnCondition" format=3 uid="uid://drtr5cma4p6ig"]
+
+[ext_resource type="Script" uid="uid://btatn3i5fqsj7" path="res://scripts/classes/implant_conditions/specific_turn.gd" id="1_tgoqd"]
+
+[resource]
+script = ExtResource("1_tgoqd")
+metadata/_custom_type_script = "uid://btatn3i5fqsj7"

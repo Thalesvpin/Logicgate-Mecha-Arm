@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="TimesCanHappenCondition" format=3 uid="uid://ka1oqw8yh8et"]
+
+[ext_resource type="Script" uid="uid://bih58ndmso5b6" path="res://scripts/classes/implant_conditions/times_can_happen.gd" id="1_n3px7"]
+
+[resource]
+script = ExtResource("1_n3px7")
+metadata/_custom_type_script = "uid://bih58ndmso5b6"

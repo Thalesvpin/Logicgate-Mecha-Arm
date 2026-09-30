@@ -5,7 +5,7 @@ class_name TimesPerBattleCondition
 var count: int = 0
 var linked: bool = false
 
-func is_met() -> bool:
+func is_met(context = null) -> bool:
 	if !linked:
 		EventBus.battle_started.connect(reset)
 		linked = true

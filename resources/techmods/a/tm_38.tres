@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dp7y2gimfbfvn"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_5jb4i"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_2isfg"]
+[ext_resource type="Script" uid="uid://c64ifsd7pydjt" path="res://scripts/classes/implant_conditions/odd_turn.gd" id="3_7kn33"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_wy3r6"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_7kn33"]
+[ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="5_i88pd"]
+[ext_resource type="Script" uid="uid://sh0sianapr3p" path="res://scripts/classes/implant_conditions/even_turn.gd" id="6_itk46"]
+
+[sub_resource type="Resource" id="Resource_tbrl2"]
+script = ExtResource("3_7kn33")
+metadata/_custom_type_script = "uid://c64ifsd7pydjt"
+
+[sub_resource type="Resource" id="Resource_4jqt0"]
+script = ExtResource("5_i88pd")
+amount = -15.0
+metadata/_custom_type_script = "uid://biswuy47k6e35"
+
+[sub_resource type="Resource" id="Resource_aoxsb"]
+script = ExtResource("2_2isfg")
+trigger = 6
+effect = Array[ExtResource("3_wy3r6")]([SubResource("Resource_4jqt0")])
+conditions = Array[ExtResource("1_5jb4i")]([SubResource("Resource_tbrl2")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[sub_resource type="Resource" id="Resource_r7s67"]
+script = ExtResource("6_itk46")
+metadata/_custom_type_script = "uid://sh0sianapr3p"
+
+[sub_resource type="Resource" id="Resource_kd2au"]
+script = ExtResource("5_i88pd")
+amount = 15.0
+metadata/_custom_type_script = "uid://biswuy47k6e35"
+
+[sub_resource type="Resource" id="Resource_8pt36"]
+script = ExtResource("2_2isfg")
+trigger = 6
+effect = Array[ExtResource("3_wy3r6")]([SubResource("Resource_kd2au")])
+conditions = Array[ExtResource("1_5jb4i")]([SubResource("Resource_r7s67")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[sub_resource type="Resource" id="Resource_bic15"]
+script = ExtResource("3_7kn33")
+metadata/_custom_type_script = "uid://c64ifsd7pydjt"
+
+[sub_resource type="Resource" id="Resource_cgwi3"]
+script = ExtResource("2_2isfg")
+trigger = 7
+effect = Array[ExtResource("3_wy3r6")]([SubResource("Resource_kd2au")])
+conditions = Array[ExtResource("1_5jb4i")]([SubResource("Resource_bic15")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[sub_resource type="Resource" id="Resource_ffsuf"]
+script = ExtResource("6_itk46")
+metadata/_custom_type_script = "uid://sh0sianapr3p"
+
+[sub_resource type="Resource" id="Resource_348a4"]
+script = ExtResource("2_2isfg")
+trigger = 7
+effect = Array[ExtResource("3_wy3r6")]([SubResource("Resource_4jqt0")])
+conditions = Array[ExtResource("1_5jb4i")]([SubResource("Resource_ffsuf")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_7kn33")
+id = 38
+name = "tech mod 38"
+description = "em Turnos ímpares do Jogador, dê -X% de Dano, e em Turnos pares do Jogador, dê +X% de Dano"
+rarity = 2
+corrupted = true
+config = Array[ExtResource("2_2isfg")]([SubResource("Resource_aoxsb"), SubResource("Resource_8pt36"), SubResource("Resource_cgwi3"), SubResource("Resource_348a4")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

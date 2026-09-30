@@ -6,7 +6,7 @@ class_name GatesCountCondition
 @export var compared_value: int
 var gate_count: int
 
-func is_met() -> bool:
+func is_met(context = null) -> bool:
 	var result: bool
 	match gate_type:
 		Gates.Type.AND:

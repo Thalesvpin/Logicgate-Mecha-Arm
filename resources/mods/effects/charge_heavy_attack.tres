@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ChargeHeavyAttackEffect" format=3 uid="uid://bsxrkg20i5qmk"]
+
+[ext_resource type="Script" uid="uid://dt1iryly4dgrs" path="res://scripts/classes/implant_effects/charge_heavy_attack.gd" id="1_5ma73"]
+
+[resource]
+script = ExtResource("1_5ma73")
+amount = 25
+metadata/_custom_type_script = "uid://dt1iryly4dgrs"
