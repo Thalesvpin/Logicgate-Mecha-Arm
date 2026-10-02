@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ciirxpddf72m4" path="res://scripts/enemy_status_bar.gd" id="1_ryokx"]
 [ext_resource type="Texture2D" uid="uid://cdeyfpq76q6sw" path="res://assets/enemystatusbar_frame_PLACEHOLDER.png" id="2_vvvff"]
+[ext_resource type="Texture2D" uid="uid://bf7n142bmudlv" path="res://assets/enemystatusbar_frame_defeat_PLACEHOLDER.png" id="3_3ifu1"]
 [ext_resource type="Texture2D" uid="uid://dfg11yr0hn6qp" path="res://assets/left_top.png" id="3_rl6i7"]
 [ext_resource type="Texture2D" uid="uid://cdrk14hnig25f" path="res://assets/left_top2.png" id="3_vrh0u"]
 [ext_resource type="Texture2D" uid="uid://bwpeev30m6jsb" path="res://assets/left_curve.png" id="4_ptbck"]
@@ -58,9 +59,11 @@ offset_right = 347.0
 offset_bottom = 82.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_rgupk")
 script = ExtResource("1_ryokx")
+background_texture = ExtResource("2_vvvff")
+defeat_background_texture = ExtResource("3_3ifu1")
 swap_bar_tween_duration = 0.4
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1389436291]
+[node name="Background" type="TextureRect" parent="." unique_id=1389436291]
 custom_maximum_size = Vector2(347, 82)
 layout_mode = 2
 size_flags_vertical = 0

@@ -18,12 +18,13 @@ signal attacked
 signal critical_hit
 signal healed()
 signal shield_break
-signal charged_attack_used
-signal charged_charged_attack
+signal heavy_attack_used
+signal charged_heavy_attack
 signal enemy_defeated(who)
 signal repaired_shield(amount)
 signal elemental_applied(elemental, enemy)
 signal afflicted_by_elemental(elemental)
+signal player_defeated
 #endregion
 
 #region SHOP
@@ -47,10 +48,11 @@ var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.PULSE: pulse,
 	Trigger.Type.SHIELD_BREAK: shield_break,
 	Trigger.Type.BUY_ITEM: item_bought,
-	Trigger.Type.CHARGED_ATTACK_USED: charged_attack_used,
-	Trigger.Type.CHARGED_ATTACK_CHARGED: charged_charged_attack,
+	Trigger.Type.HEAVY_ATTACK_USED: heavy_attack_used,
+	Trigger.Type.HEAVY_ATTACK_CHARGED: charged_heavy_attack,
 	Trigger.Type.ATTACK: attacked,
 	Trigger.Type.OPEN_PACK: pack_opened,
 	Trigger.Type.GATE_ADDED_TO_SANDBOX: gate_added_to_sandbox,
 	Trigger.Type.GATE_REMOVED_FROM_SANDBOX: gate_removed_from_sandbox,
+	Trigger.Type.PLAYER_DEFEATED: player_defeated,
 }

@@ -25,7 +25,10 @@ var stats: Dictionary[Stats.List, Variant] = {
 }
 
 var id
+var enemy_name: String
 var battle_position
+var status_bar
+var _position
 
 func _ready() -> void:
 	set_stats()
@@ -46,7 +49,11 @@ func take_damage(value: float, target: Node) -> void:
 	else:
 		final_taken_dmg = int(value)
 	
-	stats[Stats.List.CURRENT_HEALTH] -= final_taken_dmg
+	if stats[Stats.List.CURRENT_HEALTH] - final_taken_dmg >= 0:
+		stats[Stats.List.CURRENT_HEALTH] -= final_taken_dmg
+	else:
+		stats[Stats.List.CURRENT_HEALTH] = 0
+		EventBus.enemy_defeated.emit(self)
 
 func heal() -> void:
 	stats[Stats.List.CURRENT_HEALTH] += stats[Stats.List.BASE_HEAL]
@@ -72,3 +79,22 @@ func set_stats() -> void:
 
 func connect_signals() -> void:
 	EventBus.attacked.connect(take_damage)
+
+func link_to_status_bar() -> void:
+	var parent = get_parent()
+	for child in parent.get_children():
+		if child != self:
+			child.enemy = self
+			status_bar = child
+
+func update():
+	pass
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+			swap()
+
+func swap():
+	if _position != EnemyPosition.Position.CENTER:
+		owner.center_enemy(self)

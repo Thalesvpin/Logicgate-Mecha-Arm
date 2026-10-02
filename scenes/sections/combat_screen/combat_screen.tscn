@@ -28,6 +28,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_lvmae")
 
@@ -63,7 +64,7 @@ theme_override_constants/separation = 26
 [node name="EnemyStatusBar" parent="VBoxContainer/HBoxContainer/CenterEnemyContainer" unique_id=1219616546 instance=ExtResource("1_h43is")]
 layout_mode = 2
 
-[node name="Enemy2" parent="VBoxContainer/HBoxContainer/CenterEnemyContainer" unique_id=1588981182 instance=ExtResource("3_civbc")]
+[node name="Enemy" parent="VBoxContainer/HBoxContainer/CenterEnemyContainer" unique_id=156767159 instance=ExtResource("3_civbc")]
 layout_mode = 2
 
 [node name="Spacer3" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=290057607]
@@ -77,7 +78,7 @@ theme_override_constants/separation = 26
 [node name="EnemyStatusBar" parent="VBoxContainer/HBoxContainer/RightEnemyContainer" unique_id=1057226659 instance=ExtResource("1_h43is")]
 layout_mode = 2
 
-[node name="Enemy3" parent="VBoxContainer/HBoxContainer/RightEnemyContainer" unique_id=787882831 instance=ExtResource("3_civbc")]
+[node name="Enemy" parent="VBoxContainer/HBoxContainer/RightEnemyContainer" unique_id=1675920212 instance=ExtResource("3_civbc")]
 layout_mode = 2
 
 [node name="Spacer4" type="Control" parent="VBoxContainer/HBoxContainer" unique_id=912163424]
@@ -151,4 +152,5 @@ size_flags_horizontal = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=542381246]
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_civbc")

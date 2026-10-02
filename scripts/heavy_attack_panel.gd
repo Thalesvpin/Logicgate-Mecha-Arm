@@ -6,7 +6,7 @@ var _material
 
 func ready() -> void:
 	is_charged = true
-	Global.charged_attack_panel = self
+	Global.heavy_attack_panel = self
 	_material = charges_bar.material as ShaderMaterial
 
 func fill_charges() -> void:

@@ -16,8 +16,8 @@ var all_gate_outputs: Array
 var hovered_pin: Area2D
 var action_list: Dictionary[CombatActions.List, int]={
 	CombatActions.List.ATTACK: 0,
-	CombatActions.List.CHARGED_ATTACK: 0,
-	CombatActions.List.CHARGE_CHARGED_ATTACK: 0,
+	CombatActions.List.HEAVY_ATTACK: 0,
+	CombatActions.List.CHARGE_HEAVY_ATTACK: 0,
 	CombatActions.List.SELF_DAMAGE: 0,
 	CombatActions.List.HEAL: 0,
 	CombatActions.List.REPAIR_SHIELD: 0

@@ -1,13 +1,15 @@
 extends PanelContainer
+#region BACKGROUND
+@onready var background: TextureRect = $Background
+
+@export var background_texture: Texture2D
+@export var defeat_background_texture: Texture2D
+#endregion
 
 #region HEALTH
 @onready var health_bar: TextureProgressBar = $Health/HealthBar
 @onready var health_counter: Label = $Health/HealthCounter
 @onready var health_bar_placeholder: ProgressBar = $Health/HealthBarPlaceholder
-
-@export var max_health: int = 100
-##Must be converted to % in the graph display
-var current_health_value: int
 #endregion
 
 #region SHIELD
@@ -44,13 +46,16 @@ var enemy = null
 @export var swap_bar_tween_duration: float = 0.8
 @export var progress_bar_tween_duration: float = 0.8
 var original_position: Vector2
+var stats
 
 func _ready() -> void:
 	original_position = position
+	EventBus.enemy_defeated.connect(defeated)
+	background.texture = background_texture
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("test"):
-		subtract_from_shield(10)
+#func _input(event: InputEvent) -> void:
+	#if event.is_action_pressed("test"):
+		#subtract_from_shield(10)
 
 ##Enemy swap
 func update() -> void:
@@ -58,12 +63,15 @@ func update() -> void:
 	tween.set_parallel(false)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, 'position', Vector2(position.x, original_position.y-size.y), swap_bar_tween_duration)
-	#set_health_value(enemy['health'])
-	#set_shield_value(enemy['shield'])
-	#set_afflicted_element(enemy['afflicted_element'], enemy['afflicted_count'])
-	#set_elemental(enemy['elemental'], enemy['elemental_lvl'])
-	tween.tween_property(self, 'position', Vector2(position.x, original_position.y), swap_bar_tween_duration)
 	
+	stats = enemy.stats
+	set_health_value(stats[Stats.List.CURRENT_HEALTH])
+	set_shield_value(stats[Stats.List.CURRENT_SHIELD])
+	
+	#set_afflicted_element(stats[Stats.List.CURRENT_AFFLICTED_ELEMENT], enemy['afflicted_count'])
+	#set_elemental(stats[Stats.List.CURRENT_ELEMENTALS], enemy['elemental_lvl'])
+	
+	tween.tween_property(self, 'position', Vector2(position.x, original_position.y), swap_bar_tween_duration)
 
 func check_elemental_counters() -> void:
 	if afflicted_counter < 10:
@@ -83,7 +91,7 @@ func progress_bar_animation(bar: Node, new_value: int) -> void:
 	tween.tween_property(bar, 'value', new_value, progress_bar_tween_duration)
 
 func set_health_value(value: float) -> void:
-	var percentage = (value/max_health)*100
+	var percentage = (value/stats[Stats.List.MAX_HEALTH])*100
 	progress_bar_animation(health_bar, percentage)
 	#health_bar.value = percentage
 	health_counter.text = str(value)
@@ -93,17 +101,17 @@ func set_health_value(value: float) -> void:
 	
 
 func add_to_health(value: int) -> void:
-	current_health_value += value
-	current_health_value = max(current_health_value, max_health)
-	set_health_value(current_health_value)
+	stats[Stats.List.CURRENT_HEALTH] += value
+	stats[Stats.List.CURRENT_HEALTH] = max(stats[Stats.List.CURRENT_HEALTH], stats[Stats.List.MAX_HEALTH])
+	set_health_value(stats[Stats.List.CURRENT_HEALTH])
 
 func subtract_from_health(value: int) -> void:
-	current_health_value -= value
-	current_health_value = max(current_health_value, 0)
-	set_health_value(current_health_value)
+	stats[Stats.List.CURRENT_HEALTH] -= value
+	stats[Stats.List.CURRENT_HEALTH] = max(stats[Stats.List.CURRENT_HEALTH], 0)
+	set_health_value(stats[Stats.List.CURRENT_HEALTH])
 
 func set_shield_value(value: float) -> void:
-	var percentage = (value/max_shield)*100
+	var percentage = (value/stats[Stats.List.MAX_SHIELD])*100
 	var array = [shield_vertical_l_bar
 				,shield_vertical_r_bar
 				,shield_curve_l_bar
@@ -121,15 +129,16 @@ func set_shield_value(value: float) -> void:
 	tween.tween_method(func(v): shield_counter.text = str(int(v)), int(shield_counter.text), value, shield_tween_duration)
 
 func add_to_shield(value: int) -> void:
-	current_shield_value += value
-	current_shield_value = max(current_shield_value, max_shield)
-	set_shield_value(current_shield_value)
+	stats[Stats.List.CURRENT_SHIELD] += value
+	stats[Stats.List.CURRENT_SHIELD] = max(stats[Stats.List.CURRENT_SHIELD], stats[Stats.List.MAX_SHIELD])
+	set_shield_value(stats[Stats.List.CURRENT_SHIELD])
 
 func subtract_from_shield(value: int) -> void:
-	current_shield_value -= value
-	current_shield_value = max(current_shield_value, 0)
-	set_shield_value(current_shield_value)
+	stats[Stats.List.CURRENT_SHIELD] -= value
+	stats[Stats.List.CURRENT_SHIELD] = max(stats[Stats.List.CURRENT_SHIELD], 0)
+	set_shield_value(stats[Stats.List.CURRENT_SHIELD])
 
+#rever
 func set_afflicted_label(value: int) -> void:
 	afflicted_counter_label.text = str(value)
 	check_elemental_counters()
@@ -149,3 +158,12 @@ func set_afflicted_element(element, count: int):
 
 func set_elemental(element, lvl: int):
 	pass
+
+func defeated(who) -> void:
+	if who != enemy:
+		return
+	for child in get_children():
+		if child != background:
+			child.hide()
+		else:
+			child.texture = defeat_background_texture

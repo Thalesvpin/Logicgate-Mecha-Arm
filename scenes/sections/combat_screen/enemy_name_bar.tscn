@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://d3en6qadq15b"]
 
+[ext_resource type="Script" uid="uid://drjmtsanjhavq" path="res://scripts/enemy_name_bar.gd" id="1_epf03"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvq6j"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
 border_width_top = 4
@@ -38,6 +40,7 @@ layout_mode = 3
 anchors_preset = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+script = ExtResource("1_epf03")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1098457730]
 custom_minimum_size = Vector2(300, 40)
