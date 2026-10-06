@@ -14,7 +14,7 @@ var extra_stats: Dictionary[Stats.List, Variant] = {
 
 
 func _ready() -> void:
-	Global.modifier_manager = self
+	Global.implant_manager = self
 	EventBus.tech_mod_added.connect(add_tech_mod)
 	EventBus.bio_hack_added.connect(add_bio_hack)
 	#EventBus.submit_circuit.connect()
@@ -26,11 +26,17 @@ func _ready() -> void:
 	#EventBus.enemy_defeated.connect(tet)
 
 
-func add_tech_mod(mod: Implant):
+func add_tech_mod(implant: Implant):
 	print('mod_manager add tech mod')
-	active_tech_mods.append(mod)
-	mod.connect_triggers()
+	active_tech_mods.append(implant)
+	implant.connect_triggers()
 
-func add_bio_hack(mod: Implant):
-	active_bio_hacks.append(mod)
-	mod.connect_triggers()
+func add_bio_hack(implant: Implant):
+	active_bio_hacks.append(implant)
+	implant.connect_triggers()
+
+func remove_tech_mod(implant: Implant):
+	active_tech_mods.erase(implant)
+
+func remove_bio_hack(implant: Implant):
+	active_bio_hacks.erase(implant)

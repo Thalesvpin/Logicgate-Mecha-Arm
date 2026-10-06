@@ -19,14 +19,12 @@ func _process(delta: float) -> void:
 		submit()
 
 func submit() -> void:
-	#Global.output_manager.submit()
 	EventBus.submit_circuit.emit()
 	EventBus.pulse.emit(0)
 	await get_tree().create_timer(4).timeout
 	EventBus.pulse.emit(1)
 	await get_tree().create_timer(4).timeout
 	EventBus.pulse.emit(2)
-	#get_tree().current_scene.randomize_binaries()
 
 func generate_execution_sequence() -> void:
 	var list = Global.unique_random_list(execution_labels.size(), 4)

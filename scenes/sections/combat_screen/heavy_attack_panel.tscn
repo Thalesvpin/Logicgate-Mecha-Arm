@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://ds4l1rshegbqx"]
 
-[ext_resource type="Script" uid="uid://c8ndbsgmqhhqf" path="res://scripts/heavy_attack_panel.gd" id="1_dpixr"]
-[ext_resource type="Shader" uid="uid://dulb1o24l1kpl" path="res://shaders/progress_bar.gdshader" id="1_quj11"]
-[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="3_rd4y6"]
+[ext_resource type="Script" uid="uid://c8ndbsgmqhhqf" path="res://scripts/heavy_attack_panel.gd" id="1_angqt"]
+[ext_resource type="Shader" uid="uid://dulb1o24l1kpl" path="res://shaders/progress_bar.gdshader" id="2_l0mrq"]
+[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="3_5yha0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
@@ -47,13 +47,13 @@ font_size = 35
 font_color = Color(0.62352943, 1, 0.5921569, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dpixr"]
-shader = ExtResource("1_quj11")
+shader = ExtResource("2_l0mrq")
 shader_parameter/bar_mode = 0
 shader_parameter/fill_mode = 2
 shader_parameter/segment_count = 4
-shader_parameter/discrete_fill_amount = 4
+shader_parameter/discrete_fill_amount = 12
 shader_parameter/fade_fill_amount = 1.0
-shader_parameter/pour_fill_amount = 1.0
+shader_parameter/pour_fill_amount = 0.0
 shader_parameter/animation_speed = 1.0
 shader_parameter/flash_type = 0
 shader_parameter/flash_segment = 0
@@ -101,8 +101,8 @@ shader_parameter/H_gradient_strength = 0.75
 shader_parameter/segment_gap = 0.0
 shader_parameter/universal_border_size = 0.1
 shader_parameter/horizontal_border_size = 1.0
-shader_parameter/inner_border_thickness_multiplier = 1.0
-shader_parameter/outer_border_size = 3.0
+shader_parameter/inner_border_thickness_multiplier = 0.5
+shader_parameter/outer_border_size = 1.5
 shader_parameter/slant_amount = 0.0
 shader_parameter/scale = 0.0
 shader_parameter/slant_clip_margin = 0.0
@@ -117,7 +117,7 @@ offset_right = 370.0
 offset_bottom = 150.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
-script = ExtResource("1_dpixr")
+script = ExtResource("1_angqt")
 charged_offset = 155
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=463135577]
@@ -191,9 +191,10 @@ offset_bottom = 40.0
 fill_mode = 3
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/Control" unique_id=1261505371]
+visible = false
 layout_mode = 0
 offset_left = 84.0
 offset_top = 41.0
 offset_right = 140.0
 offset_bottom = 97.0
-texture = ExtResource("3_rd4y6")
+texture = ExtResource("3_5yha0")

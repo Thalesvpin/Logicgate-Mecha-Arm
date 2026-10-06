@@ -31,6 +31,7 @@ func get_rarity() -> void:
 	price_container.get_theme_stylebox("panel").border_color = LivePalette.RARITY.BY_NAME[Global.Rarity.keys()[rarity]]
 
 func _on_buy_btn_button_up() -> void:
+	print('comprou')
 	var curr_money = Global.run_stats.player_stats[Stats.List.CURRENT_MONEY]
 	if curr_money >= price:
 		var effect = AddMoneyEffect.new()

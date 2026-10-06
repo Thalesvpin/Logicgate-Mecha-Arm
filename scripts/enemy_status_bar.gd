@@ -8,7 +8,7 @@ extends PanelContainer
 
 #region HEALTH
 @onready var health_bar: TextureProgressBar = $Health/HealthBar
-@onready var health_counter: Label = $Health/HealthCounter
+@onready var health_counter: Label = $Health/HealthBar/HealthCounter
 @onready var health_bar_placeholder: ProgressBar = $Health/HealthBarPlaceholder
 #endregion
 
@@ -52,6 +52,7 @@ func _ready() -> void:
 	original_position = position
 	EventBus.enemy_defeated.connect(defeated)
 	background.texture = background_texture
+	#update()
 
 #func _input(event: InputEvent) -> void:
 	#if event.is_action_pressed("test"):

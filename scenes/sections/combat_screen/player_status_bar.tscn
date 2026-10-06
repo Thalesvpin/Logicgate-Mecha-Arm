@@ -7,11 +7,255 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvvff"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r02ah"]
+shader = ExtResource("3_a4jf8")
+shader_parameter/bar_mode = 0
+shader_parameter/fill_mode = 2
+shader_parameter/segment_count = 1
+shader_parameter/discrete_fill_amount = 12
+shader_parameter/fade_fill_amount = 1.0
+shader_parameter/pour_fill_amount = 1.0
+shader_parameter/animation_speed = 1.0
+shader_parameter/flash_type = 0
+shader_parameter/flash_segment = 0
+shader_parameter/flash_intensity = 0.0
+shader_parameter/single_segment_previous_fill = 1.0
+shader_parameter/single_segment_current_fill = 1.0
+shader_parameter/single_segment_flash_intensity = 0.8
+shader_parameter/flash_from_segment = 0
+shader_parameter/flash_to_segment = 0
+shader_parameter/single_segment_fade_from = 1.0
+shader_parameter/single_segment_fade_to = 1.0
+shader_parameter/single_segment_fade_progress = 0.0
+shader_parameter/drain_previous_fill = 1.0
+shader_parameter/drain_current_fill = 1.0
+shader_parameter/drain_time_progress = 0.50000002375
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/filled_color = Color(0.94509804, 0.5882353, 1, 1)
+shader_parameter/border_color = Color(0, 0, 0, 1)
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/drain_flash_color = Color(1, 1, 1, 1)
+shader_parameter/custom_frame = false
+shader_parameter/frame_trim = 0.0
+shader_parameter/alpha_threshold = 0.69
+shader_parameter/scan_steps = 15
+shader_parameter/edge_smoothness = 0.02
+shader_parameter/mask_expansion = 0.0
+shader_parameter/frame_edge_opacity = 0.9
+shader_parameter/fluid_base_color = Color(0.2, 0.6, 1, 1)
+shader_parameter/fluid_highlight_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/fluid_shadow_color = Color(0.1, 0.3, 0.6, 1)
+shader_parameter/fluid_flow_speed = 1.5
+shader_parameter/fluid_turbulence = 1.0
+shader_parameter/fluid_noise_scale = 6.0
+shader_parameter/gas_mode = false
+shader_parameter/gas_intensity = 0.8
+shader_parameter/effect_mode = 0
+shader_parameter/effect_strength = 0.3
+shader_parameter/effect_speed = 1.5
+shader_parameter/wave_thickness = 0.1
+shader_parameter/bubbles_aspect_ratio = 1.0
+shader_parameter/vertical_gradient = true
+shader_parameter/V_gradient_strength = 0.6
+shader_parameter/horizontal_gradient = false
+shader_parameter/H_gradient_strength = 0.75
+shader_parameter/segment_gap = 0.0
+shader_parameter/universal_border_size = 0.1
+shader_parameter/horizontal_border_size = 1.0
+shader_parameter/inner_border_thickness_multiplier = 0.25
+shader_parameter/outer_border_size = 0.4
+shader_parameter/slant_amount = 0.0
+shader_parameter/scale = 0.0
+shader_parameter/slant_clip_margin = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4md1d"]
+shader = ExtResource("3_a4jf8")
+shader_parameter/bar_mode = 0
+shader_parameter/fill_mode = 2
+shader_parameter/segment_count = 3
+shader_parameter/discrete_fill_amount = 12
+shader_parameter/fade_fill_amount = 1.0
+shader_parameter/pour_fill_amount = 1.0
+shader_parameter/animation_speed = 1.0
+shader_parameter/flash_type = 0
+shader_parameter/flash_segment = 0
+shader_parameter/flash_intensity = 0.0
+shader_parameter/single_segment_previous_fill = 1.0
+shader_parameter/single_segment_current_fill = 1.0
+shader_parameter/single_segment_flash_intensity = 0.8
+shader_parameter/flash_from_segment = 0
+shader_parameter/flash_to_segment = 0
+shader_parameter/single_segment_fade_from = 1.0
+shader_parameter/single_segment_fade_to = 1.0
+shader_parameter/single_segment_fade_progress = 0.0
+shader_parameter/drain_previous_fill = 1.0
+shader_parameter/drain_current_fill = 1.0
+shader_parameter/drain_time_progress = 0.50000002375
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/filled_color = Color(0, 0.5882353, 1, 1)
+shader_parameter/border_color = Color(0, 0, 0, 1)
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/drain_flash_color = Color(1, 1, 1, 1)
+shader_parameter/custom_frame = false
+shader_parameter/frame_trim = 0.0
+shader_parameter/alpha_threshold = 0.69
+shader_parameter/scan_steps = 15
+shader_parameter/edge_smoothness = 0.02
+shader_parameter/mask_expansion = 0.0
+shader_parameter/frame_edge_opacity = 0.9
+shader_parameter/fluid_base_color = Color(0.2, 0.6, 1, 1)
+shader_parameter/fluid_highlight_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/fluid_shadow_color = Color(0.1, 0.3, 0.6, 1)
+shader_parameter/fluid_flow_speed = 1.5
+shader_parameter/fluid_turbulence = 1.0
+shader_parameter/fluid_noise_scale = 6.0
+shader_parameter/gas_mode = false
+shader_parameter/gas_intensity = 0.8
+shader_parameter/effect_mode = 0
+shader_parameter/effect_strength = 0.3
+shader_parameter/effect_speed = 1.5
+shader_parameter/wave_thickness = 0.1
+shader_parameter/bubbles_aspect_ratio = 1.0
+shader_parameter/vertical_gradient = true
+shader_parameter/V_gradient_strength = 0.6
+shader_parameter/horizontal_gradient = false
+shader_parameter/H_gradient_strength = 0.75
+shader_parameter/segment_gap = 0.0
+shader_parameter/universal_border_size = 0.1
+shader_parameter/horizontal_border_size = 1.0
+shader_parameter/inner_border_thickness_multiplier = 0.25
+shader_parameter/outer_border_size = 0.4
+shader_parameter/slant_amount = 0.0
+shader_parameter/scale = 0.0
+shader_parameter/slant_clip_margin = 0.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tt3tj"]
 shader = ExtResource("3_a4jf8")
 shader_parameter/bar_mode = 0
 shader_parameter/fill_mode = 2
 shader_parameter/segment_count = 3
+shader_parameter/discrete_fill_amount = 12
+shader_parameter/fade_fill_amount = 1.0
+shader_parameter/pour_fill_amount = 1.0
+shader_parameter/animation_speed = 1.0
+shader_parameter/flash_type = 0
+shader_parameter/flash_segment = 0
+shader_parameter/flash_intensity = 0.0
+shader_parameter/single_segment_previous_fill = 1.0
+shader_parameter/single_segment_current_fill = 1.0
+shader_parameter/single_segment_flash_intensity = 0.8
+shader_parameter/flash_from_segment = 0
+shader_parameter/flash_to_segment = 0
+shader_parameter/single_segment_fade_from = 1.0
+shader_parameter/single_segment_fade_to = 1.0
+shader_parameter/single_segment_fade_progress = 0.0
+shader_parameter/drain_previous_fill = 1.0
+shader_parameter/drain_current_fill = 1.0
+shader_parameter/drain_time_progress = 0.50000002375
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/filled_color = Color(0, 0.5882353, 1, 1)
+shader_parameter/border_color = Color(0, 0, 0, 1)
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/drain_flash_color = Color(1, 1, 1, 1)
+shader_parameter/custom_frame = false
+shader_parameter/frame_trim = 0.0
+shader_parameter/alpha_threshold = 0.69
+shader_parameter/scan_steps = 15
+shader_parameter/edge_smoothness = 0.02
+shader_parameter/mask_expansion = 0.0
+shader_parameter/frame_edge_opacity = 0.9
+shader_parameter/fluid_base_color = Color(0.2, 0.6, 1, 1)
+shader_parameter/fluid_highlight_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/fluid_shadow_color = Color(0.1, 0.3, 0.6, 1)
+shader_parameter/fluid_flow_speed = 1.5
+shader_parameter/fluid_turbulence = 1.0
+shader_parameter/fluid_noise_scale = 6.0
+shader_parameter/gas_mode = false
+shader_parameter/gas_intensity = 0.8
+shader_parameter/effect_mode = 0
+shader_parameter/effect_strength = 0.3
+shader_parameter/effect_speed = 1.5
+shader_parameter/wave_thickness = 0.1
+shader_parameter/bubbles_aspect_ratio = 1.0
+shader_parameter/vertical_gradient = true
+shader_parameter/V_gradient_strength = 0.6
+shader_parameter/horizontal_gradient = false
+shader_parameter/H_gradient_strength = 0.75
+shader_parameter/segment_gap = 0.0
+shader_parameter/universal_border_size = 0.1
+shader_parameter/horizontal_border_size = 1.0
+shader_parameter/inner_border_thickness_multiplier = 0.25
+shader_parameter/outer_border_size = 0.4
+shader_parameter/slant_amount = 0.0
+shader_parameter/scale = 0.0
+shader_parameter/slant_clip_margin = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a4jf8"]
+shader = ExtResource("3_a4jf8")
+shader_parameter/bar_mode = 0
+shader_parameter/fill_mode = 2
+shader_parameter/segment_count = 2
+shader_parameter/discrete_fill_amount = 12
+shader_parameter/fade_fill_amount = 1.0
+shader_parameter/pour_fill_amount = 1.0
+shader_parameter/animation_speed = 1.0
+shader_parameter/flash_type = 0
+shader_parameter/flash_segment = 0
+shader_parameter/flash_intensity = 0.0
+shader_parameter/single_segment_previous_fill = 1.0
+shader_parameter/single_segment_current_fill = 1.0
+shader_parameter/single_segment_flash_intensity = 0.8
+shader_parameter/flash_from_segment = 0
+shader_parameter/flash_to_segment = 0
+shader_parameter/single_segment_fade_from = 1.0
+shader_parameter/single_segment_fade_to = 1.0
+shader_parameter/single_segment_fade_progress = 0.0
+shader_parameter/drain_previous_fill = 1.0
+shader_parameter/drain_current_fill = 1.0
+shader_parameter/drain_time_progress = 0.50000002375
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/filled_color = Color(0, 0.5882353, 1, 1)
+shader_parameter/border_color = Color(0, 0, 0, 1)
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+shader_parameter/drain_flash_color = Color(1, 1, 1, 1)
+shader_parameter/custom_frame = false
+shader_parameter/frame_trim = 0.0
+shader_parameter/alpha_threshold = 0.69
+shader_parameter/scan_steps = 15
+shader_parameter/edge_smoothness = 0.02
+shader_parameter/mask_expansion = 0.0
+shader_parameter/frame_edge_opacity = 0.9
+shader_parameter/fluid_base_color = Color(0.2, 0.6, 1, 1)
+shader_parameter/fluid_highlight_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/fluid_shadow_color = Color(0.1, 0.3, 0.6, 1)
+shader_parameter/fluid_flow_speed = 1.5
+shader_parameter/fluid_turbulence = 1.0
+shader_parameter/fluid_noise_scale = 6.0
+shader_parameter/gas_mode = false
+shader_parameter/gas_intensity = 0.8
+shader_parameter/effect_mode = 0
+shader_parameter/effect_strength = 0.3
+shader_parameter/effect_speed = 1.5
+shader_parameter/wave_thickness = 0.1
+shader_parameter/bubbles_aspect_ratio = 1.0
+shader_parameter/vertical_gradient = true
+shader_parameter/V_gradient_strength = 0.6
+shader_parameter/horizontal_gradient = false
+shader_parameter/H_gradient_strength = 0.75
+shader_parameter/segment_gap = 0.0
+shader_parameter/universal_border_size = 0.1
+shader_parameter/horizontal_border_size = 1.0
+shader_parameter/inner_border_thickness_multiplier = 0.25
+shader_parameter/outer_border_size = 0.4
+shader_parameter/slant_amount = 0.0
+shader_parameter/scale = 0.0
+shader_parameter/slant_clip_margin = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_swyh5"]
+shader = ExtResource("3_a4jf8")
+shader_parameter/bar_mode = 0
+shader_parameter/fill_mode = 2
+shader_parameter/segment_count = 1
 shader_parameter/discrete_fill_amount = 12
 shader_parameter/fade_fill_amount = 1.0
 shader_parameter/pour_fill_amount = 1.0
@@ -139,37 +383,85 @@ color = Color(0.1764706, 0.1764706, 0.1764706, 1)
 [node name="Shield" type="Control" parent="." unique_id=387301954]
 layout_mode = 2
 
-[node name="ShieldBar" type="ColorRect" parent="Shield" unique_id=1358329858]
-material = SubResource("ShaderMaterial_tt3tj")
-layout_mode = 0
+[node name="ShieldHolder" type="Control" parent="Shield" unique_id=709029611]
+anchors_preset = 0
 offset_left = 194.0
 offset_top = 19.0
 offset_right = 519.0
-offset_bottom = 58.0
+offset_bottom = 59.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Shield/ShieldBar" unique_id=1387543333]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ShieldBar5" type="ColorRect" parent="Shield/ShieldHolder" unique_id=1875925350]
+visible = false
+material = SubResource("ShaderMaterial_r02ah")
+layout_mode = 0
+offset_left = 242.0
+offset_right = 323.6
+offset_bottom = 39.0
 
-[node name="Label" type="Label" parent="Shield/ShieldBar/HBoxContainer" unique_id=542877620]
+[node name="ShieldBar4" type="ColorRect" parent="Shield/ShieldHolder" unique_id=1454605255]
+visible = false
+material = SubResource("ShaderMaterial_4md1d")
+layout_mode = 0
+offset_right = 245.0
+offset_bottom = 39.0
+
+[node name="ShieldBar3" type="ColorRect" parent="Shield/ShieldHolder" unique_id=1358329858]
+visible = false
+material = SubResource("ShaderMaterial_tt3tj")
+layout_mode = 0
+offset_right = 325.0
+offset_bottom = 39.0
+
+[node name="ShieldBar2" type="ColorRect" parent="Shield/ShieldHolder" unique_id=1993780517]
+visible = false
+material = SubResource("ShaderMaterial_a4jf8")
+layout_mode = 0
+offset_right = 216.66
+offset_bottom = 39.0
+
+[node name="ShieldBar1" type="ColorRect" parent="Shield/ShieldHolder" unique_id=1801055717]
+visible = false
+material = SubResource("ShaderMaterial_swyh5")
+layout_mode = 0
+offset_right = 108.33
+offset_bottom = 39.0
+
+[node name="ShieldLabelsHolder" type="HBoxContainer" parent="Shield/ShieldHolder" unique_id=1895824751]
+layout_mode = 0
+offset_right = 326.0
+offset_bottom = 40.0
+theme_override_constants/separation = 0
+
+[node name="ShieldLabel1" type="Label" parent="Shield/ShieldHolder/ShieldLabelsHolder" unique_id=1438128374]
+visible = false
+custom_maximum_size = Vector2(108, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "10"
 label_settings = SubResource("LabelSettings_bsxa0")
 horizontal_alignment = 1
 
-[node name="Label2" type="Label" parent="Shield/ShieldBar/HBoxContainer" unique_id=1365292707]
+[node name="ShieldLabel2" type="Label" parent="Shield/ShieldHolder/ShieldLabelsHolder" unique_id=1898626964]
+visible = false
+custom_maximum_size = Vector2(108, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "10"
 label_settings = SubResource("LabelSettings_bsxa0")
 horizontal_alignment = 1
 
-[node name="Label3" type="Label" parent="Shield/ShieldBar/HBoxContainer" unique_id=1704669771]
+[node name="ShieldLabel3" type="Label" parent="Shield/ShieldHolder/ShieldLabelsHolder" unique_id=1460945281]
+visible = false
+custom_maximum_size = Vector2(108, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "10"
+label_settings = SubResource("LabelSettings_bsxa0")
+horizontal_alignment = 1
+
+[node name="ShieldLabel4" type="Label" parent="Shield/ShieldHolder/ShieldLabelsHolder" unique_id=1443586949]
+visible = false
+custom_maximum_size = Vector2(108, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "10"

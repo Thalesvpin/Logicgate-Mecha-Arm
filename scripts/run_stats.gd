@@ -38,10 +38,10 @@ var current_turn: int
 #endregion
 
 #region TECH MODS
-var current_tech_mods: Array
+#var current_tech_mods: Array
 #endregion
 #region BIO HACKS
-var current_bio_hacks: Array
+#var current_bio_hacks: Array
 #endregion
 
 func _ready() -> void:

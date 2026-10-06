@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func setup_signals() -> void:
 	EventBus.attacked.connect(attack)
-	EventBus.heavy_attack_used.connect(charged_attack)
+	EventBus.heavy_attack_used.connect(heavy_attack)
 	EventBus.charged_heavy_attack.connect(charge_attack)
 	EventBus.self_damage.connect(self_dmg)
 	EventBus.healed.connect(heal)
@@ -27,7 +27,7 @@ func attack() -> void:
 	effect.apply()
 	pass
 
-func charged_attack() -> void:
+func heavy_attack() -> void:
 	print('Charged Attack')
 	var effect = HeavyAttackEffect.new()
 	effect.apply()

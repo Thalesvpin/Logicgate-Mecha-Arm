@@ -96,5 +96,6 @@ func _on_gui_input(event: InputEvent) -> void:
 			swap()
 
 func swap():
+	print('enemy.gd - _position: ', _position)
 	if _position != EnemyPosition.Position.CENTER:
-		owner.center_enemy(self)
+		get_parent().owner.center_enemy(self)

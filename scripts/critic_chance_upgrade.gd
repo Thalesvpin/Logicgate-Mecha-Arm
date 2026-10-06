@@ -11,4 +11,4 @@ func _on_buy_button_button_up() -> void:
 	upgrade()
 
 func update_value() -> void:
-	current_value.text = '%01f' %(Global.run_stats.player_stats[stat] + Global.modifier_manager.extra_stats[stat]) + '%'
+	current_value.text = '%01f' %(Global.run_stats.player_stats[stat] + Global.implant_manager.extra_stats[stat]) + '%'

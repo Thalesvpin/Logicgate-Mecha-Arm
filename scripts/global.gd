@@ -19,7 +19,7 @@ var combat_screen
 var run_stats
 var player_stats_bar
 var heavy_attack_panel
-var modifier_manager
+var implant_manager
 #endregion
 
 #control variables

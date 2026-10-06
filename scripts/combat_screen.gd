@@ -1,41 +1,41 @@
 extends Control
 
-@onready var left_enemy_status_bar: PanelContainer = $HBoxContainer/LeftEnemyStatusBar
-@onready var center_enemy_status_bar: PanelContainer = $HBoxContainer/CenterEnemyStatusBar
-@onready var right_enemy_status_bar: PanelContainer = $HBoxContainer/RightEnemyStatusBar
-@onready var left_enemy_container: VBoxContainer = $VBoxContainer/HBoxContainer/LeftEnemyContainer
-@onready var center_enemy_container: VBoxContainer = $VBoxContainer/HBoxContainer/CenterEnemyContainer
-@onready var right_enemy_container: VBoxContainer = $VBoxContainer/HBoxContainer/RightEnemyContainer
+@onready var left_enemy_container: VBoxContainer = $TopPanels/EnemiesSection/LeftEnemyContainer
+@onready var center_enemy_container: VBoxContainer = $TopPanels/EnemiesSection/CenterEnemyContainer
+@onready var right_enemy_container: VBoxContainer = $TopPanels/EnemiesSection/RightEnemyContainer
 @onready var enemy_name_bar: Control = $MidBottomPanels/EnemyNameBar
+var left_enemy_status_bar: PanelContainer
+var center_enemy_status_bar: PanelContainer
+var right_enemy_status_bar: PanelContainer
 
 const ENEMY = preload("uid://6y2k6pdfjohj")
 const ENEMY_STATUS_BAR = preload("uid://bbk5wegsq6ymc")
 
 func _ready() -> void:
 	Global.combat_screen = self
-	#_enemy['bar'] = center_enemy_status_bar
+	add_enemies()
 
 #func _input(event: InputEvent) -> void:
 	#if event.is_action_pressed("test"):
 		#swap_enemy(_enemy, Position.LEFT)
 
 func take_damage(value: float, enemy, mitigate: bool = true):
-	var min = 0
+	var _min = 0
 	if mitigate && enemy['shield'] > 0:
-		min = min(enemy['shield'], 0)
-		enemy['shield'] -= min
-		enemy['bar'].subtract_from_shield(min)
+		_min = min(enemy['shield'], 0)
+		enemy['shield'] -= _min
+		enemy['bar'].subtract_from_shield(_min)
 	
-	min = min(enemy['health'], value)
-	enemy['health'] -= min
-	enemy['bar'].subtract_from_health(min)
+	_min = min(enemy['health'], value)
+	enemy['health'] -= _min
+	enemy['bar'].subtract_from_health(_min)
 
 func center_enemy(enemy):
 	var selected_status_bar = enemy.status_bar
 	var current_position = enemy._position
 	var front_enemy = get_enemy(EnemyPosition.Position.CENTER)
-	center_enemy_container.remove_child(front_enemy)
 	
+	center_enemy_container.remove_child(front_enemy)
 	match current_position:
 		EnemyPosition.Position.CENTER:
 			return
@@ -44,6 +44,7 @@ func center_enemy(enemy):
 			left_enemy_container.add_child(front_enemy)
 			front_enemy.status_bar = left_enemy_status_bar
 			left_enemy_status_bar.enemy = front_enemy
+			print(left_enemy_status_bar)
 			left_enemy_status_bar.update()
 		EnemyPosition.Position.RIGHT:
 			right_enemy_container.remove_child(enemy)
@@ -52,9 +53,10 @@ func center_enemy(enemy):
 			right_enemy_status_bar.enemy = front_enemy
 			right_enemy_status_bar.update()
 	
-	
+	front_enemy._position = current_position
 	center_enemy_container.add_child(enemy)
 	enemy.status_bar = center_enemy_status_bar
+	enemy._position = EnemyPosition.Position.CENTER
 	center_enemy_status_bar.enemy = enemy
 	center_enemy_status_bar.update()
 	enemy_name_bar.set_display_name(enemy.enemy_name)
@@ -112,9 +114,9 @@ func enemy_defeated(enemy) -> void:
 		else:
 			center_enemy(right_enemy)
 
-func get_enemy(position: EnemyPosition.Position):
+func get_enemy(_position: EnemyPosition.Position):
 	var slot
-	match position:
+	match _position:
 		EnemyPosition.Position.LEFT:
 			slot = left_enemy_container
 		EnemyPosition.Position.RIGHT:
@@ -125,3 +127,32 @@ func get_enemy(position: EnemyPosition.Position):
 	for child in slot.get_children():
 		if child.get_class() == "Control":
 			return child
+
+func add_enemies() -> void:
+	var enemy_l = ENEMY.instantiate()
+	var enemy_r = ENEMY.instantiate()
+	var enemy_c = ENEMY.instantiate()
+	var bar_l = ENEMY_STATUS_BAR.instantiate()
+	var bar_r = ENEMY_STATUS_BAR.instantiate()
+	var bar_c = ENEMY_STATUS_BAR.instantiate()
+	
+	enemy_l._position = EnemyPosition.Position.LEFT
+	enemy_r._position = EnemyPosition.Position.RIGHT
+	enemy_c._position = EnemyPosition.Position.CENTER
+	enemy_l.status_bar = bar_l
+	enemy_r.status_bar = bar_r
+	enemy_c.status_bar = bar_c
+	bar_l.enemy = enemy_l
+	bar_r.enemy = enemy_r
+	bar_c.enemy = enemy_c
+	
+	left_enemy_container.add_child(bar_l)
+	right_enemy_container.add_child(bar_r)
+	center_enemy_container.add_child(bar_c)
+	left_enemy_container.add_child(enemy_l)
+	right_enemy_container.add_child(enemy_r)
+	center_enemy_container.add_child(enemy_c)
+	
+	left_enemy_status_bar = bar_l
+	right_enemy_status_bar = bar_r
+	center_enemy_status_bar = bar_c

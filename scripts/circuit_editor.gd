@@ -31,6 +31,7 @@ func generate_action_list() -> void:
 	var aux = 0
 	for action in action_list:
 		action_list[action] = list[aux]
+		print(str(action)+' - '+str(list[aux]))
 		aux += 1
 	
 	attack_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.ATTACK])
@@ -41,6 +42,7 @@ func generate_action_list() -> void:
 func compare_output(output: int) -> void:
 	for action in action_list:
 		if output == action_list[action]:
+			print(CombatActions.list_signals[action])
 			CombatActions.list_signals[action].emit()
 
 func add_input(node):

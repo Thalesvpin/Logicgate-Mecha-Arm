@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://g87fqnshpu3e" path="res://scenes/sections/shop/shop.tscn" id="6_c1to4"]
 [ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/sandbox_action_panel.tscn" id="6_qmxhh"]
 [ext_resource type="Script" uid="uid://bmaes5uv667va" path="res://scripts/run_stats.gd" id="9_cwqdw"]
-[ext_resource type="Script" uid="uid://dj2asdx675yqe" path="res://scripts/modifier_manager.gd" id="10_04ve2"]
+[ext_resource type="Script" uid="uid://dj2asdx675yqe" path="res://scripts/implant_manager.gd" id="10_04ve2"]
 [ext_resource type="Script" uid="uid://b5vmg22hb67p6" path="res://scripts/actions_handler.gd" id="12_w5uqb"]
 
 [node name="GameBoard" type="Control" unique_id=862493716]
@@ -37,7 +37,7 @@ _nor = 2
 _xor = 2
 _xnor = 2
 
-[node name="ModifierManager" type="Node" parent="." unique_id=1876090002]
+[node name="ImplantManager" type="Node" parent="." unique_id=1876090002]
 script = ExtResource("10_04ve2")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=152356891]

@@ -188,4 +188,5 @@ func self_delete():
 		else:
 			point_a.connected_wires.erase(self)
 	
+	set_point_c(true)
 	queue_free()
