@@ -38,9 +38,9 @@ func is_the_signal_for_me(target: Node) -> bool:
 	return target == self
 
 ##Undone
-func take_damage(value: float, target: Node) -> void:
-	if !is_the_signal_for_me(target):
-		return
+func take_damage(value: float, target: Node = null) -> void:
+	#if !is_the_signal_for_me(target):
+		#return
 	
 	var final_taken_dmg := 0
 	if stats[Stats.List.CURRENT_SHIELD] > 0:
@@ -53,6 +53,10 @@ func take_damage(value: float, target: Node) -> void:
 		stats[Stats.List.CURRENT_HEALTH] -= final_taken_dmg
 	else:
 		stats[Stats.List.CURRENT_HEALTH] = 0
+	status_bar.update()
+	
+	if stats[Stats.List.CURRENT_HEALTH] == 0:
+		print('enemy signal defeat')
 		EventBus.enemy_defeated.emit(self)
 
 func heal() -> void:
@@ -78,7 +82,8 @@ func set_stats() -> void:
 	stats[Stats.List.CURRENT_AFFLICTED_ELEMENT] = null
 
 func connect_signals() -> void:
-	EventBus.attacked.connect(take_damage)
+	#EventBus.attacked.connect(take_damage)
+	pass
 
 func link_to_status_bar() -> void:
 	var parent = get_parent()
@@ -96,6 +101,5 @@ func _on_gui_input(event: InputEvent) -> void:
 			swap()
 
 func swap():
-	print('enemy.gd - _position: ', _position)
-	if _position != EnemyPosition.Position.CENTER:
+	if _position != EnemyPosition.Position.CENTER && stats[Stats.List.CURRENT_HEALTH] > 0:
 		get_parent().owner.center_enemy(self)

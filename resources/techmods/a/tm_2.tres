@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://cgkmf8n2ndb1w" path="res://scripts/classes/implant_conditions/undone/times_per_battle.gd" id="3_oeix3"]
 [ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="4_oeix3"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_sgwbv"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="4_uhuu7"]
 
 [sub_resource type="Resource" id="Resource_oeix3"]
 script = ExtResource("2_js0my")

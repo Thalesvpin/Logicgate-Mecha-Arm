@@ -6,13 +6,15 @@ extends PanelContainer
 const IMPLANT_CARD = preload("uid://w1qq1p4375fn")
 
 func _ready() -> void:
+	Global.bio_hacks_container = self
+	EventBus.bio_hack_added.connect(add_implant)
 	update_counter()
 
-func add_mod(resource: Implant):
+func add_implant(resource: Implant):
 	var implant = IMPLANT_CARD.instantiate()
 	implant.resource = resource
 	implants_holder.add_child(implant)
-	EventBus.bio_hack_added.emit(resource)
+	implant.load_resource()
 	update_counter()
 
 func update_counter() -> void:

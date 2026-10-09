@@ -42,7 +42,7 @@ func generate_action_list() -> void:
 func compare_output(output: int) -> void:
 	for action in action_list:
 		if output == action_list[action]:
-			print(CombatActions.list_signals[action])
+			print('compare_output: ',CombatActions.list_signals[action])
 			CombatActions.list_signals[action].emit()
 
 func add_input(node):

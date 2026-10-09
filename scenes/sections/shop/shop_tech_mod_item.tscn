@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://bt46rc7qxskx0"]
 
-[ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/modifier_card.tscn" id="1_3l6eh"]
+[ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/implant_card.tscn" id="1_3l6eh"]
 [ext_resource type="Script" uid="uid://bl0opshwfo4n7" path="res://scripts/shop_tech_mod_item.gd" id="1_juyk0"]
-[ext_resource type="Resource" uid="uid://3gmr422layic" path="res://resources/techmod_test.tres" id="2_juyk0"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="3_wy4nr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
@@ -31,6 +30,7 @@ metadata/_live_palette_bindings = {
 [node name="ShopTechModItem" type="PanelContainer" unique_id=1947286681]
 offset_right = 383.0
 offset_bottom = 187.0
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_juyk0")
 
@@ -45,9 +45,8 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="ModifierCard" parent="MarginContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("1_3l6eh")]
+[node name="ImplantCard" parent="MarginContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("1_3l6eh")]
 layout_mode = 2
-resource = ExtResource("2_juyk0")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2062197333]
 layout_mode = 2

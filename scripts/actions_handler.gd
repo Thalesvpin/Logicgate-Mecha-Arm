@@ -14,6 +14,7 @@ func _ready() -> void:
 	setup_signals()
 
 func setup_signals() -> void:
+	print("ta rodando essa caralha?")
 	EventBus.attacked.connect(attack)
 	EventBus.heavy_attack_used.connect(heavy_attack)
 	EventBus.charged_heavy_attack.connect(charge_attack)
@@ -28,19 +29,19 @@ func attack() -> void:
 	pass
 
 func heavy_attack() -> void:
-	print('Charged Attack')
+	print('Heavy Attack')
 	var effect = HeavyAttackEffect.new()
 	effect.apply()
 
 func charge_attack() -> void:
-	print('Attack Charged')
+	print('Heavy Attack Charged')
 	var effect = ChargeHeavyAttackEffect.new()
 	effect.apply()
 
-func self_dmg(value) -> void:
+func self_dmg() -> void:
 	print('Self Damage')
 	var effect = SelfDamageEffect.new()
-	effect.amount = Global.run_stats.player_stats.self_damage
+	effect.amount = Global.run_stats.player_stats[Stats.List.SELF_DAMAGE]
 	effect.apply()
 
 func heal() -> void:
@@ -50,6 +51,7 @@ func heal() -> void:
 	effect.apply()
 
 func repair_shield() -> void:
+	print('Repair Shield')
 	var effect = RepairShieldEffect.new()
 	effect.apply()
 	pass

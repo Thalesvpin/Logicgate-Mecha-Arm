@@ -23,7 +23,7 @@ layout_mode = 2
 [node name="Label6" type="Label" parent="HBoxContainer" unique_id=1170542467]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "  _ ANTE 4 - BATALHA DIFÍCIL (15) - Stake 3 ℹ"
+text = "  _ FIREWALL 4 - BATALHA DIFÍCIL (15) - Stake 3 ℹ"
 label_settings = SubResource("LabelSettings_qmxhh")
 
 [node name="GameName" type="Label" parent="HBoxContainer" unique_id=592471104]
@@ -31,8 +31,14 @@ layout_mode = 2
 text = "Logicgate Mecha Arm v1.2.4  ● "
 label_settings = ExtResource("1_ttyke")
 
+[node name="RunTime" type="Label" parent="HBoxContainer" unique_id=292414987]
+layout_mode = 2
+text = "Tempo da run: 01:15:42"
+label_settings = ExtResource("1_ttyke")
+uppercase = true
+
 [node name="Label" type="Label" parent="HBoxContainer" unique_id=58400987]
 layout_mode = 2
-text = "Tempo da run: 01:15:42 | BATERIA: 69% | hora: 22:48:13 | fps: 120   "
+text = " | BATERIA: 69% | hora: 22:48:13 | fps: 120   "
 label_settings = ExtResource("1_ttyke")
 uppercase = true

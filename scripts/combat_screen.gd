@@ -14,23 +14,25 @@ const ENEMY_STATUS_BAR = preload("uid://bbk5wegsq6ymc")
 func _ready() -> void:
 	Global.combat_screen = self
 	add_enemies()
+	connect_signals()
 
 #func _input(event: InputEvent) -> void:
 	#if event.is_action_pressed("test"):
 		#swap_enemy(_enemy, Position.LEFT)
 
-func take_damage(value: float, enemy, mitigate: bool = true):
-	var _min = 0
-	if mitigate && enemy['shield'] > 0:
-		_min = min(enemy['shield'], 0)
-		enemy['shield'] -= _min
-		enemy['bar'].subtract_from_shield(_min)
-	
-	_min = min(enemy['health'], value)
-	enemy['health'] -= _min
-	enemy['bar'].subtract_from_health(_min)
+#func take_damage(value: float, enemy, mitigate: bool = true):
+	#var _min = 0
+	#if mitigate && enemy['shield'] > 0:
+		#_min = min(enemy['shield'], 0)
+		#enemy['shield'] -= _min
+		#enemy['bar'].subtract_from_shield(_min)
+	#
+	#_min = min(enemy['health'], value)
+	#enemy['health'] -= _min
+	#enemy['bar'].subtract_from_health(_min)
 
 func center_enemy(enemy):
+	print('combat_screen center_enemy()')
 	var selected_status_bar = enemy.status_bar
 	var current_position = enemy._position
 	var front_enemy = get_enemy(EnemyPosition.Position.CENTER)
@@ -45,20 +47,20 @@ func center_enemy(enemy):
 			front_enemy.status_bar = left_enemy_status_bar
 			left_enemy_status_bar.enemy = front_enemy
 			print(left_enemy_status_bar)
-			left_enemy_status_bar.update()
+			left_enemy_status_bar.enemy_swap()
 		EnemyPosition.Position.RIGHT:
 			right_enemy_container.remove_child(enemy)
 			right_enemy_container.add_child(front_enemy)
 			front_enemy.status_bar = right_enemy_status_bar
 			right_enemy_status_bar.enemy = front_enemy
-			right_enemy_status_bar.update()
+			right_enemy_status_bar.enemy_swap()
 	
 	front_enemy._position = current_position
 	center_enemy_container.add_child(enemy)
 	enemy.status_bar = center_enemy_status_bar
 	enemy._position = EnemyPosition.Position.CENTER
 	center_enemy_status_bar.enemy = enemy
-	center_enemy_status_bar.update()
+	center_enemy_status_bar.enemy_swap()
 	enemy_name_bar.set_display_name(enemy.enemy_name)
 	#current_position.update()
 
@@ -102,17 +104,35 @@ func connect_action_signals(circuit_editor: PanelContainer) -> void:
 	EventBus.repaired_shield.connect(player_repair_shield)
 
 func connect_signals() -> void:
-	EventBus.enemy_defeated.connect(enemy_defeated)
+	#EventBus.enemy_defeated.connect(enemy_defeated)
+	pass
 
 func enemy_defeated(enemy) -> void:
 	var left_enemy = get_enemy(EnemyPosition.Position.LEFT)
 	var right_enemy = get_enemy(EnemyPosition.Position.RIGHT)
+	
+	if enemies_alive() == 0:
+		EventBus.battle_ended.emit(true)
+		return
+	
+	if enemy == left_enemy || enemy == right_enemy:
+		return
 	
 	if enemy._position == EnemyPosition.Position.CENTER:
 		if left_enemy.stats[Stats.List.CURRENT_HEALTH] > right_enemy.stats[Stats.List.CURRENT_HEALTH]:
 			center_enemy(left_enemy)
 		else:
 			center_enemy(right_enemy)
+
+func enemies_alive() -> int:
+	var count = 0
+	if get_enemy(EnemyPosition.Position.LEFT).stats[Stats.List.CURRENT_HEALTH] > 0:
+		count += 1
+	if get_enemy(EnemyPosition.Position.RIGHT).stats[Stats.List.CURRENT_HEALTH] > 0:
+		count += 1
+	if get_enemy(EnemyPosition.Position.CENTER).stats[Stats.List.CURRENT_HEALTH] > 0:
+		count += 1
+	return count
 
 func get_enemy(_position: EnemyPosition.Position):
 	var slot

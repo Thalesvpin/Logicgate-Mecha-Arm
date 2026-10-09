@@ -3,13 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_bycc7"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_ypclj"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
-metadata/_live_palette_bindings = {
-"border_color": "2pjy5"
-}
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 3
@@ -45,50 +38,47 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
-
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1526340219]
-layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=2124830929]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2124830929]
 layout_mode = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/VBoxContainer" unique_id=1026949377]
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer" unique_id=1026949377]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/PanelContainer2" unique_id=1726086677]
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer2" unique_id=1726086677]
 layout_mode = 2
 text = "$300"
 label_settings = SubResource("LabelSettings_pfw6h")
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer" unique_id=1393595241]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1393595241]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/PanelContainer" unique_id=1023113795]
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer" unique_id=1023113795]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "PACOTE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer" unique_id=633118401]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer" unique_id=633118401]
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("1_bycc7")
 stretch_mode = 2
 
-[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1204067784]
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=1204067784]
 layout_mode = 2
 text = "doublebiopack.zip"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="TextureButton" type="TextureButton" parent="PanelContainer/VBoxContainer" unique_id=819162156]
+[node name="TextureButton" type="TextureButton" parent="VBoxContainer" unique_id=819162156]
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("2_ypclj")

@@ -58,19 +58,21 @@ func _ready() -> void:
 	#if event.is_action_pressed("test"):
 		#subtract_from_shield(10)
 
-##Enemy swap
 func update() -> void:
-	var tween = create_tween()
-	tween.set_parallel(false)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, 'position', Vector2(position.x, original_position.y-size.y), swap_bar_tween_duration)
-	
 	stats = enemy.stats
 	set_health_value(stats[Stats.List.CURRENT_HEALTH])
 	set_shield_value(stats[Stats.List.CURRENT_SHIELD])
 	
 	#set_afflicted_element(stats[Stats.List.CURRENT_AFFLICTED_ELEMENT], enemy['afflicted_count'])
 	#set_elemental(stats[Stats.List.CURRENT_ELEMENTALS], enemy['elemental_lvl'])
+
+func enemy_swap() -> void:
+	var tween = create_tween()
+	tween.set_parallel(false)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, 'position', Vector2(position.x, original_position.y-size.y), swap_bar_tween_duration)
+	
+	tween.tween_callback(update)
 	
 	tween.tween_property(self, 'position', Vector2(position.x, original_position.y), swap_bar_tween_duration)
 
@@ -85,11 +87,13 @@ func check_elemental_counters() -> void:
 		afflicted_number_bg.position.x = 14
 		afflicted_number_bg.size.x = 28
 
-func progress_bar_animation(bar: Node, new_value: int) -> void:
+func progress_bar_animation(bar: Node, new_value: int, callback = null) -> void:
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(bar, 'value', new_value, progress_bar_tween_duration)
+	if callback != null:
+		tween.tween_callback(callback)
 
 func set_health_value(value: float) -> void:
 	var percentage = (value/stats[Stats.List.MAX_HEALTH])*100
@@ -97,8 +101,16 @@ func set_health_value(value: float) -> void:
 	#health_bar.value = percentage
 	health_counter.text = str(value)
 	
-	progress_bar_animation(health_bar_placeholder, percentage)
-	#health_bar_placeholder.value = percentage
+	progress_bar_animation(health_bar_placeholder, percentage, 
+		func():
+			print('enemy_status_bar')
+			if value == 0:
+				defeated(enemy)
+			else:
+				revive(enemy)
+			
+	)
+	health_bar_placeholder.value = percentage
 	
 
 func add_to_health(value: int) -> void:
@@ -139,26 +151,28 @@ func subtract_from_shield(value: int) -> void:
 	stats[Stats.List.CURRENT_SHIELD] = max(stats[Stats.List.CURRENT_SHIELD], 0)
 	set_shield_value(stats[Stats.List.CURRENT_SHIELD])
 
+#region ELEMENTAL
 #rever
-func set_afflicted_label(value: int) -> void:
-	afflicted_counter_label.text = str(value)
-	check_elemental_counters()
+#func set_afflicted_label(value: int) -> void:
+	#afflicted_counter_label.text = str(value)
+	#check_elemental_counters()
 
 #rever
-func add_to_afflicted(value: int, element) -> void:
-	if element == afflicted_element:
-		afflicted_counter += value
-		set_afflicted_label(afflicted_counter)
+#func add_to_afflicted(value: int, element) -> void:
+	#if element == afflicted_element:
+		#afflicted_counter += value
+		#set_afflicted_label(afflicted_counter)
 
-func subtract_from_afflicted(value: int) -> void:
-	afflicted_counter -= value
-	set_afflicted_label(afflicted_counter)
-
-func set_afflicted_element(element, count: int):
-	pass
-
-func set_elemental(element, lvl: int):
-	pass
+#func subtract_from_afflicted(value: int) -> void:
+	#afflicted_counter -= value
+	#set_afflicted_label(afflicted_counter)
+#
+#func set_afflicted_element(element, count: int):
+	#pass
+#
+#func set_elemental(element, lvl: int):
+	#pass
+#endregion
 
 func defeated(who) -> void:
 	if who != enemy:
@@ -168,3 +182,14 @@ func defeated(who) -> void:
 			child.hide()
 		else:
 			child.texture = defeat_background_texture
+	print('ENEMY_STATUS_BAR - só aqui q chama')
+	Global.combat_screen.enemy_defeated(enemy)
+
+func revive(who) -> void:
+	if who != enemy:
+		return
+	for child in get_children():
+		if child != background:
+			child.show()
+		else:
+			child.texture = background_texture

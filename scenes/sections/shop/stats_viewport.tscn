@@ -56,7 +56,6 @@ offset_transform_enabled = true
 texture = SubResource("GradientTexture2D_tjqua")
 
 [node name="Page1" type="Control" parent="." unique_id=1561625618]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -150,6 +149,7 @@ offset_right = 1255.0
 offset_bottom = 344.0
 
 [node name="Page3" type="Control" parent="." unique_id=956262551]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -270,6 +270,7 @@ theme = ExtResource("14_yr5m8")
 text = "MELHORIA DE ATRIBUTOS"
 
 [node name="TopTabBtn2" type="Button" parent="Tabs/Top" unique_id=1341065722]
+visible = false
 layout_mode = 2
 text = "EFEITOS ELEMENTAIS"
 

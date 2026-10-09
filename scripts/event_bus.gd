@@ -40,6 +40,7 @@ var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.BATTLE_END: battle_ended,
 	Trigger.Type.DAMAGE_TAKEN: damage_taken,
 	Trigger.Type.DAMAGE_DEALT: damage_dealt,
+	Trigger.Type.SELF_DAMAGE: self_damage,
 	Trigger.Type.CRITICAL_HIT: critical_hit,
 	Trigger.Type.ENEMY_DEFEATED: enemy_defeated,
 	Trigger.Type.TURN_START: turn_started,

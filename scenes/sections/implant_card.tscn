@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://w1qq1p4375fn"]
 
-[ext_resource type="Script" uid="uid://dx218n1ue8ida" path="res://scripts/modifier_card.gd" id="1_m466i"]
-[ext_resource type="StyleBox" uid="uid://dm33npd24kf11" path="res://resources/style_boxes/biohack_bg_stylebox_flat.tres" id="1_ylh2a"]
-[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="2_ylh2a"]
-[ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="4_bixym"]
+[ext_resource type="StyleBox" uid="uid://dm33npd24kf11" path="res://resources/style_boxes/biohack_bg_stylebox_flat.tres" id="1_530ae"]
+[ext_resource type="Script" uid="uid://dx218n1ue8ida" path="res://scripts/implant_card.gd" id="2_530ae"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="3_5wyd8"]
+[ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="4_0ih7b"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -40,7 +40,7 @@ border_color = Color(0.8, 0.8, 0.8, 0)
 [sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
 font_size = 32
 
-[node name="ModifierCard" type="PanelContainer" unique_id=1355907985]
+[node name="ImplantCard" type="PanelContainer" unique_id=1355907985]
 custom_minimum_size = Vector2(0, 114)
 custom_maximum_size = Vector2(-1, 114)
 anchors_preset = 15
@@ -49,8 +49,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = ExtResource("1_ylh2a")
-script = ExtResource("1_m466i")
+theme_override_styles/panel = ExtResource("1_530ae")
+script = ExtResource("2_530ae")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=272722811]
 layout_mode = 2
@@ -74,7 +74,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 [node name="ModifierTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/PanelContainer" unique_id=2099639790]
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("2_ylh2a")
+texture = ExtResource("3_5wyd8")
 stretch_mode = 2
 
 [node name="ExtendedVersions" type="VBoxContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1284248849]
@@ -124,13 +124,13 @@ theme_override_constants/separation = 4
 [node name="RarityTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder" unique_id=997189646]
 layout_mode = 2
 size_flags_vertical = 0
-texture = ExtResource("4_bixym")
+texture = ExtResource("4_0ih7b")
 stretch_mode = 2
 
 [node name="CorruptedTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder" unique_id=1461488900]
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("4_bixym")
+texture = ExtResource("4_0ih7b")
 stretch_mode = 4
 
 [node name="Spacer" type="Control" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer" unique_id=1216651883]
@@ -145,7 +145,7 @@ alignment = 2
 [node name="ActivationUses" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=700298017]
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("4_bixym")
+texture = ExtResource("4_0ih7b")
 stretch_mode = 4
 
 [node name="ActivationCount" type="Label" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivationUses" unique_id=174044704]
@@ -168,7 +168,7 @@ vertical_alignment = 1
 
 [node name="ActivatorBtn" type="TextureButton" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=464088979]
 layout_mode = 2
-texture_normal = ExtResource("4_bixym")
+texture_normal = ExtResource("4_0ih7b")
 stretch_mode = 4
 
 [node name="CompactVersion" type="GridContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1818323556]
@@ -181,15 +181,15 @@ columns = 2
 
 [node name="RarityTextureCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=391175054]
 layout_mode = 2
-texture = ExtResource("4_bixym")
+texture = ExtResource("4_0ih7b")
 
 [node name="CorruptedTextureCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=698713144]
 layout_mode = 2
-texture = ExtResource("4_bixym")
+texture = ExtResource("4_0ih7b")
 
 [node name="ActivationUsesCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=2108366740]
 layout_mode = 2
-texture = ExtResource("4_bixym")
+texture = ExtResource("4_0ih7b")
 
 [node name="ActivationCountCompact" type="Label" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact" unique_id=1988332757]
 layout_mode = 1
@@ -211,7 +211,7 @@ vertical_alignment = 1
 
 [node name="ActivatorBtnCompact" type="TextureButton" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=1725511165]
 layout_mode = 2
-texture_normal = ExtResource("4_bixym")
+texture_normal = ExtResource("4_0ih7b")
 stretch_mode = 4
 
 [connection signal="resized" from="." to="." method="_on_resized"]

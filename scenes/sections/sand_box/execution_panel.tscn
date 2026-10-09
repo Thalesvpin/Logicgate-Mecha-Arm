@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d2wxpuaj88jlh"]
 
-[ext_resource type="Script" uid="uid://b84g2j5iwlbtv" path="res://scripts/sandbox_action_panel.gd" id="1_mufj8"]
+[ext_resource type="Script" uid="uid://b84g2j5iwlbtv" path="res://scripts/execution_panel.gd" id="1_mufj8"]
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_pmrxt"]
 [ext_resource type="LabelSettings" uid="uid://bu1qr5thhtdmy" path="res://ui_elements/ui_execution_list_number.tres" id="2_wvfaq"]
 [ext_resource type="Shader" uid="uid://ddtcjrx2hj74g" path="res://shaders/texture_progress.gdshader" id="4_tosqn"]
@@ -13,7 +13,7 @@ shader_parameter/lightness = 0.662000031445
 shader_parameter/terminator_color = Color(1, 1, 1, 1)
 shader_parameter/terminator_size_px = 0.0
 
-[node name="SandboxActionPanel" type="PanelContainer" unique_id=1689072548]
+[node name="ExecutionPanel" type="PanelContainer" unique_id=1689072548]
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0

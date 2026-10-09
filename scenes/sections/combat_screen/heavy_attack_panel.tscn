@@ -191,7 +191,6 @@ offset_bottom = 40.0
 fill_mode = 3
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/Control" unique_id=1261505371]
-visible = false
 layout_mode = 0
 offset_left = 84.0
 offset_top = 41.0

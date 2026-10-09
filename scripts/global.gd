@@ -20,6 +20,8 @@ var run_stats
 var player_stats_bar
 var heavy_attack_panel
 var implant_manager
+var tech_mods_container
+var bio_hacks_container
 #endregion
 
 #control variables

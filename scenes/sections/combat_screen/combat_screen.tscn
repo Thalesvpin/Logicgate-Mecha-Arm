@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://bxfhcehr6iuwn" path="res://scenes/sections/combat_screen/player_status_bar.tscn" id="3_n1e1p"]
 [ext_resource type="PackedScene" uid="uid://ds4l1rshegbqx" path="res://scenes/sections/combat_screen/heavy_attack_panel.tscn" id="4_iibci"]
 [ext_resource type="PackedScene" uid="uid://umiblb5s8sum" path="res://scenes/sections/combat_screen/elemental_panel.tscn" id="5_lobgv"]
-[ext_resource type="PackedScene" uid="uid://cdxof33uj775k" path="res://scenes/sections/combat_screen/player_afflicted.tscn" id="5_nwxw2"]
 [ext_resource type="PackedScene" uid="uid://d3en6qadq15b" path="res://scenes/sections/combat_screen/enemy_name_bar.tscn" id="6_rn7nk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
@@ -91,9 +90,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
-
-[node name="PlayerAfflicted" parent="LeftBottomPanels" unique_id=329325505 instance=ExtResource("5_nwxw2")]
-layout_mode = 2
 
 [node name="ElementalPanel" parent="LeftBottomPanels" unique_id=337277702 instance=ExtResource("5_lobgv")]
 layout_mode = 2

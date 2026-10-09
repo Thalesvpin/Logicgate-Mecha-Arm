@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://b7hjsmnl3qf5k"]
 
 [ext_resource type="PackedScene" uid="uid://cjqnenypvdvqd" path="res://scenes/sections/shop/pack_card.tscn" id="1_37gkg"]
-[ext_resource type="PackedScene" uid="uid://d01w178fktqku" path="res://scenes/sections/shop/elemental_card.tscn" id="2_h6war"]
 [ext_resource type="PackedScene" uid="uid://b0o5ypysd23q0" path="res://scenes/sections/shop/reroll_card.tscn" id="3_gl50k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pjy5"]
@@ -13,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=303844763]
@@ -23,13 +23,7 @@ theme_override_constants/separation = 40
 [node name="PackCard" parent="HBoxContainer" unique_id=1952346557 instance=ExtResource("1_37gkg")]
 layout_mode = 2
 
-[node name="ElementalCard" parent="HBoxContainer" unique_id=1025698057 instance=ExtResource("2_h6war")]
-layout_mode = 2
-
 [node name="RerollCard" parent="HBoxContainer" unique_id=357678371 instance=ExtResource("3_gl50k")]
-layout_mode = 2
-
-[node name="ElementalCard2" parent="HBoxContainer" unique_id=1691081409 instance=ExtResource("2_h6war")]
 layout_mode = 2
 
 [node name="PackCard2" parent="HBoxContainer" unique_id=1560850944 instance=ExtResource("1_37gkg")]

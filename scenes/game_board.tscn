@@ -9,10 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://b3fg1h6ititrl" path="res://scenes/telemetry_bar.tscn" id="3_sax53"]
 [ext_resource type="PackedScene" uid="uid://dsdnrm2c01ywo" path="res://scenes/sections/shop/stats_viewport.tscn" id="6_axant"]
 [ext_resource type="PackedScene" uid="uid://g87fqnshpu3e" path="res://scenes/sections/shop/shop.tscn" id="6_c1to4"]
-[ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/sandbox_action_panel.tscn" id="6_qmxhh"]
+[ext_resource type="PackedScene" uid="uid://d2wxpuaj88jlh" path="res://scenes/sections/sand_box/execution_panel.tscn" id="6_qmxhh"]
 [ext_resource type="Script" uid="uid://bmaes5uv667va" path="res://scripts/run_stats.gd" id="9_cwqdw"]
 [ext_resource type="Script" uid="uid://dj2asdx675yqe" path="res://scripts/implant_manager.gd" id="10_04ve2"]
 [ext_resource type="Script" uid="uid://b5vmg22hb67p6" path="res://scripts/actions_handler.gd" id="12_w5uqb"]
+[ext_resource type="PackedScene" uid="uid://cjoedcy0dgx2g" path="res://scenes/sections/game_over_screen.tscn" id="14_axant"]
 
 [node name="GameBoard" type="Control" unique_id=862493716]
 propagate_maximum_size = true
@@ -28,6 +29,9 @@ script = ExtResource("1_mmjnl")
 
 [node name="RunStats" type="Node" parent="." unique_id=855585272]
 script = ExtResource("9_cwqdw")
+base_heal = 10.0
+attack_damage = 10.0
+self_damage = 50.0
 max_tokens_amount = 10
 _and = 2
 _or = 2
@@ -40,7 +44,7 @@ _xnor = 2
 [node name="ImplantManager" type="Node" parent="." unique_id=1876090002]
 script = ExtResource("10_04ve2")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=152356891]
+[node name="GameplayElements" type="VBoxContainer" parent="." unique_id=152356891]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,10 +52,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TelemetryBar" parent="VBoxContainer" unique_id=2013472650 instance=ExtResource("3_sax53")]
+[node name="TelemetryBar" parent="GameplayElements" unique_id=2013472650 instance=ExtResource("3_sax53")]
 layout_mode = 2
 
-[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer" unique_id=1589264868]
+[node name="VSplit" type="VSplitContainer" parent="GameplayElements" unique_id=1589264868]
 propagate_maximum_size = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -63,11 +67,11 @@ theme_override_constants/minimum_grab_thickness = 6
 drag_nested_intersections = true
 drag_area_highlight_in_editor = true
 
-[node name="cima" type="Control" parent="VBoxContainer/VSplitContainer" unique_id=583631780]
+[node name="cima" type="Control" parent="GameplayElements/VSplit" unique_id=583631780]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/cima" unique_id=1487900312]
+[node name="TopHSplit" type="HSplitContainer" parent="GameplayElements/VSplit/cima" unique_id=1487900312]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -79,49 +83,63 @@ split_offsets = PackedInt32Array(230, -218)
 drag_nested_intersections = true
 split_offset = 230
 
-[node name="TechModsContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=565464093 instance=ExtResource("1_0jtfi")]
+[node name="TechModsContainer" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=565464093 instance=ExtResource("1_0jtfi")]
 layout_mode = 2
 
-[node name="CombatScreen" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
+[node name="CombatScreen" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="StatsViewport" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=131166221 instance=ExtResource("6_axant")]
+[node name="StatsViewport" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=131166221 instance=ExtResource("6_axant")]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BioHacksContainer" parent="VBoxContainer/VSplitContainer/cima/HSplitContainer" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
+[node name="BioHacksContainer" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
 layout_mode = 2
 
-[node name="baixo" type="PanelContainer" parent="VBoxContainer/VSplitContainer" unique_id=702740337]
+[node name="baixo" type="PanelContainer" parent="GameplayElements/VSplit" unique_id=702740337]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Shop" parent="VBoxContainer/VSplitContainer/baixo" unique_id=669677562 instance=ExtResource("6_c1to4")]
+[node name="Shop" parent="GameplayElements/VSplit/baixo" unique_id=669677562 instance=ExtResource("6_c1to4")]
 visible = false
 layout_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer/VSplitContainer/baixo" unique_id=67540516]
+[node name="BotHSplit" type="HSplitContainer" parent="GameplayElements/VSplit/baixo" unique_id=67540516]
 layout_mode = 2
 theme_override_constants/separation = 0
 drag_nested_intersections = true
 drag_area_highlight_in_editor = true
 
-[node name="GatesSelector" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer" unique_id=1904067160 instance=ExtResource("1_tqoos")]
+[node name="GatesSelector" parent="GameplayElements/VSplit/baixo/BotHSplit" unique_id=1904067160 instance=ExtResource("1_tqoos")]
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer" unique_id=1657022003]
+[node name="HBoxContainer" type="HBoxContainer" parent="GameplayElements/VSplit/baixo/BotHSplit" unique_id=1657022003]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CircuitEditor" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer/HBoxContainer" unique_id=1881903153 instance=ExtResource("2_3wu0g")]
+[node name="CircuitEditor" parent="GameplayElements/VSplit/baixo/BotHSplit/HBoxContainer" unique_id=1881903153 instance=ExtResource("2_3wu0g")]
 layout_mode = 2
 
-[node name="SandboxActionPanel" parent="VBoxContainer/VSplitContainer/baixo/HSplitContainer/HBoxContainer" unique_id=1689072548 instance=ExtResource("6_qmxhh")]
+[node name="ExecutionPanel" parent="GameplayElements/VSplit/baixo/BotHSplit/HBoxContainer" unique_id=1689072548 instance=ExtResource("6_qmxhh")]
 layout_mode = 2
 size_flags_horizontal = 8
 
 [node name="ActionsHandler" type="Node" parent="." unique_id=330955696]
 script = ExtResource("12_w5uqb")
+
+[node name="GameOverScreen" parent="." unique_id=611490337 instance=ExtResource("14_axant")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 92.0
+offset_bottom = 23.0
+grow_horizontal = 1
+grow_vertical = 1

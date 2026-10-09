@@ -1,0 +1,68 @@
+definir preços
+feedback de ação (jogador e inimigo)
+
+THALES:
+nomes e icones dos implantes
+-LOJA
+remover tab de efeitos elementais
+remover elementais da loja
+add pacotes na loja (substituindo os elementais)(2 baratos com 2 opts e 2 caros com 4 opts)
+btns de menu da loja
+printar dinheiro
+-COMBATE
+remover aflição elemental e elemntal do inimigo
+remover aflição elemental do jogador
+substituir player stats bar
+add barra de output na sandbox
+barra de ataque carregado amarela caso cargas < 4
+voltar com icone do ataque especial
+tirar contador de vez
+shader de outline do inimigo (mouse hover)
+numeros do input
+printar dinheiro
+barras de stats psicar branco ao reduzir
+dmg numbers na tela
+bloqueio da sandbox durante turno do inimigo
+inimigo e jogador tremer ao tomar dano
+bordas da area de combate piscando vermelho ao tomar dano
+
+LUCA:
+definir fontes
+exportar mini icones de implantes e tokens
+-LOJA
+exportar icones de melhorias de atributos
+raio x do braço
+exportar icones de raridade
+exportar icone de reroll
+exportar btns da loja
+exportar icones dos pacotes
+exportar frame do dinheiro
+-COMBATE
+substituição dos 4 elementais
+exportar sprite de vida dos inimigos (sem elemntais)
+exportar btns do painel de execução (run, info, pause)
+exportar luzes do painel de execução
+fazer barra de input da sandbox
+definir info dos paineis contextuais
+shaders dos paineis contextuais
+substituir e exportar o icone do ataque especial pelo do pesado
+shader do fundo da area de combate
+sprites das portas logicas
+exportar sprites de dano
+concept do bloqueio da sandbox durante turno do inimigo
+info da porta logica
+
+DEIVE:
+-LOJA
+sprite do braço raio x
+-COMBATE
+sprite do personagem principal
+sprite do boss q falta
+
+
+
+
+
+
+
+

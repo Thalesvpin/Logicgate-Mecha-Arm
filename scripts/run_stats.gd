@@ -1,14 +1,23 @@
 extends Node
 
+@onready var telemetry_bar: PanelContainer = $"../GameplayElements/TelemetryBar"
+
+#region SAVE RUN
+var player_stats: Dictionary[Stats.List, Variant]
+var gates_price: Dictionary[Gates.Type, int]
+var run_stats: Dictionary #not used yet
+#endregion
+
 #region PLAYER
 @export var max_health: int = 100
 var current_health: int
 @export var base_heal: float
 @export var max_shield: int = 30
 var current_shield: int
-@export var max_charged_attack_charges: int
+@export var max_heavy_attack_charges: int
 var current_active_charges: int
 @export var attack_damage: float
+@export var self_damage: float
 @export var crit_chance: float
 @export var crit_multiplier: float
 @export var mitigation_percent: float
@@ -26,32 +35,29 @@ var current_active_charges: int
 var current_tokens: int
 var current_money: int
 var current_elementals: Array
-var player_stats: Dictionary[Stats.List, Variant]
-var gates_price: Dictionary[Gates.Type, int]
 #endregion
 
 #region RUN
-var current_ante: int
-var current_stake: int
+var current_firewall: int
+#var current_stake: int
 var current_run_time: float
 var current_turn: int
-#endregion
-
-#region TECH MODS
-#var current_tech_mods: Array
-#endregion
-#region BIO HACKS
-#var current_bio_hacks: Array
 #endregion
 
 func _ready() -> void:
 	Global.run_stats = self
 	set_variables()
 
+func _process(delta: float) -> void:
+	current_run_time += delta
+	telemetry_bar.get_child(0).get_child(2).text = "Tempo da run: %02d:%02d:%02d" % [current_run_time/(60*60), int(current_run_time/60)%60, int(current_run_time)%60]
+
 func set_variables() -> void:
+	current_run_time = 0
+	
 	current_health = max_health
 	current_shield = max_shield
-	current_active_charges = max_charged_attack_charges
+	current_active_charges = max_heavy_attack_charges
 	current_tokens = max_tokens_amount
 	
 	player_stats = {
@@ -62,10 +68,11 @@ func set_variables() -> void:
 		Stats.List.CURRENT_SHIELD: 0,
 		Stats.List.MAX_SHIELD_COUNT: 0,
 		Stats.List.CURRENT_SHIELD_COUNT: 0,
-		Stats.List.MAX_CHARGED_ATTACK_CHARGES: max_charged_attack_charges,
+		Stats.List.MAX_HEAVY_ATTACK_CHARGES: max_heavy_attack_charges,
 		Stats.List.CURRENT_HEAVY_ATTACK_CHARGES: 0,
 		Stats.List.HEAVY_ATTACK_CHARGE_AMOUNT: heavy_attack_charge_amount,
 		Stats.List.BASE_ATTACK_DAMAGE: attack_damage,
+		Stats.List.SELF_DAMAGE: self_damage,
 		Stats.List.CRITIC_CHANCE: crit_chance,
 		Stats.List.CRITIC_MULTIPLIER: crit_multiplier,
 		Stats.List.MITIGATION_PERCENT: mitigation_percent,

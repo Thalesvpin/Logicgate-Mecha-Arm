@@ -27,7 +27,7 @@ func _ready() -> void:
 
 
 func add_tech_mod(implant: Implant):
-	print('mod_manager add tech mod')
+	print('implant_manager add tech mod')
 	active_tech_mods.append(implant)
 	implant.connect_triggers()
 

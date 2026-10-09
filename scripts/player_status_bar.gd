@@ -30,11 +30,16 @@ func config_vars() -> void:
 	shield_bars = [shield_bar_1, shield_bar_2, shield_bar_3, shield_bar_4, shield_bar_5]
 	shield_labels = [shield_label_1, shield_label_2, shield_label_3, shield_label_4]
 
-func animate(value: int) -> void:
+func check_health() -> void:
+	if Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH] == 0:
+		EventBus.battle_ended.emit(false)
+
+func animate_health(value: int) -> void:
 	var tween = create_tween().set_parallel(true)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(healthbar, 'value', value, tween_duration)
 	tween.tween_method(func(v): health_label.text = str(int(v)), int(health_label.text), value, tween_duration)
+	tween.tween_callback(check_health)
 
 func take_damage(amount: int):
 	var result
@@ -43,7 +48,7 @@ func take_damage(amount: int):
 	else:
 		result = 0
 	
-	animate(result)
+	animate_health(result)
 	#healthbar.value = result
 	#health_label.text = str(result)
 
@@ -54,7 +59,7 @@ func heal(amount: int):
 	else:
 		result = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
 	
-	animate(result)
+	animate_health(result)
 	#healthbar.value = result
 	#health_label.text = str(result)
 
