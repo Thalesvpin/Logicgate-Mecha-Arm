@@ -3,12 +3,25 @@
 [ext_resource type="Script" uid="uid://ldot6iyuc8pk" path="res://scripts/combat_screen.gd" id="1_lvmae"]
 [ext_resource type="PackedScene" uid="uid://bxfhcehr6iuwn" path="res://scenes/sections/combat_screen/player_status_bar.tscn" id="3_n1e1p"]
 [ext_resource type="PackedScene" uid="uid://ds4l1rshegbqx" path="res://scenes/sections/combat_screen/heavy_attack_panel.tscn" id="4_iibci"]
+[ext_resource type="PackedScene" uid="uid://c4bbrc2r7q5fe" path="res://scenes/sections/combat_screen/combat_money_panel.tscn" id="4_nwxw2"]
 [ext_resource type="PackedScene" uid="uid://umiblb5s8sum" path="res://scenes/sections/combat_screen/elemental_panel.tscn" id="5_lobgv"]
 [ext_resource type="PackedScene" uid="uid://d3en6qadq15b" path="res://scenes/sections/combat_screen/enemy_name_bar.tscn" id="6_rn7nk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ur3c"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_civbc"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -82,6 +95,10 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
+
+[node name="CombatMoneyPanel" parent="RightBottomPanels" unique_id=866452766 instance=ExtResource("4_nwxw2")]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ur3c")
 
 [node name="ChargedAttackPanel" parent="RightBottomPanels" unique_id=1885342446 instance=ExtResource("4_iibci")]
 layout_mode = 2

@@ -16,7 +16,7 @@ var bot_tabs: Array[TextureRect]
 
 func _ready() -> void:
 	bot_tabs = [texture_rect, texture_rect_2, texture_rect_3]
-	transparent_gradient.texture = sub_viewport.get_texture()
+	#transparent_gradient.texture = sub_viewport.get_texture()
 
 #func _input(event: InputEvent) -> void:
 	#if event.is_action_pressed("test"):

@@ -32,7 +32,7 @@ func _ready() -> void:
 	#enemy['bar'].subtract_from_health(_min)
 
 func center_enemy(enemy):
-	print('combat_screen center_enemy()')
+	print('center_enemy() COMBAT_SCREEN')
 	var selected_status_bar = enemy.status_bar
 	var current_position = enemy._position
 	var front_enemy = get_enemy(EnemyPosition.Position.CENTER)
@@ -108,6 +108,7 @@ func connect_signals() -> void:
 	pass
 
 func enemy_defeated(enemy) -> void:
+	print('enemy_defeated COMBAT_SCREEN')
 	var left_enemy = get_enemy(EnemyPosition.Position.LEFT)
 	var right_enemy = get_enemy(EnemyPosition.Position.RIGHT)
 	

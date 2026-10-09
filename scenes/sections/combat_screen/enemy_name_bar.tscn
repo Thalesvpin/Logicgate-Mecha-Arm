@@ -4,9 +4,13 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dvq6j"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_left = 4
 border_width_top = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_epf03"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
@@ -19,6 +23,9 @@ corner_radius_top_left = 22
 corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
 
 [sub_resource type="LabelSettings" id="LabelSettings_gulup"]
 font_size = 24
@@ -34,6 +41,9 @@ corner_radius_top_left = 22
 corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
 
 [node name="EnemyNameBar" type="Control" unique_id=1251090961]
 layout_mode = 3
@@ -58,7 +68,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "SKELE-TÃO"
 
-[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=756270696]
+[node name="TurnIndex" type="PanelContainer" parent="." unique_id=756270696]
+visible = false
 layout_mode = 1
 offset_left = -176.0
 offset_top = -21.0
@@ -67,22 +78,22 @@ offset_bottom = 23.0
 pivot_offset = Vector2(225, 79)
 theme_override_styles/panel = SubResource("StyleBoxFlat_epf03")
 
-[node name="Label4" type="Label" parent="PanelContainer2" unique_id=1562276354]
+[node name="TurnIndexLabel" type="Label" parent="TurnIndex" unique_id=1562276354]
 layout_mode = 2
 text = "1"
 label_settings = SubResource("LabelSettings_gulup")
 horizontal_alignment = 1
 
-[node name="PanelContainer3" type="PanelContainer" parent="." unique_id=1735449272]
+[node name="ActionsCounter" type="PanelContainer" parent="." unique_id=1735449272]
 layout_mode = 1
-offset_left = 141.0
-offset_top = -21.0
-offset_right = 185.0
-offset_bottom = 23.0
+offset_left = 136.0
+offset_top = -22.0
+offset_right = 180.0
+offset_bottom = 22.0
 pivot_offset = Vector2(-92, 79)
 theme_override_styles/panel = SubResource("StyleBoxFlat_xhhfw")
 
-[node name="Label4" type="Label" parent="PanelContainer3" unique_id=67488422]
+[node name="ActionsCounterLabel" type="Label" parent="ActionsCounter" unique_id=67488422]
 layout_mode = 2
 text = "3"
 label_settings = SubResource("LabelSettings_gulup")

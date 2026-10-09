@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://c4bbrc2r7q5fe"]
+
+[ext_resource type="Script" uid="uid://w5na80swktph" path="res://scripts/money_panel.gd" id="1_gcuky"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ur3c"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="LabelSettings" id="LabelSettings_a7lv4"]
+font_size = 32
+font_color = Color(0.88234085, 0.2573373, 0, 1)
+
+[node name="CombatMoneyPanel" type="PanelContainer" unique_id=2026981835]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -105.0
+offset_bottom = 35.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(-10, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ur3c")
+script = ExtResource("1_gcuky")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=233133369]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=181458095]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer" unique_id=978009846]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer/MarginContainer" unique_id=662917462]
+layout_mode = 2
+text = "$5414156"
+label_settings = SubResource("LabelSettings_a7lv4")
+horizontal_alignment = 1
+vertical_alignment = 1

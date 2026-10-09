@@ -6,18 +6,13 @@ nomes e icones dos implantes
 -LOJA
 add pacotes na loja (substituindo os elementais)(2 baratos com 2 opts e 2 caros com 4 opts)
 btns de menu da loja
-printar dinheiro
 -COMBATE
 remover aflição elemental e elemntal do inimigo
-remover aflição elemental do jogador
 substituir player stats bar
 add barra de output na sandbox
 barra de ataque carregado amarela caso cargas < 4
-voltar com icone do ataque especial
-tirar contador de vez
 shader de outline do inimigo (mouse hover)
 numeros do input
-printar dinheiro
 barras de stats psicar branco ao reduzir
 dmg numbers na tela
 bloqueio da sandbox durante turno do inimigo

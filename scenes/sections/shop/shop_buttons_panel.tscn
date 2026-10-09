@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://c48vtxigrm1i8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oje0l"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7046"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
+
+[node name="ShopButtonsPanel" type="PanelContainer" unique_id=789120704]
+custom_minimum_size = Vector2(480, 120)
+custom_maximum_size = Vector2(480, 120)
+theme_override_styles/panel = SubResource("StyleBoxFlat_oje0l")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=392611224]
+custom_minimum_size = Vector2(0, 85)
+custom_maximum_size = Vector2(-1, 85)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_a7046")
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1886899282]
+custom_minimum_size = Vector2(215, 0)
+custom_maximum_size = Vector2(215, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")

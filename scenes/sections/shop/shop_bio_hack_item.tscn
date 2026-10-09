@@ -3,18 +3,88 @@
 [ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/implant_card.tscn" id="1_0mff5"]
 [ext_resource type="Script" uid="uid://b0un6bhbjsfmo" path="res://scripts/shop_bio_hack_item.gd" id="1_2ypd2"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="3_6acjl"]
+[ext_resource type="LabelSettings" uid="uid://cni6po7ymbpj0" path="res://ui_elements/implant_price_tag.tres" id="3_h754m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 3
-border_width_top = 3
-border_width_bottom = 3
+border_width_left = 4
+border_width_top = 4
+border_width_bottom = 4
 border_color = Color(1, 0.5019608, 0, 1)
 corner_radius_top_left = 15
 corner_radius_bottom_left = 15
 metadata/_live_palette_bindings = {
 "border_color": "q7jwe"
 }
+
+[sub_resource type="Shader" id="Shader_kjigr"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+
+uniform vec2 direction = vec2(0.0, -1.0);
+uniform vec4 start_color : source_color;
+uniform vec4 end_color : source_color;
+
+
+float vmax(vec4 vec) {
+	return max(vec.x, max(vec.y, max(vec.z, vec.w)));
+}
+
+
+float random(vec2 seed, float pmin, float pmax) {
+	return pmin + fract(sin(dot(seed.xy, vec2(12.9898, 78.233))) * 43758.5453123) * (pmax - pmin);
+}
+
+
+float get_color_count(float range) {
+	return ceil(clamp(range, 0.0, 1.0) * 255.0);
+}
+
+
+float get_delta(vec2 uv) {
+	vec2 dir = normalize(direction);
+	return (dir.x < 0.0 ? (1.0 - uv.x) : uv.x) * dir.x * dir.x + (dir.y < 0.0 ? (1.0 - uv.y) : uv.y) * dir.y * dir.y;
+}
+
+
+void fragment() {
+	if (start_color == end_color) {
+		COLOR = start_color;
+	}
+	else {
+		float color_count = get_color_count(vmax(abs(end_color - start_color)));
+		float inv_color_count = 1.0 / color_count;
+
+
+		float color_index = floor(get_delta(UV) * color_count);
+		vec4 color1 = mix(start_color, end_color, color_index / color_count);
+		vec4 color2 = mix(start_color, end_color, (color_index + 1.0) / color_count);
+
+
+		float ratio = clamp(mod(get_delta(UV), inv_color_count) * color_count + random(UV, -0.5, 0.5), 0.0, 1.0);
+		COLOR = color1 * (1.0 - ratio) + color2 * ratio;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wf03m"]
+shader = SubResource("Shader_kjigr")
+shader_parameter/direction = Vector2(-1, 0)
+shader_parameter/start_color = Color(0, 0, 0, 1)
+shader_parameter/end_color = Color(0.84705883, 0, 1, 1)
+metadata/_live_palette_bindings = {
+"shader_parameter/end_color": "lcvmx"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sc01o"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 11
+corner_radius_bottom_left = 11
+corner_detail = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0, 0, 0, 1)
@@ -28,10 +98,15 @@ metadata/_live_palette_bindings = {
 }
 
 [node name="SopeBioHackItem" type="PanelContainer" unique_id=602144725]
-offset_right = 383.0
-offset_bottom = 187.0
+offset_right = 384.0
+offset_bottom = 205.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_2ypd2")
+
+[node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1889736362]
+material = SubResource("ShaderMaterial_wf03m")
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sc01o")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1220059076]
 layout_mode = 2
@@ -57,6 +132,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 [node name="Price" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/PriceContainer" unique_id=679639655]
 layout_mode = 2
 text = "$500"
+label_settings = ExtResource("3_h754m")
 horizontal_alignment = 1
 vertical_alignment = 1
 

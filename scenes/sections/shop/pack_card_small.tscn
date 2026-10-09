@@ -1,0 +1,188 @@
+[gd_scene format=3 uid="uid://bi1xl2w0g2xp3"]
+
+[ext_resource type="LabelSettings" uid="uid://eu5rxff72spr" path="res://ui_elements/card_pack_price_tag.tres" id="1_isi7i"]
+[ext_resource type="LabelSettings" uid="uid://cs27xol0fwvf5" path="res://ui_elements/card_pack_title.tres" id="2_gr10d"]
+[ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_hhop5"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="3_vxraj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxj5a"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+metadata/_live_palette_bindings = {
+"border_color": "2pjy5"
+}
+
+[sub_resource type="Shader" id="Shader_86qxq"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+
+uniform vec2 direction = vec2(0.0, -1.0);
+uniform vec4 start_color : source_color;
+uniform vec4 end_color : source_color;
+
+
+float vmax(vec4 vec) {
+	return max(vec.x, max(vec.y, max(vec.z, vec.w)));
+}
+
+
+float random(vec2 seed, float pmin, float pmax) {
+	return pmin + fract(sin(dot(seed.xy, vec2(12.9898, 78.233))) * 43758.5453123) * (pmax - pmin);
+}
+
+
+float get_color_count(float range) {
+	return ceil(clamp(range, 0.0, 1.0) * 255.0);
+}
+
+
+float get_delta(vec2 uv) {
+	vec2 dir = normalize(direction);
+	return (dir.x < 0.0 ? (1.0 - uv.x) : uv.x) * dir.x * dir.x + (dir.y < 0.0 ? (1.0 - uv.y) : uv.y) * dir.y * dir.y;
+}
+
+
+void fragment() {
+	if (start_color == end_color) {
+		COLOR = start_color;
+	}
+	else {
+		float color_count = get_color_count(vmax(abs(end_color - start_color)));
+		float inv_color_count = 1.0 / color_count;
+
+
+		float color_index = floor(get_delta(UV) * color_count);
+		vec4 color1 = mix(start_color, end_color, color_index / color_count);
+		vec4 color2 = mix(start_color, end_color, (color_index + 1.0) / color_count);
+
+
+		float ratio = clamp(mod(get_delta(UV), inv_color_count) * color_count + random(UV, -0.5, 0.5), 0.0, 1.0);
+		COLOR = color1 * (1.0 - ratio) + color2 * ratio;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vi4pv"]
+shader = SubResource("Shader_86qxq")
+shader_parameter/direction = Vector2(0, -1)
+shader_parameter/start_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
+shader_parameter/end_color = Color(0, 0, 0, 1)
+metadata/_live_palette_bindings = {
+"shader_parameter/start_color": "2pjy5"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gyh62"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b6vwg"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
+metadata/_live_palette_bindings = {
+"border_color": "2pjy5"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ptto7"]
+bg_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
+border_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
+metadata/_live_palette_bindings = {
+"bg_color": "2pjy5",
+"border_color": "2pjy5"
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_817tf"]
+font_size = 22
+
+[node name="PackCardSmall" type="PanelContainer" unique_id=1025698057]
+custom_minimum_size = Vector2(200, 365)
+custom_maximum_size = Vector2(200, 365)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 945.0
+offset_top = 426.0
+offset_right = -775.0
+offset_bottom = -289.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_fxj5a")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1441486793]
+material = SubResource("ShaderMaterial_vi4pv")
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gyh62")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2099079700]
+layout_mode = 2
+theme_override_constants/margin_top = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1097779520]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=525632801]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_b6vwg")
+
+[node name="Price" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer2" unique_id=110228847]
+layout_mode = 2
+text = "$200"
+label_settings = ExtResource("1_isi7i")
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1641365322]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ptto7")
+
+[node name="Type" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1050307941]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "PACOTE"
+label_settings = ExtResource("2_gr10d")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=1375076411]
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("3_vxraj")
+stretch_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1174425138]
+layout_mode = 2
+text = "minibiopack
+.zip"
+label_settings = SubResource("LabelSettings_817tf")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=1205518319]
+custom_minimum_size = Vector2(134, 60)
+custom_maximum_size = Vector2(134, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("2_hhop5")
+stretch_mode = 0

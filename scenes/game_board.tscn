@@ -87,11 +87,11 @@ split_offset = 230
 layout_mode = 2
 
 [node name="CombatScreen" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="StatsViewport" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=131166221 instance=ExtResource("6_axant")]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -103,10 +103,10 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Shop" parent="GameplayElements/VSplit/baixo" unique_id=669677562 instance=ExtResource("6_c1to4")]
-visible = false
 layout_mode = 2
 
 [node name="BotHSplit" type="HSplitContainer" parent="GameplayElements/VSplit/baixo" unique_id=67540516]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 drag_nested_intersections = true

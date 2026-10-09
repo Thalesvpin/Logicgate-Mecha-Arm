@@ -16,7 +16,6 @@ extends Control
 @export var shop_tween_speed: float = 0.8
 var last_top_h_split_offsets: PackedInt32Array
 var last_v_split_offsets: PackedInt32Array
-var tween = create_tween()
 
 func _ready() -> void:
 	if Global.seed == 0:
@@ -54,6 +53,7 @@ func open_boss_reward() -> void:
 	pass
 
 func tween_handler(object: Object, property: NodePath, final_val: Variant, duration: float, _ease: Tween.EaseType, parallel: bool = true , callback = null):
+	var tween = create_tween()
 	tween.set_parallel(parallel)
 	tween.set_ease(_ease)
 	#tween.tween_property(object, property, final_val, duration)
@@ -72,12 +72,28 @@ func open_shop() -> void:
 	last_v_split_offsets = v_split.split_offsets
 	v_split.dragging_enabled = false
 	top_h_split.dragging_enabled = false
-	#tween_handler(top_h_split, "split_offsets", [330, -330], shop_tween_speed, Tween.EASE_OUT, true, _open_shop)
-	#tween_handler(v_split, "split_offsets", [90], shop_tween_speed, Tween.EASE_OUT, true, _open_shop)
-	v_split.split_offsets = [90]
-	top_h_split.split_offsets = [330, -330]
+	
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_parallel(true)
+	
+	var h_from := float(top_h_split.split_offsets[0])
+	tween.tween_method(
+		func(v: float):
+			top_h_split.split_offsets = [roundi(v), -roundi(v)],
+		h_from, 330.0, shop_tween_speed
+	)
+	var v_from := float(v_split.split_offsets[0])
+	tween.tween_method(
+		func(v: float):
+			v_split.split_offsets = [roundi(v)],
+		v_from, 90.0, shop_tween_speed
+	)
+	
+	tween.set_parallel(false)
+	tween.tween_callback(_open_shop)
 
-#func _open_shop():
+func _open_shop():
 	shop.show()
 	stats_viewport.show()
 	close_battle()

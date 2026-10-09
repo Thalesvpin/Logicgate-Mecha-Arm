@@ -11,6 +11,9 @@ border_width_bottom = 6
 border_color = Color(0, 0, 0, 1)
 corner_radius_top_right = 40
 corner_radius_bottom_right = 40
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_srban"]
 bg_color = Color(0.6, 0.6, 0.6, 0)

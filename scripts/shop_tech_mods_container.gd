@@ -25,4 +25,4 @@ func add_implants() -> void:
 	
 	implants_holder.add_child(imp1)
 	implants_holder.add_child(imp2)
-	move_child(imp1, 0)
+	implants_holder.move_child(imp1, 0)

@@ -14,7 +14,6 @@ func _ready() -> void:
 	setup_signals()
 
 func setup_signals() -> void:
-	print("ta rodando essa caralha?")
 	EventBus.attacked.connect(attack)
 	EventBus.heavy_attack_used.connect(heavy_attack)
 	EventBus.charged_heavy_attack.connect(charge_attack)

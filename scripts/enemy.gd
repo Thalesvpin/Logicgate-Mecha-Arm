@@ -39,6 +39,7 @@ func is_the_signal_for_me(target: Node) -> bool:
 
 ##Undone
 func take_damage(value: float, target: Node = null) -> void:
+	print('take_damage ENEMY')
 	#if !is_the_signal_for_me(target):
 		#return
 	
