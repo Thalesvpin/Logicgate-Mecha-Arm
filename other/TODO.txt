@@ -4,8 +4,6 @@ feedback de ação (jogador e inimigo)
 THALES:
 nomes e icones dos implantes
 -LOJA
-remover tab de efeitos elementais
-remover elementais da loja
 add pacotes na loja (substituindo os elementais)(2 baratos com 2 opts e 2 caros com 4 opts)
 btns de menu da loja
 printar dinheiro

@@ -173,6 +173,10 @@ func add_enemies() -> void:
 	right_enemy_container.add_child(enemy_r)
 	center_enemy_container.add_child(enemy_c)
 	
+	bar_l.update()
+	bar_r.update()
+	bar_c.update()
+	
 	left_enemy_status_bar = bar_l
 	right_enemy_status_bar = bar_r
 	center_enemy_status_bar = bar_c

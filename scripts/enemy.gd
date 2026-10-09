@@ -53,10 +53,10 @@ func take_damage(value: float, target: Node = null) -> void:
 		stats[Stats.List.CURRENT_HEALTH] -= final_taken_dmg
 	else:
 		stats[Stats.List.CURRENT_HEALTH] = 0
-	status_bar.update()
+	status_bar.update(true)
 	
 	if stats[Stats.List.CURRENT_HEALTH] == 0:
-		print('enemy signal defeat')
+		print('ENEMY signal defeat')
 		EventBus.enemy_defeated.emit(self)
 
 func heal() -> void:
