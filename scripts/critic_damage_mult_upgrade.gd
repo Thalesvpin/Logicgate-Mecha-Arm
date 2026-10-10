@@ -7,8 +7,11 @@ func upgrade() -> void:
 	update_price()
 	update_value()
 
-func _on_buy_button_button_up() -> void:
-	upgrade()
-
 func update_value() -> void:
 	current_value.text = 'x%02f' %(Global.run_stats.player_stats[stat] + Global.implant_manager.extra_stats[stat])
+
+func _on_buy_button_button_down() -> void:
+	start_timer()
+
+func _on_buy_button_button_up() -> void:
+	stop_timer()

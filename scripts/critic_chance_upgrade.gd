@@ -7,8 +7,11 @@ func upgrade() -> void:
 	update_price()
 	update_value()
 
+func _on_buy_button_button_down() -> void:
+	start_timer()
+
 func _on_buy_button_button_up() -> void:
-	upgrade()
+	stop_timer()
 
 func update_value() -> void:
 	pass

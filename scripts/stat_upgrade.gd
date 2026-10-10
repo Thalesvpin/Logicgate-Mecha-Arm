@@ -14,6 +14,20 @@ class_name StatUpgrade
 @export var amount_per_upgrade: float
 var upgrades: int = 0
 
+##How much the "Run" btn must be held to submit
+@export_custom(PROPERTY_HINT_NONE, "suffix: s") var hold_run_duration: float = 0.5
+var timer: float = 0.0
+var holding_run: bool = false
+var buy_btn: TextureButton
+
+func _process(delta: float) -> void:
+	if timer > 0:
+		timer -= delta
+		buy_btn.material.set_shader_parameter("progress", 1 - timer/hold_run_duration)
+	if holding_run && timer <= 0:
+		stop_timer()
+		upgrade()
+
 func _ready() -> void:
 	setup()
 	update_value()
@@ -22,6 +36,7 @@ func upgrade() -> void:
 	pass
 
 func setup() -> void:
+	buy_btn = find_child('BuyButton')
 	_icon.texture = icon
 	_title.text = title
 	update_price()
@@ -41,3 +56,13 @@ func withdraw_money() -> void:
 
 func update_value() -> void:
 	print('update_value not implemented in ', self)
+
+##Duration in seconds
+func start_timer() -> void:
+	timer = hold_run_duration
+	holding_run = true
+
+func stop_timer() -> void:
+	timer = 0.0
+	holding_run = false
+	buy_btn.material.set_shader_parameter("progress", 1)

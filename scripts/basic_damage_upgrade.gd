@@ -12,9 +12,6 @@ func upgrade() -> void:
 	update_price()
 	update_value()
 
-func _on_buy_button_button_up() -> void:
-	upgrade()
-
 func update_value() -> void:
 	if Global.implant_manager.extra_stats[stat] > 0:
 		current_value.show()
@@ -29,3 +26,9 @@ func update_value() -> void:
 		label.hide()
 		label_2.hide()
 	total_value.text = str(Global.run_stats.player_stats[stat]+Global.implant_manager.extra_stats[stat])
+
+func _on_buy_button_button_down() -> void:
+	start_timer()
+
+func _on_buy_button_button_up() -> void:
+	stop_timer()

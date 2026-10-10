@@ -15,8 +15,11 @@ func upgrade() -> void:
 	update_price()
 	
 
+func _on_buy_button_button_down() -> void:
+	start_timer()
+
 func _on_buy_button_button_up() -> void:
-	upgrade()
+	stop_timer()
 
 func update_value() -> void:
 	var curr = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]

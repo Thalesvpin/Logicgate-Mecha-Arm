@@ -33,5 +33,8 @@ func update_value() -> void:
 	
 	mitigation_value_label.text = '-'+str(Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] + Global.implant_manager.extra_stats[Stats.List.MITIGATION_PERCENT])
 
+func _on_buy_button_button_down() -> void:
+	start_timer()
+
 func _on_buy_button_button_up() -> void:
-	upgrade()
+	stop_timer()

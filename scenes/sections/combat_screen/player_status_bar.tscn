@@ -12,10 +12,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pjy5"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
 border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
@@ -384,11 +383,21 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vvvff")
 script = ExtResource("1_bsxa0")
 
 [node name="Background" type="PanelContainer" parent="." unique_id=674051279]
+custom_minimum_size = Vector2(0, 162)
+custom_maximum_size = Vector2(-1, 162)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
 
 [node name="PanelContainer" type="PanelContainer" parent="Background" unique_id=413465009]
+custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
+
+[node name="PanelContainer2" type="PanelContainer" parent="Background" unique_id=1184842896]
+custom_minimum_size = Vector2(0, 140)
+layout_mode = 2
+size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1779848349]

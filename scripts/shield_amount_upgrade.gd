@@ -13,5 +13,8 @@ func update_value() -> void:
 	var max = Global.run_stats.player_stats[stat]
 	current_value.text = str(curr)+' / '+str(max)+' '+char(0x25A0)+char(0x25A0)+char(0x25A1)
 
+func _on_buy_button_button_down() -> void:
+	start_timer()
+
 func _on_buy_button_button_up() -> void:
-	upgrade()
+	stop_timer()
