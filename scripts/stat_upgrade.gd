@@ -15,7 +15,7 @@ class_name StatUpgrade
 var upgrades: int = 0
 
 ##How much the "Run" btn must be held to submit
-@export_custom(PROPERTY_HINT_NONE, "suffix: s") var hold_run_duration: float = 0.5
+@export_custom(PROPERTY_HINT_NONE, "suffix: s") var hold_run_duration: float = 0.35
 var timer: float = 0.0
 var holding_run: bool = false
 var buy_btn: TextureButton

@@ -4,8 +4,6 @@ feedback de ação (jogador e inimigo)
 THALES:
 nomes e icones dos implantes
 -LOJA
-add pacotes na loja (substituindo os elementais)(2 baratos com 2 opts e 2 caros com 4 opts)
-btns de menu da loja
 -SHADER
 add parametros no gradient
 -COMBATE

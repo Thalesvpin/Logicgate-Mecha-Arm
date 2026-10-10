@@ -91,7 +91,7 @@ offset_bottom = 420.0
 stat = 12
 title = "Chance de Acerto Crítico"
 icon = ExtResource("8_l102y")
-hold_run_duration = 0.5
+hold_run_duration = 0.35
 
 [node name="MaxHealthContainer" parent="Page1" unique_id=109097967 instance=ExtResource("4_k8u8d")]
 layout_mode = 0
