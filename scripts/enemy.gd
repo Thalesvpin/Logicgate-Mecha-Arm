@@ -1,5 +1,7 @@
 extends Control
 
+@onready var texture_rect: TextureRect = $TextureRect
+
 @export_group('Deafault values')
 @export var max_heatlh: int
 @export var base_heal: float
@@ -29,8 +31,10 @@ var enemy_name: String
 var battle_position
 var status_bar
 var _position
+@export var outline_tween_duration: float = 0.05
 
 func _ready() -> void:
+	texture_rect.material = texture_rect.material.duplicate()
 	set_stats()
 	connect_signals()
 
@@ -104,3 +108,16 @@ func _on_gui_input(event: InputEvent) -> void:
 func swap():
 	if _position != EnemyPosition.Position.CENTER && stats[Stats.List.CURRENT_HEALTH] > 0:
 		get_parent().owner.center_enemy(self)
+
+func _on_mouse_entered() -> void:
+	var shader := texture_rect.material as ShaderMaterial
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(shader, "shader_parameter/outline_width", 0.005, outline_tween_duration)
+	
+
+func _on_mouse_exited() -> void:
+	var shader := texture_rect.material as ShaderMaterial
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(shader, "shader_parameter/outline_width", 0.0, outline_tween_duration)

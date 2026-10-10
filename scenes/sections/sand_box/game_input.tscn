@@ -9,6 +9,21 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eofqg"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_left = 2
+border_width_bottom = 2
+border_color = Color(0.3647059, 0.3647059, 0.3647059, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6",
+"border_color": "gtatl"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
+bg_color = Color(0.11119685, 0.11119684, 0.11119684, 1)
+
 [node name="GameInput" type="Control" unique_id=1380455050]
 layout_mode = 3
 anchors_preset = 0
@@ -21,9 +36,9 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -150.0
+offset_left = -179.0
 offset_top = -23.0
-offset_right = -51.0
+offset_right = -80.0
 offset_bottom = 23.0
 grow_horizontal = 0
 grow_vertical = 2
@@ -40,6 +55,32 @@ shape = SubResource("CircleShape2D_eofqg")
 [node name="Sprite2D" type="Sprite2D" parent="Area2D" unique_id=1791370775]
 scale = Vector2(0.007, 0.007)
 texture = ExtResource("5_rhxyq")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=306301313]
+custom_minimum_size = Vector2(10, 0)
+custom_maximum_size = Vector2(31, -1)
+layout_mode = 0
+offset_left = -45.0
+offset_top = -21.0
+offset_right = -14.0
+offset_bottom = 21.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[node name="Input" type="Label" parent="PanelContainer" unique_id=563311194]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer" unique_id=918621021]
+custom_minimum_size = Vector2(45.23, 5.25)
+custom_maximum_size = Vector2(41.995, 8.16)
+layout_mode = 2
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1.06, 1.645)
+offset_transform_scale = Vector2(1.22, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 
 [connection signal="button_up" from="TextureButton" to="Area2D" method="_on_texture_button_button_up"]
 [connection signal="mouse_entered" from="Area2D" to="Area2D" method="_on_mouse_entered"]

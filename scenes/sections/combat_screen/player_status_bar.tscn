@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bxfhcehr6iuwn"]
 
 [ext_resource type="Script" uid="uid://00atl68lg1t0" path="res://scripts/player_status_bar.gd" id="1_bsxa0"]
-[ext_resource type="Texture2D" uid="uid://cdeyfpq76q6sw" path="res://assets/enemystatusbar_frame_PLACEHOLDER.png" id="1_mwn6y"]
 [ext_resource type="Shader" uid="uid://dulb1o24l1kpl" path="res://shaders/progress_bar.gdshader" id="3_a4jf8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vvvff"]
@@ -18,6 +17,18 @@ border_width_right = 6
 border_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 20
 corner_radius_top_right = 20
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tt3tj"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
 metadata/_live_palette_bindings = {
 "bg_color": "7cls6"
 }
@@ -78,7 +89,7 @@ shader_parameter/segment_gap = 0.0
 shader_parameter/universal_border_size = 0.1
 shader_parameter/horizontal_border_size = 1.0
 shader_parameter/inner_border_thickness_multiplier = 0.25
-shader_parameter/outer_border_size = 0.4
+shader_parameter/outer_border_size = 0.5
 shader_parameter/slant_amount = 0.0
 shader_parameter/scale = 0.0
 shader_parameter/slant_clip_margin = 0.0
@@ -355,9 +366,11 @@ border_width_left = 4
 border_width_top = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a4jf8"]
-bg_color = Color(0, 0, 0, 0)
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
@@ -367,6 +380,9 @@ corner_radius_top_left = 22
 corner_radius_top_right = 22
 corner_radius_bottom_right = 22
 corner_radius_bottom_left = 22
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
 
 [sub_resource type="LabelSettings" id="LabelSettings_a4jf8"]
 font_size = 24
@@ -383,46 +399,35 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vvvff")
 script = ExtResource("1_bsxa0")
 
 [node name="Background" type="PanelContainer" parent="." unique_id=674051279]
-custom_minimum_size = Vector2(0, 162)
-custom_maximum_size = Vector2(-1, 162)
+custom_minimum_size = Vector2(693, 154)
+custom_maximum_size = Vector2(693, 154)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
 
 [node name="PanelContainer" type="PanelContainer" parent="Background" unique_id=413465009]
 custom_minimum_size = Vector2(0, 140)
+custom_maximum_size = Vector2(-1, 140)
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 
 [node name="PanelContainer2" type="PanelContainer" parent="Background" unique_id=1184842896]
-custom_minimum_size = Vector2(0, 140)
+custom_minimum_size = Vector2(595, 154)
+custom_maximum_size = Vector2(595, 154)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 8
-theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
-
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1779848349]
-layout_mode = 2
-texture = ExtResource("1_mwn6y")
-stretch_mode = 2
-flip_v = true
-
-[node name="ColorRect" type="ColorRect" parent="TextureRect" unique_id=1131031414]
-layout_mode = 0
-offset_left = 57.0
-offset_top = 33.0
-offset_right = 637.0
-offset_bottom = 153.0
-color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_tt3tj")
 
 [node name="Shield" type="Control" parent="." unique_id=387301954]
 layout_mode = 2
 
 [node name="ShieldHolder" type="Control" parent="Shield" unique_id=709029611]
 anchors_preset = 0
-offset_left = 194.0
-offset_top = 19.0
-offset_right = 519.0
-offset_bottom = 59.0
+offset_left = 183.0
+offset_top = 14.0
+offset_right = 508.0
+offset_bottom = 54.0
 
 [node name="ShieldBar5" type="ColorRect" parent="Shield/ShieldHolder" unique_id=1875925350]
 material = SubResource("ShaderMaterial_r02ah")
@@ -501,10 +506,10 @@ layout_mode = 2
 
 [node name="Healthbar" type="ProgressBar" parent="Health" unique_id=201692447]
 layout_mode = 0
-offset_left = 194.0
-offset_top = 61.0
-offset_right = 519.0
-offset_bottom = 101.0
+offset_left = 182.0
+offset_top = 60.0
+offset_right = 507.0
+offset_bottom = 100.0
 theme_override_styles/background = SubResource("StyleBoxFlat_cqbp4")
 theme_override_styles/fill = SubResource("StyleBoxFlat_eofqg")
 value = 50.0
@@ -524,13 +529,13 @@ horizontal_alignment = 1
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Name" unique_id=1422679739]
-custom_minimum_size = Vector2(300, 40)
-custom_maximum_size = Vector2(300, 40)
+custom_minimum_size = Vector2(325, 40)
+custom_maximum_size = Vector2(325, 40)
 layout_mode = 0
-offset_left = 195.0
-offset_top = 108.0
-offset_right = 495.0
-offset_bottom = 148.0
+offset_left = 182.0
+offset_top = 107.0
+offset_right = 507.0
+offset_bottom = 147.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
 [node name="Name" type="Label" parent="Name/PanelContainer" unique_id=429157835]
@@ -555,10 +560,10 @@ horizontal_alignment = 1
 
 [node name="PanelContainer3" type="PanelContainer" parent="Name" unique_id=1049316037]
 layout_mode = 0
-offset_left = 483.0
-offset_top = 106.0
-offset_right = 527.0
-offset_bottom = 150.0
+offset_left = 463.0
+offset_top = 105.0
+offset_right = 507.0
+offset_bottom = 149.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_a4jf8")
 
 [node name="Label4" type="Label" parent="Name/PanelContainer3" unique_id=1333779627]

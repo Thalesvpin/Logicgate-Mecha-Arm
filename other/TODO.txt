@@ -8,11 +8,8 @@ nomes e icones dos implantes
 add parametros no gradient
 -COMBATE
 remover aflição elemental e elemntal do inimigo
-substituir player stats bar
 add barra de output na sandbox
 barra de ataque carregado amarela caso cargas < 4
-shader de outline do inimigo (mouse hover)
-numeros do input
 barras de stats psicar branco ao reduzir
 dmg numbers na tela
 bloqueio da sandbox durante turno do inimigo

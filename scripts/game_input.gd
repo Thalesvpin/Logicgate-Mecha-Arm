@@ -1,6 +1,7 @@
 extends Area2D
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var input: Label = $"../PanelContainer/Input"
 
 signal new_wire(pin)
 
@@ -17,6 +18,7 @@ func _input_event(_viewport, event, _shape_idx):
 
 func set_active(value: bool):
 	is_active = value
+	input.text = str(int(is_active))
 
 func _on_mouse_entered() -> void:
 	sprite.scale = Vector2(0.02,0.02)
