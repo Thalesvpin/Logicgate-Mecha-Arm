@@ -19,19 +19,27 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=303844763]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 55
+theme_override_constants/separation = 50
 
 [node name="PackCard" parent="HBoxContainer" unique_id=1952346557 instance=ExtResource("1_37gkg")]
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 13)
 
 [node name="PackCardSmall" parent="HBoxContainer" unique_id=1025698057 instance=ExtResource("2_37gkg")]
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 13)
 
 [node name="RerollCard" parent="HBoxContainer" unique_id=357678371 instance=ExtResource("3_gl50k")]
 layout_mode = 2
 
 [node name="PackCardSmall2" parent="HBoxContainer" unique_id=236396797 instance=ExtResource("2_37gkg")]
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 13)
 
 [node name="PackCard2" parent="HBoxContainer" unique_id=1560850944 instance=ExtResource("1_37gkg")]
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 13)
