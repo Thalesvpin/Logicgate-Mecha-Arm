@@ -66,8 +66,13 @@ shader = SubResource("Shader_yodio")
 [sub_resource type="Environment" id="Environment_eofqg"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 0.97
-glow_bloom = 0.51
+glow_levels/1 = 16.0
+glow_levels/2 = 16.0
+glow_levels/3 = 5.0
+glow_levels/4 = 0.0
+glow_normalized = true
+glow_strength = 1.68
+glow_bloom = 0.15
 
 [node name="StatsViewport" type="PanelContainer" unique_id=131166221]
 anchors_preset = 15
@@ -78,14 +83,19 @@ grow_vertical = 2
 theme = ExtResource("7_0y6mr")
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_bv6u5")
+glow_tween_duration = 0.55
+glow_intensity = 5.0
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=997927547]
+propagate_maximum_size = false
 layout_mode = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=899245778]
 own_world_3d = true
+handle_input_locally = false
 size = Vector2i(1910, 1070)
+render_target_update_mode = 4
 
 [node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport" unique_id=1260472425]
 offset_left = 5.0
