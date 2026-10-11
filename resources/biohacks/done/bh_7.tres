@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://c24lfewwtgac8"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_scuwv"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_ro2x6"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_ni68n"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_u5qw3"]
+[ext_resource type="Script" uid="uid://chkj8op6nrwho" path="res://scripts/classes/implant_effects/heal.gd" id="5_k6w22"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_o2vu1"]
+
+[sub_resource type="Resource" id="Resource_l5cny"]
+script = ExtResource("2_ro2x6")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_l6bjy"]
+script = ExtResource("5_k6w22")
+amount = 20
+metadata/_custom_type_script = "uid://chkj8op6nrwho"
+
+[sub_resource type="Resource" id="Resource_hl8f5"]
+script = ExtResource("3_ni68n")
+effect = Array[ExtResource("4_u5qw3")]([SubResource("Resource_l6bjy")])
+conditions = Array[ExtResource("1_scuwv")]([SubResource("Resource_l5cny")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("6_o2vu1")
+id = 7
+name = "Primeiros Socorros"
+description = "quando ativado, este Modifier cura 20 pontos de Vida. Pode ser ativado até 2 vezes (por padrão)."
+type = 1
+consumable = true
+uses_amount = 2
+effect = Array[ExtResource("4_u5qw3")]([SubResource("Resource_l6bjy")])
+conditions = Array[ExtResource("1_scuwv")]([SubResource("Resource_l5cny")])
+config = Array[ExtResource("3_ni68n")]([SubResource("Resource_hl8f5")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

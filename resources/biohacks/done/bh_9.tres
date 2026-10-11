@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://c7y13v52xxv87"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_fea3c"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_cl6hb"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_c87wj"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_7nm7x"]
+[ext_resource type="Script" uid="uid://bsma7115xysdu" path="res://scripts/classes/implant_effects/repair_shield.gd" id="5_uh1f0"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_3qsup"]
+
+[sub_resource type="Resource" id="Resource_jcl8f"]
+script = ExtResource("2_cl6hb")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_m8er1"]
+script = ExtResource("5_uh1f0")
+mode = 1
+amount = 1
+metadata/_custom_type_script = "uid://bsma7115xysdu"
+
+[sub_resource type="Resource" id="Resource_sj4r1"]
+script = ExtResource("3_c87wj")
+effect = Array[ExtResource("4_7nm7x")]([SubResource("Resource_m8er1")])
+conditions = Array[ExtResource("1_fea3c")]([SubResource("Resource_jcl8f")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("6_3qsup")
+id = 9
+description = "quando ativado, este Modifier conserta 1 Escudo do jogador para o Máximo. Pode ser ativado até 3 vezes (por padrão)."
+type = 1
+consumable = true
+uses_amount = 3
+effect = Array[ExtResource("4_7nm7x")]([SubResource("Resource_m8er1")])
+conditions = Array[ExtResource("1_fea3c")]([SubResource("Resource_jcl8f")])
+config = Array[ExtResource("3_c87wj")]([SubResource("Resource_sj4r1")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

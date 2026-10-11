@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="DealDamageEffect" format=3 uid="uid://dkqglpw2f46kc"]
+
+[ext_resource type="Script" uid="uid://drkh7n0dptl6c" path="res://scripts/classes/implant_effects/undone/deal_damage.gd" id="1_yr0x0"]
+
+[resource]
+script = ExtResource("1_yr0x0")
+metadata/_custom_type_script = "uid://drkh7n0dptl6c"

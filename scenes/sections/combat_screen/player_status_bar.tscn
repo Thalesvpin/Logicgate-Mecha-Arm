@@ -430,6 +430,7 @@ offset_right = 508.0
 offset_bottom = 54.0
 
 [node name="ShieldBar5" type="ColorRect" parent="Shield/ShieldHolder" unique_id=1875925350]
+visible = false
 material = SubResource("ShaderMaterial_r02ah")
 layout_mode = 0
 offset_left = 242.0
@@ -437,6 +438,7 @@ offset_right = 323.6
 offset_bottom = 39.0
 
 [node name="ShieldBar4" type="ColorRect" parent="Shield/ShieldHolder" unique_id=1454605255]
+visible = false
 material = SubResource("ShaderMaterial_4md1d")
 layout_mode = 0
 offset_right = 245.0
@@ -464,12 +466,14 @@ offset_right = 108.33
 offset_bottom = 39.0
 
 [node name="ShieldLabelsHolder" type="HBoxContainer" parent="Shield/ShieldHolder" unique_id=1895824751]
+visible = false
 layout_mode = 0
 offset_right = 326.0
 offset_bottom = 40.0
 theme_override_constants/separation = 0
 
 [node name="ShieldLabel1" type="Label" parent="Shield/ShieldHolder/ShieldLabelsHolder" unique_id=1438128374]
+visible = false
 custom_maximum_size = Vector2(108, -1)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -478,6 +482,7 @@ label_settings = SubResource("LabelSettings_bsxa0")
 horizontal_alignment = 1
 
 [node name="ShieldLabel2" type="Label" parent="Shield/ShieldHolder/ShieldLabelsHolder" unique_id=1898626964]
+visible = false
 custom_maximum_size = Vector2(108, -1)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -486,6 +491,7 @@ label_settings = SubResource("LabelSettings_bsxa0")
 horizontal_alignment = 1
 
 [node name="ShieldLabel3" type="Label" parent="Shield/ShieldHolder/ShieldLabelsHolder" unique_id=1460945281]
+visible = false
 custom_maximum_size = Vector2(108, -1)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -494,6 +500,7 @@ label_settings = SubResource("LabelSettings_bsxa0")
 horizontal_alignment = 1
 
 [node name="ShieldLabel4" type="Label" parent="Shield/ShieldHolder/ShieldLabelsHolder" unique_id=1443586949]
+visible = false
 custom_maximum_size = Vector2(108, -1)
 layout_mode = 2
 size_flags_horizontal = 3

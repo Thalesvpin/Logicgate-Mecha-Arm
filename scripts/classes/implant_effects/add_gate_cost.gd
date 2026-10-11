@@ -1,4 +1,4 @@
-extends ModifierEffect
+extends ImplantEffect
 class_name AddGateCostEffect
 
 ##Use ANY for random gate
@@ -8,7 +8,7 @@ class_name AddGateCostEffect
 var result
 var is_applied: bool = false
 
-func apply(context = null) -> void:
+func apply(_context = null) -> void:
 	var aux: Gates.Type
 	if !is_applied:
 		if gate == Gates.Type.ANY:

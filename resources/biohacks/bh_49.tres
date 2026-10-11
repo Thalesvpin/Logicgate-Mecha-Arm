@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://cdpxy2jhh6dki"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_2bubr"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_4khoa"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_7d221"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_w0pb1"]
+
+[resource]
+script = ExtResource("4_w0pb1")
+id = 49
+description = "Ganhe +X de Dano Base para cada raridade diferente de Tech Mod presente no Inventário."
+type = 1
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

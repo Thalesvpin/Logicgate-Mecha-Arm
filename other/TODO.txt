@@ -15,6 +15,7 @@ dmg numbers na tela
 bloqueio da sandbox durante turno do inimigo
 inimigo e jogador tremer ao tomar dano
 bordas da area de combate piscando vermelho ao tomar dano
+add visualizador de output (igual do input)
 
 LUCA:
 definir fontes

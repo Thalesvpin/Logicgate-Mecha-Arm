@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="RepairShieldEffect" format=3 uid="uid://dy0y7ygmujvjg"]
+
+[ext_resource type="Script" uid="uid://bsma7115xysdu" path="res://scripts/classes/implant_effects/repair_shield.gd" id="1_sw47x"]
+
+[resource]
+script = ExtResource("1_sw47x")
+metadata/_custom_type_script = "uid://bsma7115xysdu"

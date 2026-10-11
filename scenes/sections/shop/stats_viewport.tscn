@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://ha5pilvsrsv0" path="res://assets/TCC_icon_stat_ShieldMitigation.png" id="14_mdhfq"]
 [ext_resource type="Theme" uid="uid://ulhofgmwnknp" path="res://themes/selected_stats_tab.tres" id="14_yr5m8"]
 [ext_resource type="PackedScene" uid="uid://di06vvgq8pav6" path="res://scenes/sections/shop/stats_viewport/tokens_amount_container.tscn" id="15_icxht"]
+[ext_resource type="Texture2D" uid="uid://h1tn1umy07el" path="res://assets/sprite_StatUpgrade_xrayArm.png" id="22_yodio"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -41,6 +42,26 @@ fill_to = Vector2(0.5, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icxht"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 shadow_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Shader" id="Shader_yodio"]
+code = "shader_type canvas_item;
+
+void vertex() {
+	// Called for every vertex the material is visible on.
+}
+
+void fragment() {
+	// Called for every pixel the material is visible on.
+}
+
+//void light() {
+//	// Called for every pixel for every light affecting the CanvasItem.
+//	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gtatl"]
+shader = SubResource("Shader_yodio")
 
 [node name="StatsViewport" type="PanelContainer" unique_id=131166221]
 anchors_preset = 15
@@ -64,9 +85,9 @@ size_flags_vertical = 0
 
 [node name="BasicDamageContainer" parent="Page1" unique_id=1221763294 instance=ExtResource("1_l3ufi")]
 layout_mode = 0
-offset_left = 231.0
+offset_left = 127.0
 offset_top = 76.0
-offset_right = 568.0
+offset_right = 464.0
 offset_bottom = 144.0
 stat = 10
 title = "Dano Base"
@@ -74,9 +95,9 @@ icon = ExtResource("4_ybi5s")
 
 [node name="CriticDamageMultContainer" parent="Page1" unique_id=712091482 instance=ExtResource("2_b0rs0")]
 layout_mode = 0
-offset_left = 154.0
+offset_left = 50.0
 offset_top = 184.0
-offset_right = 544.0
+offset_right = 440.0
 offset_bottom = 279.0
 stat = 13
 title = "Multiplicador de Dano Crítico"
@@ -84,9 +105,9 @@ icon = ExtResource("6_yodio")
 
 [node name="CriticChanceContainer" parent="Page1" unique_id=1421245167 instance=ExtResource("3_s5khm")]
 layout_mode = 0
-offset_left = 191.0
+offset_left = 87.0
 offset_top = 325.0
-offset_right = 545.0
+offset_right = 441.0
 offset_bottom = 420.0
 stat = 12
 title = "Chance de Acerto Crítico"
@@ -95,18 +116,18 @@ hold_run_duration = 0.35
 
 [node name="MaxHealthContainer" parent="Page1" unique_id=109097967 instance=ExtResource("4_k8u8d")]
 layout_mode = 0
-offset_left = 975.0
+offset_left = 871.0
 offset_top = 82.0
-offset_right = 1369.0
+offset_right = 1265.0
 offset_bottom = 150.0
 title = "Vida Máxima"
 icon = ExtResource("10_nwtl1")
 
 [node name="ShieldAmountContainer" parent="Page1" unique_id=1376948172 instance=ExtResource("5_qurlf")]
 layout_mode = 0
-offset_left = 1009.0
+offset_left = 905.0
 offset_top = 169.0
-offset_right = 1383.0
+offset_right = 1279.0
 offset_bottom = 264.0
 stat = 5
 title = "Quantidade de Escudos"
@@ -114,9 +135,9 @@ icon = ExtResource("12_2ujkr")
 
 [node name="ShieldStrengthContainer" parent="Page1" unique_id=566576391 instance=ExtResource("6_pqe0e")]
 layout_mode = 0
-offset_left = 944.0
+offset_left = 840.0
 offset_top = 301.0
-offset_right = 1372.0
+offset_right = 1268.0
 offset_bottom = 402.0
 title = "Força dos Escudos"
 icon = ExtResource("14_mdhfq")
@@ -291,6 +312,16 @@ text = "AÇÕES DE BATALHA"
 visible = false
 layout_mode = 2
 mouse_filter = 1
+
+[node name="ArmXRay" type="TextureRect" parent="." unique_id=1962423191]
+material = SubResource("ShaderMaterial_gtatl")
+custom_minimum_size = Vector2(0, 400)
+custom_maximum_size = Vector2(123, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+texture = ExtResource("22_yodio")
+stretch_mode = 4
 
 [connection signal="pressed" from="Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
 [connection signal="pressed" from="Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]

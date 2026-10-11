@@ -95,7 +95,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6e57c"]
 shader = SubResource("Shader_6w5ur")
-shader_parameter/outline_width = 0.0050000002375
+shader_parameter/outline_width = 0.0
 shader_parameter/outline_tint = Color(1, 1, 1, 1)
 shader_parameter/atlas_region_pos = Vector2(0, 0)
 shader_parameter/atlas_region_size = Vector2(1, 1)

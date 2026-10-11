@@ -1,4 +1,4 @@
-extends ModifierEffect
+extends ImplantEffect
 class_name DuplicatePulseEffect
 
 @export_range(1, 3, 1) var pulse_index: int = 1:
@@ -10,7 +10,7 @@ class_name DuplicatePulseEffect
 
 var is_set: bool = true
 
-func apply(context = null) -> void:
+func apply(_context = null) -> void:
 	EventBus.pulse.connect(duplicate_pulse)
 
 func duplicate_pulse(idx: int) -> void:

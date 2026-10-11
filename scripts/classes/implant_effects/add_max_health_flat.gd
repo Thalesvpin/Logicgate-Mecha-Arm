@@ -1,11 +1,11 @@
-extends ModifierEffect
+extends ImplantEffect
 class_name AddMaxHealthFlatEffect
 
 ##To subtract, insert a nagative value
 @export var amount: int = 0
 #@export var who: Variant
 
-func apply(context = null) -> void:
+func apply(_context = null) -> void:
 	var result = add_to_player_stats(Stats.List.MAX_HEALTH, amount, lesser, 1)
 	EventBus.stat_changed.emit(Stats.List.MAX_HEALTH , result)
 

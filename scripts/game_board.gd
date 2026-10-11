@@ -132,13 +132,18 @@ func game_over(is_victory: bool) -> void:
 
 const TECHMOD_TEST = preload("uid://3gmr422layic")
 const TM_6 = preload("uid://dm2y0nuwvhshu")
+const BH_1 = preload("uid://cdfw1je21a364")
 
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("test2"):# Y
-		tech_mods_container.add_implant(TM_6)
+		Global.implant_manager.add_tech_mod(TM_6)
 	if event.is_action_pressed("test3"):# U
 		#EventBus.damage_taken.emit(20)
 		#EventBus.enemy_defeated.emit()
 		#EventBus.critical_hit.emit()
-		print('vida: ', Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
+		#print('vida: ', Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
+		EventBus.self_damage.emit()
+	if event.is_action_pressed("test4"):# B
+		Global.implant_manager.add_bio_hack(BH_1)
+	

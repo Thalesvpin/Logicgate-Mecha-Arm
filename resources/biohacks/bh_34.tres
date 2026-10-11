@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://bm8ox88a4gp3t"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_dxvuj"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_cc7e2"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_qxb2e"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_yxln3"]
+
+[resource]
+script = ExtResource("4_yxln3")
+id = 34
+description = "ganhe +$X extra no final de toda Batalha comum, ou +$Y extra no final de toda Batalha contra Chefe, enquanto este Modifier estiver no Inventário."
+type = 1
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

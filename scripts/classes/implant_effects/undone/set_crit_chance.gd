@@ -1,4 +1,4 @@
-extends ModifierEffect
+extends ImplantEffect
 class_name SetCriticChanceEffect
 
 ##To subtract, insert a negative value
@@ -6,7 +6,7 @@ class_name SetCriticChanceEffect
 @export var who: Variant
 var old_value: float = 0
 
-func apply(context = null) -> void:
+func apply(_context = null) -> void:
 	old_value = get_player_stat(Stats.List.CRITIC_CHANCE)
 	set_player_stat(Stats.List.CRITIC_CHANCE, amount)
 	EventBus.stat_changed.emit(Stats.List.CRITIC_CHANCE, amount)

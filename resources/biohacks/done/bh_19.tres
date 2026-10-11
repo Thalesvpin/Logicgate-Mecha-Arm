@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dya6ndjmles5q"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_1jfj5"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_y5hgt"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_qe1g6"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_3ow78"]
+[ext_resource type="Script" uid="uid://dt1iryly4dgrs" path="res://scripts/classes/implant_effects/charge_heavy_attack.gd" id="5_2qns8"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_kaytl"]
+
+[sub_resource type="Resource" id="Resource_21lao"]
+script = ExtResource("2_y5hgt")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_y57o6"]
+script = ExtResource("5_2qns8")
+amount = 100
+metadata/_custom_type_script = "uid://dt1iryly4dgrs"
+
+[sub_resource type="Resource" id="Resource_p7c3m"]
+script = ExtResource("3_qe1g6")
+effect = Array[ExtResource("4_3ow78")]([SubResource("Resource_y57o6")])
+conditions = Array[ExtResource("1_1jfj5")]([SubResource("Resource_21lao")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("6_kaytl")
+id = 19
+description = "quando ativado, este Bio Hack carrega a Carga do Ataque Carregado para 100%, caso esteja abaixo de 100%. Pode ser ativado até 3 vezes (por padrão)."
+type = 1
+consumable = true
+uses_amount = 3
+effect = Array[ExtResource("4_3ow78")]([SubResource("Resource_y57o6")])
+conditions = Array[ExtResource("1_1jfj5")]([SubResource("Resource_21lao")])
+config = Array[ExtResource("3_qe1g6")]([SubResource("Resource_p7c3m")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

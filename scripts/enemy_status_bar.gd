@@ -60,7 +60,6 @@ func _ready() -> void:
 		#subtract_from_shield(10)
 
 func update(animate: bool = false) -> void:
-	print('update ENEMY_STATSU_BAR')
 	stats = enemy.stats
 	set_health_value(stats[Stats.List.CURRENT_HEALTH], animate)
 	set_shield_value(stats[Stats.List.CURRENT_SHIELD])
@@ -69,7 +68,6 @@ func update(animate: bool = false) -> void:
 	#set_elemental(stats[Stats.List.CURRENT_ELEMENTALS], enemy['elemental_lvl'])
 
 func enemy_swap() -> void:
-	print('enemy_swap ENEMY_STATSU_BAR')
 	var tween = create_tween()
 	tween.set_parallel(false)
 	tween.set_ease(Tween.EASE_OUT)
@@ -99,7 +97,6 @@ func progress_bar_animation(bar: Node, new_value: int, callback = null) -> void:
 		tween.tween_callback(callback)
 
 func set_health_value(value: float, animate: bool = false) -> void:
-	print('set_health_value ENEMY_STATSU_BAR')
 	var percentage = (value/stats[Stats.List.MAX_HEALTH])*100
 	progress_bar_animation(health_bar, percentage)
 	#health_bar.value = percentage
@@ -188,7 +185,6 @@ func defeated(who) -> void:
 			child.hide()
 		else:
 			child.texture = defeat_background_texture
-	print('defeated ENEMY_STATUS_BAR')
 	Global.combat_screen.enemy_defeated(enemy)
 
 func revive(who) -> void:

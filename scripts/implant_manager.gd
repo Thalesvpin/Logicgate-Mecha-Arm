@@ -29,14 +29,18 @@ func _ready() -> void:
 func add_tech_mod(implant: Implant):
 	print('implant_manager add tech mod')
 	active_tech_mods.append(implant)
+	Global.tech_mods_container.add_implant(implant)
 	implant.connect_triggers()
 
 func add_bio_hack(implant: Implant):
 	active_bio_hacks.append(implant)
+	Global.bio_hacks_container.add_implant(implant)
 	implant.connect_triggers()
 
 func remove_tech_mod(implant: Implant):
+	implant.revert()
 	active_tech_mods.erase(implant)
 
 func remove_bio_hack(implant: Implant):
+	implant.revert()
 	active_bio_hacks.erase(implant)

@@ -22,7 +22,7 @@ corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
 [sub_resource type="LabelSettings" id="LabelSettings_a7lv4"]
-font_size = 32
+font_size = 36
 font_color = Color(0.88234085, 0.2573373, 0, 1)
 
 [node name="CombatMoneyPanel" type="PanelContainer" unique_id=2026981835]

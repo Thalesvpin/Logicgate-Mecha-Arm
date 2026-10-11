@@ -1,7 +1,7 @@
-extends ModifierEffect
+extends ImplantEffect
 #class_name 
 
-func apply() -> void:
+func apply(_context = null) -> void:
 	pass
 
 func revert() -> void:

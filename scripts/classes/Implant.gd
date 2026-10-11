@@ -19,7 +19,7 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 
 ##If consumable, trigger will be ignored
 @export var trigger: Trigger.Type
-@export var effect: Array[ModifierEffect]
+@export var effect: Array[ImplantEffect]
 @export var custom_effect: bool = false
 ##All conditions must be met to execute
 @export var conditions: Array[ImplantCondition]

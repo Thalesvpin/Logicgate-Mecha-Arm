@@ -31,6 +31,7 @@ signal player_defeated
 signal tech_mod_added(implant)
 signal bio_hack_added(implant)
 signal item_bought(context)
+signal on_purchase(implant)
 signal pack_opened(context)
 signal stat_changed(stat: Stats.List, new_value)
 #endregion
@@ -49,6 +50,7 @@ var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.PULSE: pulse,
 	Trigger.Type.SHIELD_BREAK: shield_break,
 	Trigger.Type.BUY_ITEM: item_bought,
+	Trigger.Type.ON_PURCHASE: on_purchase,
 	Trigger.Type.HEAVY_ATTACK_USED: heavy_attack_used,
 	Trigger.Type.HEAVY_ATTACK_CHARGED: charged_heavy_attack,
 	Trigger.Type.ATTACK: attacked,

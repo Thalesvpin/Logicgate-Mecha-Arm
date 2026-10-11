@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://dj4s3ky6n37yj"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_y11sr"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_esf83"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_xob5v"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_k8xwh"]
+
+[resource]
+script = ExtResource("4_k8xwh")
+id = 46
+name = "Força Excessiva"
+description = "Sempre que o jogador matar um Inimigo com Dano excedente, parte desse Dano transborda para outro Inimigo."
+type = 1
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

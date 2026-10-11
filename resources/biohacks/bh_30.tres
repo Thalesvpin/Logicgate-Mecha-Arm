@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://bnjeykp76mu2h"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_hgl4e"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_e0i7a"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_4dp4n"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_je1bc"]
+
+[resource]
+script = ExtResource("4_je1bc")
+id = 30
+description = "toda vez que um inimigo morre, todos os outros inimigos tomam uma pequena quantidade de Dano."
+type = 1
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

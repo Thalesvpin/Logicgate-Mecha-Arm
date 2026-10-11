@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://ccgqftywcj2w7"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_dloru"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_2yyhx"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_u0gbw"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_6n4lp"]
+
+[resource]
+script = ExtResource("4_6n4lp")
+id = 28
+name = "Experiência de Quase Morte"
+description = "caso o jogador tenha este Modifier em seu Inventário no momento em que levar um Dano que seria letal, ao invés de morrer, o jogador é Curado em até 60% de sua Vida Máxima, e este Modifier é destruído. Ao mesmo tempo, quem desferiu o ataque que teria sido letal também é Curado, em até 40% de sua Vida Máxima. Normalmente, isso seria um inimigo, mas o jogador pode manipular este modifier a seu favor: caso o jogador esteja com pouca Vida, ele pode executar uma Ação de Dano Próprio para ele mesmo “se matar” - mas, como foi ele mesmo quem desferiu o ataque, ele iria ganhar a cura de +40% de sua Vida Máxima, por cima da cura de +60% de sua Vida Máxima que ele normalmente já ganharia, efetivamente ganhando 100% de sua vida de volta."
+type = 1
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

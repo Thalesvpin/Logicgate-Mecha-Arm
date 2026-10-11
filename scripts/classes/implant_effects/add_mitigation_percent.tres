@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AddMitigationPercentEffect" format=3 uid="uid://c36x48uegnicr"]
+
+[ext_resource type="Script" uid="uid://b11kn64b4nt23" path="res://scripts/classes/implant_effects/add_mitigation_percent.gd" id="1_6lmlv"]
+
+[resource]
+script = ExtResource("1_6lmlv")
+metadata/_custom_type_script = "uid://b11kn64b4nt23"

@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://c60ukh26kfenp"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_d7j11"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_fpuuu"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_0wy2p"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_o2qeu"]
+[ext_resource type="Script" uid="uid://byl7rod47gfwb" path="res://scripts/classes/implant_effects/add_max_health_percent.gd" id="5_3la5f"]
+[ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="6_j6xw3"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="7_weh3a"]
+
+[sub_resource type="Resource" id="Resource_hco57"]
+script = ExtResource("2_fpuuu")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_q6k1v"]
+script = ExtResource("5_3la5f")
+is_permanent = true
+metadata/_custom_type_script = "uid://byl7rod47gfwb"
+
+[sub_resource type="Resource" id="Resource_demv2"]
+script = ExtResource("6_j6xw3")
+is_permanent = true
+metadata/_custom_type_script = "uid://biswuy47k6e35"
+
+[sub_resource type="Resource" id="Resource_i3kok"]
+script = ExtResource("3_0wy2p")
+trigger = 1
+effect = Array[ExtResource("4_o2qeu")]([SubResource("Resource_q6k1v"), SubResource("Resource_demv2")])
+conditions = Array[ExtResource("1_d7j11")]([SubResource("Resource_hco57")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("7_weh3a")
+id = 4
+name = "Marca da Besta"
+description = "no fim de toda Batalha, perca -X% de Vida Máxima permanentemente, e ganhe +Y% pontos de Dano Base permanentemente."
+type = 1
+rarity = 2
+corrupted = true
+trigger = 1
+effect = Array[ExtResource("4_o2qeu")]([SubResource("Resource_q6k1v"), SubResource("Resource_demv2")])
+conditions = Array[ExtResource("1_d7j11")]([SubResource("Resource_hco57")])
+config = Array[ExtResource("3_0wy2p")]([SubResource("Resource_i3kok")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

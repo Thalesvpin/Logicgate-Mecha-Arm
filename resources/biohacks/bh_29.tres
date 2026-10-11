@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://cjqraovhphf0t"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_r18vn"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_fc0r6"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_l4hws"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_1i7r7"]
+
+[resource]
+script = ExtResource("4_1i7r7")
+id = 29
+name = "Canhão de Vidro"
+description = "quanto menos Vida o jogador tem, mais Dano Base ele dá."
+type = 1
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

@@ -19,7 +19,7 @@ func submit(queue_idx: int) -> void:
 		child.set_value(false)
 	
 	for i in children.size():
-		await get_tree().create_timer(0.8).timeout
+		#await get_tree().create_timer(0.8).timeout
 		aux = int(str[i])
 		children[i].set_value(bool(aux))
 	

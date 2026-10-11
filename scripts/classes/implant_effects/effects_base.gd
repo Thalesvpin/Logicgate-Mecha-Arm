@@ -1,5 +1,5 @@
 extends Resource
-class_name ModifierEffect
+class_name ImplantEffect
 
 @export var is_permanent: bool = false
 enum Operator { LESSER, GREATER, RANGE, NULL }
@@ -15,6 +15,7 @@ func apply(context = null) -> void:
 func revert() -> void:
 	push_error("revert() não implementado em %s" % get_script().resource_path)
 
+##Operator indicates from when it will start caping to case
 func add_to_player_stats(stat: Stats.List, amount: float, operator: Operator = Operator.NULL, case: float = 0, case2: float = 0) -> Variant:
 	var result = Global.run_stats.player_stats[stat] + amount
 	if operator != Operator.NULL:
@@ -27,7 +28,7 @@ func add_to_player_stats(stat: Stats.List, amount: float, operator: Operator = O
 					result = case
 			Operator.RANGE:
 				if result >= case && result <= case2:
-					result = case
+					pass
 				elif result < case:
 					result = case
 				elif result > case2:

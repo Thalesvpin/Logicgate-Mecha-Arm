@@ -1,11 +1,11 @@
-extends ModifierEffect
+extends ImplantEffect
 class_name SelfDamageEffect
 
 @export var amount: int = 0:
 	set(value):
 		amount = max(value, 0)
 
-func apply(context = null) -> void:
+func apply(_context = null) -> void:
 	var mitigation = calculate_mitigation()
 	add_to_player_stats(Stats.List.CURRENT_HEALTH, -(amount-mitigation), lesser, 0)
 	
