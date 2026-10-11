@@ -4,16 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://b12a3wbt5v5de" path="res://assets/TCC_icon_stat_UpgradeButton_idle.png" id="2_fs2s4"]
 [ext_resource type="Texture2D" uid="uid://dagr0xx55pdy6" path="res://assets/TCC_icon_stat_UpgradeButton_hover.png" id="3_n2k30"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_43v6k"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.20392157, 0.9529412, 1, 1)
-shadow_color = Color(0.20392157, 0.9529412, 1, 0.6117647)
-shadow_size = 2
-
 [sub_resource type="Shader" id="Shader_fs2s4"]
 code = "shader_type canvas_item;
 
@@ -180,7 +170,6 @@ custom_maximum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_43v6k")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/PanelContainer2" unique_id=682716997]
 layout_mode = 2

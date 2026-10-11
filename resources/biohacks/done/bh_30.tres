@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://bnjeykp76mu2h"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_hgl4e"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_4dp4n"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_e0i7a"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_4dp4n"]
+[ext_resource type="Script" uid="uid://drkh7n0dptl6c" path="res://scripts/classes/implant_effects/undone/deal_damage.gd" id="4_e0i7a"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_je1bc"]
+
+[sub_resource type="Resource" id="Resource_gtatl"]
+script = ExtResource("2_4dp4n")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_je1bc"]
+script = ExtResource("4_e0i7a")
+target = 4
+metadata/_custom_type_script = "uid://drkh7n0dptl6c"
+
+[sub_resource type="Resource" id="Resource_57mdy"]
+script = ExtResource("2_e0i7a")
+trigger = 6
+effect = Array[ExtResource("3_4dp4n")]([SubResource("Resource_je1bc")])
+conditions = Array[ExtResource("1_hgl4e")]([SubResource("Resource_gtatl")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("4_je1bc")
+id = 30
+description = "toda vez que um inimigo morre, todos os outros inimigos tomam uma pequena quantidade de Dano."
+type = 1
+trigger = 6
+effect = Array[ExtResource("3_4dp4n")]([SubResource("Resource_je1bc")])
+conditions = Array[ExtResource("1_hgl4e")]([SubResource("Resource_gtatl")])
+config = Array[ExtResource("2_e0i7a")]([SubResource("Resource_57mdy")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

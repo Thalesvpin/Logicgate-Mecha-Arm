@@ -63,6 +63,12 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gtatl"]
 shader = SubResource("Shader_yodio")
 
+[sub_resource type="Environment" id="Environment_eofqg"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.97
+glow_bloom = 0.51
+
 [node name="StatsViewport" type="PanelContainer" unique_id=131166221]
 anchors_preset = 15
 anchor_right = 1.0
@@ -73,17 +79,33 @@ theme = ExtResource("7_0y6mr")
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_bv6u5")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1260472425]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=997927547]
 layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=899245778]
+own_world_3d = true
+size = Vector2i(1910, 1070)
+
+[node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport" unique_id=1260472425]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 1915.0
+offset_bottom = 1075.0
 offset_transform_enabled = true
 texture = SubResource("GradientTexture2D_tjqua")
 
-[node name="Page1" type="Control" parent="." unique_id=1561625618]
-layout_mode = 2
+[node name="Page1" type="Control" parent="SubViewportContainer/SubViewport" unique_id=1561625618]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 5.0
+offset_bottom = 5.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="BasicDamageContainer" parent="Page1" unique_id=1221763294 instance=ExtResource("1_l3ufi")]
+[node name="BasicDamageContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=1221763294 instance=ExtResource("1_l3ufi")]
 layout_mode = 0
 offset_left = 127.0
 offset_top = 76.0
@@ -93,7 +115,7 @@ stat = 10
 title = "Dano Base"
 icon = ExtResource("4_ybi5s")
 
-[node name="CriticDamageMultContainer" parent="Page1" unique_id=712091482 instance=ExtResource("2_b0rs0")]
+[node name="CriticDamageMultContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=712091482 instance=ExtResource("2_b0rs0")]
 layout_mode = 0
 offset_left = 50.0
 offset_top = 184.0
@@ -103,7 +125,7 @@ stat = 13
 title = "Multiplicador de Dano Crítico"
 icon = ExtResource("6_yodio")
 
-[node name="CriticChanceContainer" parent="Page1" unique_id=1421245167 instance=ExtResource("3_s5khm")]
+[node name="CriticChanceContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=1421245167 instance=ExtResource("3_s5khm")]
 layout_mode = 0
 offset_left = 87.0
 offset_top = 325.0
@@ -114,7 +136,7 @@ title = "Chance de Acerto Crítico"
 icon = ExtResource("8_l102y")
 hold_run_duration = 0.35
 
-[node name="MaxHealthContainer" parent="Page1" unique_id=109097967 instance=ExtResource("4_k8u8d")]
+[node name="MaxHealthContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=109097967 instance=ExtResource("4_k8u8d")]
 layout_mode = 0
 offset_left = 871.0
 offset_top = 82.0
@@ -123,7 +145,7 @@ offset_bottom = 150.0
 title = "Vida Máxima"
 icon = ExtResource("10_nwtl1")
 
-[node name="ShieldAmountContainer" parent="Page1" unique_id=1376948172 instance=ExtResource("5_qurlf")]
+[node name="ShieldAmountContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=1376948172 instance=ExtResource("5_qurlf")]
 layout_mode = 0
 offset_left = 905.0
 offset_top = 169.0
@@ -133,7 +155,7 @@ stat = 5
 title = "Quantidade de Escudos"
 icon = ExtResource("12_2ujkr")
 
-[node name="ShieldStrengthContainer" parent="Page1" unique_id=566576391 instance=ExtResource("6_pqe0e")]
+[node name="ShieldStrengthContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=566576391 instance=ExtResource("6_pqe0e")]
 layout_mode = 0
 offset_left = 840.0
 offset_top = 301.0
@@ -142,13 +164,14 @@ offset_bottom = 402.0
 title = "Força dos Escudos"
 icon = ExtResource("14_mdhfq")
 
-[node name="Page2" type="Control" parent="." unique_id=1794970679]
+[node name="Page2" type="Control" parent="SubViewportContainer/SubViewport" unique_id=1794970679]
 visible = false
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="AttackElementalContainer" parent="Page2" unique_id=1315937483 instance=ExtResource("8_1j0gq")]
+[node name="AttackElementalContainer" parent="SubViewportContainer/SubViewport/Page2" unique_id=1315937483 instance=ExtResource("8_1j0gq")]
 layout_mode = 0
 offset_left = 233.0
 offset_top = 123.0
@@ -156,34 +179,35 @@ offset_right = 499.0
 offset_bottom = 193.0
 icon = ExtResource("2_te4um")
 
-[node name="HeavyAttackElementalContainer" parent="Page2" unique_id=1022021077 instance=ExtResource("10_mcw5o")]
+[node name="HeavyAttackElementalContainer" parent="SubViewportContainer/SubViewport/Page2" unique_id=1022021077 instance=ExtResource("10_mcw5o")]
 layout_mode = 0
 offset_left = 186.0
 offset_top = 289.0
 offset_right = 535.0
 offset_bottom = 359.0
 
-[node name="HealthElementalContainer" parent="Page2" unique_id=626989485 instance=ExtResource("9_te4um")]
+[node name="HealthElementalContainer" parent="SubViewportContainer/SubViewport/Page2" unique_id=626989485 instance=ExtResource("9_te4um")]
 layout_mode = 0
 offset_left = 1024.0
 offset_top = 103.0
 offset_right = 1259.0
 offset_bottom = 173.0
 
-[node name="ShieldElementalContainer" parent="Page2" unique_id=1504707142 instance=ExtResource("11_bv6u5")]
+[node name="ShieldElementalContainer" parent="SubViewportContainer/SubViewport/Page2" unique_id=1504707142 instance=ExtResource("11_bv6u5")]
 layout_mode = 0
 offset_left = 990.0
 offset_top = 274.0
 offset_right = 1255.0
 offset_bottom = 344.0
 
-[node name="Page3" type="Control" parent="." unique_id=956262551]
+[node name="Page3" type="Control" parent="SubViewportContainer/SubViewport" unique_id=956262551]
 visible = false
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="AvaliableActions" type="PanelContainer" parent="Page3" unique_id=1625333793]
+[node name="AvaliableActions" type="PanelContainer" parent="SubViewportContainer/SubViewport/Page3" unique_id=1625333793]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 115.0
@@ -191,14 +215,14 @@ offset_right = 1215.0
 offset_bottom = 219.0
 theme = ExtResource("7_0y6mr")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Page3/AvaliableActions" unique_id=214107145]
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions" unique_id=214107145]
 layout_mode = 2
 theme_override_constants/separation = 26
 
-[node name="Spacer" type="Control" parent="Page3/AvaliableActions/VBoxContainer" unique_id=966961871]
+[node name="Spacer" type="Control" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer" unique_id=966961871]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Page3/AvaliableActions/VBoxContainer" unique_id=76042171]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer" unique_id=76042171]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "ações de combate disponíveis"
@@ -206,14 +230,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Page3/AvaliableActions/VBoxContainer" unique_id=2060657039]
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer" unique_id=2060657039]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Spacer" type="Control" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1276488936]
+[node name="Spacer" type="Control" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1276488936]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=2004437476]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=2004437476]
 custom_minimum_size = Vector2(144.04, 0)
 layout_mode = 2
 text = "Ataque leve"
@@ -222,7 +246,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label2" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=49716183]
+[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=49716183]
 custom_minimum_size = Vector2(182.825, 0)
 layout_mode = 2
 text = "Ataque pesado"
@@ -231,7 +255,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label3" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1835739516]
+[node name="Label3" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1835739516]
 custom_minimum_size = Vector2(182.825, 0)
 layout_mode = 2
 text = "carregar Ataque pesado"
@@ -240,7 +264,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label4" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1199034616]
+[node name="Label4" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1199034616]
 custom_minimum_size = Vector2(132.76, 0)
 layout_mode = 2
 text = "curar vida"
@@ -249,7 +273,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label5" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=52081117]
+[node name="Label5" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=52081117]
 custom_minimum_size = Vector2(133.36, 0)
 layout_mode = 2
 text = "consertar escudo"
@@ -258,7 +282,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label6" type="Label" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1709909248]
+[node name="Label6" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1709909248]
 custom_minimum_size = Vector2(169.27, 0)
 layout_mode = 2
 text = "dano prórpio"
@@ -267,62 +291,71 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Spacer2" type="Control" parent="Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1439163896]
+[node name="Spacer2" type="Control" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1439163896]
 layout_mode = 2
 
-[node name="Spacer2" type="Control" parent="Page3/AvaliableActions/VBoxContainer" unique_id=1719286819]
+[node name="Spacer2" type="Control" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer" unique_id=1719286819]
 layout_mode = 2
 
-[node name="TokensAmountContainer" parent="Page3" unique_id=1931450752 instance=ExtResource("15_icxht")]
+[node name="TokensAmountContainer" parent="SubViewportContainer/SubViewport/Page3" unique_id=1931450752 instance=ExtResource("15_icxht")]
 layout_mode = 0
 offset_left = 572.0
 offset_top = 345.0
 offset_right = 774.0
 offset_bottom = 449.0
 
-[node name="Tabs" type="PanelContainer" parent="." unique_id=1985233292]
-layout_mode = 2
+[node name="Tabs" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=1985233292]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 1915.0
+offset_bottom = 50.0
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_icxht")
 
-[node name="MarginContainer" type="MarginContainer" parent="Tabs" unique_id=761773638]
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/Tabs" unique_id=761773638]
 layout_mode = 2
 theme_override_constants/margin_top = 10
 
-[node name="Top" type="HBoxContainer" parent="Tabs/MarginContainer" unique_id=607773117]
+[node name="Top" type="HBoxContainer" parent="SubViewportContainer/SubViewport/Tabs/MarginContainer" unique_id=607773117]
 layout_mode = 2
 theme_override_constants/separation = 35
 alignment = 1
 
-[node name="TopTabBtn1" type="Button" parent="Tabs/MarginContainer/Top" unique_id=1238159048]
+[node name="TopTabBtn1" type="Button" parent="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top" unique_id=1238159048]
 layout_mode = 2
 theme = ExtResource("14_yr5m8")
 text = "MELHORIA DE ATRIBUTOS"
 
-[node name="TopTabBtn2" type="Button" parent="Tabs/MarginContainer/Top" unique_id=1341065722]
+[node name="TopTabBtn2" type="Button" parent="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top" unique_id=1341065722]
 visible = false
 layout_mode = 2
 text = "EFEITOS ELEMENTAIS"
 
-[node name="TopTabBtn3" type="Button" parent="Tabs/MarginContainer/Top" unique_id=1043945766]
+[node name="TopTabBtn3" type="Button" parent="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top" unique_id=1043945766]
 layout_mode = 2
 text = "AÇÕES DE BATALHA"
 
-[node name="Bottom" type="Control" parent="Tabs" unique_id=569795981]
+[node name="Bottom" type="Control" parent="SubViewportContainer/SubViewport/Tabs" unique_id=569795981]
 visible = false
 layout_mode = 2
 mouse_filter = 1
 
-[node name="ArmXRay" type="TextureRect" parent="." unique_id=1962423191]
+[node name="ArmXRay" type="TextureRect" parent="SubViewportContainer/SubViewport" unique_id=1962423191]
 material = SubResource("ShaderMaterial_gtatl")
 custom_minimum_size = Vector2(0, 400)
 custom_maximum_size = Vector2(123, 400)
-layout_mode = 2
+offset_left = 898.0
+offset_top = 675.0
+offset_right = 1021.0
+offset_bottom = 1075.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 texture = ExtResource("22_yodio")
 stretch_mode = 4
 
-[connection signal="pressed" from="Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
-[connection signal="pressed" from="Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]
-[connection signal="pressed" from="Tabs/MarginContainer/Top/TopTabBtn3" to="." method="_on_top_tab_3_pressed"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=156393520]
+environment = SubResource("Environment_eofqg")
+
+[connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
+[connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]
+[connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn3" to="." method="_on_top_tab_3_pressed"]

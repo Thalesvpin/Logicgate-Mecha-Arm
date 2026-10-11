@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://m14eq07h5myj"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_de0bv"]
+[ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_kbe3s"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_m7rn8"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_cmvsa"]
+[ext_resource type="Script" uid="uid://cidfqydo35ysg" path="res://scripts/classes/implant_effects/add_max_health_flat.gd" id="5_xvljo"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_f2v3d"]
+
+[sub_resource type="Resource" id="Resource_fwu55"]
+script = ExtResource("2_kbe3s")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_l77rm"]
+script = ExtResource("5_xvljo")
+metadata/_custom_type_script = "uid://cidfqydo35ysg"
+
+[sub_resource type="Resource" id="Resource_d33r2"]
+script = ExtResource("3_m7rn8")
+trigger = 13
+effect = Array[ExtResource("4_cmvsa")]([SubResource("Resource_l77rm")])
+conditions = Array[ExtResource("1_de0bv")]([SubResource("Resource_fwu55")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("6_f2v3d")
+id = 41
+description = "+X de Vida Máxima."
+type = 1
+trigger = 13
+effect = Array[ExtResource("4_cmvsa")]([SubResource("Resource_l77rm")])
+conditions = Array[ExtResource("1_de0bv")]([SubResource("Resource_fwu55")])
+config = Array[ExtResource("3_m7rn8")]([SubResource("Resource_d33r2")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

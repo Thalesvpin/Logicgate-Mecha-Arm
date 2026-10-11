@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://c8awfm3qb8gn5"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_ex8gu"]
+[ext_resource type="Script" uid="uid://b1185a0kg0dwq" path="res://scripts/classes/implant_conditions/undone/enemy_killed.gd" id="2_jnyxr"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_b87dd"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_fvp65"]
+[ext_resource type="Script" uid="uid://dt1iryly4dgrs" path="res://scripts/classes/implant_effects/charge_heavy_attack.gd" id="5_avy66"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_vsf2o"]
+
+[sub_resource type="Resource" id="Resource_7065v"]
+script = ExtResource("2_jnyxr")
+metadata/_custom_type_script = "uid://b1185a0kg0dwq"
+
+[sub_resource type="Resource" id="Resource_7ic4m"]
+script = ExtResource("5_avy66")
+amount = 100
+metadata/_custom_type_script = "uid://dt1iryly4dgrs"
+
+[sub_resource type="Resource" id="Resource_ed4g8"]
+script = ExtResource("3_b87dd")
+trigger = 5
+effect = Array[ExtResource("4_fvp65")]([SubResource("Resource_7ic4m")])
+conditions = Array[ExtResource("1_ex8gu")]([SubResource("Resource_7065v")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("6_vsf2o")
+id = 33
+description = "Sempre que um Acerto Crítico matar um Inimigo, o Ataque Carregado é 100% Carregado."
+type = 1
+rarity = 1
+trigger = 5
+effect = Array[ExtResource("4_fvp65")]([SubResource("Resource_7ic4m")])
+conditions = Array[ExtResource("1_ex8gu")]([SubResource("Resource_7065v")])
+config = Array[ExtResource("3_b87dd")]([SubResource("Resource_ed4g8")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

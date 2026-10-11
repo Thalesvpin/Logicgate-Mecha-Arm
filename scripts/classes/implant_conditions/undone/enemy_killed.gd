@@ -1,7 +1,7 @@
 extends ImplantCondition
 class_name EnemyKilledCondition
 
-@export var percent: float = 0.5
+@export var survived: bool = false
 
 func is_met(context = null) -> bool:
 	return true

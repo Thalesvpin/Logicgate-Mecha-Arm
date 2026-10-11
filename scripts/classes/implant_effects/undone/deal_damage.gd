@@ -8,7 +8,7 @@ class_name DealDamageEffect
 @export var target: Who
 @export var random_except: WhoExcept
 
-enum Who {CENTER, LEFT, RIGHT, RANDOM}
+enum Who {CENTER, LEFT, RIGHT, RANDOM, ALL}
 enum WhoExcept {NONE, CENTER, LEFT, RIGHT}
 
 func apply(_context = null) -> void:
@@ -24,6 +24,12 @@ func apply(_context = null) -> void:
 		Who.LEFT:
 			pos = EnemyPosition.Position.LEFT
 		Who.RIGHT:
+			pos = EnemyPosition.Position.RIGHT
+		Who.ALL:
+			pos = EnemyPosition.Position.CENTER
+			Global.combat_screen.get_enemy(pos).take_damage(dmg)
+			pos = EnemyPosition.Position.LEFT
+			Global.combat_screen.get_enemy(pos).take_damage(dmg)
 			pos = EnemyPosition.Position.RIGHT
 		Who.RANDOM:
 			var rng = Global.random.next()
