@@ -48,7 +48,7 @@ func update_price() -> void:
 		price.text = '$ '+str(inicial_price+(upgrades*amount_per_upgrade))
 
 func get_current_price() -> int:
-	return inicial_price+(upgrades*amount_per_upgrade)
+	return int(inicial_price+(upgrades*amount_per_upgrade))
 
 func withdraw_money() -> void:
 	Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] -= get_current_price()

@@ -12,6 +12,33 @@ func _ready() -> void:
 
 func randomize_implants() -> void:
 	pass
+	#var implant1 = get_random_implant()
+	#var implant2 = get_random_implant(implant1)
+	#implants.append(implant1)
+	#implants.append(implant2)
+	
+
+func get_random_implant(last = null) -> Implant:
+	var list: Array[Implant]
+	var chance
+	var result
+	
+	chance = Global.random.next() % 100
+	if chance < 40:
+		list = Global.bh_commom
+	elif chance < 70:
+		list = Global.bh_rare
+	elif chance < 90:
+		list = Global.bh_ultra_rare
+	else:
+		list = Global.bh_legendary
+	
+	chance  = Global.random.next() % list.size()
+	if last == list[chance]:
+		result = get_random_implant(last)
+	else:
+		result = list[chance]
+	return result
 
 func add_implants() -> void:
 	var imp1 = SHOP_BIO_HACK_ITEM.instantiate()

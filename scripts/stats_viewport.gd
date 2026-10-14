@@ -14,6 +14,7 @@ var bot_tabs: Array[TextureRect]
 @onready var sub_viewport: SubViewport = $SubViewportContainer/SubViewport/Tabs/Bottom/SubViewport
 @onready var transparent_gradient: TextureRect = $SubViewportContainer/SubViewport/Tabs/Bottom/TransparentGradient
 @onready var world_environment: WorldEnvironment = $SubViewportContainer/SubViewport/WorldEnvironment
+@onready var arm_x_ray: TextureRect = $SubViewportContainer/SubViewport/ArmXRay
 
 @export var glow_tween_duration: float = 1
 @export var glow_intensity: float = 0.3
@@ -36,12 +37,15 @@ func change_page(page: int) -> void:
 	top_tab_btn_2.theme = null
 	page_3.hide()
 	top_tab_btn_3.theme = null
+	arm_x_ray.hide()
 	match page:
 		1:
 			page_1.show()
+			arm_x_ray.show()
 			top_tab_btn_1.theme = SELECTED_STATS_TAB
 		2:
 			page_2.show()
+			arm_x_ray.show()
 			top_tab_btn_2.theme = SELECTED_STATS_TAB
 		3:
 			page_3.show()

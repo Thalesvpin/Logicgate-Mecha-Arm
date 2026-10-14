@@ -1,23 +1,23 @@
 extends PanelContainer
 
 @onready var healthbar: ProgressBar = $Health/Healthbar
-@onready var health_label: Label = $Health/Healthbar/HealthLabel
+@onready var health_label: RichTextLabel = $Health/Healthbar/HealthLabel
 #@onready var shield_bar: ColorRect = $Shield/ShieldBar
 @onready var shield_bar_5: ColorRect = $Shield/ShieldHolder/ShieldBar5
 @onready var shield_bar_4: ColorRect = $Shield/ShieldHolder/ShieldBar4
 @onready var shield_bar_3: ColorRect = $Shield/ShieldHolder/ShieldBar3
 @onready var shield_bar_2: ColorRect = $Shield/ShieldHolder/ShieldBar2
 @onready var shield_bar_1: ColorRect = $Shield/ShieldHolder/ShieldBar1
-@onready var shield_label_1: Label = $Shield/ShieldHolder/ShieldLabelsHolder/ShieldLabel1
-@onready var shield_label_2: Label = $Shield/ShieldHolder/ShieldLabelsHolder/ShieldLabel2
-@onready var shield_label_3: Label = $Shield/ShieldHolder/ShieldLabelsHolder/ShieldLabel3
-@onready var shield_label_4: Label = $Shield/ShieldHolder/ShieldLabelsHolder/ShieldLabel4
+@onready var shield_label_1: RichTextLabel = $Shield/ShieldHolder/ShieldLabelsHolder/ShieldLabel1
+@onready var shield_label_2: RichTextLabel = $Shield/ShieldHolder/ShieldLabelsHolder/ShieldLabel2
+@onready var shield_label_3: RichTextLabel = $Shield/ShieldHolder/ShieldLabelsHolder/ShieldLabel3
+@onready var shield_label_4: RichTextLabel = $Shield/ShieldHolder/ShieldLabelsHolder/ShieldLabel4
 
-
+@export var bar_tween_duration: float
 @export var tween_duration: float = 0.4
 
 var shield_bars: Array[ColorRect]
-var shield_labels: Array[Label]
+var shield_labels: Array[RichTextLabel]
 
 func _ready() -> void:
 	Global.player_stats_bar = self
@@ -70,63 +70,101 @@ func repair_shield(amount: int) -> void:
 	var max_shield_count = Stats.List.MAX_SHIELD_COUNT
 	var new_value = Global.run_stats.player_stats[curr_shield] + amount
 	
-	if new_value > Global.run_stats.player_stats[max_shield]:
+	print('??????? ', Global.run_stats.player_stats[curr_shield])
+	print('??????? ', amount)
+	
+	
+	if new_value > Global.run_stats.player_stats[max_shield]*Global.run_stats.player_stats[curr_shield_count]:
+		new_value = Global.run_stats.player_stats[max_shield]*Global.run_stats.player_stats[curr_shield_count]
+	
+	
+	
+	
+	
+	
+	
+	if new_value > Global.run_stats.player_stats[max_shield]*Global.run_stats.player_stats[curr_shield_count]:
 		if Global.run_stats.player_stats[curr_shield_count] == Global.run_stats.player_stats[max_shield_count]:
-			Global.run_stats.player_stats[curr_shield] = Global.run_stats.player_stats[max_shield]
-			return
-		new_value -= Global.run_stats.player_stats[max_shield]
+			Global.run_stats.player_stats[curr_shield] = Global.run_stats.player_stats[max_shield]*Global.run_stats.player_stats[max_shield_count]
+		else:
+			Global.run_stats.player_stats[curr_shield_count] += 1
+			#new_value -= Global.run_stats.player_stats[max_shield]
+			Global.run_stats.player_stats[curr_shield] = new_value
+	else:
+		print('agr aqi: ', new_value)
 		Global.run_stats.player_stats[curr_shield] = new_value
-		Global.run_stats.player_stats[curr_shield_count] += 1
+	adjust_shield()
 
 func set_values() -> void:
 	healthbar.value = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]
 	health_label.text = str(Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
 	adjust_shield()
-	
 
 func adjust_shield():
+	var max_shield_count = Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT]
 	var shield_count = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT]
 	var curr_shield = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD]
 	var shield_size = Global.run_stats.player_stats[Stats.List.MAX_SHIELD]
-	var curr_shield_percent = 0
+	
+	var curr_shield_percent: float = 0.0
 	if shield_count > 0:
-		curr_shield_percent = curr_shield/(shield_count*shield_size)
+		curr_shield_percent = float(curr_shield) / (shield_count * shield_size)
 	
 	shield_bar_1.hide()
 	shield_bar_2.hide()
 	shield_bar_3.hide()
 	shield_bar_4.hide()
 	shield_bar_5.hide()
-	match shield_count:
+	shield_label_1.hide()
+	shield_label_2.hide()
+	shield_label_3.hide()
+	shield_label_4.hide()
+	
+	var label_targets: Array[int] = []
+	var remaining = curr_shield
+	for i in max_shield_count:
+		var v = min(remaining, shield_size)
+		label_targets.append(int(v))
+		remaining -= v
+		shield_labels[i].show()
+	
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_parallel(true)
+	
+	match max_shield_count:
 		0:
-			pass
-		1:
-			shield_bar_1.show()
-			shield_bar_1.material.set_shader_parameter('pour_fill_amount', curr_shield_percent)
-		2:
-			shield_bar_2.show()
-			shield_bar_2.material.set_shader_parameter('pour_fill_amount', curr_shield_percent)
-		3:
-			shield_bar_3.show()
-			shield_bar_3.material.set_shader_parameter('pour_fill_amount', curr_shield_percent)
+			return
+		1, 2, 3:
+			var bar = [null, shield_bar_1, shield_bar_2, shield_bar_3][max_shield_count]
+			bar.show()
+			tween.tween_property(bar.material, 'shader_parameter/pour_fill_amount', curr_shield_percent, tween_duration)
+			for i in max_shield_count:
+				_tween_label(tween, shield_labels[i], label_targets[i])
 		4:
 			shield_bar_4.show()
 			shield_bar_5.show()
-			var curr_4
-			var curr_5
+			
+			var curr_4: float
+			var curr_5: float
 			if curr_shield > shield_size * 3:
 				curr_4 = 1
-				curr_5 = (curr_shield-(shield_size * 3))/shield_size
+				curr_5 = float(curr_shield - shield_size * 3) / shield_size
 			else:
-				curr_4 = curr_shield/(shield_size*3)
+				curr_4 = float(curr_shield) / (shield_size * 3)
 				curr_5 = 0
-			shield_bar_4.material.set_shader_parameter('pour_fill_amount', curr_4)
-			shield_bar_5.material.set_shader_parameter('pour_fill_amount', curr_5)
-	
-	for i in shield_count:
-		shield_labels[i].show()
-		if curr_shield > shield_size:
-			shield_labels[i].text = str(shield_size)
-			curr_shield -= shield_size
-		else:
-			shield_labels[i].text = str(curr_shield)
+			
+			tween.tween_property(shield_bar_4.material, 'shader_parameter/pour_fill_amount', curr_4, tween_duration)
+			for i in 3:
+				_tween_label(tween, shield_labels[i], label_targets[i])
+			
+			tween.chain().tween_property(shield_bar_5.material, 'shader_parameter/pour_fill_amount', curr_5, tween_duration)
+			_tween_label(tween, shield_labels[3], label_targets[3])
+
+
+func _tween_label(tween: Tween, label: RichTextLabel, target: int):
+	tween.tween_method(
+		func(v): label.text = str(int(v)),
+		int(label.text),
+		target,
+		tween_duration)

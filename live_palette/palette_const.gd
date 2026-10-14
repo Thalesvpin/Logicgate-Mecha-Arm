@@ -97,17 +97,29 @@ class GLOBAL:
 	## The constants are the "Default" variant; switching variants at runtime goes
 	## through the LivePaletteRuntime autoload, which re-applies bound properties.
 	const GRAYBG := Color(0.20392157, 0.20392157, 0.20392157, 1)
+	const REDHEALTH := Color(0.8039216, 0, 0, 1)
+	const BLUESHIELD := Color(0, 0.5882353, 1, 1)
+	const HEALTHTEXT := Color(1, 0.88235295, 0.7176471, 1)
+	const SHIELDTEXT := Color(0.8745098, 0.972549, 1, 1)
 
 	## Palette name -> color, for lookups by a name held in a variable.
 	## Prefer the constants above: they are checked at compile time.
 	const BY_NAME := {
 		"GrayBG": GRAYBG,
+		"RedHealth": REDHEALTH,
+		"BlueShield": BLUESHIELD,
+		"HealthText": HEALTHTEXT,
+		"ShieldText": SHIELDTEXT,
 	}
 
 	## Variant name -> {name -> color}, for reading a variant you are not on.
 	const VARIANTS := {
 		"Default": {
 			"GrayBG": Color(0.20392157, 0.20392157, 0.20392157, 1),
+			"RedHealth": Color(0.8039216, 0, 0, 1),
+			"BlueShield": Color(0, 0.5882353, 1, 1),
+			"HealthText": Color(1, 0.88235295, 0.7176471, 1),
+			"ShieldText": Color(0.8745098, 0.972549, 1, 1),
 		},
 	}
 

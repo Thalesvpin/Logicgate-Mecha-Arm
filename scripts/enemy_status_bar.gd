@@ -20,7 +20,7 @@ var health_aux: int
 @onready var shield_curve_r_bar: TextureProgressBar = $Shield/ShieldCurveRBar
 @onready var shield_horizontal_l_bar: TextureProgressBar = $Shield/ShieldHorizontalLBar
 @onready var shield_horizontal_r_bar: TextureProgressBar = $Shield/ShieldHorizontalRBar
-@onready var shield_counter: Label = $Shield/ShieldCounter
+@onready var shield_counter: RichTextLabel = $Shield/ShieldCounter
 
 @export var max_shield: int = 100
 ##Must be converted to % in the graph display
@@ -100,7 +100,7 @@ func set_health_value(value: float, animate: bool = false) -> void:
 	var percentage = (value/stats[Stats.List.MAX_HEALTH])*100
 	progress_bar_animation(health_bar, percentage)
 	#health_bar.value = percentage
-	health_counter.text = str(value)
+	#health_counter.text = str(value)
 	health_aux = int(value)
 	if animate:
 		progress_bar_animation(health_bar_placeholder, percentage, alive_check)

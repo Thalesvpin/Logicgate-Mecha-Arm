@@ -1,100 +1,294 @@
 [gd_scene format=3 uid="uid://6y2k6pdfjohj"]
 
+[ext_resource type="Shader" uid="uid://cqafv60pywcrq" path="res://shaders/test.gdshader" id="1_6e57c"]
 [ext_resource type="Script" uid="uid://uxyo2f0d6x2v" path="res://scripts/enemy.gd" id="1_6w5ur"]
 [ext_resource type="Texture2D" uid="uid://tdm62mawpb5d" path="res://assets/skeleton.png" id="1_87g8f"]
+[ext_resource type="Shader" uid="uid://d03k1q5p363w6" path="res://shaders/outline.gdshader" id="3_18xkl"]
+[ext_resource type="Shader" uid="uid://dh3mmqwwbao10" path="res://shaders/ultimate_outline.gdshader" id="3_ct5v2"]
 
-[sub_resource type="Shader" id="Shader_6w5ur"]
-code = "shader_type canvas_item;
-render_mode unshaded;
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_18xkl"]
+shader = ExtResource("1_6e57c")
+shader_parameter/original_texture_size = Vector2(64, 64)
+shader_parameter/glow_color = Color(0, 1, 1, 1)
+shader_parameter/glow_size = 301.8310143369725
+shader_parameter/glow_intensity = 1.0
+shader_parameter/glow_opacity = 1.0
+shader_parameter/glow_softness = 0.5
+shader_parameter/glow_blend_mode = 0
+shader_parameter/use_gradient_mapping = false
+shader_parameter/gradient_scroll_speed = 0.0
+shader_parameter/mask_core_texture = false
+shader_parameter/boundary_fade_margin = 0.05
+shader_parameter/use_soft_clip = false
+shader_parameter/glow_hdr_threshold = 1.0
+shader_parameter/glow_direction_falloff = Vector2(1, 1)
+shader_parameter/glow_rim_margin = 0.0
+shader_parameter/glow_rim_feather = 0.05
+shader_parameter/glow_rim_eccentricity = 0.0
+shader_parameter/glow_rim_pulse_frequency = 0.0
+shader_parameter/use_sharp_steps = false
+shader_parameter/glow_step_count = 3.0
+shader_parameter/use_color_banding_palette = false
+shader_parameter/step_outline_thickness = 0.0
+shader_parameter/step_outline_color = Color(0, 0, 0, 1)
+shader_parameter/use_contour_outline = false
+shader_parameter/contour_color_a = Color(1, 0.85, 0, 1)
+shader_parameter/contour_color_b = Color(1, 0.4, 0, 1)
+shader_parameter/contour_thickness = 2.0
+shader_parameter/contour_mix_with_glow = false
+shader_parameter/contour_pixel_snap = false
+shader_parameter/animate_glow = false
+shader_parameter/pulse_speed = 2.0
+shader_parameter/min_pulse_scale = 0.5
+shader_parameter/max_pulse_scale = 1.0
+shader_parameter/change_color_over_time = false
+shader_parameter/starting_color = Color(1, 0, 0, 1)
+shader_parameter/ending_color = Color(0, 0, 1, 1)
+shader_parameter/sync_color_with_pulse_speed = true
+shader_parameter/color_change_speed = 2.0
+shader_parameter/color_animation_ping_pong = false
+shader_parameter/animate_glow_opacity = false
+shader_parameter/opacity_pulse_speed = 2.0
+shader_parameter/min_opacity_scale = 0.2
+shader_parameter/max_opacity_scale = 1.0
+shader_parameter/static_angle = 0.0
+shader_parameter/animate_rotation = false
+shader_parameter/rotation_speed = 1.0
+shader_parameter/rotation_pivot_offset = Vector2(0, 0)
+shader_parameter/use_pattern_texture = false
+shader_parameter/pattern_scale = Vector2(1, 1)
+shader_parameter/pattern_pan_speed = Vector2(0.1, 0)
+shader_parameter/pattern_influence = 0.5
+shader_parameter/pattern_fresnel_modulation = false
+shader_parameter/use_god_rays = false
+shader_parameter/ray_direction = Vector2(0.5, -0.5)
+shader_parameter/ray_length = 2.0
+shader_parameter/dither_interlaced_scanlines = 0.0
+shader_parameter/use_inner_glow = false
+shader_parameter/inner_glow_color = Color(1, 1, 1, 1)
+shader_parameter/inner_glow_size = 5.0
+shader_parameter/inner_glow_opacity = 0.5
+shader_parameter/inner_glow_falloff = 1.0
+shader_parameter/inner_glow_ignore_distortion = false
+shader_parameter/animate_inner_glow = false
+shader_parameter/inner_pulse_speed = 2.0
+shader_parameter/min_inner_pulse_scale = 0.5
+shader_parameter/max_inner_pulse_scale = 1.0
+shader_parameter/change_inner_color_over_time = false
+shader_parameter/starting_inner_color = Color(1, 1, 1, 1)
+shader_parameter/ending_inner_color = Color(1, 1, 0, 1)
+shader_parameter/sync_inner_color_with_pulse = true
+shader_parameter/inner_color_change_speed = 2.0
+shader_parameter/animate_inner_glow_opacity = false
+shader_parameter/inner_opacity_pulse_speed = 2.0
+shader_parameter/min_inner_opacity_scale = 0.2
+shader_parameter/max_inner_opacity_scale = 1.0
+shader_parameter/inner_static_angle = 0.0
+shader_parameter/animate_inner_rotation = false
+shader_parameter/inner_rotation_speed = 1.0
+shader_parameter/use_inner_pattern_texture = false
+shader_parameter/inner_pattern_scale = Vector2(1, 1)
+shader_parameter/inner_pattern_pan_speed = Vector2(0.1, 0)
+shader_parameter/inner_pattern_influence = 0.5
+shader_parameter/use_hue_shift_mapping = false
+shader_parameter/hue_shift_intensity = 0.3
+shader_parameter/use_ordered_dither = false
+shader_parameter/dither_strength = 0.5
+shader_parameter/dither_scale = 1.0
+shader_parameter/dither_bit_depth = 64.0
+shader_parameter/dither_animate = false
+shader_parameter/dither_use_luminance = false
+shader_parameter/dither_threshold_bias = 0.0
+shader_parameter/dither_color_bleeding = 0.0
+shader_parameter/dither_animation_speed = 12.0
+shader_parameter/dither_noise_bleeding_tint = Color(1, 0, 0, 1)
+shader_parameter/use_dissolve = false
+shader_parameter/dissolve_amount = 0.0
+shader_parameter/d_noise_scale = Vector2(1, 1)
+shader_parameter/mask_dissolve = false
+shader_parameter/animate_dissolve = false
+shader_parameter/dissolve_speed = 2.0
+shader_parameter/dissolve_use_ease = false
+shader_parameter/refraction_dispersion = 0.0
+shader_parameter/enable_dithering = true
+shader_parameter/dither_strength_noise = 0.03
+shader_parameter/use_pixelate_glow = false
+shader_parameter/pixelate_size = 4.0
+shader_parameter/pixelate_heat_fluid_fluid = false
+shader_parameter/pixelate_heat_fluid_static = false
+shader_parameter/use_distortion = false
+shader_parameter/distortion_strength = 0.02
+shader_parameter/distortion_speed = Vector2(0, -0.2)
+shader_parameter/distort_texture_as_well = false
+shader_parameter/heat_asymmetric_rise = false
+shader_parameter/heat_top_heavy_factor = 2.5
+shader_parameter/use_convection_fluid = false
+shader_parameter/convection_vortex_twist = 1.0
+shader_parameter/convection_bubble_frequency = 2.0
+shader_parameter/convection_speed = 1.0
+shader_parameter/convection_wave_amplitude = 1.0
+shader_parameter/distortion_chromatic_aberration = 0.0
+shader_parameter/heat_wind_shear = 0.0
+shader_parameter/heat_distance_fade = 0.0
+shader_parameter/distortion_multi_frequency = false
+shader_parameter/heat_plasma_caustics = false
 
-uniform float outline_width : hint_range(0.0, 32.0) = 4.0;
-uniform vec4 outline_tint : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gtatl"]
+noise_type = 2
 
-// AtlasTexture region in atlas pixels. These values are explicit because
-// REGION_RECT is unavailable in vertex().
-uniform vec2 atlas_region_pos = vec2(0.0);
-uniform vec2 atlas_region_size = vec2(1.0);
-uniform vec2 draw_size = vec2(1.0);
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a7lv4"]
+noise = SubResource("FastNoiseLite_gtatl")
+seamless = true
 
-varying vec2 expanded_local_uv;
-varying vec4 item_modulate;
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lclxg"]
+shader = ExtResource("3_ct5v2")
+shader_parameter/original_texture_size = Vector2(3000, 3000)
+shader_parameter/smooth_poisson_distribution = false
+shader_parameter/max_sampling_limit = 0
+shader_parameter/glow_color = Color(0, 1, 1, 1)
+shader_parameter/glow_size = 20.0
+shader_parameter/glow_intensity = 1.0
+shader_parameter/glow_opacity = 1.0
+shader_parameter/glow_softness = 0.5
+shader_parameter/glow_smooth_gamma = 1.0
+shader_parameter/glow_blend_mode = 0
+shader_parameter/use_gradient_mapping = false
+shader_parameter/gradient_scroll_speed = 0.0
+shader_parameter/mask_core_texture = false
+shader_parameter/boundary_fade_margin = 0.05
+shader_parameter/use_soft_clip = false
+shader_parameter/glow_hdr_threshold = 1.0
+shader_parameter/glow_direction_falloff = Vector2(1, 1)
+shader_parameter/glow_rim_margin = 0.0
+shader_parameter/glow_rim_feather = 0.05
+shader_parameter/glow_rim_eccentricity = 0.0
+shader_parameter/glow_rim_pulse_frequency = 0.0
+shader_parameter/use_sharp_steps = false
+shader_parameter/glow_step_count = 3.0
+shader_parameter/use_color_banding_palette = false
+shader_parameter/step_outline_thickness = 0.0
+shader_parameter/step_outline_color = Color(0, 0, 0, 1)
+shader_parameter/use_contour_outline = false
+shader_parameter/contour_color_a = Color(1, 0.85, 0, 1)
+shader_parameter/contour_color_b = Color(1, 0.4, 0, 1)
+shader_parameter/contour_thickness = 2.0
+shader_parameter/contour_mix_with_glow = false
+shader_parameter/contour_pixel_snap = false
+shader_parameter/animate_glow = true
+shader_parameter/pulse_speed = 2.0
+shader_parameter/min_pulse_scale = 0.5
+shader_parameter/max_pulse_scale = 1.0
+shader_parameter/change_color_over_time = false
+shader_parameter/starting_color = Color(1, 0, 0, 1)
+shader_parameter/ending_color = Color(0, 0, 1, 1)
+shader_parameter/sync_color_with_pulse_speed = true
+shader_parameter/color_change_speed = 2.0
+shader_parameter/color_animation_ping_pong = false
+shader_parameter/animate_glow_opacity = false
+shader_parameter/opacity_pulse_speed = 2.0
+shader_parameter/min_opacity_scale = 0.2
+shader_parameter/max_opacity_scale = 1.0
+shader_parameter/static_angle = 0.0
+shader_parameter/animate_rotation = false
+shader_parameter/rotation_speed = 1.0
+shader_parameter/rotation_pivot_offset = Vector2(0, 0)
+shader_parameter/use_pattern_texture = false
+shader_parameter/pattern_scale = Vector2(1, 1)
+shader_parameter/pattern_pan_speed = Vector2(0.1, 0)
+shader_parameter/pattern_influence = 0.5
+shader_parameter/pattern_fresnel_modulation = false
+shader_parameter/use_god_rays = false
+shader_parameter/ray_direction = Vector2(0.5, -0.5)
+shader_parameter/ray_length = 2.0
+shader_parameter/use_inner_glow = false
+shader_parameter/inner_glow_color = Color(1, 1, 1, 1)
+shader_parameter/inner_glow_size = 5.0
+shader_parameter/inner_glow_opacity = 0.5
+shader_parameter/inner_glow_falloff = 1.0
+shader_parameter/inner_glow_ignore_distortion = false
+shader_parameter/animate_inner_glow = false
+shader_parameter/inner_pulse_speed = 2.0
+shader_parameter/min_inner_pulse_scale = 0.5
+shader_parameter/max_inner_pulse_scale = 1.0
+shader_parameter/change_inner_color_over_time = false
+shader_parameter/starting_inner_color = Color(1, 1, 1, 1)
+shader_parameter/ending_inner_color = Color(1, 1, 0, 1)
+shader_parameter/sync_inner_color_with_pulse = true
+shader_parameter/inner_color_change_speed = 2.0
+shader_parameter/animate_inner_glow_opacity = false
+shader_parameter/inner_opacity_pulse_speed = 2.0
+shader_parameter/min_inner_opacity_scale = 0.2
+shader_parameter/max_inner_opacity_scale = 1.0
+shader_parameter/inner_static_angle = 0.0
+shader_parameter/animate_inner_rotation = false
+shader_parameter/inner_rotation_speed = 1.0
+shader_parameter/use_inner_pattern_texture = false
+shader_parameter/inner_pattern_scale = Vector2(1, 1)
+shader_parameter/inner_pattern_pan_speed = Vector2(0.1, 0)
+shader_parameter/inner_pattern_influence = 0.5
+shader_parameter/use_hue_shift_mapping = false
+shader_parameter/hue_shift_intensity = 0.3
+shader_parameter/use_ordered_dither = false
+shader_parameter/dither_strength = 0.5
+shader_parameter/dither_scale = 1.0
+shader_parameter/dither_bit_depth = 64.0
+shader_parameter/dither_animate = false
+shader_parameter/dither_use_luminance = false
+shader_parameter/dither_threshold_bias = 0.0
+shader_parameter/dither_color_bleeding = 0.0
+shader_parameter/dither_animation_speed = 12.0
+shader_parameter/dither_noise_bleeding_tint = Color(1, 0, 0, 1)
+shader_parameter/use_dissolve = false
+shader_parameter/dissolve_amount = 0.0
+shader_parameter/d_noise_scale = Vector2(1, 1)
+shader_parameter/mask_dissolve = false
+shader_parameter/animate_dissolve = false
+shader_parameter/dissolve_speed = 2.0
+shader_parameter/dissolve_use_ease = false
+shader_parameter/refraction_dispersion = 0.0
+shader_parameter/enable_dithering = true
+shader_parameter/dither_strength_noise = 0.03
+shader_parameter/use_pixelate_glow = false
+shader_parameter/pixelate_size = 4.0
+shader_parameter/pixelate_heat_fluid_fluid = false
+shader_parameter/pixelate_heat_fluid_static = false
+shader_parameter/use_distortion = true
+shader_parameter/distortion_noise = SubResource("NoiseTexture2D_a7lv4")
+shader_parameter/distortion_strength = 0.10000000149012
+shader_parameter/distortion_speed = Vector2(0.3, 0.3)
+shader_parameter/distort_texture_as_well = false
+shader_parameter/heat_asymmetric_rise = true
+shader_parameter/heat_top_heavy_factor = 2.5
+shader_parameter/use_convection_fluid = false
+shader_parameter/convection_vortex_twist = 1.0
+shader_parameter/convection_bubble_frequency = 2.0
+shader_parameter/convection_speed = 1.0
+shader_parameter/convection_wave_amplitude = 1.0
+shader_parameter/distortion_chromatic_aberration = 0.0
+shader_parameter/heat_wind_shear = 0.0
+shader_parameter/heat_distance_fade = 0.0
+shader_parameter/distortion_multi_frequency = false
+shader_parameter/procedural_noise_scale = Vector2(10, 10)
+shader_parameter/procedural_noise_speed = 2.0
+shader_parameter/procedural_noise_direction = Vector2(0, -1)
+shader_parameter/procedural_noise_octaves = 2
+shader_parameter/heat_plasma_caustics = false
+shader_parameter/caustics_sharpness = 1.0
+shader_parameter/caustics_contrast = 2.0
+shader_parameter/caustics_frequency = 1.0
+shader_parameter/heat_chiseled_ridge = false
+shader_parameter/ridge_frequency_scale = 3.0
+shader_parameter/ridge_sharpness_steps = 4.0
+shader_parameter/heat_convective_turbulence = false
+shader_parameter/turbulence_blend_ratio = 0.4
+shader_parameter/turbulence_scroll_speed = Vector2(-0.1, 0.1)
+shader_parameter/heat_digital_glitch = false
+shader_parameter/glitch_frequency_lanes = 30.0
+shader_parameter/glitch_update_speed = 8.0
+shader_parameter/glitch_displacement_force = 0.35
 
-vec2 resolved_region_size(vec2 atlas_size) {
-    return atlas_region_size.x > 1.0 && atlas_region_size.y > 1.0
-        ? atlas_region_size
-        : atlas_size;
-}
-
-void vertex() {
-    vec2 atlas_size = vec2(1.0) / TEXTURE_PIXEL_SIZE;
-    vec2 region_size = resolved_region_size(atlas_size);
-    vec2 region_uv_pos = atlas_region_pos / atlas_size;
-    vec2 region_uv_size = region_size / atlas_size;
-    // Atlas sprites supply region UVs rather than quad-local UVs.
-    expanded_local_uv = (UV - region_uv_pos) / region_uv_size;
-    item_modulate = COLOR;
-    VERTEX += (expanded_local_uv * 2.0 - 1.0) * outline_width;
-}
-
-void fragment() {
-    vec2 atlas_size = vec2(1.0) / TEXTURE_PIXEL_SIZE;
-    vec2 region_size = resolved_region_size(atlas_size);
-    vec2 resolved_draw_size = max(draw_size, vec2(1.0));
-    vec2 outline_size = vec2(outline_width);
-    vec2 expanded_draw_size = resolved_draw_size + outline_size * 2.0;
-
-    // Outline geometry and sampling use node-local draw pixels. Atlas pixels
-    // are only used at texture lookup, so differently sized sprites retain
-    // the same visual stroke width.
-    vec2 draw_pixel = expanded_local_uv * expanded_draw_size - outline_size;
-    bool inside_source =
-        draw_pixel.x >= 0.0 &&
-        draw_pixel.y >= 0.0 &&
-        draw_pixel.x < resolved_draw_size.x &&
-        draw_pixel.y < resolved_draw_size.y;
-
-    vec4 sampled_rgba = vec4(0.0);
-    if (inside_source) {
-        vec2 region_pixel = draw_pixel / resolved_draw_size * region_size;
-        vec2 safe_pixel = clamp(region_pixel, vec2(0.5), region_size - vec2(0.5));
-        sampled_rgba = texture(TEXTURE, (atlas_region_pos + safe_pixel) / atlas_size);
-    }
-
-    float outline_alpha = 0.0;
-    if (outline_width > 0.0) {
-        const int direction_count = 16;
-        const int step_count = 4;
-        for (int direction_index = 0; direction_index < direction_count; direction_index++) {
-            float angle = TAU * float(direction_index) / float(direction_count);
-            vec2 direction = vec2(cos(angle), sin(angle));
-            for (int step_index = 1; step_index <= step_count; step_index++) {
-                float step_ratio = float(step_index) / float(step_count);
-                vec2 sample_draw_pixel = draw_pixel + direction * outline_size * step_ratio;
-                bool sample_inside =
-                    sample_draw_pixel.x >= 0.0 &&
-                    sample_draw_pixel.y >= 0.0 &&
-                    sample_draw_pixel.x < resolved_draw_size.x &&
-                    sample_draw_pixel.y < resolved_draw_size.y;
-                if (sample_inside) {
-                    vec2 sample_pixel = sample_draw_pixel / resolved_draw_size * region_size;
-                    vec2 safe_sample_pixel = clamp(sample_pixel, vec2(0.5), region_size - vec2(0.5));
-                    outline_alpha = max(
-                        outline_alpha,
-                        texture(TEXTURE, (atlas_region_pos + safe_sample_pixel) / atlas_size).a);
-                }
-            }
-        }
-    }
-
-    outline_alpha *= outline_tint.a * (1.0 - sampled_rgba.a);
-    vec4 result_rgba = vec4(outline_tint.rgb, outline_alpha);
-    result_rgba.rgb = mix(result_rgba.rgb, sampled_rgba.rgb, sampled_rgba.a);
-    result_rgba.a = sampled_rgba.a + outline_alpha;
-    COLOR = result_rgba * item_modulate;
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6e57c"]
-shader = SubResource("Shader_6w5ur")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ct5v2"]
+shader = ExtResource("3_18xkl")
 shader_parameter/outline_width = 0.0
 shader_parameter/outline_tint = Color(1, 1, 1, 1)
 shader_parameter/atlas_region_pos = Vector2(0, 0)
@@ -102,6 +296,7 @@ shader_parameter/atlas_region_size = Vector2(1, 1)
 shader_parameter/draw_size = Vector2(1, 1)
 
 [node name="Enemy" type="Control" unique_id=708486463]
+material = SubResource("ShaderMaterial_18xkl")
 layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5
@@ -111,10 +306,15 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 script = ExtResource("1_6w5ur")
 max_heatlh = 10
+max_shield = 30
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=1979474899]
-material = SubResource("ShaderMaterial_6e57c")
-layout_mode = 1
+[node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=1299894054]
+material = SubResource("ShaderMaterial_lclxg")
+fit_margin = 100.0
+use_mipmaps = true
+
+[node name="TextureRect" type="TextureRect" parent="CanvasGroup" unique_id=1979474899]
+material = SubResource("ShaderMaterial_ct5v2")
 anchors_preset = -1
 anchor_left = 0.082
 anchor_right = 0.082
@@ -122,6 +322,7 @@ offset_left = -157.44
 offset_right = 475.56
 offset_bottom = 1000.0
 scale = Vector2(0.5, 0.5)
+tooltip_text = "aaaaaaaaaaaaaaaaaaa"
 texture = ExtResource("1_87g8f")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

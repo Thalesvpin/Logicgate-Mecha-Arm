@@ -10,7 +10,6 @@
 
 [sub_resource type="Resource" id="Resource_x06xc"]
 script = ExtResource("5_ptmfy")
-amount_from_stat = 11
 multiplier = 2.0
 target = 3
 metadata/_custom_type_script = "uid://drkh7n0dptl6c"

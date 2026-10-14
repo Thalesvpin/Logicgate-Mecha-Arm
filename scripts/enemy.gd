@@ -1,6 +1,7 @@
 extends Control
 
-@onready var texture_rect: TextureRect = $TextureRect
+#@onready var texture_rect: TextureRect = $TextureRect
+@onready var texture_rect: TextureRect = $CanvasGroup/TextureRect
 
 @export_group('Deafault values')
 @export var max_heatlh: int
@@ -11,6 +12,10 @@ extends Control
 @export var critic_mult: float
 @export var mitigation_percent: float
 @export var current_elemental: Variant
+@export_group('')
+@export var movement_tween_duration: float = 0.8
+
+var type: Enemy.Type
 
 var stats: Dictionary[Stats.List, Variant] = {
 	Stats.List.MAX_HEALTH: 0,
@@ -38,6 +43,10 @@ func _ready() -> void:
 	set_stats()
 	connect_signals()
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("test"):
+		move(global_position+Vector2(500,0))
+
 func is_the_signal_for_me(target: Node) -> bool:
 	return target == self
 
@@ -50,6 +59,9 @@ func take_damage(value: float, target: Node = null) -> void:
 	var final_taken_dmg := 0
 	if stats[Stats.List.CURRENT_SHIELD] > 0:
 		#mitigation
+		stats[Stats.List.CURRENT_SHIELD] -= 10
+		final_taken_dmg = int(value*mitigation_percent)
+		final_taken_dmg = 2
 		pass
 	else:
 		final_taken_dmg = int(value)
@@ -78,7 +90,7 @@ func set_stats() -> void:
 	stats[Stats.List.CURRENT_HEALTH] = max_heatlh
 	stats[Stats.List.BASE_HEAL] = base_heal
 	stats[Stats.List.MAX_SHIELD] = max_shield
-	stats[Stats.List.CURRENT_SHIELD] = 0
+	stats[Stats.List.CURRENT_SHIELD] = max_shield
 	stats[Stats.List.BASE_ATTACK_DAMAGE] = base_attack_damage
 	stats[Stats.List.CRITIC_CHANCE] = critic_chance
 	stats[Stats.List.CRITIC_MULTIPLIER] = critic_mult
@@ -100,6 +112,18 @@ func link_to_status_bar() -> void:
 func update():
 	pass
 
+func move(dest: Vector2) -> void:
+	offset_transform_enabled = true
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(self, 'offset_transform_position', global_position-dest, movement_tween_duration)
+	tween.tween_callback(
+		func():
+			offset_transform_position = Vector2.ZERO
+			offset_transform_enabled = false
+			get_parent().owner.block_movement = false
+	)
+
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
@@ -107,6 +131,7 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func swap():
 	if _position != EnemyPosition.Position.CENTER && stats[Stats.List.CURRENT_HEALTH] > 0:
+		
 		get_parent().owner.center_enemy(self)
 
 func _on_mouse_entered() -> void:
@@ -114,7 +139,6 @@ func _on_mouse_entered() -> void:
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(shader, "shader_parameter/outline_width", 0.005, outline_tween_duration)
-	
 
 func _on_mouse_exited() -> void:
 	var shader := texture_rect.material as ShaderMaterial

@@ -96,6 +96,7 @@ func open_shop() -> void:
 func _open_shop():
 	shop.show()
 	stats_viewport.show()
+	stats_viewport.glow()
 	close_battle()
 
 func close_shop() -> void:
@@ -146,4 +147,6 @@ func _input(event: InputEvent) -> void:
 		EventBus.self_damage.emit()
 	if event.is_action_pressed("test4"):# B
 		Global.implant_manager.add_bio_hack(BH_1)
+	if event.is_action_pressed("test"):# T
+		print('stats_viewport.size: ', stats_viewport.size)
 	

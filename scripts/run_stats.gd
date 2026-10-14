@@ -12,8 +12,9 @@ var run_stats: Dictionary #not used yet
 @export var max_health: int = 100
 var current_health: int
 @export var base_heal: float
-@export var max_shield: int = 30
+@export var max_shield: int = 10
 var current_shield: int
+@export var base_shield_repair: int
 @export var max_heavy_attack_charges: int
 var current_active_charges: int
 @export var attack_damage: float
@@ -65,9 +66,10 @@ func set_variables() -> void:
 		Stats.List.CURRENT_HEALTH: max_health,
 		Stats.List.BASE_HEAL: base_heal,
 		Stats.List.MAX_SHIELD: max_shield,
-		Stats.List.CURRENT_SHIELD: 0,
-		Stats.List.MAX_SHIELD_COUNT: 0,
-		Stats.List.CURRENT_SHIELD_COUNT: 0,
+		Stats.List.CURRENT_SHIELD: 5,
+		Stats.List.MAX_SHIELD_COUNT: 4,
+		Stats.List.CURRENT_SHIELD_COUNT: 1,
+		Stats.List.BASE_SHIELD_REPAIR: base_shield_repair,
 		Stats.List.MAX_HEAVY_ATTACK_CHARGES: max_heavy_attack_charges,
 		Stats.List.CURRENT_HEAVY_ATTACK_CHARGES: 0,
 		Stats.List.HEAVY_ATTACK_CHARGE_AMOUNT: heavy_attack_charge_amount,

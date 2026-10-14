@@ -1,27 +1,388 @@
 shader_type canvas_item;
 
-uniform float fade_left_start = 0.0;
-uniform float fade_left_end = 0.2;
+// Mandatory UI dimensioning parameters
+uniform vec2 original_texture_size = vec2(64.0, 64.0); 
 
-uniform float fade_right_start = 0.8;
-uniform float fade_right_end = 1.0;
+// CanvasGroup works natively by feeding the merged children into the screen texture channel
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 
+group_uniforms Outer_Glow_Settings;
+uniform vec4 glow_color : source_color = vec4(0.0, 1.0, 1.0, 1.0);
+uniform float glow_size : hint_range(0.0, 500.0) = 20.0;
+uniform float glow_intensity : hint_range(0.0, 1.0) = 1.0; 
+uniform float glow_opacity : hint_range(0.0, 1.0) = 1.0;
+uniform float glow_softness : hint_range(0.0, 1.0) = 0.5;
+uniform int glow_blend_mode : hint_range(0, 4) = 0; 
+uniform bool use_gradient_mapping = false;
+uniform sampler2D glow_gradient : hint_default_black;
+uniform float gradient_scroll_speed : hint_range(-5.0, 5.0) = 0.0;
+uniform bool mask_core_texture = false; 
+uniform float boundary_fade_margin : hint_range(0.0, 0.5) = 0.05; 
+uniform bool use_soft_clip = false; 
+uniform float glow_hdr_threshold : hint_range(1.0, 10.0) = 1.0;
+uniform vec2 glow_direction_falloff = vec2(1.0, 1.0);
+uniform float glow_rim_margin : hint_range(0.0, 1.0) = 0.0;
+uniform float glow_rim_feather : hint_range(0.01, 1.0) = 0.05;
+uniform float glow_rim_eccentricity : hint_range(-1.0, 1.0) = 0.0;
+uniform float glow_rim_pulse_frequency : hint_range(0.0, 10.0) = 0.0;
+
+group_uniforms Sharp_Glow_Steps;
+uniform bool use_sharp_steps = false;
+uniform float glow_step_count : hint_range(1.0, 10.0) = 3.0;
+uniform bool use_color_banding_palette = false;
+uniform sampler2D step_color_banding_palette : hint_default_black, repeat_disable, filter_nearest;
+uniform float step_outline_thickness : hint_range(0.0, 10.0) = 0.0;
+uniform vec4 step_outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+
+group_uniforms Outer_Contour_Outline;
+uniform bool use_contour_outline = false;
+uniform vec4 contour_color_a : source_color = vec4(1.0, 0.85, 0.0, 1.0); 
+uniform vec4 contour_color_b : source_color = vec4(1.0, 0.4, 0.0, 1.0);  
+uniform float contour_thickness : hint_range(0.0, 30.0) = 2.0;
+uniform bool contour_mix_with_glow = false;
+uniform bool contour_pixel_snap = false;
+
+group_uniforms Outer_Glow_Size_Animation;
+uniform bool animate_glow = false;
+uniform float pulse_speed : hint_range(0.0, 10.0) = 2.0;
+uniform float min_pulse_scale : hint_range(0.0, 2.0) = 0.5;
+uniform float max_pulse_scale : hint_range(0.0, 5.0) = 1.0;
+
+group_uniforms Outer_Glow_Color_Animation;
+uniform bool change_color_over_time = false;
+uniform vec4 starting_color : source_color = vec4(1.0, 0.0, 0.0, 1.0);
+uniform vec4 ending_color : source_color = vec4(0.0, 0.0, 1.0, 1.0);
+uniform bool sync_color_with_pulse_speed = true;
+uniform float color_change_speed : hint_range(0.0, 10.0) = 2.0;
+uniform bool color_animation_ping_pong = false;
+uniform bool animate_glow_opacity = false;
+uniform float opacity_pulse_speed : hint_range(0.0, 10.0) = 2.0;
+uniform float min_opacity_scale : hint_range(0.0, 1.0) = 0.2;
+uniform float max_opacity_scale : hint_range(0.0, 1.0) = 1.0;
+
+group_uniforms Outer_Glow_Rotation;
+uniform float static_angle : hint_range(0.0, 360.0) = 0.0;
+uniform bool animate_rotation = false;
+uniform float rotation_speed : hint_range(-10.0, 10.0) = 1.0;
+uniform vec2 rotation_pivot_offset = vec2(0.0, 0.0);
+
+group_uniforms Outer_Glow_Pattern_Settings;
+uniform bool use_pattern_texture = false;
+uniform sampler2D pattern_texture : hint_default_white, repeat_enable;
+uniform vec2 pattern_scale = vec2(1.0, 1.0);
+uniform vec2 pattern_pan_speed = vec2(0.1, 0.0);
+uniform float pattern_influence : hint_range(0.0, 1.0) = 0.5;
+uniform bool pattern_fresnel_modulation = false;
+
+group_uniforms Outer_Glow_God_Rays;
+uniform bool use_god_rays = false;
+uniform vec2 ray_direction = vec2(0.5, -0.5); 
+uniform float ray_length : hint_range(1.0, 5.0) = 2.0; 
+uniform float dither_interlaced_scanlines : hint_range(0.0, 1.0) = 0.0;
+
+group_uniforms Inner_Glow;
+uniform bool use_inner_glow = false;
+uniform vec4 inner_glow_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float inner_glow_size : hint_range(0.0, 50.0) = 5.0;
+uniform float inner_glow_opacity : hint_range(0.0, 1.0) = 0.5;
+uniform float inner_glow_falloff : hint_range(0.1, 5.0) = 1.0;
+uniform bool inner_glow_ignore_distortion = false;
+
+group_uniforms Inner_Glow_Size_Animation;
+uniform bool animate_inner_glow = false;
+uniform float inner_pulse_speed : hint_range(0.0, 10.0) = 2.0;
+uniform float min_inner_pulse_scale : hint_range(0.0, 2.0) = 0.5;
+uniform float max_inner_pulse_scale : hint_range(0.0, 5.0) = 1.0;
+
+group_uniforms Inner_Glow_Color_Animation;
+uniform bool change_inner_color_over_time = false;
+uniform vec4 starting_inner_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform vec4 ending_inner_color : source_color = vec4(1.0, 1.0, 0.0, 1.0);
+uniform bool sync_inner_color_with_pulse = true;
+uniform float inner_color_change_speed : hint_range(0.0, 10.0) = 2.0;
+uniform bool animate_inner_glow_opacity = false;
+uniform float inner_opacity_pulse_speed : hint_range(0.0, 10.0) = 2.0;
+uniform float min_inner_opacity_scale : hint_range(0.0, 1.0) = 0.2;
+uniform float max_inner_opacity_scale : hint_range(0.0, 1.0) = 1.0;
+
+group_uniforms Inner_Glow_Rotation;
+uniform float inner_static_angle : hint_range(0.0, 360.0) = 0.0;
+uniform bool animate_inner_rotation = false;
+uniform float inner_rotation_speed : hint_range(-10.0, 10.0) = 1.0;
+
+group_uniforms Inner_Glow_Pattern_Settings;
+uniform bool use_inner_pattern_texture = false;
+uniform sampler2D inner_pattern_texture : hint_default_white, repeat_enable;
+uniform vec2 inner_pattern_scale = vec2(1.0, 1.0);
+uniform vec2 inner_pattern_pan_speed = vec2(0.1, 0.0);
+uniform float inner_pattern_influence : hint_range(0.0, 1.0) = 0.5;
+
+group_uniforms Sprite_Hue_Shift_Mapping;
+uniform bool use_hue_shift_mapping = false;
+uniform float hue_shift_intensity : hint_range(0.0, 1.0) = 0.3;
+
+group_uniforms Retro_Bayer_Dither;
+uniform bool use_ordered_dither = false;
+uniform float dither_strength : hint_range(0.0, 1.0) = 0.5;
+uniform float dither_scale : hint_range(1.0, 8.0) = 1.0;
+uniform float dither_bit_depth : hint_range(2.0, 64.0) = 64.0;
+uniform bool dither_animate = false;
+uniform bool dither_use_luminance = false;
+uniform float dither_threshold_bias : hint_range(-0.5, 0.5) = 0.0;
+uniform float dither_color_bleeding : hint_range(0.0, 1.0) = 0.0;
+uniform float dither_animation_speed : hint_range(1.0, 60.0) = 12.0;
+uniform vec4 dither_noise_bleeding_tint : source_color = vec4(1.0, 0.0, 0.0, 1.0);
+
+group_uniforms Glow_Noise_Dissolve;
+uniform bool use_dissolve = false;
+uniform sampler2D dissolve_noise : hint_default_black, repeat_enable;
+uniform float dissolve_amount : hint_range(0.0, 1.0) = 0.0;
+uniform vec2 d_noise_scale = vec2(1.0, 1.0);
+uniform bool mask_dissolve = false;
+uniform bool animate_dissolve = false;
+uniform float dissolve_speed : hint_range(0.0, 10.0) = 2.0;
+uniform bool dissolve_use_ease = false;
+
+group_uniforms Background_Refraction;
+uniform float refraction_dispersion : hint_range(0.0, 1.0) = 0.0;
+
+group_uniforms Anti_Banding_and_Dither;
+uniform bool enable_dithering = true;
+uniform float dither_strength_noise : hint_range(0.0, 0.2) = 0.03;
+
+group_uniforms Retro_Pixel_Art_SubSampling;
+uniform bool use_pixelate_glow = false;
+uniform float pixelate_size : hint_range(1.0, 32.0) = 4.0;
+uniform bool pixelate_heat_fluid_fluid = false;  
+uniform bool pixelate_heat_fluid_static = false; 
+
+group_uniforms Distortion_and_Heat;
+uniform bool use_distortion = false;
+uniform sampler2D distortion_noise : hint_default_black, repeat_enable;
+uniform float distortion_strength : hint_range(0.0, 0.1) = 0.02;
+uniform vec2 distortion_speed = vec2(0.0, -0.2); 
+uniform bool distort_texture_as_well = false; 
+uniform bool heat_asymmetric_rise = false;
+uniform float heat_top_heavy_factor : hint_range(1.0, 5.0) = 2.5;
+uniform bool use_convection_fluid = false;
+uniform float convection_vortex_twist : hint_range(-5.0, 5.0) = 1.0;
+uniform float convection_bubble_frequency : hint_range(1.0, 10.0) = 2.0;
+uniform float convection_speed : hint_range(0.1, 5.0) = 1.0;
+uniform float convection_wave_amplitude : hint_range(0.1, 3.0) = 1.0;
+uniform float distortion_chromatic_aberration : hint_range(0.0, 50.0) = 0.0;
+uniform float heat_wind_shear : hint_range(-1.0, 1.0) = 0.0;
+uniform float heat_distance_fade : hint_range(0.0, 1.0) = 0.0;
+uniform bool distortion_multi_frequency = false;
+uniform bool heat_plasma_caustics = false;
+
+float rand(vec2 co) {
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+vec2 rotate_vector(vec2 dir, float cos_angle, float sin_angle) {
+    return vec2(dir.x * cos_angle - dir.y * sin_angle, dir.x * sin_angle + dir.y * cos_angle);
+}
+
+vec3 hue_shift(vec3 color, float shift) {
+    vec3 k = vec3(0.57735);
+    float cos_angle = cos(shift);
+    return color * cos_angle + cross(k, color) * sin(shift) + k * dot(k, color) * (1.0 - cos_angle);
+}
+
+float get_bayer_matrix(vec2 coord) {
+    int index = int(mod(coord.x, 4.0)) + int(mod(coord.y, 4.0)) * 4;
+    float m;
+    if (index == 0)  m = 0.0 / 16.0;  if (index == 1)  m = 8.0 / 16.0;  if (index == 2)  m = 2.0 / 16.0;  if (index == 3)  m = 10.0 / 16.0;
+    if (index == 4)  m = 12.0 / 16.0; if (index == 5)  m = 4.0 / 16.0;  if (index == 6)  m = 14.0 / 16.0; if (index == 7)  m = 6.0 / 16.0;
+    if (index == 8)  m = 3.0 / 16.0;  if (index == 9)  m = 11.0 / 16.0; if (index == 10) m = 1.0 / 16.0;  if (index == 11) m = 9.0 / 16.0;
+    if (index == 12) m = 15.0 / 16.0; if (index == 13) m = 7.0 / 16.0;  if (index == 14) m = 13.0 / 16.0; if (index == 15) m = 5.0 / 16.0;
+    return m;
+}
+
+vec4 apply_blend_mode(vec4 glow, vec3 bg, int mode) {
+    if (mode == 1) return vec4(glow.rgb * glow.a, glow.a);
+    if (mode == 2) return vec4(mix(bg, bg * glow.rgb, glow.a), glow.a);
+    if (mode == 3) return vec4(mix(bg, 1.0 - (1.0 - bg) * (1.0 - glow.rgb), glow.a), glow.a);
+if (mode == 4) return vec4(mix(bg, mix(2.0 * bg * glow.rgb, 1.0 - 2.0 * (1.0 - bg) * (1.0 - glow.rgb), step(0.5, bg)), glow.a), glow.a);
+return glow;
+}
 void fragment() {
-    vec4 color = texture(TEXTURE, UV);
-
-    float left_alpha = smoothstep(
-        fade_left_start,
-        fade_left_end,
-        UV.x
-    );
-
-    float right_alpha = 1.0 - smoothstep(
-        fade_right_start,
-        fade_right_end,
-        UV.x
-    );
-
-    color.a *= left_alpha * right_alpha;
-
-    COLOR = color;
+vec2 screen_pixel_to_uv = SCREEN_PIXEL_SIZE;
+vec2 pixelate_grid = original_texture_size / pixelate_size;
+vec2 noise_base_uv = mix(UV, floor(UV * pixelate_grid) / pixelate_grid, float(use_pixelate_glow && pixelate_size > 0.0 && !pixelate_heat_fluid_fluid));
+vec2 tex_uv = SCREEN_UV;
+vec2 glow_uv = SCREEN_UV;
+if (use_distortion) {
+vec2 noise_coord = noise_base_uv + vec2(noise_base_uv.y * heat_wind_shear, 0.0);
+if (use_convection_fluid) {
+vec2 radial_vec = noise_coord - 0.5;
+noise_coord = vec2(length(radial_vec) * convection_bubble_frequency - TIME * 0.1 * convection_speed, (atan(radial_vec.y, radial_vec.x) + length(radial_vec) * convection_vortex_twist) / 6.28318);
+}
+vec2 base_time_offset = TIME * distortion_speed;
+vec2 noise_offset = texture(distortion_noise, noise_coord + base_time_offset).rg;
+if (distortion_multi_frequency) {
+vec2 noise_octave = texture(distortion_noise, (noise_coord * 2.15) + (base_time_offset * 1.55)).rg;
+noise_offset = mix(noise_offset, noise_offset + (noise_octave * 0.45) - 0.225, 0.5);
+}
+if (heat_plasma_caustics) {
+noise_offset = 1.0 - abs(noise_offset * 2.0 - 1.0);
+}
+noise_offset = noise_offset * 2.0 - 1.0;
+float weight = mix(1.0, pow(1.0 - noise_base_uv.y, heat_top_heavy_factor), float(heat_asymmetric_rise));
+vec2 delta_center = UV - 0.5;
+weight *= mix(1.0, smoothstep(0.25, 0.01, delta_center.x * delta_center.x + delta_center.y * delta_center.y), heat_distance_fade);
+vec2 distortion_offset = noise_offset * distortion_strength * weight * mix(1.0, convection_wave_amplitude, float(use_convection_fluid)) * screen_pixel_to_uv * original_texture_size;
+if (use_pixelate_glow && pixelate_heat_fluid_static) {
+distortion_offset = floor(distortion_offset * pixelate_grid) / pixelate_grid;
+}
+glow_uv += distortion_offset;
+if (distort_texture_as_well) tex_uv += distortion_offset;
+}
+vec2 uv_texture = tex_uv;
+vec2 uv_glow = glow_uv;
+vec4 col = texture(screen_texture, uv_texture);
+float current_size = glow_size * mix(1.0, mix(min_pulse_scale, max_pulse_scale, (sin(TIME * pulse_speed) + 1.0) * 0.5), float(animate_glow));
+float current_inner_size = inner_glow_size * mix(1.0, mix(min_inner_pulse_scale, max_inner_pulse_scale, (sin(TIME * inner_pulse_speed) + 1.0) * 0.5), float(animate_inner_glow));
+vec4 active_glow_color = glow_color;
+if (use_gradient_mapping) {
+active_glow_color = texture(glow_gradient, vec2(fract(TIME * gradient_scroll_speed), 0.0));
+} else if (change_color_over_time) {
+float speed_factor = sync_color_with_pulse_speed ? pulse_speed : color_change_speed;
+active_glow_color = mix(starting_color, ending_color, mix((sin(TIME * speed_factor) + 1.0) * 0.5, abs(fract(TIME * speed_factor * 0.5) * 2.0 - 1.0), float(color_animation_ping_pong)));
+}
+if (use_hue_shift_mapping && col.a > 0.05) {
+active_glow_color.rgb = hue_shift(active_glow_color.rgb, dot(col.rgb, vec3(0.299, 0.587, 0.114)) * hue_shift_intensity * 6.28);
+}
+float cos_a = cos(radians(static_angle) + (animate_rotation ? TIME * rotation_speed : 0.0));
+float sin_a = sin(radians(static_angle) + (animate_rotation ? TIME * rotation_speed : 0.0));
+float total_alpha = 0.0;
+float inner_alpha = 0.0;
+float contour_alpha = 0.0;
+float rim_cut_alpha = 0.0;
+float sample_limit = (current_size > 150.0) ? 96.0 : ((current_size > 50.0) ? 64.0 : 32.0);
+// LOW-LEVEL CACHE: Factored inverse sample divisions to safe scalar clocks replacements
+float inv_sample_limit = 1.0 / sample_limit;
+float dither = enable_dithering ? rand(FRAGCOORD.xy) * dither_strength_noise : 0.0;
+if (current_size > 0.0 || use_contour_outline) {
+vec2 norm_ray_dir = normalize(ray_direction);
+float golden_angle = 2.399963229728653;
+float c_gold = 0.73010729;
+float s_gold = 0.68333215;
+vec2 direction = vec2(1.0, 0.0);
+vec2 cached_contour_step = mix(contour_thickness, floor(contour_thickness), float(contour_pixel_snap)) * screen_pixel_to_uv;
+vec2 cached_glow_step = current_size * screen_pixel_to_uv;
+float dynamic_rim_radius = clamp(glow_rim_margin + mix(0.0, sin(TIME * glow_rim_pulse_frequency) * 0.05, float(glow_rim_pulse_frequency > 0.001)), 0.0, 1.0);
+float total_rim_samples = sample_limit * dynamic_rim_radius;
+float inv_glow_softness = 1.0 / (1.0 - glow_softness * 0.9);
+for (float i = 0.0; i < sample_limit; i++) {
+float radius_factor = clamp(sqrt((i + 0.5) * inv_sample_limit) + dither, 0.0, 1.0);
+vec2 sampled_dir = direction + ray_direction * (float(use_god_rays) * max(0.0, dot(direction, norm_ray_dir)) * (ray_length - 1.0));
+vec2 rotated_dir = rotate_vector((sampled_dir + rotation_pivot_offset) * glow_direction_falloff, cos_a, sin_a);
+float sample_a = texture(screen_texture, uv_glow + (rotated_dir * cached_glow_step * radius_factor)).a;
+if (use_contour_outline) {
+contour_alpha += texture(screen_texture, uv_glow + (rotated_dir * cached_contour_step)).a;
+}
+if (current_size > 0.0) {
+float falloff = mix(1.0 - radius_factor * glow_softness, (1.0 - radius_factor * glow_softness) * (1.0 / (1.0 + radius_factor * radius_factor * 10.0 * glow_softness)), float(use_soft_clip));
+total_alpha += sample_a * falloff;
+float adjusted_rim_bound = max(0.0, dynamic_rim_radius + (rotated_dir.y * glow_rim_eccentricity * 0.1));
+if (radius_factor < adjusted_rim_bound) {
+rim_cut_alpha += sample_a * (1.0 - smoothstep(adjusted_rim_bound - glow_rim_feather, adjusted_rim_bound, radius_factor));
+}
+}
+direction = vec2(direction.x * c_gold - direction.y * s_gold, direction.x * s_gold + direction.y * c_gold);
+}
+total_alpha = clamp((total_alpha * inv_sample_limit) * inv_glow_softness, 0.0, 1.0);
+if (dynamic_rim_radius > 0.001) {
+total_alpha = clamp(total_alpha - (rim_cut_alpha / max(1.0, total_rim_samples)), 0.0, 1.0);
+}
+if (use_sharp_steps && total_alpha > 0.001) total_alpha = ceil(total_alpha * glow_step_count) / glow_step_count;
+contour_alpha = clamp(contour_alpha, 0.0, 1.0);
+}
+vec4 active_inner_glow_color = inner_glow_color;
+if (use_inner_glow && change_inner_color_over_time) {
+active_inner_glow_color = mix(starting_inner_color, ending_inner_color, (sin(TIME * (sync_inner_color_with_pulse ? inner_pulse_speed : inner_color_change_speed)) + 1.0) * 0.5);
+}
+if (use_inner_glow && col.a > 0.05 && current_inner_size > 0.0) {
+float inner_accum = 0.0;
+float inner_cos_a = cos(radians(inner_static_angle) + (animate_inner_rotation ? TIME * inner_rotation_speed : 0.0));
+float inner_sin_a = sin(radians(inner_static_angle) + (animate_inner_rotation ? TIME * inner_rotation_speed : 0.0));
+vec2 targeted_inner_uv = mix(uv_glow, uv_texture, float(inner_glow_ignore_distortion));
+for (float i = 0.0; i < 12.0; i++) {
+inner_accum += texture(screen_texture, targeted_inner_uv + (rotate_vector(vec2(cos(i * 0.5235987), sin(i * 0.5235987)), inner_cos_a, inner_sin_a) * current_inner_size * (1.0 + dither) * screen_pixel_to_uv)).a;
+}
+float calculated_inner_opacity = inner_glow_opacity;
+if (animate_inner_glow_opacity) {
+calculated_inner_opacity *= mix(min_inner_opacity_scale, max_inner_opacity_scale, (sin(TIME * inner_opacity_pulse_speed) + 1.0) * 0.5);
+}
+inner_alpha = pow((1.0 - (inner_accum * 0.0833333)), inner_glow_falloff) * calculated_inner_opacity * active_inner_glow_color.a;
+}
+if (boundary_fade_margin > 0.0) {
+vec2 fade = smoothstep(vec2(0.0), vec2(boundary_fade_margin), UV) * smoothstep(vec2(0.0), vec2(boundary_fade_margin), 1.0 - UV);
+total_alpha *= fade.x * fade.y;
+inner_alpha *= fade.x * fade.y;
+}
+float dissolve_value = mix(dissolve_amount, mix((sin(TIME * dissolve_speed) + 1.0) * 0.5, smoothstep(0.0, 1.0, (sin(TIME * dissolve_speed) + 1.0) * 0.5), float(dissolve_use_ease)), float(animate_dissolve));
+float dissolve_tex = texture(dissolve_noise, UV * d_noise_scale).r;
+float dissolve_mask = mix(1.0, step(dissolve_value, dissolve_tex), float(use_dissolve));
+float pattern_weight = texture(pattern_texture, UV * pattern_scale + (TIME * pattern_pan_speed)).r;
+if (use_pattern_texture && pattern_fresnel_modulation) {
+pattern_weight = mix(pattern_weight, pattern_weight * (1.0 - smoothstep(0.0, 0.85, total_alpha)), 0.75);
+}
+float calculated_glow_opacity = glow_opacity;
+if (animate_glow_opacity) {
+calculated_glow_opacity *= mix(min_opacity_scale, max_opacity_scale, (sin(TIME * opacity_pulse_speed) + 1.0) * 0.5);
+}
+vec4 final_glow = active_glow_color;
+final_glow.a = total_alpha * calculated_glow_opacity * mix(1.0, pattern_weight, pattern_influence);
+final_glow.rgb *= glow_intensity * glow_hdr_threshold;
+if (use_sharp_steps && use_color_banding_palette) {
+float sample_coord = clamp(total_alpha, 0.001, 0.999);
+vec4 palette_color = texture(step_color_banding_palette, vec2(sample_coord, 0.0));
+final_glow.rgb = palette_color.rgb;
+final_glow.a *= palette_color.a;
+}
+if (use_sharp_steps && step_outline_thickness > 0.001) {
+float step_fraction = fract(total_alpha * glow_step_count);
+float line_width = step_outline_thickness * 0.05;
+if (step_fraction < line_width || step_fraction > (1.0 - line_width)) {
+final_glow.rgb = mix(final_glow.rgb, step_outline_color.rgb, step_outline_color.a);
+}
+}
+if (use_ordered_dither) {
+final_glow.rgb = mix(final_glow.rgb, mix(final_glow.rgb, dither_noise_bleeding_tint.rgb, 0.5), dither_color_bleeding * total_alpha);
+if (dither_bit_depth < 64.0) final_glow.rgb = floor(final_glow.rgb * dither_bit_depth) / dither_bit_depth;
+}
+if (col.a > 0.05 && !mask_core_texture) {
+if (use_inner_glow) {
+float pattern_mod = mix(1.0, texture(inner_pattern_texture, UV * inner_pattern_scale + (TIME * inner_pattern_pan_speed)).r, inner_pattern_influence);
+col.rgb = mix(col.rgb, active_inner_glow_color.rgb, inner_alpha * pattern_mod * dissolve_mask);
+}
+COLOR = col;
+} else if (use_contour_outline && contour_alpha > 0.01 && !mask_core_texture) {
+COLOR = mix(mix(contour_color_a, contour_color_b, UV.y), vec4(final_glow.rgb, mix(contour_color_a, contour_color_b, UV.y).a), float(contour_mix_with_glow));
+} else if (total_alpha > 0.0 && dissolve_mask > 0.0) {
+vec2 dither_coord = FRAGCOORD.xy / dither_scale;
+if (dither_animate) {
+dither_coord += floor(vec2(rand(vec2(floor(TIME * dither_animation_speed), 0.0)), rand(vec2(0.0, floor(TIME * dither_animation_speed)))) * 4.0);
+}
+// LOW-LEVEL CACHE: Factored inverse dither divisions to safe multiplications
+float inv_damage_flash_weight = 1.0 / dither_strength;
+float dither_target_weight = mix(total_alpha, dot(final_glow.rgb, vec3(0.299, 0.587, 0.114)) * total_alpha, float(dither_use_luminance));
+if (use_ordered_dither && dither_interlaced_scanlines > 0.001) {
+dither_target_weight *= mix(1.0, sin(FRAGCOORD.y * 1.570796) * 0.5 + 0.5, dither_interlaced_scanlines);
+}
+if (use_ordered_dither && ((dither_target_weight * inv_damage_flash_weight) + dither_threshold_bias) < get_bayer_matrix(dither_coord)) discard;
+if (use_distortion && distortion_chromatic_aberration > 0.001) {
+float chrom = distortion_chromatic_aberration * TEXTURE_PIXEL_SIZE.x * total_alpha;
+vec3 ab_r = apply_blend_mode(final_glow, texture(screen_texture, uv_glow + vec2(chrom, 0.0)).rgb, glow_blend_mode).rgb;
+vec3 ab_g = apply_blend_mode(final_glow, texture(screen_texture, uv_glow).rgb, glow_blend_mode).rgb;
+vec3 ab_b = apply_blend_mode(final_glow, texture(screen_texture, uv_glow - vec2(chrom, 0.0)).rgb, glow_blend_mode).rgb;
+COLOR = vec4(ab_r.r, ab_g.g, ab_b.b, final_glow.a);
+} else {
+COLOR = apply_blend_mode(final_glow, texture(screen_texture, uv_glow).rgb, glow_blend_mode);
+}
+} else {
+COLOR = vec4(0.0);
+}
 }

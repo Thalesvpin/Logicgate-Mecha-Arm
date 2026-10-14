@@ -17,6 +17,7 @@ inimigo e jogador tremer ao tomar dano
 bordas da area de combate piscando vermelho ao tomar dano
 -SCRIPT
 enemy_killed_condition
+ataque pesado carrega 100%
 
 LUCA:
 definir fontes

@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://bap1wppk0gxk1"]
 
 [ext_resource type="Script" uid="uid://bv0t2dr5e07j5" path="res://scripts/shop_bio_hacks_container.gd" id="1_ey3mi"]
-[ext_resource type="Texture2D" uid="uid://4863qjfn8thl" path="res://assets/shop_mod_bracket.png" id="1_kdyay"]
 [ext_resource type="PackedScene" uid="uid://biquah0t1pge8" path="res://scenes/sections/shop/shop_bio_hack_item.tscn" id="2_ey3mi"]
+[ext_resource type="Texture2D" uid="uid://cfuu7wrtb8o8y" path="res://assets/TCC_shop_implantbracket.png" id="2_nfh7n"]
+[ext_resource type="Texture2D" uid="uid://byrpiwaihcjtv" path="res://assets/icon_mini_biohacks.png" id="3_em8w6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjqua"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -22,12 +23,37 @@ script = ExtResource("1_ey3mi")
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1755067959]
 layout_mode = 2
 
-[node name="Bracket" type="TextureRect" parent="HBoxContainer" unique_id=459778703]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=489064232]
 layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 23
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer" unique_id=1577997400]
+custom_maximum_size = Vector2(-1, 160)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_nfh7n")
+stretch_mode = 4
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/VBoxContainer" unique_id=1890409462]
+custom_maximum_size = Vector2(27.29, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 offset_transform_enabled = true
-offset_transform_scale = Vector2(1, 0.8)
-texture = ExtResource("1_kdyay")
-expand_mode = 3
+offset_transform_position = Vector2(-5.945, 0)
+texture = ExtResource("3_em8w6")
+stretch_mode = 4
+
+[node name="TextureRect3" type="TextureRect" parent="HBoxContainer/VBoxContainer" unique_id=1338022712]
+custom_maximum_size = Vector2(-1, 160)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_nfh7n")
+stretch_mode = 4
+flip_v = true
 
 [node name="ImplantsHolder" type="VBoxContainer" parent="HBoxContainer" unique_id=1964218931]
 layout_mode = 2

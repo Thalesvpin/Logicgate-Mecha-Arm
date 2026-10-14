@@ -4,7 +4,7 @@ class_name AddMoneyEffect
 ##To subtract, insert a negative value
 @export var amount: int
 ##percent is based in current money
-@export var mode: Mode
+@export var mode: Mode = Mode.FLAT
 ##If set to 0, no limit will be applied
 @export var limit: int = 0
 

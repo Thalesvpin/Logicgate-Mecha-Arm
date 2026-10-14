@@ -52,6 +52,7 @@ func heal() -> void:
 func repair_shield() -> void:
 	print('Repair Shield')
 	var effect = RepairShieldEffect.new()
+	effect.amount = Global.run_stats.player_stats[Stats.List.BASE_SHIELD_REPAIR]
 	effect.apply()
 	pass
 

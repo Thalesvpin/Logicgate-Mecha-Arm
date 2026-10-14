@@ -7,6 +7,7 @@ extends Control
 var left_enemy_status_bar: PanelContainer
 var center_enemy_status_bar: PanelContainer
 var right_enemy_status_bar: PanelContainer
+var block_movement: bool = false
 
 const ENEMY = preload("uid://6y2k6pdfjohj")
 const ENEMY_STATUS_BAR = preload("uid://bbk5wegsq6ymc")
@@ -32,10 +33,18 @@ func _ready() -> void:
 	#enemy['bar'].subtract_from_health(_min)
 
 func center_enemy(enemy):
+	if block_movement:
+		return
+	block_movement = true
 	print('center_enemy() COMBAT_SCREEN')
 	var selected_status_bar = enemy.status_bar
 	var current_position = enemy._position
 	var front_enemy = get_enemy(EnemyPosition.Position.CENTER)
+	var pos_front = front_enemy.global_position
+	var pos_2 = enemy.global_position
+	
+	enemy.move(pos_front)
+	front_enemy.move(pos_2)
 	
 	center_enemy_container.remove_child(front_enemy)
 	match current_position:

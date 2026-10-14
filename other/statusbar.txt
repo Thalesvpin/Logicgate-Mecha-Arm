@@ -1,0 +1,6 @@
+VIDA DO PLAYER
+font 26
+altura da vida 44
+
+ESCUDO DO PLAYER
+altura 28
