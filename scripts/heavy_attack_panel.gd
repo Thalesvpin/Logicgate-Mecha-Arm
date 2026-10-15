@@ -12,14 +12,18 @@ func _ready() -> void:
 func fill_charges() -> void:
 	_material.set_shader_parameter("pour_fill_amount", 1)
 
-func add_charges(amount: float = 1) -> void:
+func add_charges() -> void:
 	#var current = _material.get_shader_parameter("pour_fill_amount")
 	#var _max = _material.get_shader_parameter("segment_count")
-	var current = Global.run_stats.player_stats[Stats.List.HEAVY_ATTACK_ACTIVE_CHARGES]
-	var _max = Global.run_stats.player_stats[Stats.List.HEAVY_ATTACK_MAX_CHARGES]
-	print('cur: ', current, 'max: ', _max)
-	current += amount/_max
-	_material.set_shader_parameter("pour_fill_amount", current)
+	var current = Global.run_stats.player_stats[Stats.List.CURRENT_HEAVY_ATTACK_CHARGES]
+	var _max = Global.run_stats.player_stats[Stats.List.MAX_HEAVY_ATTACK_CHARGES]
+	#print('cur: ', current, 'max: ', _max)
+	#current += amount/_max
+	var percent = current/_max
+	_material.set_shader_parameter("pour_fill_amount", percent)
+	print('current: ', current)
+	print('_max: ', _max)
+	print('percent: ', percent)
 
 func deplete_charges() -> void:
 	_material.set_shader_parameter("pour_fill_amount", 0.0)

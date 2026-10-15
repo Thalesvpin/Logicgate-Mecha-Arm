@@ -35,6 +35,7 @@ offset_right = -0.76000977
 offset_bottom = -0.4000244
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1416740451]
@@ -42,7 +43,7 @@ layout_mode = 2
 texture = SubResource("GradientTexture2D_tjqua")
 flip_v = true
 
-[node name="ShopMonelPanel" parent="." unique_id=313081484 instance=ExtResource("4_7dnml")]
+[node name="ShopMoneyPanel" parent="." unique_id=313081484 instance=ExtResource("4_7dnml")]
 layout_mode = 2
 size_flags_vertical = 0
 offset_transform_enabled = true

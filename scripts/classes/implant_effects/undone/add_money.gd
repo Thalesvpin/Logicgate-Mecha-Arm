@@ -23,7 +23,12 @@ func apply(_context = null) -> void:
 				result = add_to_player_stats(Stats.List.CURRENT_MONEY, Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] * amount/100, Operator.GREATER, limit)
 			else:
 				result = add_to_player_stats(Stats.List.CURRENT_MONEY, Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] * amount/100)
-	EventBus.stat_changed.emit(Stats.List.CURRENT_MONEY, result)
+	#EventBus.stat_changed.emit(Stats.List.CURRENT_MONEY, result)
+	if _context == true:
+		var tree = Engine.get_main_loop() as SceneTree
+		await tree.create_timer(1).timeout
+	Global.combat_money_panel.update()
+	Global.shop_money_panel.update()
 
 func revert() -> void:
 	pass

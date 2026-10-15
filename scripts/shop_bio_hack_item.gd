@@ -1,9 +1,9 @@
 extends PanelContainer
 
 @onready var price_container: PanelContainer = $MarginContainer/VBoxContainer/HBoxContainer/PriceContainer
-@onready var price_label: Label = $MarginContainer/VBoxContainer/HBoxContainer/PriceContainer/Price
 @onready var buy_btn: TextureButton = $MarginContainer/VBoxContainer/HBoxContainer/BuyBtn
 @onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
+@onready var price_label: RichTextLabel = $MarginContainer/VBoxContainer/HBoxContainer/PriceContainer/Price
 
 const BIOHACK_TEST = preload("uid://dd06rohyycdlt")
 
@@ -25,7 +25,8 @@ func set_implant() -> void:
 	implant_card.load_resource()
 
 func get_price() -> void:
-	pass
+	price = 100
+	price_label.text = '$'+str(price)
 
 func get_rarity() -> void:
 	rarity = implant.rarity
@@ -34,12 +35,14 @@ func get_rarity() -> void:
 
 func _on_buy_btn_button_up() -> void:
 	if Global.implant_manager.active_bio_hacks.size() >= 5:
+		print('limite de bio hacks atingido')
 		return
 	var curr_money = Global.run_stats.player_stats[Stats.List.CURRENT_MONEY]
 	if curr_money >= price:
 		var effect = AddMoneyEffect.new()
 		effect.amount = -price
 		effect.apply()
-		Global.implant_manager.add_bio_hack(implant)
+		#Global.implant_manager.add_bio_hack(implant)
+		EventBus.bio_hack_added.emit(implant)
 		buy_btn.disabled = true
 		hide()

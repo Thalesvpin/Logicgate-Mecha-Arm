@@ -3,6 +3,9 @@ class_name EnemyKilledCondition
 
 @export var survived: bool = false
 
-func is_met(context = null) -> bool:
+func is_met(_context = null) -> bool:
+	if _context != null:
+		if _context.name == 'Enemy':
+			var 
 	return true
-	#return context.owner.stats.health_percent() < percent
+	#return _context.owner.stats.health_percent() < percent

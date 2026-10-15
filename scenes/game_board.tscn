@@ -31,6 +31,7 @@ script = ExtResource("1_mmjnl")
 script = ExtResource("9_cwqdw")
 base_heal = 10.0
 base_shield_repair = 10
+max_heavy_attack_charges = 4
 attack_damage = 10.0
 self_damage = 50.0
 max_tokens_amount = 10

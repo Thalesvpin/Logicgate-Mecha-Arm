@@ -305,8 +305,6 @@ grow_horizontal = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 script = ExtResource("1_6w5ur")
-max_heatlh = 10
-max_shield = 30
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=1299894054]
 material = SubResource("ShaderMaterial_lclxg")
@@ -315,6 +313,8 @@ use_mipmaps = true
 
 [node name="TextureRect" type="TextureRect" parent="CanvasGroup" unique_id=1979474899]
 material = SubResource("ShaderMaterial_ct5v2")
+custom_minimum_size = Vector2(633, 1000)
+custom_maximum_size = Vector2(633, 1000)
 anchors_preset = -1
 anchor_left = 0.082
 anchor_right = 0.082

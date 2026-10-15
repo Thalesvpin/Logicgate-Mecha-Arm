@@ -7,7 +7,7 @@ const IMPLANT_CARD = preload("uid://w1qq1p4375fn")
 
 func _ready() -> void:
 	Global.tech_mods_container = self
-	EventBus.tech_mod_added.connect(add_implant)
+	#EventBus.tech_mod_added.connect(add_implant)
 	update_counter()
 
 func add_implant(resource: Implant):

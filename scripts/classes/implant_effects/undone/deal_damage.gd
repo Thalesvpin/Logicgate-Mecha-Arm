@@ -48,7 +48,9 @@ func apply(_context = null) -> void:
 				pos = EnemyPosition.Position.values()[rng%EnemyPosition.Position.size()]
 			print('pos random: ', EnemyPosition.Position.keys()[rng%EnemyPosition.Position.size()])
 	print('dano: ', dmg)
-	Global.combat_screen.get_enemy(pos).take_damage(dmg)
+	var enemy = Global.combat_screen.get_enemy(pos)
+	enemy.take_damage(dmg)
+	EventBus.damage_dealt.emit(enemy)
 
 func revert() -> void:
 	if !is_permanent:

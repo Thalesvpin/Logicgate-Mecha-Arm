@@ -100,8 +100,8 @@ metadata/_live_palette_bindings = {
 [node name="ShopTechModItem" type="PanelContainer" unique_id=1947286681]
 custom_minimum_size = Vector2(0, 205)
 custom_maximum_size = Vector2(-1, 205)
-offset_right = 383.0
-offset_bottom = 215.0
+offset_right = 384.0
+offset_bottom = 205.0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_juyk0")
@@ -109,6 +109,7 @@ script = ExtResource("1_juyk0")
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1862513921]
 material = SubResource("ShaderMaterial_1xo13")
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_d687c")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1889875613]
@@ -140,10 +141,21 @@ size_flags_horizontal = 3
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 
-[node name="Price" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/PriceContainer" unique_id=1263093776]
+[node name="ddfg" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/PriceContainer" unique_id=1263093776]
+visible = false
 layout_mode = 2
 text = "$500"
 label_settings = ExtResource("4_xicvb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Price" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer/PriceContainer" unique_id=1699820381]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 34
+text = "$500"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 

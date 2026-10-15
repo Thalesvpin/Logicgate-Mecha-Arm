@@ -81,13 +81,13 @@ func open_shop() -> void:
 	tween.tween_method(
 		func(v: float):
 			top_h_split.split_offsets = [roundi(v), -roundi(v)],
-		h_from, 330.0, shop_tween_speed
+		h_from, 350.0, shop_tween_speed
 	)
 	var v_from := float(v_split.split_offsets[0])
 	tween.tween_method(
 		func(v: float):
 			v_split.split_offsets = [roundi(v)],
-		v_from, 90.0, shop_tween_speed
+		v_from, 0.0, shop_tween_speed
 	)
 	
 	tween.set_parallel(false)
@@ -122,9 +122,10 @@ func open_battle() -> void:
 
 func close_battle() -> void:
 	combat_screen.hide()
-	gates_selector.hide()
-	circuit_editor.hide()
-	execution_panel.hide()
+	bot_h_split.hide()
+	#gates_selector.hide()
+	#circuit_editor.hide()
+	#execution_panel.hide()
 
 func game_over(is_victory: bool) -> void:
 	gameplay_elements.hide()
@@ -148,5 +149,8 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("test4"):# B
 		Global.implant_manager.add_bio_hack(BH_1)
 	if event.is_action_pressed("test"):# T
-		print('stats_viewport.size: ', stats_viewport.size)
+		#print('stats_viewport.size: ', stats_viewport.size)
+		#open_shop()
+		var a = ChargeHeavyAttackEffect.new()
+		a.apply()
 	

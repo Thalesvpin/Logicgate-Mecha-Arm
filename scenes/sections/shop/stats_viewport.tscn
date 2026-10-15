@@ -39,6 +39,9 @@ gradient = SubResource("Gradient_rbl5t")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e4srk"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icxht"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 shadow_color = Color(0, 0, 0, 0)
@@ -107,6 +110,7 @@ offset_transform_enabled = true
 texture = SubResource("GradientTexture2D_tjqua")
 
 [node name="Page1" type="Control" parent="SubViewportContainer/SubViewport" unique_id=1561625618]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = 5.0
@@ -211,29 +215,41 @@ offset_top = 274.0
 offset_right = 1255.0
 offset_bottom = 344.0
 
-[node name="Page3" type="Control" parent="SubViewportContainer/SubViewport" unique_id=956262551]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-size_flags_horizontal = 0
-size_flags_vertical = 0
+[node name="Page3" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=657369696]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -173.0
+offset_bottom = 173.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_e4srk")
 
-[node name="AvaliableActions" type="PanelContainer" parent="SubViewportContainer/SubViewport/Page3" unique_id=1625333793]
-layout_mode = 0
-offset_left = 28.0
-offset_top = 115.0
-offset_right = 1215.0
-offset_bottom = 219.0
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/Page3" unique_id=1962304529]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/Page3/MarginContainer" unique_id=229853934]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="AvaliableActions" type="PanelContainer" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer" unique_id=1625333793]
+custom_maximum_size = Vector2(1235, -1)
+layout_mode = 2
 theme = ExtResource("7_0y6mr")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions" unique_id=214107145]
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions" unique_id=214107145]
 layout_mode = 2
 theme_override_constants/separation = 26
 
-[node name="Spacer" type="Control" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer" unique_id=966961871]
+[node name="Spacer" type="Control" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer" unique_id=966961871]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer" unique_id=76042171]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer" unique_id=76042171]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "ações de combate disponíveis"
@@ -241,79 +257,84 @@ horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer" unique_id=2060657039]
+[node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer" unique_id=2060657039]
+custom_maximum_size = Vector2(1235, -1)
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Spacer" type="Control" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1276488936]
+[node name="Spacer" type="Control" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1276488936]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=2004437476]
-custom_minimum_size = Vector2(144.04, 0)
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=2004437476]
 layout_mode = 2
-text = "Ataque leve"
+size_flags_horizontal = 3
+text = "Ataque
+leve"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=49716183]
-custom_minimum_size = Vector2(182.825, 0)
+[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=49716183]
 layout_mode = 2
-text = "Ataque pesado"
+size_flags_horizontal = 3
+text = "Ataque
+pesado"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label3" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1835739516]
-custom_minimum_size = Vector2(182.825, 0)
+[node name="Label3" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1835739516]
+custom_minimum_size = Vector2(145, 0)
 layout_mode = 2
-text = "carregar Ataque pesado"
+size_flags_horizontal = 3
+text = "carregar
+Ataque pesado"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label4" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1199034616]
-custom_minimum_size = Vector2(132.76, 0)
+[node name="Label4" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1199034616]
 layout_mode = 2
-text = "curar vida"
+size_flags_horizontal = 3
+text = "curar
+vida"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label5" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=52081117]
-custom_minimum_size = Vector2(133.36, 0)
+[node name="Label5" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=52081117]
 layout_mode = 2
-text = "consertar escudo"
+size_flags_horizontal = 3
+text = "consertar
+escudo"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label6" type="Label" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1709909248]
-custom_minimum_size = Vector2(169.27, 0)
+[node name="Label6" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1709909248]
 layout_mode = 2
-text = "dano prórpio"
+size_flags_horizontal = 3
+text = "dano
+prórpio"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Spacer2" type="Control" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1439163896]
+[node name="Spacer2" type="Control" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1439163896]
 layout_mode = 2
 
-[node name="Spacer2" type="Control" parent="SubViewportContainer/SubViewport/Page3/AvaliableActions/VBoxContainer" unique_id=1719286819]
+[node name="Spacer2" type="Control" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer" unique_id=1719286819]
 layout_mode = 2
 
-[node name="TokensAmountContainer" parent="SubViewportContainer/SubViewport/Page3" unique_id=1931450752 instance=ExtResource("15_icxht")]
-layout_mode = 0
-offset_left = 572.0
-offset_top = 345.0
-offset_right = 774.0
-offset_bottom = 449.0
+[node name="TokensAmountContainer" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer" unique_id=1931450752 instance=ExtResource("15_icxht")]
+layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="Tabs" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=1985233292]
 anchors_preset = 10
@@ -353,6 +374,7 @@ layout_mode = 2
 mouse_filter = 1
 
 [node name="ArmXRay" type="TextureRect" parent="SubViewportContainer/SubViewport" unique_id=1962423191]
+visible = false
 material = SubResource("ShaderMaterial_gtatl")
 custom_minimum_size = Vector2(0, 400)
 custom_maximum_size = Vector2(123, 400)

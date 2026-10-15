@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyConfig" format=3 uid="uid://btj4l0vpo5o5m"]
+
+[ext_resource type="Script" uid="uid://cfvuju87aunm3" path="res://scripts/classes/enemy_config.gd" id="1_wicqd"]
+[ext_resource type="Texture2D" uid="uid://b22oa260rogew" path="res://assets/MMA.png" id="2_toq62"]
+
+[resource]
+script = ExtResource("1_wicqd")
+_name = "Zumbilão"
+texture = ExtResource("2_toq62")
+health = 100
+actions_list = Array[int]([0])
+actions_per_turn = 1
+metadata/_custom_type_script = "uid://cfvuju87aunm3"

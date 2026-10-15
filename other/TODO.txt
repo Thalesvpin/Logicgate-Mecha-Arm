@@ -4,6 +4,7 @@ feedback de ação (jogador e inimigo)
 THALES:
 nomes e icones dos implantes
 -LOJA
+add opção de remover implant
 -SHADER
 add parametros no gradient
 -COMBATE
@@ -17,7 +18,6 @@ inimigo e jogador tremer ao tomar dano
 bordas da area de combate piscando vermelho ao tomar dano
 -SCRIPT
 enemy_killed_condition
-ataque pesado carrega 100%
 
 LUCA:
 definir fontes

@@ -129,10 +129,21 @@ layout_mode = 2
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 
-[node name="Price" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/PriceContainer" unique_id=679639655]
+[node name="dsfasd" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/PriceContainer" unique_id=679639655]
+visible = false
 layout_mode = 2
 text = "$500"
 label_settings = ExtResource("3_h754m")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Price" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer/PriceContainer" unique_id=2082198768]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 34
+text = "$500"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 

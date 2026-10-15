@@ -186,13 +186,6 @@ offset_right = 130.0
 offset_bottom = 173.0
 rotation = -1.5707964
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="PanelContainer/Control" unique_id=185004033]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-fill_mode = 3
-
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/Control" unique_id=1261505371]
 layout_mode = 0
 offset_left = 84.0

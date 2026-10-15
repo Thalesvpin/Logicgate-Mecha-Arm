@@ -4,6 +4,11 @@ extends PanelContainer
 var label: Label
 
 func _ready() -> void:
+	print('to rodando: ', name)
+	if name == 'CombatMoneyPanel':
+		Global.combat_money_panel = self
+	if name == 'ShopMoneyPanel':
+		Global.shop_money_panel = self
 	label = find_child('Label', true)
 	update()
 	EventBus.enemy_defeated.connect(enemy_defeated)
@@ -20,10 +25,9 @@ func update() -> void:
 	#label.text = '$%05d' % Global.run_stats.player_stats[Stats.List.CURRENT_MONEY]
 
 func enemy_defeated(enemy) -> void:
-	if self.name != 'CombatMoneyPanel':
-		return
-	var ef = AddMoneyEffect.new()
-	ef.amount = Enemy.reward[enemy.type]
-	ef.apply()
-	await get_tree().create_timer(1).timeout
-	update()
+	if self.name == 'CombatMoneyPanel':
+		var ef = AddMoneyEffect.new()
+		ef.amount = Enemy.reward[enemy.type]
+		await ef.apply(true)
+		#await get_tree().create_timer(1).timeout
+	#update()

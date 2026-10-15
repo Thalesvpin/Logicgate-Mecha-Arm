@@ -8,7 +8,7 @@ extends PanelContainer
 
 #region HEALTH
 @onready var health_bar: TextureProgressBar = $Health/HealthBar
-@onready var health_counter: Label = $Health/HealthBar/HealthCounter
+@onready var health_counter: RichTextLabel = $Health/HealthBarPlaceholder/HealthCounter
 @onready var health_bar_placeholder: ProgressBar = $Health/HealthBarPlaceholder
 var health_aux: int
 #endregion
@@ -48,16 +48,23 @@ var enemy = null
 @export var progress_bar_tween_duration: float = 0.8
 var original_position: Vector2
 var stats
+var config: EnemyConfig
 
 func _ready() -> void:
 	original_position = position
 	#EventBus.enemy_defeated.connect(defeated)
 	background.texture = background_texture
+	config = enemy.config
 	#update()
+	setup()
 
 #func _input(event: InputEvent) -> void:
 	#if event.is_action_pressed("test"):
 		#subtract_from_shield(10)
+
+func setup() -> void:
+	health_bar_placeholder.value = 100
+	health_counter.text = str(config.health)
 
 func update(animate: bool = false) -> void:
 	stats = enemy.stats

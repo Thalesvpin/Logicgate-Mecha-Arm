@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_bycc7"]
 [ext_resource type="LabelSettings" uid="uid://eu5rxff72spr" path="res://ui_elements/card_pack_price_tag.tres" id="1_pfw6h"]
+[ext_resource type="Script" uid="uid://fyw37f608gmu" path="res://scripts/pack_card.gd" id="1_q8owf"]
 [ext_resource type="LabelSettings" uid="uid://cs27xol0fwvf5" path="res://ui_elements/card_pack_title.tres" id="2_q8owf"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_ypclj"]
 
@@ -114,6 +115,7 @@ grow_vertical = 2
 size_flags_vertical = 4
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
+script = ExtResource("1_q8owf")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=627834542]
 material = SubResource("ShaderMaterial_q8owf")
@@ -165,7 +167,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=819162156]
+[node name="BuyBtn" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=819162156]
 custom_minimum_size = Vector2(134, 60)
 custom_maximum_size = Vector2(134, 60)
 layout_mode = 2
@@ -173,3 +175,5 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("2_ypclj")
 stretch_mode = 0
+
+[connection signal="button_up" from="MarginContainer/VBoxContainer/BuyBtn" to="." method="_on_buy_btn_button_up"]

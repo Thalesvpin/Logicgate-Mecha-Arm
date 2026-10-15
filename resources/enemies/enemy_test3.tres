@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemyConfig" format=3 uid="uid://bmtwmbaxdbb5b"]
+
+[ext_resource type="Script" uid="uid://cfvuju87aunm3" path="res://scripts/classes/enemy_config.gd" id="1_ld8qs"]
+[ext_resource type="Texture2D" uid="uid://wab42d74fop" path="res://assets/OFFICEBOY.png" id="2_jg5a5"]
+
+[resource]
+script = ExtResource("1_ld8qs")
+_name = "CURUPIRU"
+texture = ExtResource("2_jg5a5")
+health = 40
+shield = 1
+metadata/_custom_type_script = "uid://cfvuju87aunm3"

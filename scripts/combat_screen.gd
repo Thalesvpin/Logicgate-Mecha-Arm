@@ -32,7 +32,7 @@ func _ready() -> void:
 	#enemy['health'] -= _min
 	#enemy['bar'].subtract_from_health(_min)
 
-func center_enemy(enemy):
+func center_enemy0(enemy):
 	if block_movement:
 		return
 	block_movement = true
@@ -43,10 +43,8 @@ func center_enemy(enemy):
 	var pos_front = front_enemy.global_position
 	var pos_2 = enemy.global_position
 	
-	enemy.move(pos_front)
-	front_enemy.move(pos_2)
-	
 	center_enemy_container.remove_child(front_enemy)
+	
 	match current_position:
 		EnemyPosition.Position.CENTER:
 			return
@@ -64,6 +62,12 @@ func center_enemy(enemy):
 			right_enemy_status_bar.enemy = front_enemy
 			right_enemy_status_bar.enemy_swap()
 	
+	await get_tree().process_frame
+	await get_tree().process_frame
+	print('foda-se:\nclick: ', enemy.global_position,'\nfront: ',front_enemy.global_position)
+	enemy.move(pos_2)
+	front_enemy.move(pos_front)
+	
 	front_enemy._position = current_position
 	center_enemy_container.add_child(enemy)
 	enemy.status_bar = center_enemy_status_bar
@@ -72,7 +76,42 @@ func center_enemy(enemy):
 	center_enemy_status_bar.enemy_swap()
 	enemy_name_bar.set_display_name(enemy.enemy_name)
 	#current_position.update()
+func center_enemy(enemy):
+	if block_movement or enemy._position == EnemyPosition.Position.CENTER:
+		return
+	block_movement = true
 
+	var front_enemy = get_enemy(EnemyPosition.Position.CENTER)
+	var old_pos_enemy = enemy.global_position
+	var old_pos_front = front_enemy.global_position
+	var old_slot = enemy._position
+	var side_container = left_enemy_container if old_slot == EnemyPosition.Position.LEFT else right_enemy_container
+	var side_status_bar = left_enemy_status_bar if old_slot == EnemyPosition.Position.LEFT else right_enemy_status_bar
+
+	# reparent tudo de uma vez
+	center_enemy_container.remove_child(front_enemy)
+	side_container.remove_child(enemy)
+	side_container.add_child(front_enemy)
+	center_enemy_container.add_child(enemy)
+
+	front_enemy.status_bar = side_status_bar
+	side_status_bar.enemy = front_enemy
+	side_status_bar.enemy_swap()
+	front_enemy._position = old_slot
+
+	enemy.status_bar = center_enemy_status_bar
+	center_enemy_status_bar.enemy = enemy
+	center_enemy_status_bar.enemy_swap()
+	enemy._position = EnemyPosition.Position.CENTER
+	enemy_name_bar.set_display_name(enemy.enemy_name)
+
+	#await get_tree().process_frame
+	#await get_tree().process_frame
+
+	print('novo enemy: ', enemy.global_position, ' | novo front: ', front_enemy.global_position)
+
+	enemy.move(old_pos_enemy)
+	front_enemy.move(old_pos_front)
 #region PLAYER ACTIONS
 func player_attack() -> void:
 	pass
@@ -158,6 +197,10 @@ func get_enemy(_position: EnemyPosition.Position):
 		if child.get_class() == "Control":
 			return child
 
+const ENEMY_TEST_3 = preload("uid://bmtwmbaxdbb5b")
+const ENEMY_TEST_2 = preload("uid://btj4l0vpo5o5m")
+const ENEMY_TEST = preload("uid://dh7i6kpmm4sh8")
+
 func add_enemies() -> void:
 	var enemy_l = ENEMY.instantiate()
 	var enemy_r = ENEMY.instantiate()
@@ -165,6 +208,10 @@ func add_enemies() -> void:
 	var bar_l = ENEMY_STATUS_BAR.instantiate()
 	var bar_r = ENEMY_STATUS_BAR.instantiate()
 	var bar_c = ENEMY_STATUS_BAR.instantiate()
+	
+	enemy_l.config = ENEMY_TEST
+	enemy_r.config = ENEMY_TEST_3
+	enemy_c.config = ENEMY_TEST_2
 	
 	enemy_l._position = EnemyPosition.Position.LEFT
 	enemy_r._position = EnemyPosition.Position.RIGHT

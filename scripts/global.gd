@@ -22,6 +22,8 @@ var heavy_attack_panel
 var implant_manager
 var tech_mods_container
 var bio_hacks_container
+var combat_money_panel
+var shop_money_panel
 #endregion
 
 #control variables

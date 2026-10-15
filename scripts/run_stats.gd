@@ -82,8 +82,6 @@ func set_variables() -> void:
 		Stats.List.CURRENT_TOKENS: max_tokens_amount,
 		Stats.List.CURRENT_MONEY: 0,
 		Stats.List.CURRENT_ELEMENTALS: [],
-		Stats.List.HEAVY_ATTACK_MAX_CHARGES: heavy_attack_max_charges,
-		Stats.List.HEAVY_ATTACK_ACTIVE_CHARGES: 0,
 	}
 	gates_price = {
 		Gates.Type.AND: _and,
