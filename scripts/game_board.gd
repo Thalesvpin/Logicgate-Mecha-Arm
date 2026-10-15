@@ -22,6 +22,7 @@ func _ready() -> void:
 		Global.set_new_seed()
 	randomize_binaries()
 	connect_signals()
+	EventBus.turn_started.emit('player')
 
 func randomize_binaries() -> void:
 	execution_panel.generate_execution_sequence()
@@ -151,6 +152,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("test"):# T
 		#print('stats_viewport.size: ', stats_viewport.size)
 		#open_shop()
-		var a = ChargeHeavyAttackEffect.new()
-		a.apply()
+		#var a = ChargeHeavyAttackEffect.new()
+		#a.apply()
+		Global.circuit_editor.block_sandbox('player')
 	

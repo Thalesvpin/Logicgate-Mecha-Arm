@@ -17,7 +17,7 @@ func get_output_nodes():
 func process() -> void:
 	pass
 
-func submit() -> void:
+func submit(queue_idx: int) -> void:
 	var result := 0
 	for child in children:
 		result = result << 1 | int(child.output)
@@ -30,6 +30,8 @@ func submit() -> void:
 	await get_tree().create_timer(1).timeout
 	Global.reset_wires_color()
 	EventBus.tick.emit()
+	if queue_idx == 2:
+		EventBus.turn_ended.emit('player')
 
 func prevent_click(value: bool) -> void:
 	drag_area.input_pickable = !value

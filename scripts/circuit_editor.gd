@@ -1,19 +1,23 @@
 extends PanelContainer
-@onready var gate_layer: Node2D = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/GateLayer
-@onready var wire_layer: Node2D = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/WireLayer
-@onready var drag_layer: Node2D = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/DragLayer
-@onready var circuit_camera: Camera2D = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera
-@onready var sandbox: Node2D = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox
-
-@onready var attack_container: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack
-@onready var shield_regen: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen
-@onready var self_damage_container: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage
-@onready var heal_container: Control = $HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal
+@onready var gate_layer: Node2D = $SubViewportContainer/SubViewport/Sandbox/GateLayer
+@onready var wire_layer: Node2D = $SubViewportContainer/SubViewport/Sandbox/WireLayer
+@onready var drag_layer: Node2D = $SubViewportContainer/SubViewport/Sandbox/DragLayer
+@onready var circuit_camera: Camera2D = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera
+@onready var sandbox: Node2D = $SubViewportContainer/SubViewport/Sandbox
+@onready var wall: PanelContainer = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D/CollisionShape2D/Wall
+@onready var sub_viewport: SubViewport = $SubViewportContainer/SubViewport
+@onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
+@onready var attack_container: Control = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack
+@onready var shield_regen: Control = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen
+@onready var self_damage_container: Control = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage
+@onready var heal_container: Control = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal
+@onready var block_input: PanelContainer = $SubViewportContainer/SubViewport/Control2/BlockInput
 
 var execution_sequence: Array
 var all_gate_inputs: Array
 var all_gate_outputs: Array
 var hovered_pin: Area2D
+var block_up = false
 var action_list: Dictionary[CombatActions.List, int]={
 	CombatActions.List.ATTACK: 0,
 	CombatActions.List.HEAVY_ATTACK: 0,
@@ -25,6 +29,13 @@ var action_list: Dictionary[CombatActions.List, int]={
 
 func _ready() -> void:
 	Global.circuit_editor = self
+	EventBus.turn_started.connect(turn_start)
+	EventBus.turn_ended.connect(block_sandbox)
+	EventBus.submit_circuit.connect(lock_sandbox)
+
+#func _process(delta: float) -> void:
+	#if block_up:
+		#wall.offset_transform_position.y = -circuit_camera.collision_shape_2d.shape.size.y
 
 func generate_action_list() -> void:
 	var list: Array[int] = Global.unique_random_list(action_list.size(), 4)
@@ -54,3 +65,26 @@ func remove_input(node):
 
 func remove_output(node):
 	all_gate_outputs = all_gate_outputs.filter(func(e): return e != node)
+
+func turn_start(who: String) -> void:
+	if who == 'player':
+		unblock_sandbox()
+		unlock_sandbox()
+
+func block_sandbox(who: String) -> void:
+	if who != 'player':
+		return
+	var tween = create_tween().set_parallel(false)
+	tween.tween_property(wall, 'offset_transform_position', Vector2(0, -circuit_camera.collision_shape_2d.shape.size.y), 0.8)
+	tween.tween_callback(func(): block_up = true)
+
+func unblock_sandbox() -> void:
+	var tween = create_tween().set_parallel(false)
+	tween.tween_property(wall, 'offset_transform_position', Vector2.ZERO, 0.8)
+	block_up = false
+
+func lock_sandbox() -> void:
+	block_input.show()
+
+func unlock_sandbox() -> void:
+	block_input.hide()

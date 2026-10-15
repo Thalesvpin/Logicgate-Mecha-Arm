@@ -11,6 +11,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
 size = Vector2(1169, 663)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [node name="CircuitEditor" type="PanelContainer" unique_id=1639356317]
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,32 +27,32 @@ size_flags_vertical = 3
 script = ExtResource("1_ks6h5")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1591948817]
+visible = false
 layout_mode = 2
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer" unique_id=1607630667]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1607630667]
 layout_mode = 2
 size_flags_horizontal = 3
-mouse_filter = 0
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="HBoxContainer/SubViewportContainer" unique_id=1375753901]
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1375753901]
 disable_3d = true
 handle_input_locally = false
 physics_object_picking = true
 size = Vector2i(1920, 1080)
 render_target_update_mode = 4
 
-[node name="Sandbox" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport" unique_id=345735980]
+[node name="Sandbox" type="Node2D" parent="SubViewportContainer/SubViewport" unique_id=345735980]
 script = ExtResource("2_s76oy")
 
-[node name="Background" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1616028031]
+[node name="Background" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1616028031]
 script = ExtResource("2_2xstj")
 color = Color(0.07086415, 0.5497127, 0.81251293, 1)
 
-[node name="Grid" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1642791617]
+[node name="Grid" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1642791617]
 script = ExtResource("2_kg2i1")
 
-[node name="GameInputManager" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1991601480 instance=ExtResource("6_lwkx8")]
+[node name="GameInputManager" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1991601480 instance=ExtResource("6_lwkx8")]
 custom_minimum_size = Vector2(0, 400)
 custom_maximum_size = Vector2(-1, 400)
 anchors_preset = 0
@@ -60,28 +65,40 @@ offset_bottom = 221.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="GameOutputManager" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1090849083 instance=ExtResource("6_7i7tw")]
+[node name="GameOutputManager" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1090849083 instance=ExtResource("6_7i7tw")]
 offset_left = 434.0
 offset_top = -179.0
 offset_right = 454.0
 offset_bottom = 221.0
 
-[node name="WireLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=1908283756]
+[node name="WireLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1908283756]
 position = Vector2(0, 1)
 
-[node name="GateLayer" type="Node2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
+[node name="GateLayer" type="Node2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=449473744]
 
-[node name="CircuitCamera" type="Camera2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
+[node name="CircuitCamera" type="Camera2D" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=795285407]
 position = Vector2(1, 3)
 script = ExtResource("1_n5154")
 
-[node name="Area2D" type="Area2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
+[node name="Area2D" type="Area2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2121176238]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
 shape = SubResource("RectangleShape2D_eofqg")
 debug_color = Color(0, 1, 0, 0.41960785)
 
-[node name="Attack" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=1125852690]
+[node name="Wall" type="PanelContainer" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D/CollisionShape2D" unique_id=287733635]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -2000.0
+offset_right = 2000.0
+offset_bottom = 4000.0
+grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_visual_only = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
+
+[node name="Attack" type="Control" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=1125852690]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -91,13 +108,13 @@ offset_right = -331.0
 offset_bottom = -251.0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack" unique_id=38606537]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack" unique_id=38606537]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Ataque"
 
-[node name="Label2" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack" unique_id=3152845]
+[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack" unique_id=3152845]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 21.0
@@ -105,7 +122,7 @@ offset_right = 48.0
 offset_bottom = 44.0
 text = "1111"
 
-[node name="Heal" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=1783483027]
+[node name="Heal" type="Control" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=1783483027]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -115,13 +132,13 @@ offset_right = -335.0
 offset_bottom = -169.0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal" unique_id=1480961838]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal" unique_id=1480961838]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Cura"
 
-[node name="Label2" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal" unique_id=6152281]
+[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal" unique_id=6152281]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 21.0
@@ -129,7 +146,7 @@ offset_right = 48.0
 offset_bottom = 44.0
 text = "1111"
 
-[node name="ShieldRegen" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2097592777]
+[node name="ShieldRegen" type="Control" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=2097592777]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -139,13 +156,13 @@ offset_right = -254.0
 offset_bottom = -251.0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen" unique_id=376081284]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen" unique_id=376081284]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Regen Escudo"
 
-[node name="Label2" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen" unique_id=1927303794]
+[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen" unique_id=1927303794]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 21.0
@@ -153,7 +170,7 @@ offset_right = 72.0
 offset_bottom = 44.0
 text = "1111"
 
-[node name="SelfDamage" type="Control" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=308548882]
+[node name="SelfDamage" type="Control" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=308548882]
 layout_mode = 3
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -163,13 +180,13 @@ offset_right = -115.0
 offset_bottom = -251.0
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage" unique_id=838713022]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage" unique_id=838713022]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Dano próprio"
 
-[node name="Label2" type="Label" parent="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage" unique_id=158288340]
+[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage" unique_id=158288340]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 21.0
@@ -177,6 +194,29 @@ offset_right = 72.0
 offset_bottom = 44.0
 text = "1111"
 
-[connection signal="child_entered_tree" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/GateLayer" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
-[connection signal="mouse_entered" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="HBoxContainer/SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="HBoxContainer/SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_exited"]
+[node name="Control2" type="Control" parent="SubViewportContainer/SubViewport" unique_id=609642782]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+
+[node name="BlockInput" type="PanelContainer" parent="SubViewportContainer/SubViewport/Control2" unique_id=745173473]
+visible = false
+custom_minimum_size = Vector2(4000, 4000)
+custom_maximum_size = Vector2(4000, 4000)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -960.0
+offset_top = -540.0
+offset_right = 960.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
+[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_exited"]

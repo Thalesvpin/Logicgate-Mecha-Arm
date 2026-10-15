@@ -24,7 +24,7 @@ func submit(queue_idx: int) -> void:
 		children[i].set_value(bool(aux))
 	
 	await get_tree().create_timer(0.1).timeout
-	Global.output_manager.submit()
+	Global.output_manager.submit(queue_idx)
 
 func prevent_click(value: bool):
 	drag_area.input_pickable = !value

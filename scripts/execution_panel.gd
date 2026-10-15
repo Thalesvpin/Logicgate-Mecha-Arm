@@ -10,6 +10,10 @@ extends PanelContainer
 var timer: float = 0.0
 var holding_run: bool = false
 
+func _ready() -> void:
+	EventBus.turn_started.connect(unlock_submit)
+	EventBus.submit_circuit.connect(lock_submit)
+
 func _process(delta: float) -> void:
 	if timer > 0:
 		timer -= delta
@@ -42,6 +46,12 @@ func stop_timer() -> void:
 	timer = 0.0
 	holding_run = false
 	run_btn.material.set_shader_parameter("progress", 1)
+
+func lock_submit() -> void:
+	run_btn.disabled = true
+
+func unlock_submit() -> void:
+	run_btn.disabled = false
 
 func _on_run_btn_button_down() -> void:
 	start_timer()

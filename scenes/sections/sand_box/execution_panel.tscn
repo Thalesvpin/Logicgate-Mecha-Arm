@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_pmrxt"]
 [ext_resource type="LabelSettings" uid="uid://bu1qr5thhtdmy" path="res://ui_elements/ui_execution_list_number.tres" id="2_wvfaq"]
 [ext_resource type="Shader" uid="uid://ddtcjrx2hj74g" path="res://shaders/texture_progress.gdshader" id="4_tosqn"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_7ogem"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eijvj"]
 shader = ExtResource("4_tosqn")
@@ -86,6 +87,7 @@ offset_transform_enabled = true
 offset_transform_rotation = 1.5707964
 tooltip_text = "Submit"
 texture_normal = ExtResource("1_pmrxt")
+texture_disabled = ExtResource("5_7ogem")
 
 [node name="InfoBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=2133727861]
 layout_mode = 2
