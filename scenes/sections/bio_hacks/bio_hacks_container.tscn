@@ -36,35 +36,50 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_0j75a")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1943549317]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1606179792]
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1658000360]
+own_world_3d = true
+size = Vector2i(1910, 1070)
+
+[node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=1131320102]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1943549317]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1594259129]
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer" unique_id=1594259129]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=646430230]
+[node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer" unique_id=646430230]
 layout_mode = 2
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=729233739]
+[node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=729233739]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0j75a")
 
-[node name="TitleBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=743033342]
+[node name="TitleBar" type="HBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=743033342]
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="ImplantCount" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=979670479]
+[node name="ImplantCount" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=979670479]
 layout_mode = 2
 text = "4/5"
 label_settings = SubResource("LabelSettings_yo1n6")
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=751430311]
+[node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=751430311]
 custom_minimum_size = Vector2(25, 25)
 custom_maximum_size = Vector2(25, 25)
 layout_mode = 2
@@ -72,7 +87,7 @@ size_flags_vertical = 4
 texture = ExtResource("1_m31pt")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1180202968]
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1180202968]
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 0
@@ -80,13 +95,13 @@ text = "Bio Hacks"
 label_settings = SubResource("LabelSettings_0j75a")
 uppercase = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=215364426]
+[node name="ScrollContainer" type="ScrollContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer" unique_id=215364426]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/scrollbar_h_separation = 4
 horizontal_scroll_mode = 3
 
-[node name="ImplantsHolder" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=999378554]
+[node name="ImplantsHolder" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer" unique_id=999378554]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

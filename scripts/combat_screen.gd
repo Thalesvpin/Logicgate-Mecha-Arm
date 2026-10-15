@@ -1,9 +1,11 @@
 extends Control
 
-@onready var left_enemy_container: VBoxContainer = $TopPanels/EnemiesSection/LeftEnemyContainer
-@onready var center_enemy_container: VBoxContainer = $TopPanels/EnemiesSection/CenterEnemyContainer
-@onready var right_enemy_container: VBoxContainer = $TopPanels/EnemiesSection/RightEnemyContainer
-@onready var enemy_name_bar: Control = $MidBottomPanels/EnemyNameBar
+@onready var panel_container: PanelContainer = $SubViewportContainer/SubViewport/PanelContainer
+@onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
+@onready var left_enemy_container: VBoxContainer = $SubViewportContainer/SubViewport/PanelContainer/TopPanels/EnemiesSection/LeftEnemyContainer
+@onready var center_enemy_container: VBoxContainer = $SubViewportContainer/SubViewport/PanelContainer/TopPanels/EnemiesSection/CenterEnemyContainer
+@onready var right_enemy_container: VBoxContainer = $SubViewportContainer/SubViewport/PanelContainer/TopPanels/EnemiesSection/RightEnemyContainer
+@onready var enemy_name_bar: Control = $SubViewportContainer/SubViewport/PanelContainer/MidBottomPanels/EnemyNameBar
 var left_enemy_status_bar: PanelContainer
 var center_enemy_status_bar: PanelContainer
 var right_enemy_status_bar: PanelContainer
@@ -16,6 +18,7 @@ func _ready() -> void:
 	Global.combat_screen = self
 	add_enemies()
 	connect_signals()
+	sub_viewport_container.custom_minimum_size = panel_container.get_combined_minimum_size()
 
 #func _input(event: InputEvent) -> void:
 	#if event.is_action_pressed("test"):
