@@ -11,7 +11,7 @@ var timer: float = 0.0
 var holding_run: bool = false
 
 func _ready() -> void:
-	EventBus.turn_started.connect(unlock_submit)
+	EventBus.turn_started.connect(start_turn)
 	EventBus.submit_circuit.connect(lock_submit)
 
 func _process(delta: float) -> void:
@@ -36,6 +36,11 @@ func generate_execution_sequence() -> void:
 	
 	for i in execution_labels.size():
 		execution_labels[i].text = '%04d' % Global.dec_to_bin(list[i])
+
+func start_turn(who) -> void:
+	if typeof(who) == typeof('') && who == 'player':
+		unlock_submit()
+		generate_execution_sequence()
 
 ##Duration in seconds
 func start_timer() -> void:

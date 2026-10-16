@@ -23,8 +23,6 @@ func _ready() -> void:
 	Global.player_stats_bar = self
 	config_vars()
 	set_values()
-	#EventBus.damage_taken.connect(take_damage)
-	#EventBus.healed.connect(heal)
 
 func config_vars() -> void:
 	shield_bars = [shield_bar_1, shield_bar_2, shield_bar_3, shield_bar_4, shield_bar_5]

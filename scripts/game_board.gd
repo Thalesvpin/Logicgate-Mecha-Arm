@@ -18,7 +18,7 @@ var last_top_h_split_offsets: PackedInt32Array
 var last_v_split_offsets: PackedInt32Array
 
 func _ready() -> void:
-	if Global.seed == 0:
+	if Global._seed == 0:
 		Global.set_new_seed()
 	randomize_binaries()
 	connect_signals()

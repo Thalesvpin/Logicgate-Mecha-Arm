@@ -106,8 +106,7 @@ func progress_bar_animation(bar: Node, new_value: int, callback = null) -> void:
 func set_health_value(value: float, animate: bool = false) -> void:
 	var percentage = (value/stats[Stats.List.MAX_HEALTH])*100
 	progress_bar_animation(health_bar, percentage)
-	#health_bar.value = percentage
-	#health_counter.text = str(value)
+	Global.number_shift_animation(health_counter, int(value))
 	health_aux = int(value)
 	if animate:
 		progress_bar_animation(health_bar_placeholder, percentage, alive_check)

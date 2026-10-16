@@ -13,6 +13,7 @@ func handle_next_turn(who) -> void:
 		turn_idx = 0
 	else:
 		turn_idx += 1
+	print('emitiu q começou a vez de: ',turn_sequence[turn_idx])
 	EventBus.turn_started.emit(turn_sequence[turn_idx])
 
 func add_to_sequence(alguma_coisa) -> void:

@@ -29,7 +29,7 @@ var turn_manager
 
 #control variables
 var sell_gate: bool = false
-var seed: int = 0
+var _seed: int = 0
 var random = PcgRandom.new()
 var execution_sequence: Array[int]
 enum Rarity {COMMON, RARE, ULTRA_RARE, LEGENDARY}
@@ -81,7 +81,23 @@ var inventory_options = [
 		'id': 'idx_2'
 	},
 ]
-
+var implant_options = [
+	{
+		'texture': INFO,
+		'title': 'Ajuda',
+		'id': 'idx_0'
+	},
+	{
+		'texture': SELL,
+		'title': 'Vender',
+		'id': 'idx_1'
+	},
+	{
+		'texture': CANCEL,
+		'title': 'Cancelar',
+		'id': 'idx_2'
+	},
+]
 var rarity_textures: Dictionary[Rarity, Texture2D] = {
 	Rarity.COMMON: RARITY_PLACEHOLDER,
 	Rarity.RARE: RARITY_PLACEHOLDER,
@@ -148,8 +164,8 @@ func rand_binary(size: int) -> int:
 	return result
 
 func set_new_seed():
-	seed = randi()
-	random.set_seed(seed)
+	_seed = randi()
+	random.set_seed(_seed)
 
 func change_wires_color(color: Color) -> void:
 	for child in circuit_editor.wire_layer.get_children():
@@ -235,3 +251,9 @@ func sort_type() -> void:
 				tm_legendary.append(implant)
 			Implant.Type.BIO_HACK:
 				bh_legendary.append(implant)
+
+##label.text must be valid
+func number_shift_animation(label: Variant, final_val: int, duration: float = 0.8) -> void:
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_method(func(v): label.text = str(v), int(label.text), final_val, duration)

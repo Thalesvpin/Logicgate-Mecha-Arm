@@ -3,7 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://ducsuhnfwhy16" path="res://scenes/sections/shop/stats_viewport/template/right_stat_improvement_container.tscn" id="1_s7rpj"]
 [ext_resource type="Script" uid="uid://wpup6ufvdlvp" path="res://scripts/max_health_upgrade.gd" id="2_yvr2v"]
 [ext_resource type="Texture2D" uid="uid://hop50j6i5brl" path="res://assets/TCC_icon_stat_MaxHealth.png" id="3_5iw51"]
-[ext_resource type="Shader" uid="uid://33bi7ynev10y" path="res://shaders/dual_color_remap.gdshader" id="4_abhrf"]
 
 [sub_resource type="Shader" id="Shader_6wn8n"]
 code = "shader_type canvas_item;
@@ -115,15 +114,6 @@ shader_parameter/direction = 0
 shader_parameter/terminator_color = Color(1, 1, 1, 1)
 shader_parameter/terminator_size_px = 4.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pbkjh"]
-shader = ExtResource("4_abhrf")
-shader_parameter/effect_enabled = false
-shader_parameter/source_color_1 = Color(0, 0, 0, 1)
-shader_parameter/target_color_1 = Color(0.20392, 0.95294, 1, 1)
-shader_parameter/source_color_2 = Color(0.20392, 0.95294, 1, 1)
-shader_parameter/target_color_2 = Color(0, 0, 0, 1)
-shader_parameter/tolerance = 0.5
-
 [node name="MaxHealthContainer" unique_id=109097967 instance=ExtResource("1_s7rpj")]
 script = ExtResource("2_yvr2v")
 
@@ -155,9 +145,6 @@ text = "+20"
 [node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="4" unique_id=1139033340]
 layout_mode = 2
 text = ")"
-
-[node name="ColorRect" parent="." index="1" unique_id=948776660]
-material = SubResource("ShaderMaterial_pbkjh")
 
 [connection signal="button_down" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_up"]

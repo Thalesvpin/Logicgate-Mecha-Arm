@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dx218n1ue8ida" path="res://scripts/implant_card.gd" id="2_530ae"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="3_5wyd8"]
 [ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="4_0ih7b"]
+[ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="5_mt2m6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -40,6 +41,9 @@ border_color = Color(0.8, 0.8, 0.8, 0)
 [sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
 font_size = 32
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
+bg_color = Color(0, 0, 0, 0.73333335)
+
 [node name="ImplantCard" type="PanelContainer" unique_id=1355907985]
 custom_minimum_size = Vector2(0, 114)
 custom_maximum_size = Vector2(-1, 114)
@@ -61,6 +65,7 @@ theme_override_constants/margin_bottom = 2
 
 [node name="RarityOutline" type="PanelContainer" parent="MarginContainer" unique_id=1411032809]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/RarityOutline" unique_id=1014380204]
@@ -69,6 +74,7 @@ theme_override_constants/separation = 4
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=993661891]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
 [node name="ModifierTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/PanelContainer" unique_id=2099639790]
@@ -99,6 +105,7 @@ autowrap_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions" unique_id=1684460137]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_c7rv4")
 
 [node name="HSeparator2" type="HSeparator" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer" unique_id=957505059]
@@ -109,6 +116,7 @@ theme_override_styles/separator = SubResource("StyleBoxLine_vol35")
 
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions" unique_id=882777793]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2" unique_id=440537894]
@@ -136,6 +144,7 @@ stretch_mode = 4
 [node name="Spacer" type="Control" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer" unique_id=1216651883]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 
 [node name="ActivatorHolder" type="HBoxContainer" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer" unique_id=1348600365]
 layout_mode = 2
@@ -168,6 +177,7 @@ vertical_alignment = 1
 
 [node name="ActivatorBtn" type="TextureButton" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=464088979]
 layout_mode = 2
+mouse_filter = 1
 texture_normal = ExtResource("4_0ih7b")
 stretch_mode = 4
 
@@ -214,4 +224,57 @@ layout_mode = 2
 texture_normal = ExtResource("4_0ih7b")
 stretch_mode = 4
 
+[node name="SellOverlay" type="PanelContainer" parent="." unique_id=1154463616]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SellOverlay" unique_id=476301584]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="SellOverlay/VBoxContainer" unique_id=744786945]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="ConfirmSellLabel" type="RichTextLabel" parent="SellOverlay/VBoxContainer/HBoxContainer2" unique_id=835366958]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Vender por $500?"
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SellOverlay/VBoxContainer" unique_id=2145673178]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Spacer" type="Control" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=277285279]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ConfirmBtn" type="TextureButton" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=627705637]
+layout_mode = 2
+size_flags_vertical = 0
+texture_normal = ExtResource("5_mt2m6")
+
+[node name="Spacer2" type="Control" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=954679844]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CancelBtn" type="TextureButton" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=52374698]
+layout_mode = 2
+size_flags_vertical = 0
+texture_normal = ExtResource("5_mt2m6")
+
+[node name="Spacer3" type="Control" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=1821842276]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="button_up" from="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivatorBtn" to="." method="_on_activator_btn_button_up"]
+[connection signal="button_up" from="SellOverlay/VBoxContainer/HBoxContainer/ConfirmBtn" to="." method="_on_confirm_btn_button_up"]
+[connection signal="button_up" from="SellOverlay/VBoxContainer/HBoxContainer/CancelBtn" to="." method="_on_cancel_btn_button_up"]

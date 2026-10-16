@@ -115,6 +115,7 @@ shader_parameter/terminator_color = Color(1, 1, 1, 1)
 shader_parameter/terminator_size_px = 4.0
 
 [node name="ShieldStrengthContainer" unique_id=109097967 instance=ExtResource("1_acptt")]
+mouse_filter = 1
 script = ExtResource("2_r5wt1")
 stat = 3
 title = "Força dos Escudos"

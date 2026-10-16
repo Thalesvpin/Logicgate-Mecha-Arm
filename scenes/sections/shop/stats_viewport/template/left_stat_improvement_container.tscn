@@ -117,7 +117,7 @@ shader_parameter/terminator_size_px = 4.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]
 shader = ExtResource("4_n2k30")
-shader_parameter/effect_enabled = true
+shader_parameter/effect_enabled = false
 shader_parameter/source_color_1 = Color(0, 0, 0, 1)
 shader_parameter/target_color_1 = Color(0.20392, 0.95294, 1, 1)
 shader_parameter/source_color_2 = Color(0.20392, 0.95294, 1, 1)

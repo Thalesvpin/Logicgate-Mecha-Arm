@@ -18,11 +18,16 @@ extends PanelContainer
 @onready var activation_uses_compact: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact
 @onready var activation_count_compact_label: Label = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact/ActivationCountCompact
 @onready var activator_btn_compact: TextureButton = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivatorBtnCompact
+@onready var sell_overlay: PanelContainer = $SellOverlay
+@onready var confirm_btn: TextureButton = $SellOverlay/VBoxContainer/HBoxContainer/ConfirmBtn
+@onready var cancel_btn: TextureButton = $SellOverlay/VBoxContainer/HBoxContainer/CancelBtn
+@onready var confirm_sell_label: RichTextLabel = $SellOverlay/VBoxContainer/HBoxContainer2/ConfirmSellLabel
 
 const BIOHACK_BG_STYLEBOX_FLAT = preload("uid://dm33npd24kf11")
 const TECHMOD_BG_STYLEBOX_FLAT = preload("uid://dlegihcropccf")
 const ACTIVATOR = preload("uid://bb84g5o4b08f3")
 const RARITY_PLACEHOLDER = preload("uid://b8l68f41218q5")
+const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 
 @export var resource: Implant
 var type: int
@@ -97,6 +102,39 @@ func set_template(template: int):
 		compact_version.show()
 		extended_versions.hide()
 
+func open_radial_menu() -> void:
+	var radial_menu = RADIAL_MENU.instantiate()
+	radial_menu.set_items(Global.implant_options)
+	radial_menu.set_center_ring_text(Gates.Type.keys()[type])
+	radial_menu.item_selected.connect(handle_radial_menu_selection)
+	get_tree().current_scene.add_child(radial_menu)
+	var m = get_tree().current_scene.get_global_mouse_position()
+	radial_menu.open_menu(m)
+	get_viewport().set_input_as_handled()
+
+func handle_radial_menu_selection(id: String, position: Vector2):
+	match id:
+		'idx_0':	#Info/Help
+			print('ajuda')
+			pass
+		'idx_1':	#Sell implant
+			sell_overlay.show()
+			confirm_sell_label.text = 'Vender por $%d?' % get_sell_value()
+		'idx_2':	#Cancel
+			print('cancela')
+			pass
+		'idx_3':	#
+			pass
+
+func get_sell_value() -> int:
+	return 100
+
+func sell() -> void:
+	print('vendeu')
+	var ef = AddMoneyEffect.new()
+	ef.amount = 100
+	ef.apply()
+
 func _on_resized() -> void:
 	if is_loaded:
 		if size.x > 325:
@@ -105,3 +143,17 @@ func _on_resized() -> void:
 			set_template(2)
 		if size.x <= 278:
 			set_template(3)
+
+func _on_activator_btn_button_up() -> void:
+	print('executa o implante')
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT && event.pressed:
+			open_radial_menu()
+
+func _on_confirm_btn_button_up() -> void:
+	sell()
+
+func _on_cancel_btn_button_up() -> void:
+	sell_overlay.hide()

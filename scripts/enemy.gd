@@ -129,12 +129,14 @@ func turn_start(who):
 			action = actions_list[random_action()]
 			match action:
 				Enemy.Actions.ATTACK:
+					print('enemy attack')
 					attack()
 				Enemy.Actions.SELF_DAMAGE:
 					self_damage()
 				Enemy.Actions.HEAL:
 					heal()
 				Enemy.Actions.REPAIR_SHIELD:
+					print('enemy repair shield')
 					repair_shield()
 		EventBus.turn_ended.emit(self)
 

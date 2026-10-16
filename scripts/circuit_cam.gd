@@ -1,6 +1,7 @@
 extends Camera2D
 @onready var circuit_editor: PanelContainer = $"../../../.."
 @onready var wall: PanelContainer = $Area2D/CollisionShape2D/Wall
+@onready var texture_rect: TextureRect = $Area2D/CollisionShape2D/Wall/TextureRect
 
 @onready var area_2d: Area2D = $Area2D
 @onready var collision_shape_2d: CollisionShape2D = $Area2D/CollisionShape2D
@@ -8,6 +9,7 @@ extends Camera2D
 var camera_drag: bool = false
 const X: int = 0
 const Y: int = 1
+var lock_zoom: bool = false
 @export var zoom_factor: float = 0.1
 ##Parameters x and y will be used as:
 ##[br]
@@ -19,6 +21,8 @@ const Y: int = 1
 func _ready() -> void:
 	area_limit = get_viewport_rect().size*1000
 	anchor_mode = Camera2D.ANCHOR_MODE_DRAG_CENTER
+	EventBus.turn_ended.connect(turn_end)
+	EventBus.turn_started.connect(turn_start)
 
 func _process(delta: float) -> void:
 	update_shape_to_viewport()
@@ -42,15 +46,27 @@ func _input(event: InputEvent) -> void:
 			position.y = new_range.y
 	
 	if event.is_action_pressed("scroll_up"):
-		zoom += Vector2(zoom_factor, zoom_factor)
-		is_out_of_bounds(position)
-		is_out_of_bounds(position)
+		if !lock_zoom:
+			zoom += Vector2(zoom_factor, zoom_factor)
+			is_out_of_bounds(position)
+			is_out_of_bounds(position)
 	
 	if event.is_action_pressed("scroll_down"):
-		if zoom - Vector2(zoom_factor, zoom_factor) > Vector2(0.3, 0.3):
+		if !lock_zoom && zoom - Vector2(zoom_factor, zoom_factor) > Vector2(0.3, 0.3):
 			zoom -= Vector2(zoom_factor, zoom_factor)
 			is_out_of_bounds(position)
 			is_out_of_bounds(position)
+
+func is_player(who) -> bool:
+	return typeof(who) == typeof('') && who == 'player' 
+
+func turn_end(who) -> void:
+	if is_player(who):
+		lock_zoom = true
+
+func turn_start(who) -> void:
+	if is_player(who):
+		lock_zoom = false
 
 func is_out_of_bounds(curr_pos):
 	var viewport = (get_viewport_rect().size/zoom)/2

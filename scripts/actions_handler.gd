@@ -20,6 +20,7 @@ func setup_signals() -> void:
 	EventBus.self_damage.connect(self_dmg)
 	EventBus.healed.connect(heal)
 	EventBus.repaired_shield.connect(repair_shield)
+	EventBus.damage_taken.connect(take_damage)
 
 func attack() -> void:
 	print('Light Attack')
