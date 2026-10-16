@@ -85,9 +85,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
-split_offsets = PackedInt32Array(230, -10)
+split_offsets = PackedInt32Array(10, -230)
 drag_nested_intersections = true
-split_offset = 230
+split_offset = 10
 
 [node name="TechModsContainer" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=565464093 instance=ExtResource("1_0jtfi")]
 layout_mode = 2
