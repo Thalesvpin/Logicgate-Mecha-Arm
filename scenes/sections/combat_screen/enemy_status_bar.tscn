@@ -810,6 +810,7 @@ corner_radius_bottom_left = 500
 font_size = 26
 
 [node name="EnemyStatusBar" type="PanelContainer" unique_id=1067671728]
+z_index = 1
 offset_right = 347.0
 offset_bottom = 82.0
 mouse_filter = 1
@@ -1046,6 +1047,7 @@ layout_mode = 2
 size_flags_vertical = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="AfflictedElement" unique_id=1286274568]
+visible = false
 layout_mode = 0
 offset_left = 31.0
 offset_top = 8.0
@@ -1054,9 +1056,11 @@ offset_bottom = 64.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ryokx")
 
 [node name="AfflictedTexture" type="TextureRect" parent="AfflictedElement/PanelContainer" unique_id=1695227691]
+visible = false
 layout_mode = 2
 
 [node name="AfflictedNumberBg" type="PanelContainer" parent="AfflictedElement" unique_id=2097709231]
+visible = false
 layout_mode = 0
 offset_left = 30.0
 offset_top = 45.0
@@ -1066,6 +1070,7 @@ offset_transform_position = Vector2(-16.89, 24.475)
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
 [node name="AfflictedCounter" type="Label" parent="AfflictedElement/AfflictedNumberBg" unique_id=1656860947]
+visible = false
 layout_mode = 2
 text = "3"
 horizontal_alignment = 2
@@ -1076,6 +1081,7 @@ layout_mode = 2
 size_flags_vertical = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="SelfElement" unique_id=1591068111]
+visible = false
 layout_mode = 0
 offset_left = 260.0
 offset_top = 8.0
@@ -1084,9 +1090,11 @@ offset_bottom = 64.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vvvff")
 
 [node name="ElementTexture" type="TextureRect" parent="SelfElement/PanelContainer" unique_id=777460817]
+visible = false
 layout_mode = 2
 
 [node name="ElementNumberBg" type="PanelContainer" parent="SelfElement" unique_id=665975718]
+visible = false
 layout_mode = 0
 offset_left = 307.0
 offset_top = 45.0
@@ -1096,6 +1104,7 @@ offset_transform_position = Vector2(-16.89, 24.475)
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
 [node name="ElementLevel" type="Label" parent="SelfElement/ElementNumberBg" unique_id=1660875614]
+visible = false
 layout_mode = 2
 text = "3"
 horizontal_alignment = 2

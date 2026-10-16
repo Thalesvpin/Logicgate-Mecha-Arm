@@ -24,6 +24,7 @@ var tech_mods_container
 var bio_hacks_container
 var combat_money_panel
 var shop_money_panel
+var turn_manager
 #endregion
 
 #control variables

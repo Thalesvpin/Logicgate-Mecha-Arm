@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://y6nreclkpn6v" path="res://scripts/sandbox.gd" id="2_s76oy"]
 [ext_resource type="PackedScene" uid="uid://bwu5fuinlw5ui" path="res://scenes/sections/sand_box/game_output_manager.tscn" id="6_7i7tw"]
 [ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/sections/sand_box/game_input_manager.tscn" id="6_lwkx8"]
+[ext_resource type="Texture2D" uid="uid://yiixgalslpim" path="res://assets/ENFERMEIRA.png" id="8_rsy7x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
 size = Vector2(1169, 663)
@@ -97,6 +98,15 @@ grow_horizontal = 2
 offset_transform_enabled = true
 offset_transform_visual_only = false
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
+
+[node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D/CollisionShape2D/Wall" unique_id=788167873]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+texture = ExtResource("8_rsy7x")
+
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D/CollisionShape2D/Wall" unique_id=1989499903]
+layout_mode = 2
 
 [node name="Attack" type="Control" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera" unique_id=1125852690]
 layout_mode = 3

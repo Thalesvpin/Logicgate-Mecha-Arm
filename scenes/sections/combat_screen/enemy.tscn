@@ -322,6 +322,7 @@ offset_left = -157.44
 offset_right = 475.56
 offset_bottom = 1000.0
 scale = Vector2(0.5, 0.5)
+offset_transform_enabled = true
 tooltip_text = "aaaaaaaaaaaaaaaaaaa"
 texture = ExtResource("1_87g8f")
 

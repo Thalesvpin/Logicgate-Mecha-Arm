@@ -84,16 +84,16 @@ func enemy_swap() -> void:
 	
 	tween.tween_property(self, 'position', Vector2(position.x, original_position.y), swap_bar_tween_duration)
 
-func check_elemental_counters() -> void:
-	if afflicted_counter < 10:
-		afflicted_number_bg.position.x = 32
-		afflicted_number_bg.size.x = 10
-	elif afflicted_counter < 100:
-		afflicted_number_bg.position.x = 23
-		afflicted_number_bg.size.x = 19
-	elif afflicted_counter < 1000:
-		afflicted_number_bg.position.x = 14
-		afflicted_number_bg.size.x = 28
+#func check_elemental_counters() -> void:
+	#if afflicted_counter < 10:
+		#afflicted_number_bg.position.x = 32
+		#afflicted_number_bg.size.x = 10
+	#elif afflicted_counter < 100:
+		#afflicted_number_bg.position.x = 23
+		#afflicted_number_bg.size.x = 19
+	#elif afflicted_counter < 1000:
+		#afflicted_number_bg.position.x = 14
+		#afflicted_number_bg.size.x = 28
 
 func progress_bar_animation(bar: Node, new_value: int, callback = null) -> void:
 	var tween = create_tween()

@@ -212,6 +212,9 @@ func add_enemies() -> void:
 	var bar_r = ENEMY_STATUS_BAR.instantiate()
 	var bar_c = ENEMY_STATUS_BAR.instantiate()
 	
+	Global.turn_manager.add_to_sequence(enemy_l)
+	Global.turn_manager.add_to_sequence(enemy_r)
+	Global.turn_manager.add_to_sequence(enemy_c)
 	enemy_l.config = ENEMY_TEST
 	enemy_r.config = ENEMY_TEST_3
 	enemy_c.config = ENEMY_TEST_2

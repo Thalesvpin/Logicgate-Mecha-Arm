@@ -116,6 +116,9 @@ shader_parameter/terminator_size_px = 4.0
 
 [node name="CriticDamageMultContainer" unique_id=1221763294 instance=ExtResource("1_rhc35")]
 script = ExtResource("2_rtpjr")
+stat = 14
+title = "Multiplicador de Dano Crítico"
+icon = ExtResource("3_5hbgu")
 
 [node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1176008596) index="0" unique_id=1472995469]
 custom_minimum_size = Vector2(186.595, 0)

@@ -5,18 +5,25 @@ THALES:
 nomes e icones dos implantes
 -LOJA
 add opção de remover implant
+add subviewport
+criar scipt generico pra usar o color remap no stats viewport
 -SHADER
 add parametros no gradient
 -COMBATE
-remover aflição elemental e elemntal do inimigo
 add barra de output na sandbox
 barra de ataque carregado amarela caso cargas < 4
 barras de stats psicar branco ao reduzir
 dmg numbers na tela
-bloqueio da sandbox durante turno do inimigo
 inimigo e jogador tremer ao tomar dano
 bordas da area de combate piscando vermelho ao tomar dano
 numero da vida do inimigo n atualiza
+bloquear implantes fora do turno
+exportar tempo entre turnos
+exportar tempo entre ações
+colocar um quadrado em cima do inimigo da vez
+arrumar textura com sandbox tampada
+add subviewport nos tokens
+copiar estrutura do painel contextual
 -SCRIPT
 enemy_killed_condition
 

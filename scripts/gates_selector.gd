@@ -1,7 +1,9 @@
 extends PanelContainer
 
-@onready var sell_overlay: Control = $SellOverlay
-@onready var tokens_label: Label = $MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/TokensLabel
+@onready var sell_overlay: Control = $SubViewportContainer/SubViewport/PanelContainer/SellOverlay
+@onready var tokens_label: Label = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/TokensLabel
+@onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
+@onready var margin_container: MarginContainer = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer
 
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 
@@ -9,6 +11,7 @@ func _ready() -> void:
 	Global.gates_selector = self
 	EventBus.gate_removed_from_sandbox.connect(gate_sold)
 	set_tokens_label()
+	sub_viewport_container.custom_minimum_size = margin_container.get_combined_minimum_size()
 
 func _gui_input(event: InputEvent) -> void:
 	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:

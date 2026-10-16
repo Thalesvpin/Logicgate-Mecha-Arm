@@ -7,7 +7,7 @@ class_name StatUpgrade
 @onready var current_value: Label = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/CurrentValue
 
 @export var stat: Stats.List
-@export var title: String
+@export_multiline() var title: String
 @export var icon: Texture2D
 @export var inicial_price: int
 @export var price_escalation: float

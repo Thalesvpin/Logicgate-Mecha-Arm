@@ -6,7 +6,10 @@ class_name EnemyKilledCondition
 func is_met(_context = null) -> bool:
 	if _context != null:
 		if _context.name == 'Enemy':
-			var health = _context.stats[Stats.List.CURRENT_HEALTH]
-			a
-	return true
-	#return _context.owner.stats.health_percent() < percent
+			var health = _context['enemy'].stats[Stats.List.CURRENT_HEALTH]
+			var dmg = _context['damage']
+			if survived:
+				return health - dmg > 0
+			else:
+				return health - dmg <= 0
+	return false

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="EnemyKilledCondition" format=3 uid="uid://co50wvt004aot"]
+
+[ext_resource type="Script" uid="uid://b1185a0kg0dwq" path="res://scripts/classes/implant_conditions/undone/enemy_killed.gd" id="1_3ly82"]
+
+[resource]
+script = ExtResource("1_3ly82")
+metadata/_custom_type_script = "uid://b1185a0kg0dwq"

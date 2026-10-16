@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://qghwmxll16y6" path="res://themes/stat_upgrade.tres" id="1_kkf05"]
 [ext_resource type="Texture2D" uid="uid://b12a3wbt5v5de" path="res://assets/TCC_icon_stat_UpgradeButton_idle.png" id="2_fs2s4"]
 [ext_resource type="Texture2D" uid="uid://dagr0xx55pdy6" path="res://assets/TCC_icon_stat_UpgradeButton_hover.png" id="3_n2k30"]
+[ext_resource type="Shader" uid="uid://33bi7ynev10y" path="res://shaders/dual_color_remap.gdshader" id="4_n2k30"]
 
 [sub_resource type="Shader" id="Shader_fs2s4"]
 code = "shader_type canvas_item;
@@ -114,6 +115,15 @@ shader_parameter/direction = 0
 shader_parameter/terminator_color = Color(1, 1, 1, 1)
 shader_parameter/terminator_size_px = 4.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]
+shader = ExtResource("4_n2k30")
+shader_parameter/effect_enabled = false
+shader_parameter/source_color_1 = Color(0, 0, 0, 1)
+shader_parameter/target_color_1 = Color(0.20392, 0.95294, 1, 1)
+shader_parameter/source_color_2 = Color(0.20392, 0.95294, 1, 1)
+shader_parameter/target_color_2 = Color(0, 0, 0, 1)
+shader_parameter/tolerance = 0.5
+
 [node name="LeftStatImprovementContainer" type="PanelContainer" unique_id=1221763294]
 offset_left = 200.0
 offset_top = 63.0
@@ -198,3 +208,8 @@ layout_mode = 2
 [node name="Price" type="Label" parent="MarginContainer/HBoxContainer" unique_id=191295128]
 layout_mode = 2
 text = "$500"
+
+[node name="ColorRemapper" type="ColorRect" parent="." unique_id=16100640]
+material = SubResource("ShaderMaterial_eofqg")
+layout_mode = 2
+mouse_filter = 2

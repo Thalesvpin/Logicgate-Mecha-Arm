@@ -28,18 +28,12 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
-bg_color = Color(0.12538925, 0.35663092, 0.124891646, 1)
-border_width_left = 400
-border_width_top = 400
-border_width_right = 400
-border_width_bottom = 400
-border_color = Color(0.4, 1, 0.21568628, 0.41568628)
-border_blend = true
-corner_radius_top_left = 32
-corner_radius_top_right = 32
-corner_radius_bottom_right = 32
-corner_radius_bottom_left = 32
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pjy5"]
+bg_color = Color(0.5803922, 0.6431373, 0, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
 
 [sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
 font_size = 19
@@ -147,14 +141,23 @@ offset_bottom = 130.0
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
-[node name="TextBox" type="PanelContainer" parent="PanelContainer/Control/PanelContainer2" unique_id=853178644]
+[node name="Mask" type="PanelContainer" parent="PanelContainer/Control/PanelContainer2" unique_id=770659935]
+clip_children = 1
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
+offset_transform_enabled = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 
-[node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/TextBox" unique_id=1806823322]
+[node name="ContextPanelBG" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask" unique_id=357493249]
 layout_mode = 2
 
-[node name="Text" type="Label" parent="PanelContainer/Control/PanelContainer2/TextBox/Control" unique_id=38195934]
+[node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/Mask/ContextPanelBG" unique_id=1806823322]
+anchors_preset = 0
+offset_left = 400.0
+offset_top = 400.0
+offset_right = -212.0
+offset_bottom = -290.0
+
+[node name="Text" type="Label" parent="PanelContainer/Control/PanelContainer2/Mask/ContextPanelBG/Control" unique_id=38195934]
 custom_maximum_size = Vector2(245.925, -1)
 layout_mode = 0
 offset_left = -388.0
@@ -167,7 +170,7 @@ label_settings = SubResource("LabelSettings_eofqg")
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Percentage" type="Label" parent="PanelContainer/Control/PanelContainer2/TextBox/Control" unique_id=1695553146]
+[node name="Percentage" type="Label" parent="PanelContainer/Control/PanelContainer2/Mask/ContextPanelBG/Control" unique_id=1695553146]
 layout_mode = 0
 offset_left = -348.0
 offset_top = -341.0

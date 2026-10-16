@@ -108,9 +108,9 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i1485"]
 shader = SubResource("Shader_6wn8n")
 shader_parameter/progress = 1.0
-shader_parameter/saturation = 0.0
+shader_parameter/saturation = 0.2
 shader_parameter/lightness = 0.4
-shader_parameter/direction = 1
+shader_parameter/direction = 0
 shader_parameter/terminator_color = Color(1, 1, 1, 1)
 shader_parameter/terminator_size_px = 4.0
 
@@ -190,3 +190,6 @@ theme_override_constants/separation = 0
 [node name="CurrentValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1465263440]
 layout_mode = 2
 text = "(120"
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=948776660]
+layout_mode = 2

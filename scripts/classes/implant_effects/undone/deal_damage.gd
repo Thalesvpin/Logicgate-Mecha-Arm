@@ -50,7 +50,8 @@ func apply(_context = null) -> void:
 	print('dano: ', dmg)
 	var enemy = Global.combat_screen.get_enemy(pos)
 	enemy.take_damage(dmg)
-	EventBus.damage_dealt.emit(enemy)
+	var context = {'enemy': enemy, 'damage': dmg}
+	EventBus.damage_dealt.emit(context)
 
 func revert() -> void:
 	if !is_permanent:

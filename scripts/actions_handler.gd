@@ -22,6 +22,7 @@ func setup_signals() -> void:
 	EventBus.repaired_shield.connect(repair_shield)
 
 func attack() -> void:
+	print('Light Attack')
 	var effect = DealDamageEffect.new()
 	effect.amount = 0
 	effect.apply()
