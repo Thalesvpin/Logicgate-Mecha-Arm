@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bbv5dfix8six7" path="res://scenes/sections/shop/stats_viewport/critic_damage_mult_container.tscn" id="2_b0rs0"]
 [ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="2_te4um"]
 [ext_resource type="PackedScene" uid="uid://bisald530eldg" path="res://scenes/sections/shop/stats_viewport/critic_chance_container.tscn" id="3_s5khm"]
-[ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://scenes/sections/shop/background_gradient.gdshader" id="3_ybi5s"]
+[ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/background_gradient.gdshader" id="3_ybi5s"]
 [ext_resource type="PackedScene" uid="uid://clfirvbm13hri" path="res://scenes/sections/shop/stats_viewport/max_health_container.tscn" id="4_k8u8d"]
 [ext_resource type="Texture2D" uid="uid://d0v4s6bi2ajd3" path="res://assets/TCC_icon_stat_BaseDamage.png" id="4_ybi5s"]
 [ext_resource type="PackedScene" uid="uid://dbxjoxyxc1l42" path="res://scenes/sections/shop/stats_viewport/shield_amount_container.tscn" id="5_qurlf"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://ostgltg8hqpc" path="res://assets/TCC_icon_stat_ShieldPlates.png" id="12_2ujkr"]
 [ext_resource type="Theme" uid="uid://ulhofgmwnknp" path="res://themes/selected_stats_tab.tres" id="14_yr5m8"]
 [ext_resource type="PackedScene" uid="uid://di06vvgq8pav6" path="res://scenes/sections/shop/stats_viewport/tokens_amount_container.tscn" id="15_icxht"]
+[ext_resource type="Shader" uid="uid://bi4i3ieb2ksps" path="res://shaders/colortogradientremapper.gdshader" id="22_l102y"]
 [ext_resource type="Texture2D" uid="uid://h1tn1umy07el" path="res://assets/sprite_StatUpgrade_xrayArm.png" id="22_yodio"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
@@ -59,7 +60,7 @@ shader_parameter/overlay_offset = 0.0
 shader_parameter/overlay_invert_fade = true
 shader_parameter/overlay_enable_pulsation = false
 shader_parameter/overlay_animation_speed = 2.000000095
-shader_parameter/overlay_pulse_min_offset = 9.499999986672947e-08
+shader_parameter/overlay_pulse_min_offset = 9.49999998667295e-08
 shader_parameter/overlay_pulse_max_offset = 0.5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e4srk"]
@@ -88,6 +89,45 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gtatl"]
 shader = SubResource("Shader_yodio")
+
+[sub_resource type="Gradient" id="Gradient_yodio"]
+offsets = PackedFloat32Array(0, 0.5049505, 1)
+colors = PackedColorArray(0.20392157, 0.9529412, 1, 1, 0.20392157, 0.9529412, 0.78431374, 1, 0.20392157, 0.9529412, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_yodio")
+
+[sub_resource type="Curve" id="Curve_gtatl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_a7lv4"]
+curve = SubResource("Curve_gtatl")
+
+[sub_resource type="Curve" id="Curve_yodio"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.40416667, 0.46206892), 0.0, 0.0, 0, 0, Vector2(0.70416665, 0.66896546), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_l102y"]
+curve = SubResource("Curve_yodio")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mjyp6"]
+shader = ExtResource("22_l102y")
+shader_parameter/effect_enabled = true
+shader_parameter/source_color_val = Color(0.20392, 0.95294, 1, 1)
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_offset = 0.6570000312075
+shader_parameter/animate_offset = true
+shader_parameter/offset_curve = SubResource("CurveTexture_a7lv4")
+shader_parameter/offset_animation_speed = 0.0510000024225
+shader_parameter/animate_opacity = true
+shader_parameter/opacity_curve = SubResource("CurveTexture_l102y")
+shader_parameter/opacity_animation_speed = 0.1970000093575
+shader_parameter/opacity = 1.0
+shader_parameter/tolerance = 0.3430000162925
+shader_parameter/gradient_smoothing = 0.05
 
 [sub_resource type="Environment" id="Environment_eofqg"]
 background_mode = 3
@@ -412,6 +452,18 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 texture = ExtResource("22_yodio")
 stretch_mode = 4
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="SubViewportContainer/SubViewport" unique_id=70675939]
+copy_mode = 2
+
+[node name="ColorToGradient Remapper" type="ColorRect" parent="SubViewportContainer/SubViewport" unique_id=1367994825]
+material = SubResource("ShaderMaterial_mjyp6")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=156393520]
 environment = SubResource("Environment_eofqg")
