@@ -101,6 +101,8 @@ class GLOBAL:
 	const BLUESHIELD := Color(0, 0.5882353, 1, 1)
 	const HEALTHTEXT := Color(1, 0.88235295, 0.7176471, 1)
 	const SHIELDTEXT := Color(0.8745098, 0.972549, 1, 1)
+	const HEAVYATTKGREEN := Color(0, 0.8509804, 0, 1)
+	const HEAVYATTKYELLOW := Color(1, 0.83137256, 0.06666667, 1)
 
 	## Palette name -> color, for lookups by a name held in a variable.
 	## Prefer the constants above: they are checked at compile time.
@@ -110,6 +112,8 @@ class GLOBAL:
 		"BlueShield": BLUESHIELD,
 		"HealthText": HEALTHTEXT,
 		"ShieldText": SHIELDTEXT,
+		"HeavyAttkGreen": HEAVYATTKGREEN,
+		"HeavyAttkYellow": HEAVYATTKYELLOW,
 	}
 
 	## Variant name -> {name -> color}, for reading a variant you are not on.
@@ -120,6 +124,8 @@ class GLOBAL:
 			"BlueShield": Color(0, 0.5882353, 1, 1),
 			"HealthText": Color(1, 0.88235295, 0.7176471, 1),
 			"ShieldText": Color(0.8745098, 0.972549, 1, 1),
+			"HeavyAttkGreen": Color(0, 0.8509804, 0, 1),
+			"HeavyAttkYellow": Color(1, 0.83137256, 0.06666667, 1),
 		},
 	}
 

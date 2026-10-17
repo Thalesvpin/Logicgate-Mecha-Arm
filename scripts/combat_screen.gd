@@ -6,6 +6,7 @@ extends Control
 @onready var center_enemy_container: VBoxContainer = $SubViewportContainer/SubViewport/PanelContainer/TopPanels/EnemiesSection/CenterEnemyContainer
 @onready var right_enemy_container: VBoxContainer = $SubViewportContainer/SubViewport/PanelContainer/TopPanels/EnemiesSection/RightEnemyContainer
 @onready var enemy_name_bar: Control = $SubViewportContainer/SubViewport/PanelContainer/MidBottomPanels/EnemyNameBar
+@onready var red_dmg_flash: PanelContainer = $RedDmgFlash
 var left_enemy_status_bar: PanelContainer
 var center_enemy_status_bar: PanelContainer
 var right_enemy_status_bar: PanelContainer
@@ -156,6 +157,7 @@ func connect_action_signals(circuit_editor: PanelContainer) -> void:
 
 func connect_signals() -> void:
 	#EventBus.enemy_defeated.connect(enemy_defeated)
+	EventBus.damage_taken.connect(flash_red)
 	pass
 
 func enemy_defeated(enemy) -> void:
@@ -212,9 +214,9 @@ func add_enemies() -> void:
 	var bar_r = ENEMY_STATUS_BAR.instantiate()
 	var bar_c = ENEMY_STATUS_BAR.instantiate()
 	
+	Global.turn_manager.add_to_sequence(enemy_c)
 	Global.turn_manager.add_to_sequence(enemy_l)
 	Global.turn_manager.add_to_sequence(enemy_r)
-	Global.turn_manager.add_to_sequence(enemy_c)
 	enemy_l.config = ENEMY_TEST
 	enemy_r.config = ENEMY_TEST_3
 	enemy_c.config = ENEMY_TEST_2
@@ -243,3 +245,12 @@ func add_enemies() -> void:
 	left_enemy_status_bar = bar_l
 	right_enemy_status_bar = bar_r
 	center_enemy_status_bar = bar_c
+
+func flash_red(arg) -> void:
+	var style: StyleBoxFlat = red_dmg_flash.get_theme_stylebox("panel").duplicate()
+	red_dmg_flash.add_theme_stylebox_override("panel", style)
+	
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(style, 'border_color', Color(0.72, 0.0, 0.0, 0.53), 0.1)
+	tween.chain().tween_property(style, 'border_color', Color(0.72, 0.0, 0.0, 0.0), 0.1)

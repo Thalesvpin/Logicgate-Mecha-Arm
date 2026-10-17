@@ -100,6 +100,7 @@ offset_transform_visual_only = false
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
 
 [node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D/CollisionShape2D/Wall" unique_id=788167873]
+z_index = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0

@@ -42,7 +42,9 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1658000360]
 own_world_3d = true
+handle_input_locally = false
 size = Vector2i(1910, 1070)
+render_target_update_mode = 4
 
 [node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=1131320102]
 anchors_preset = 15

@@ -41,3 +41,7 @@ func check_condition(context = null) -> void:
 	if conditions.size() == counter:
 		for ef in effect:
 			ef.apply(context)
+
+func revert() -> void:
+	for ef in effect:
+		ef.revert()

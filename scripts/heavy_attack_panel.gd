@@ -2,7 +2,7 @@ extends CollapsablePanel
 
 @onready var charges_bar: ColorRect = $PanelContainer/Control/ChargesBar
 
-var _material
+var _material: ShaderMaterial
 
 func _ready() -> void:
 	is_charged = true
@@ -21,6 +21,10 @@ func add_charges() -> void:
 	#current += amount/_max
 	var percent = current/_max
 	_material.set_shader_parameter("pour_fill_amount", percent)
+	if percent < 0.76:
+		_material.set_shader_parameter('filled_color', LivePalette.GLOBAL.HEAVYATTKYELLOW)
+	else:
+		_material.set_shader_parameter('filled_color', LivePalette.GLOBAL.HEAVYATTKGREEN)
 	print('current: ', current)
 	print('_max: ', _max)
 	print('percent: ', percent)

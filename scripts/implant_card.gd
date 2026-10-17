@@ -1,4 +1,3 @@
-#@tool
 extends PanelContainer
 
 @onready var modifier_texture: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/PanelContainer/ModifierTexture
@@ -28,6 +27,7 @@ const TECHMOD_BG_STYLEBOX_FLAT = preload("uid://dlegihcropccf")
 const ACTIVATOR = preload("uid://bb84g5o4b08f3")
 const RARITY_PLACEHOLDER = preload("uid://b8l68f41218q5")
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
+enum Type {TECH_MOD, BIO_HACK}
 
 @export var resource: Implant
 var type: int
@@ -64,6 +64,7 @@ func apply_resource() -> void:
 	modifier_name_label.add_theme_color_override('font_color', LivePalette.BIOHACK.MODTEXT if type else LivePalette.TECHMOD.MODTEXT)
 	rarity_texture.texture = Global.rarity_textures[rarity as Global.Rarity]
 	rarity_texture_compact.texture = Global.rarity_textures[rarity as Global.Rarity]
+	tooltip_text = resource.description
 	
 	if is_corrupted:
 		corrupted_texture.show()
@@ -132,8 +133,12 @@ func get_sell_value() -> int:
 func sell() -> void:
 	print('vendeu')
 	var ef = AddMoneyEffect.new()
-	ef.amount = 100
+	ef.amount = get_sell_value()
 	ef.apply()
+	if type == Type.TECH_MOD:
+		Global.implant_manager.remove_tech_mod(self)
+	if type == Type.BIO_HACK:
+		Global.implant_manager.remove_bio_hack(self)
 
 func _on_resized() -> void:
 	if is_loaded:
@@ -150,7 +155,8 @@ func _on_activator_btn_button_up() -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT && event.pressed:
-			open_radial_menu()
+			if !Global.turn_manager.is_shop_open:
+				open_radial_menu()
 
 func _on_confirm_btn_button_up() -> void:
 	sell()

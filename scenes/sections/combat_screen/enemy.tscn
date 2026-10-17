@@ -326,6 +326,24 @@ offset_transform_enabled = true
 tooltip_text = "aaaaaaaaaaaaaaaaaaa"
 texture = ExtResource("1_87g8f")
 
+[node name="TurnIndicator" type="RichTextLabel" parent="." unique_id=591423771]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/normal_font_size = 43
+text = "🔻"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

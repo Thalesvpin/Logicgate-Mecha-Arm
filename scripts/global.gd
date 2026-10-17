@@ -11,6 +11,7 @@ const INFO = preload("uid://3dcqftonh2pd")
 const CANCEL = preload("uid://dmewb6qo64t7g")
 
 #region SELF ASSIGNED VARIABLES
+var game_board
 var circuit_editor
 var gates_selector
 var input_manager
@@ -132,6 +133,9 @@ var rarity_textures: Dictionary[Rarity, Texture2D] = {
 func _ready() -> void:
 	#load_implants()
 	pass
+
+func pause_game(value: bool) -> void:
+	game_board.pause_game(value)
 
 func dec_to_bin(decimal: int) -> int:
 	var result := 0

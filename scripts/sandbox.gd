@@ -27,9 +27,13 @@ func _ready() -> void:
 	var outputs = game_output_manager.get_children()
 	for input in inputs:
 		if input.get_class() == "Control":
+			if input.name == 'Spacer':
+				continue
 			input.get_child(1).new_wire.connect(trace_line)
 	for output in outputs:
 		if output.get_class() == "Control":
+			if output.name == 'Spacer':
+				continue
 			output.get_child(0).new_wire.connect(trace_line)
 	EventBus.gate_added_to_sandbox.connect(gate_added)
 	EventBus.gate_removed_from_sandbox.connect(gate_removed)

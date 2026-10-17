@@ -20,5 +20,9 @@ func add_implant(resource: Implant):
 	implant.load_resource()
 	update_counter()
 
+func remove_implant(implant) -> void:
+	implants_holder.remove_child(implant)
+	update_counter()
+
 func update_counter() -> void:
 	implant_count.text = str(Global.implant_manager.active_bio_hacks.size())+'/5'

@@ -2,6 +2,7 @@ extends Control
 
 #@onready var texture_rect: TextureRect = $TextureRect
 @onready var texture_rect: TextureRect = $CanvasGroup/TextureRect
+@onready var turn_indicator: RichTextLabel = $TurnIndicator
 
 @export var config: EnemyConfig
 var max_heatlh: int
@@ -12,9 +13,11 @@ var critic_chance: float
 var critic_mult: float
 var mitigation_percent: float
 var current_elemental: Variant
-
 @export var movement_tween_duration: float = 0.8
-
+##Applied as the turn begins
+@export var turn_start_delay: float = 2
+##Applied after an action is executed. Does not wait for the action animation to begin!
+@export var between_actions_delay: float = 2
 var type: Enemy.Type
 
 var stats: Dictionary[Stats.List, Variant] = {
@@ -123,9 +126,10 @@ func link_to_status_bar() -> void:
 
 func turn_start(who):
 	if typeof(who) == typeof(Object) && who == self:
+		turn_indicator.show()
+		await get_tree().create_timer(turn_start_delay).timeout
 		var action
 		for i in range(config.actions_per_turn):
-			await get_tree().create_timer(1.5).timeout
 			action = actions_list[random_action()]
 			match action:
 				Enemy.Actions.ATTACK:
@@ -138,6 +142,8 @@ func turn_start(who):
 				Enemy.Actions.REPAIR_SHIELD:
 					print('enemy repair shield')
 					repair_shield()
+			await get_tree().create_timer(between_actions_delay).timeout
+		turn_indicator.hide()
 		EventBus.turn_ended.emit(self)
 
 func random_action() -> int:

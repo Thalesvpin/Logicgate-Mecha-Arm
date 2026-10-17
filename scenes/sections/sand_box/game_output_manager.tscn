@@ -4,7 +4,22 @@
 [ext_resource type="PackedScene" uid="uid://dpl15hcdqkpwb" path="res://scenes/sections/sand_box/game_output.tscn" id="2_7gfb1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_csqvs"]
-size = Vector2(50, 400)
+size = Vector2(93, 400)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
 
 [node name="GameOutputManager" type="VBoxContainer" unique_id=1090849083]
 custom_minimum_size = Vector2(0, 400)
@@ -16,25 +31,43 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1mcfq")
 
+[node name="Spacer" type="Control" parent="." unique_id=2031533346]
+layout_mode = 2
+
 [node name="FinalOutput" parent="." unique_id=704266001 instance=ExtResource("2_7gfb1")]
+z_index = 1
 layout_mode = 2
 
 [node name="FinalOutput2" parent="." unique_id=300974725 instance=ExtResource("2_7gfb1")]
+z_index = 1
 layout_mode = 2
 
 [node name="FinalOutput3" parent="." unique_id=1586215514 instance=ExtResource("2_7gfb1")]
+z_index = 1
 layout_mode = 2
 
 [node name="FinalOutput4" parent="." unique_id=1985145479 instance=ExtResource("2_7gfb1")]
+z_index = 1
 layout_mode = 2
 
 [node name="DragArea" type="Area2D" parent="." unique_id=872200294]
 position = Vector2(0, 201)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DragArea" unique_id=1085413125]
+position = Vector2(21, -42)
 shape = SubResource("RectangleShape2D_csqvs")
-debug_color = Color(0.96168846, 1.540184e-06, 0.51167804, 0.41960785)
+debug_color = Color(0.9607843, 0, 0.50980395, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="DragArea" unique_id=1954998917]
+
+[node name="background" type="PanelContainer" parent="DragArea" unique_id=930992985]
+custom_minimum_size = Vector2(93, 400)
+custom_maximum_size = Vector2(93, 400)
+offset_left = -25.0
+offset_top = -242.0
+offset_right = 68.0
+offset_bottom = 158.0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
 [connection signal="input_event" from="DragArea" to="." method="_on_drag_area_input_event"]

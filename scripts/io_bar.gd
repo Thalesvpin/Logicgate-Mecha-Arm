@@ -17,7 +17,9 @@ func _process(delta: float) -> void:
 
 func setup():
 	for child in get_children():
-		if child is Control: 
+		if child is Control:
+			if child.name == 'Spacer':
+				continue
 			child.size_flags_vertical = Control.SIZE_EXPAND
 			children.append(child)
 	

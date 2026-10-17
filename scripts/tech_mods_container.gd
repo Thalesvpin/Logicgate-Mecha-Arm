@@ -21,5 +21,9 @@ func add_implant(resource: Implant):
 	#EventBus.tech_mod_added.emit(resource)
 	update_counter()
 
+func remove_implant(implant) -> void:
+	implants_holder.remove_child(implant)
+	update_counter()
+
 func update_counter() -> void:
 	implant_count.text = str(Global.implant_manager.active_tech_mods.size())+'/5'

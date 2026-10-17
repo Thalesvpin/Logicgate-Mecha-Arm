@@ -99,3 +99,4 @@ texture_normal = ExtResource("1_pmrxt")
 
 [connection signal="button_down" from="MarginContainer/ScrollContainer/VBoxContainer/RunBtn" to="." method="_on_run_btn_button_down"]
 [connection signal="button_up" from="MarginContainer/ScrollContainer/VBoxContainer/RunBtn" to="." method="_on_run_btn_button_up"]
+[connection signal="button_up" from="MarginContainer/ScrollContainer/VBoxContainer/PauseBtn" to="." method="_on_pause_btn_button_up"]

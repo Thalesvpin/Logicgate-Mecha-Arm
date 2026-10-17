@@ -12,17 +12,26 @@ extends Control
 @onready var v_split: VSplitContainer = $GameplayElements/VSplit
 @onready var top_h_split: HSplitContainer = $GameplayElements/VSplit/cima/TopHSplit
 @onready var bot_h_split: HSplitContainer = $GameplayElements/VSplit/baixo/BotHSplit
+@onready var pause_menu: PanelContainer = $PauseMenu
 
 @export var shop_tween_speed: float = 0.8
 var last_top_h_split_offsets: PackedInt32Array
 var last_v_split_offsets: PackedInt32Array
 
 func _ready() -> void:
+	Global.game_board = self
 	if Global._seed == 0:
 		Global.set_new_seed()
 	randomize_binaries()
 	connect_signals()
 	EventBus.turn_started.emit('player')
+
+func pause_game(value: bool) -> void:
+	if value:
+		v_split.process_mode = Node.PROCESS_MODE_DISABLED
+		pause_menu.open()
+	else:
+		v_split.process_mode = Node.PROCESS_MODE_INHERIT
 
 func randomize_binaries() -> void:
 	execution_panel.generate_execution_sequence()

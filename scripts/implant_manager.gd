@@ -38,10 +38,12 @@ func add_bio_hack(implant: Implant):
 	Global.bio_hacks_container.add_implant(implant)
 	implant.connect_triggers()
 
-func remove_tech_mod(implant: Implant):
-	implant.revert()
-	active_tech_mods.erase(implant)
+func remove_tech_mod(implant: Node):
+	implant.resource.revert()
+	Global.tech_mods_container.remove_implant(implant)
+	active_tech_mods.erase(implant.resource)
 
-func remove_bio_hack(implant: Implant):
+func remove_bio_hack(implant: Node):
 	implant.revert()
-	active_bio_hacks.erase(implant)
+	Global.bio_hacks_container.remove_implant(implant)
+	active_bio_hacks.erase(implant.resource)
