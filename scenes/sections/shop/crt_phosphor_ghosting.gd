@@ -1,0 +1,127 @@
+extends ColorRect
+
+@export var game_viewport: SubViewport
+
+@export_group("Phosphor Persistence")
+@export_range(0.0, 5.0) var ghost_duration: float = 0.6
+@export_range(0.0, 1.0) var ghost_threshold: float = 0.0
+@export var ghost_gradient: GradientTexture1D
+
+var vp_a: SubViewport
+var vp_b: SubViewport
+var rect_a: TextureRect
+var rect_b: TextureRect
+var ping_pong: bool = true
+var accum_mat: ShaderMaterial
+
+var _last_decay: float = -1.0
+var _last_threshold: float = -1.0
+var _last_gradient: GradientTexture1D = null
+
+func _ready() -> void:
+	var shader = Shader.new()
+	shader.code = """
+	shader_type canvas_item;
+	render_mode blend_disabled; 
+
+	uniform sampler2D current_frame : filter_nearest;
+	uniform sampler2D ghost_gradient : filter_linear;
+	uniform bool use_gradient = false;
+	uniform float decay_rate = 0.05;
+	uniform float threshold = 0.0;
+
+	void fragment() {
+		vec4 old_col = texture(TEXTURE, UV);
+		vec4 new_col = texture(current_frame, UV);
+
+		float new_energy = max(new_col.r, max(new_col.g, new_col.b));
+		float decayed_energy = max(old_col.a - decay_rate, 0.0);
+
+		if (decayed_energy > new_energy && decayed_energy > threshold) {
+			vec3 final_rgb = use_gradient 
+				? max(new_col.rgb, texture(ghost_gradient, vec2(1.0 - decayed_energy, 0.0)).rgb * decayed_energy)
+				: max(new_col.rgb, old_col.rgb - vec3(decay_rate));
+			
+			COLOR = vec4(final_rgb, decayed_energy);
+		} else {
+			COLOR = vec4(new_col.rgb, new_energy);
+		}
+	}
+	"""
+	accum_mat = ShaderMaterial.new()
+	accum_mat.shader = shader
+	
+	vp_a = SubViewport.new()
+	vp_b = SubViewport.new()
+	
+	var initial_size = game_viewport.size if game_viewport.size.x > 0 else Vector2i(1, 1)
+		
+	for vp in [vp_a, vp_b]:
+		vp.size = initial_size
+		vp.transparent_bg = true
+		vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+		add_child(vp)
+
+	rect_a = TextureRect.new()
+	rect_b = TextureRect.new()
+	
+	for rect in [rect_a, rect_b]:
+		rect.material = accum_mat
+		rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+
+	vp_a.add_child(rect_a)
+	vp_b.add_child(rect_b)
+
+	RenderingServer.frame_post_draw.connect(_on_frame_post_draw)
+
+func _on_frame_post_draw() -> void:
+	if not is_inside_tree() or not is_instance_valid(game_viewport):
+		return
+
+	var current_size = game_viewport.size
+	if current_size.x <= 0 or current_size.y <= 0:
+		return
+		
+	if vp_a.size != current_size:
+		vp_a.size = current_size
+		vp_b.size = current_size
+
+	if ghost_duration <= 0.0:
+		if vp_a.render_target_update_mode != SubViewport.UPDATE_DISABLED:
+			vp_a.render_target_update_mode = SubViewport.UPDATE_DISABLED
+			vp_b.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		material.set_shader_parameter("tex", game_viewport.get_texture())
+		return
+	elif vp_a.render_target_update_mode == SubViewport.UPDATE_DISABLED:
+		vp_a.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+		vp_b.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+
+	var delta = get_process_delta_time()
+	var current_decay = (1.0 / ghost_duration) * (delta if delta > 0.0 else 0.0166)
+
+	if _last_decay != current_decay:
+		accum_mat.set_shader_parameter("decay_rate", current_decay)
+		_last_decay = current_decay
+
+	if _last_threshold != ghost_threshold:
+		accum_mat.set_shader_parameter("threshold", ghost_threshold)
+		_last_threshold = ghost_threshold
+		
+	if _last_gradient != ghost_gradient:
+		accum_mat.set_shader_parameter("use_gradient", ghost_gradient != null)
+		if ghost_gradient != null:
+			accum_mat.set_shader_parameter("ghost_gradient", ghost_gradient)
+		_last_gradient = ghost_gradient
+
+	accum_mat.set_shader_parameter("current_frame", game_viewport.get_texture())
+
+	# Condensed buffer swapping logic
+	var active_vp = vp_a if ping_pong else vp_b
+	var inactive_vp = vp_b if ping_pong else vp_a
+	var target_rect = rect_a if ping_pong else rect_b
+	
+	target_rect.texture = inactive_vp.get_texture()
+	material.set_shader_parameter("tex", active_vp.get_texture())
+	
+	ping_pong = !ping_pong

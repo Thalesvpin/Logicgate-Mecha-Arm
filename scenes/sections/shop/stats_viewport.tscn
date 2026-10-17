@@ -22,6 +22,9 @@
 [ext_resource type="PackedScene" uid="uid://di06vvgq8pav6" path="res://scenes/sections/shop/stats_viewport/tokens_amount_container.tscn" id="15_icxht"]
 [ext_resource type="Shader" uid="uid://bi4i3ieb2ksps" path="res://shaders/colortogradientremapper.gdshader" id="22_l102y"]
 [ext_resource type="Texture2D" uid="uid://h1tn1umy07el" path="res://assets/sprite_StatUpgrade_xrayArm.png" id="22_yodio"]
+[ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="23_l102y"]
+[ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="24_nwtl1"]
+[ext_resource type="Script" uid="uid://bnt1kahox4rrd" path="res://scenes/sections/shop/crt_phosphor_ghosting.gd" id="25_2ujkr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -92,7 +95,7 @@ shader = SubResource("Shader_yodio")
 
 [sub_resource type="Gradient" id="Gradient_yodio"]
 offsets = PackedFloat32Array(0, 0.5049505, 1)
-colors = PackedColorArray(0.20392157, 0.9529412, 1, 1, 0.20392157, 0.9529412, 0.78431374, 1, 0.20392157, 0.9529412, 1, 1)
+colors = PackedColorArray(0.20392157, 0.9529412, 1, 1, 0.20392157, 0.9529412, 0.7411765, 1, 0.20392157, 0.9529412, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
 gradient = SubResource("Gradient_yodio")
@@ -137,8 +140,82 @@ glow_levels/2 = 16.0
 glow_levels/3 = 5.0
 glow_levels/4 = 0.0
 glow_normalized = true
-glow_strength = 1.68
+glow_strength = 1.29
 glow_bloom = 0.15
+adjustment_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eetg5"]
+shader = ExtResource("23_l102y")
+shader_parameter/brightness = 1.0
+shader_parameter/contrast = 1.0
+shader_parameter/saturation = 1.0
+shader_parameter/hue = 0.0
+shader_parameter/vignette_intensity = 0.0
+shader_parameter/vignette_smoothness = 0.8
+shader_parameter/chromatic_aberration = 0.006000000285
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gtatl"]
+viewport_path = NodePath("SubViewportContainer/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
+resource_local_to_scene = true
+shader = ExtResource("24_nwtl1")
+shader_parameter/tex = SubResource("ViewportTexture_gtatl")
+shader_parameter/curve = 0.0
+shader_parameter/aspect = 1.0
+shader_parameter/mask_type = 3
+shader_parameter/mask_scale = 1.0
+shader_parameter/mask_brightness = 1.0
+shader_parameter/animate_mask_brightness = false
+shader_parameter/mask_brightness_anim_speed = 1.0
+shader_parameter/mask_brightness_anim_amplitude = 1.0
+shader_parameter/scanline_brightness = 1.0
+shader_parameter/min_scanline_thickness = 0.5
+shader_parameter/interlaced_strength = 0.038000001805
+shader_parameter/animate_interlaced = false
+shader_parameter/interlaced_anim_speed = 1.0
+shader_parameter/interlaced_anim_amplitude = 1.0
+shader_parameter/interlaced_fps = 30.0
+shader_parameter/sharpness = 0.6890000089775
+shader_parameter/animate_sharpness = false
+shader_parameter/sharpness_anim_speed = 1.0
+shader_parameter/sharpness_anim_amplitude = 1.0
+shader_parameter/color_offset = 0.0
+shader_parameter/animate_color_offset = false
+shader_parameter/color_offset_anim_speed = 1.0
+shader_parameter/color_offset_anim_amplitude = 1.0
+shader_parameter/wobble_strength = 0.9770000464075
+shader_parameter/animate_wobble = false
+shader_parameter/wobble_anim_speed = 1.0
+shader_parameter/wobble_anim_amplitude = 1.0
+shader_parameter/roll_strength = 0.370000017575
+shader_parameter/animate_roll = false
+shader_parameter/roll_anim_speed = 1.0
+shader_parameter/roll_anim_amplitude = 1.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_speed = 2.0
+shader_parameter/glitch_strength = 0.0
+shader_parameter/animate_glitch = false
+shader_parameter/glitch_anim_speed = 1.0
+shader_parameter/glitch_anim_amplitude = 1.0
+shader_parameter/glitch_rate = 0.05
+shader_parameter/glitch_size = 0.05
+shader_parameter/noise_strength = 0.01600000076
+shader_parameter/animate_noise = false
+shader_parameter/noise_anim_speed = 1.0
+shader_parameter/noise_anim_amplitude = 1.0
+shader_parameter/bloom_threshold = 0.6
+shader_parameter/bloom_multiplier = 0.5
+shader_parameter/animate_bloom = false
+shader_parameter/bloom_anim_speed = 1.0
+shader_parameter/bloom_anim_amplitude = 1.0
+shader_parameter/bloom_blur_radius = 4.0
+
+[sub_resource type="Gradient" id="Gradient_2ujkr"]
+colors = PackedColorArray(1, 0.67058825, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gtatl"]
+gradient = SubResource("Gradient_2ujkr")
 
 [node name="StatsViewport" type="PanelContainer" unique_id=131166221]
 anchors_preset = 15
@@ -467,6 +544,26 @@ mouse_filter = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=156393520]
 environment = SubResource("Environment_eofqg")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport" unique_id=1891368767]
+
+[node name="Color PostProcess Adjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=1892088844]
+material = SubResource("ShaderMaterial_eetg5")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CRT Shader" type="ColorRect" parent="." unique_id=1402205985 node_paths=PackedStringArray("game_viewport")]
+material = SubResource("ShaderMaterial_0vipy")
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("25_2ujkr")
+game_viewport = NodePath("../SubViewportContainer/SubViewport")
+ghost_duration = 1.096
+ghost_gradient = SubResource("GradientTexture1D_gtatl")
 
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]
