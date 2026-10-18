@@ -7,6 +7,13 @@ extends ColorRect
 @export_range(0.0, 1.0) var ghost_threshold: float = 0.0
 @export var ghost_gradient: GradientTexture1D
 
+@export_group("CRT Mask Settings")
+@export_range(0.1, 5.0) var mask_scale_multiplier: float = 1.0:
+	set(val):
+		mask_scale_multiplier = val
+		if material != null:
+			material.set_shader_parameter("mask_scale", mask_scale_multiplier)
+
 var vp_a: SubViewport
 var vp_b: SubViewport
 var rect_a: TextureRect
@@ -19,6 +26,10 @@ var _last_threshold: float = -1.0
 var _last_gradient: GradientTexture1D = null
 
 func _ready() -> void:
+	if material != null:
+		material.resource_local_to_scene = true
+		material.set_shader_parameter("mask_scale", mask_scale_multiplier)
+
 	var shader = Shader.new()
 	shader.code = """
 	shader_type canvas_item;
@@ -54,7 +65,7 @@ func _ready() -> void:
 	vp_a = SubViewport.new()
 	vp_b = SubViewport.new()
 	
-	var initial_size = game_viewport.size if game_viewport.size.x > 0 else Vector2i(1, 1)
+	var initial_size = game_viewport.size if game_viewport != null and game_viewport.size.x > 0 else Vector2i(1, 1)
 		
 	for vp in [vp_a, vp_b]:
 		vp.size = initial_size
@@ -116,7 +127,6 @@ func _on_frame_post_draw() -> void:
 
 	accum_mat.set_shader_parameter("current_frame", game_viewport.get_texture())
 
-	# Condensed buffer swapping logic
 	var active_vp = vp_a if ping_pong else vp_b
 	var inactive_vp = vp_b if ping_pong else vp_a
 	var target_rect = rect_a if ping_pong else rect_b

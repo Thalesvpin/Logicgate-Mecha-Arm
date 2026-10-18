@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://b7hjsmnl3qf5k"]
 
 [ext_resource type="PackedScene" uid="uid://cjqnenypvdvqd" path="res://scenes/sections/shop/pack_card.tscn" id="1_37gkg"]
+[ext_resource type="Script" uid="uid://cpudnd2qrp506" path="res://scripts/shop_mid_section.gd" id="1_h6war"]
 [ext_resource type="PackedScene" uid="uid://bi1xl2w0g2xp3" path="res://scenes/sections/shop/pack_card_small.tscn" id="2_37gkg"]
 [ext_resource type="PackedScene" uid="uid://b0o5ypysd23q0" path="res://scenes/sections/shop/reroll_card.tscn" id="3_gl50k"]
+[ext_resource type="PackedScene" uid="uid://8jbakdrf5e68" path="res://scenes/sections/shop/open_pack_item.tscn" id="5_gl50k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pjy5"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -15,31 +17,54 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
+script = ExtResource("1_h6war")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=303844763]
+[node name="Packs" type="HBoxContainer" parent="." unique_id=303844763]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 50
 
-[node name="PackCard" parent="HBoxContainer" unique_id=1952346557 instance=ExtResource("1_37gkg")]
+[node name="PackCard" parent="Packs" unique_id=1952346557 instance=ExtResource("1_37gkg")]
+layout_mode = 2
+offset_transform_position = Vector2(0, 13)
+offset_transform_visual_only = false
+price = 0
+
+[node name="PackCardSmall" parent="Packs" unique_id=1025698057 instance=ExtResource("2_37gkg")]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 13)
+offset_transform_visual_only = false
 
-[node name="PackCardSmall" parent="HBoxContainer" unique_id=1025698057 instance=ExtResource("2_37gkg")]
+[node name="RerollCard" parent="Packs" unique_id=357678371 instance=ExtResource("3_gl50k")]
+layout_mode = 2
+
+[node name="PackCardSmall2" parent="Packs" unique_id=236396797 instance=ExtResource("2_37gkg")]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 13)
+offset_transform_visual_only = false
 
-[node name="RerollCard" parent="HBoxContainer" unique_id=357678371 instance=ExtResource("3_gl50k")]
+[node name="PackCard2" parent="Packs" unique_id=1560850944 instance=ExtResource("1_37gkg")]
 layout_mode = 2
-
-[node name="PackCardSmall2" parent="HBoxContainer" unique_id=236396797 instance=ExtResource("2_37gkg")]
-layout_mode = 2
-offset_transform_enabled = true
 offset_transform_position = Vector2(0, 13)
+offset_transform_visual_only = false
+price = 0
 
-[node name="PackCard2" parent="HBoxContainer" unique_id=1560850944 instance=ExtResource("1_37gkg")]
+[node name="OpenPackHolder" type="HBoxContainer" parent="." unique_id=1398702616]
+visible = false
 layout_mode = 2
-offset_transform_enabled = true
-offset_transform_position = Vector2(0, 13)
+size_flags_horizontal = 4
+theme_override_constants/separation = 53
+
+[node name="OpenPackItem" parent="OpenPackHolder" unique_id=211604801 instance=ExtResource("5_gl50k")]
+layout_mode = 2
+
+[node name="OpenPackItem2" parent="OpenPackHolder" unique_id=1827849262 instance=ExtResource("5_gl50k")]
+layout_mode = 2
+
+[node name="OpenPackItem3" parent="OpenPackHolder" unique_id=747657396 instance=ExtResource("5_gl50k")]
+layout_mode = 2
+
+[node name="OpenPackItem4" parent="OpenPackHolder" unique_id=1214946247 instance=ExtResource("5_gl50k")]
+layout_mode = 2

@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://8jbakdrf5e68"]
+
+[ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/implant_card.tscn" id="1_jsoma"]
+[ext_resource type="Script" uid="uid://cv1p07g4o3uvd" path="res://scripts/open_pack_item.gd" id="1_lhu5f"]
+[ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_lhu5f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+
+[node name="OpenPackItem" type="PanelContainer" unique_id=211604801]
+offset_right = 388.0
+offset_bottom = 189.0
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+script = ExtResource("1_lhu5f")
+
+[node name="Mask" type="PanelContainer" parent="." unique_id=683435491]
+clip_children = 1
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
+
+[node name="Background" type="ColorRect" parent="Mask" unique_id=1771129650]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=120908509]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=144731477]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="ImplantCard" parent="MarginContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("1_jsoma")]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=164201110]
+custom_minimum_size = Vector2(324.9, 0)
+custom_maximum_size = Vector2(168.855, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("2_lhu5f")
+stretch_mode = 0

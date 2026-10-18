@@ -34,6 +34,7 @@ signal item_bought(context)
 signal on_purchase(implant)
 signal pack_opened(context)
 signal stat_changed(stat: Stats.List, new_value)
+signal open_shop
 #endregion
 
 var signals_list: Dictionary[Trigger.Type, Variant] = {

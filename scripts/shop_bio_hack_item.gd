@@ -4,7 +4,7 @@ extends PanelContainer
 @onready var buy_btn: TextureButton = $MarginContainer/VBoxContainer/HBoxContainer/BuyBtn
 @onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
 @onready var price_label: RichTextLabel = $MarginContainer/VBoxContainer/HBoxContainer/PriceContainer/MarginContainer/Price
-@onready var background: PanelContainer = $Background
+@onready var background: PanelContainer = $Control/Background
 
 const BIOHACK_TEST = preload("uid://dd06rohyycdlt")
 
@@ -26,7 +26,14 @@ func set_implant() -> void:
 	implant_card.load_resource()
 	set_outline_color(self)
 	set_outline_color(price_container)
-	background.material.set_shader_parameter('end_color', Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]]))
+	set_gradient_color('gradient_texture', Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]]))
+	set_gradient_color('outline_gradient_texture', Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]]))
+
+func set_gradient_color(parameter: String, color: Color) -> void:
+	var param = background.material.get_shader_parameter(parameter)
+	var gradient = param.gradient
+	gradient.colors = [color, Color.BLACK]
+	
 
 func set_outline_color(node: Node) -> void:
 	var style: StyleBoxFlat = node.get_theme_stylebox("panel").duplicate()

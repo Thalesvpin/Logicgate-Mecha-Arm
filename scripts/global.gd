@@ -261,3 +261,26 @@ func number_shift_animation(label: Variant, final_val: int, duration: float = 0.
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_method(func(v): label.text = str(v), int(label.text), final_val, duration)
+
+##exclude is an array of implants to be ignored from the pool
+func get_random_implant(exclude: Array = [], type: Implant.Type = -1) -> Implant:
+	var list: Array[Implant]
+	var chance
+	var result
+	
+	chance = Global.random.next() % 100
+	if chance < 40:
+		list = all_commom if type == -1 else tm_commom if type == Implant.Type.TECH_MOD else bh_commom
+	elif chance < 70:
+		list = all_rare if type == -1 else tm_rare if type == Implant.Type.TECH_MOD else bh_rare
+	elif chance < 90:
+		list = all_ultra_rare if type == -1 else tm_ultra_rare if type == Implant.Type.TECH_MOD else tm_ultra_rare
+	else:
+		list = all_legendary if type == -1 else tm_legendary if type == Implant.Type.TECH_MOD else tm_legendary
+	
+	chance  = Global.random.next() % list.size()
+	if exclude.has(list[chance]):
+		result = get_random_implant(exclude, type)
+	else:
+		result = list[chance]
+	return result

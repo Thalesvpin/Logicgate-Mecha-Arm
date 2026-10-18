@@ -3,10 +3,26 @@
 [ext_resource type="Script" uid="uid://bv0t2dr5e07j5" path="res://scripts/shop_bio_hacks_container.gd" id="1_ey3mi"]
 [ext_resource type="PackedScene" uid="uid://biquah0t1pge8" path="res://scenes/sections/shop/shop_bio_hack_item.tscn" id="2_ey3mi"]
 [ext_resource type="Texture2D" uid="uid://cfuu7wrtb8o8y" path="res://assets/TCC_shop_implantbracket.png" id="2_nfh7n"]
+[ext_resource type="Shader" uid="uid://bp1bhku15or35" path="res://shaders/basic_color_overlay.gdshader" id="3_d1stg"]
 [ext_resource type="Texture2D" uid="uid://byrpiwaihcjtv" path="res://assets/icon_mini_biohacks.png" id="3_em8w6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjqua"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7lv4"]
+shader = ExtResource("3_d1stg")
+shader_parameter/blend_mode = 0
+shader_parameter/overlay_color = Color(1, 1, 1, 1)
+shader_parameter/overlay_opacity = 1.0
+shader_parameter/use_gradient = false
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_color_start = Color(1, 1, 1, 1)
+shader_parameter/gradient_color_end = Color(0, 0, 0, 1)
+shader_parameter/gradient_angle = 0.0
+shader_parameter/use_pattern = false
+shader_parameter/pattern_scale = Vector2(1, 1)
+shader_parameter/pattern_opacity = 1.0
+shader_parameter/pattern_blend_mode = 1
 
 [node name="ShopBioHacksContainer" type="PanelContainer" unique_id=817944177]
 custom_minimum_size = Vector2(336, 0)
@@ -26,7 +42,7 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=489064232]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 23
+theme_override_constants/separation = 36
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer" unique_id=1577997400]
 custom_maximum_size = Vector2(-1, 160)
@@ -37,6 +53,7 @@ texture = ExtResource("2_nfh7n")
 stretch_mode = 4
 
 [node name="TextureRect2" type="TextureRect" parent="HBoxContainer/VBoxContainer" unique_id=1890409462]
+material = SubResource("ShaderMaterial_a7lv4")
 custom_maximum_size = Vector2(27.29, 42)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -58,14 +75,14 @@ flip_v = true
 [node name="ImplantsHolder" type="VBoxContainer" parent="HBoxContainer" unique_id=1964218931]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 24
 
-[node name="SopeBioHackItem" parent="HBoxContainer/ImplantsHolder" unique_id=602144725 instance=ExtResource("2_ey3mi")]
+[node name="ShopBioHackItem" parent="HBoxContainer/ImplantsHolder" unique_id=602144725 instance=ExtResource("2_ey3mi")]
 layout_mode = 2
 
 [node name="Spacer" type="Control" parent="HBoxContainer/ImplantsHolder" unique_id=603196838]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SopeBioHackItem2" parent="HBoxContainer/ImplantsHolder" unique_id=45153369 instance=ExtResource("2_ey3mi")]
+[node name="ShopBioHackItem2" parent="HBoxContainer/ImplantsHolder" unique_id=45153369 instance=ExtResource("2_ey3mi")]
 layout_mode = 2

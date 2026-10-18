@@ -103,8 +103,10 @@ func open_shop() -> void:
 	tween.set_parallel(false)
 	tween.tween_callback(_open_shop)
 
+##fazer essa parte no shop apos emitir um singal
 func _open_shop():
 	shop.show()
+	shop.open()
 	stats_viewport.show()
 	stats_viewport.glow()
 	close_battle()
@@ -155,7 +157,8 @@ func _input(event: InputEvent) -> void:
 		#EventBus.enemy_defeated.emit()
 		#EventBus.critical_hit.emit()
 		#print('vida: ', Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
-		EventBus.self_damage.emit()
+		#EventBus.self_damage.emit()
+		EventBus.open_shop.emit()
 	if event.is_action_pressed("test4"):# B
 		Global.implant_manager.add_bio_hack(BH_1)
 	if event.is_action_pressed("test"):# T

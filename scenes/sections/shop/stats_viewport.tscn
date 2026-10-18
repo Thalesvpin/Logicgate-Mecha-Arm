@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bbv5dfix8six7" path="res://scenes/sections/shop/stats_viewport/critic_damage_mult_container.tscn" id="2_b0rs0"]
 [ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="2_te4um"]
 [ext_resource type="PackedScene" uid="uid://bisald530eldg" path="res://scenes/sections/shop/stats_viewport/critic_chance_container.tscn" id="3_s5khm"]
-[ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/background_gradient.gdshader" id="3_ybi5s"]
+[ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradient_master_shader.gdshader" id="3_ybi5s"]
 [ext_resource type="PackedScene" uid="uid://clfirvbm13hri" path="res://scenes/sections/shop/stats_viewport/max_health_container.tscn" id="4_k8u8d"]
 [ext_resource type="Texture2D" uid="uid://d0v4s6bi2ajd3" path="res://assets/TCC_icon_stat_BaseDamage.png" id="4_ybi5s"]
 [ext_resource type="PackedScene" uid="uid://dbxjoxyxc1l42" path="res://scenes/sections/shop/stats_viewport/shield_amount_container.tscn" id="5_qurlf"]
@@ -53,7 +53,10 @@ shader_parameter/enable_pulsation = true
 shader_parameter/animation_speed = 0.50000002375
 shader_parameter/pulse_min_offset = 9.49999998667295e-08
 shader_parameter/pulse_max_offset = 0.5
+shader_parameter/distortion_strength = 0.0
+shader_parameter/distortion_speed = Vector2(0.1, 0.1)
 shader_parameter/enable_overlay = false
+shader_parameter/overlay_blend_mode = 0
 shader_parameter/overlay_color = Color(0, 1, 1, 0.3137255)
 shader_parameter/overlay_type = 1
 shader_parameter/overlay_rotation_degrees = 0.0
@@ -65,6 +68,30 @@ shader_parameter/overlay_enable_pulsation = false
 shader_parameter/overlay_animation_speed = 2.000000095
 shader_parameter/overlay_pulse_min_offset = 9.49999998667295e-08
 shader_parameter/overlay_pulse_max_offset = 0.5
+shader_parameter/corner_radius = 0.0
+shader_parameter/enable_outline = false
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_blur = 0.0
+shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_gradient_rotation_degrees = 0.0
+shader_parameter/outline_gradient_scale = 1.0
+shader_parameter/outline_gradient_smoothing = 0.5
+shader_parameter/outline_gradient_offset = 0.0
+shader_parameter/outline_repeat_gradient = false
+shader_parameter/outline_enable_pulsation = false
+shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_min_offset = -0.5
+shader_parameter/outline_pulse_max_offset = 0.5
+shader_parameter/outline_enable_shine = false
+shader_parameter/outline_shine_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_intensity = 1.0
+shader_parameter/outline_shine_speed = 1.0
+shader_parameter/outline_shine_delay = 2.0
+shader_parameter/outline_shine_width = 0.15
+shader_parameter/outline_shine_softness = 0.5
+shader_parameter/outline_shine_angle = 45.0
+shader_parameter/outline_shine_reverse = false
+shader_parameter/enable_dithering = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e4srk"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -154,13 +181,13 @@ shader_parameter/vignette_intensity = 0.0
 shader_parameter/vignette_smoothness = 0.8
 shader_parameter/chromatic_aberration = 0.006000000285
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_gtatl"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_a7lv4"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_gtatl")
+shader_parameter/tex = SubResource("ViewportTexture_a7lv4")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -169,7 +196,8 @@ shader_parameter/mask_brightness = 1.0
 shader_parameter/animate_mask_brightness = false
 shader_parameter/mask_brightness_anim_speed = 1.0
 shader_parameter/mask_brightness_anim_amplitude = 1.0
-shader_parameter/scanline_brightness = 1.0
+shader_parameter/use_scanlines = true
+shader_parameter/scanline_brightness = 0.75600001216
 shader_parameter/min_scanline_thickness = 0.5
 shader_parameter/interlaced_strength = 0.038000001805
 shader_parameter/animate_interlaced = false
@@ -184,7 +212,7 @@ shader_parameter/color_offset = 0.0
 shader_parameter/animate_color_offset = false
 shader_parameter/color_offset_anim_speed = 1.0
 shader_parameter/color_offset_anim_amplitude = 1.0
-shader_parameter/wobble_strength = 0.9770000464075
+shader_parameter/wobble_strength = 0.0
 shader_parameter/animate_wobble = false
 shader_parameter/wobble_anim_speed = 1.0
 shader_parameter/wobble_anim_amplitude = 1.0
@@ -564,6 +592,7 @@ script = ExtResource("25_2ujkr")
 game_viewport = NodePath("../SubViewportContainer/SubViewport")
 ghost_duration = 1.096
 ghost_gradient = SubResource("GradientTexture1D_gtatl")
+mask_scale_multiplier = 2.0
 
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]

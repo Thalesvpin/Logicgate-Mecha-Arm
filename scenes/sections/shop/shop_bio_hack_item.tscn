@@ -2,88 +2,80 @@
 
 [ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/implant_card.tscn" id="1_0mff5"]
 [ext_resource type="Script" uid="uid://b0un6bhbjsfmo" path="res://scripts/shop_bio_hack_item.gd" id="1_2ypd2"]
+[ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradient_master_shader.gdshader" id="2_h754m"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="3_6acjl"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mdhfq"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 4
-border_width_top = 4
-border_width_bottom = 4
-border_color = Color(1, 0.5019608, 0, 1)
-corner_radius_top_left = 15
-corner_radius_bottom_left = 15
-metadata/_live_palette_bindings = {
-"border_color": "q7jwe"
-}
 
-[sub_resource type="Shader" id="Shader_kjigr"]
-code = "shader_type canvas_item;
-render_mode unshaded;
+[sub_resource type="Gradient" id="Gradient_kjigr"]
+colors = PackedColorArray(0.175479, 0.6741684, 7.70092e-07, 1, 0, 0, 0, 1)
 
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kjigr"]
+gradient = SubResource("Gradient_kjigr")
 
-uniform vec2 direction = vec2(0.0, -1.0);
-uniform vec4 start_color : source_color;
-uniform vec4 end_color : source_color;
+[sub_resource type="Gradient" id="Gradient_h754m"]
+colors = PackedColorArray(0.6560397, 0.556561, 0, 1, 0, 0, 0, 1)
 
-
-float vmax(vec4 vec) {
-	return max(vec.x, max(vec.y, max(vec.z, vec.w)));
-}
-
-
-float random(vec2 seed, float pmin, float pmax) {
-	return pmin + fract(sin(dot(seed.xy, vec2(12.9898, 78.233))) * 43758.5453123) * (pmax - pmin);
-}
-
-
-float get_color_count(float range) {
-	return ceil(clamp(range, 0.0, 1.0) * 255.0);
-}
-
-
-float get_delta(vec2 uv) {
-	vec2 dir = normalize(direction);
-	return (dir.x < 0.0 ? (1.0 - uv.x) : uv.x) * dir.x * dir.x + (dir.y < 0.0 ? (1.0 - uv.y) : uv.y) * dir.y * dir.y;
-}
-
-
-void fragment() {
-	if (start_color == end_color) {
-		COLOR = start_color;
-	}
-	else {
-		float color_count = get_color_count(vmax(abs(end_color - start_color)));
-		float inv_color_count = 1.0 / color_count;
-
-
-		float color_index = floor(get_delta(UV) * color_count);
-		vec4 color1 = mix(start_color, end_color, color_index / color_count);
-		vec4 color2 = mix(start_color, end_color, (color_index + 1.0) / color_count);
-
-
-		float ratio = clamp(mod(get_delta(UV), inv_color_count) * color_count + random(UV, -0.5, 0.5), 0.0, 1.0);
-		COLOR = color1 * (1.0 - ratio) + color2 * ratio;
-	}
-}"
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cwri3"]
+gradient = SubResource("Gradient_h754m")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wf03m"]
-shader = SubResource("Shader_kjigr")
-shader_parameter/direction = Vector2(-1, 0)
-shader_parameter/start_color = Color(0, 0, 0, 1)
-shader_parameter/end_color = Color(0.84705883, 0, 1, 1)
+shader = ExtResource("2_h754m")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_kjigr")
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_rotation_degrees = 0.0
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothing = 0.5
+shader_parameter/gradient_offset = 0.0
+shader_parameter/repeat_gradient = false
+shader_parameter/enable_pulsation = false
+shader_parameter/animation_speed = 1.0
+shader_parameter/pulse_min_offset = -0.5
+shader_parameter/pulse_max_offset = 0.5
+shader_parameter/distortion_strength = 0.0
+shader_parameter/distortion_speed = Vector2(0.1, 0.1)
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_color = Color(0, 0, 0, 0.28235295)
+shader_parameter/overlay_type = 0
+shader_parameter/overlay_rotation_degrees = 0.0
+shader_parameter/overlay_scale = 1.0
+shader_parameter/overlay_smoothing = 0.5
+shader_parameter/overlay_offset = 0.0
+shader_parameter/overlay_invert_fade = false
+shader_parameter/overlay_enable_pulsation = false
+shader_parameter/overlay_animation_speed = 1.0
+shader_parameter/overlay_pulse_min_offset = -0.5
+shader_parameter/overlay_pulse_max_offset = 0.5
+shader_parameter/corner_radius = 20.40800096938
+shader_parameter/enable_outline = true
+shader_parameter/outline_width = 4.00000019
+shader_parameter/outline_blur = 0.0
+shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_cwri3")
+shader_parameter/outline_gradient_type = 0
+shader_parameter/outline_gradient_rotation_degrees = 0.0
+shader_parameter/outline_gradient_scale = 1.0
+shader_parameter/outline_gradient_smoothing = 0.5
+shader_parameter/outline_gradient_offset = 0.0
+shader_parameter/outline_repeat_gradient = false
+shader_parameter/outline_enable_pulsation = false
+shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_min_offset = -0.5
+shader_parameter/outline_pulse_max_offset = 0.5
+shader_parameter/outline_enable_shine = true
+shader_parameter/outline_shine_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_intensity = 1.0
+shader_parameter/outline_shine_speed = 1.0
+shader_parameter/outline_shine_delay = 2.0
+shader_parameter/outline_shine_width = 0.43900002015398
+shader_parameter/outline_shine_softness = 1.0
+shader_parameter/outline_shine_angle = 0.0
+shader_parameter/outline_shine_reverse = false
+shader_parameter/enable_dithering = true
 metadata/_live_palette_bindings = {
 "shader_parameter/end_color": "lcvmx"
 }
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sc01o"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-bg_color = Color(0.6, 0.6, 0.6, 0)
-corner_radius_top_left = 11
-corner_radius_bottom_left = 11
-corner_detail = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0, 0, 0, 1)
@@ -96,16 +88,21 @@ metadata/_live_palette_bindings = {
 "border_color": "rsjlv"
 }
 
-[node name="SopeBioHackItem" type="PanelContainer" unique_id=602144725]
+[node name="ShopBioHackItem" type="PanelContainer" unique_id=602144725]
 offset_right = 384.0
 offset_bottom = 205.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+theme_override_styles/panel = SubResource("StyleBoxFlat_mdhfq")
 script = ExtResource("1_2ypd2")
 
-[node name="Background" type="PanelContainer" parent="." unique_id=1889736362]
-material = SubResource("ShaderMaterial_wf03m")
+[node name="Control" type="Control" parent="." unique_id=1347307323]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_sc01o")
+
+[node name="Background" type="PanelContainer" parent="Control" unique_id=1889736362]
+material = SubResource("ShaderMaterial_wf03m")
+layout_mode = 0
+offset_top = -4.0
+offset_right = 448.0
+offset_bottom = 201.0
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1220059076]
 layout_mode = 2
@@ -116,7 +113,6 @@ theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1532193440]
 layout_mode = 2
-theme_override_constants/separation = 10
 
 [node name="ImplantCard" parent="MarginContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("1_0mff5")]
 layout_mode = 2

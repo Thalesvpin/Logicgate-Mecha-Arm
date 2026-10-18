@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://g87fqnshpu3e"]
 
 [ext_resource type="PackedScene" uid="uid://g1wibbx60ti6" path="res://scenes/sections/shop/shop_tech_mods_container.tscn" id="1_emyvy"]
+[ext_resource type="Script" uid="uid://1nlbk858ntkx" path="res://scripts/shop.gd" id="1_t8nw1"]
 [ext_resource type="PackedScene" uid="uid://b7hjsmnl3qf5k" path="res://scenes/sections/shop/shop_mid_section.tscn" id="2_n8es3"]
 [ext_resource type="PackedScene" uid="uid://bap1wppk0gxk1" path="res://scenes/sections/shop/shop_bio_hacks_container.tscn" id="2_yfiyx"]
 [ext_resource type="PackedScene" uid="uid://b83ioundydby3" path="res://scenes/sections/shop/shop_money_panel.tscn" id="4_7dnml"]
@@ -27,6 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
+script = ExtResource("1_t8nw1")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=899670152]
 custom_minimum_size = Vector2(0, 520)

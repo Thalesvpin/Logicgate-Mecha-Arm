@@ -7,15 +7,17 @@ const SHOP_BIO_HACK_ITEM = preload("uid://biquah0t1pge8")
 var implants: Array[Implant]
 
 func _ready() -> void:
+	pass
+
+func refresh() -> void:
 	randomize_implants()
-	#add_implants()
+	add_implants()
 
 func randomize_implants() -> void:
-	pass
-	#var implant1 = get_random_implant()
-	#var implant2 = get_random_implant(implant1)
-	#implants.append(implant1)
-	#implants.append(implant2)
+	var implant1 = get_random_implant()
+	var implant2 = get_random_implant(implant1)
+	implants.append(implant1)
+	implants.append(implant2)
 	
 
 func get_random_implant(last = null) -> Implant:

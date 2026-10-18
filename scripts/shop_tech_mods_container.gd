@@ -9,6 +9,9 @@ const TM_2 = preload("uid://cmcqwoq53i712")
 var implants: Array[Implant]
 
 func _ready() -> void:
+	pass
+
+func refresh() -> void:
 	randomize_implants()
 	add_implants()
 
