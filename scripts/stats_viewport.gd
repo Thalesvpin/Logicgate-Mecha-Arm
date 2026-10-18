@@ -14,7 +14,7 @@ var bot_tabs: Array[TextureRect]
 @onready var sub_viewport: SubViewport = $SubViewportContainer/SubViewport/Tabs/Bottom/SubViewport
 @onready var transparent_gradient: TextureRect = $SubViewportContainer/SubViewport/Tabs/Bottom/TransparentGradient
 @onready var world_environment: WorldEnvironment = $SubViewportContainer/SubViewport/WorldEnvironment
-@onready var arm_x_ray: TextureRect = $SubViewportContainer/SubViewport/ArmXRay
+@onready var arm_x_ray: TextureRect = $SubViewportContainer/SubViewport/Control/CanvasGroup/ArmXRay
 
 @export var glow_tween_duration: float = 1
 @export var glow_intensity: float = 0.3

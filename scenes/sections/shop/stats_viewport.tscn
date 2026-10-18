@@ -328,13 +328,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rvil5"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_eyyxj"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_a13rr"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_eyyxj")
+shader_parameter/tex = SubResource("ViewportTexture_a13rr")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -767,11 +767,23 @@ visible = false
 layout_mode = 2
 mouse_filter = 1
 
-[node name="CanvasGroup" type="CanvasGroup" parent="SubViewportContainer/SubViewport" unique_id=1029798026]
+[node name="Control" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=895439523]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="CanvasGroup" type="CanvasGroup" parent="SubViewportContainer/SubViewport/Control" unique_id=1029798026]
 material = SubResource("ShaderMaterial_esiv2")
 fit_margin = 155.0
 
-[node name="ArmXRay" type="TextureRect" parent="SubViewportContainer/SubViewport/CanvasGroup" unique_id=1962423191]
+[node name="ArmXRay" type="TextureRect" parent="SubViewportContainer/SubViewport/Control/CanvasGroup" unique_id=1962423191]
 custom_minimum_size = Vector2(3.395, 400)
 custom_maximum_size = Vector2(177.26, 613)
 anchors_preset = 7
@@ -779,10 +791,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 556.37
-offset_top = 457.0
-offset_right = 733.63
-offset_bottom = 1070.0
+offset_left = -88.63
+offset_top = -613.0
+offset_right = 88.63
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
