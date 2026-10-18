@@ -31,6 +31,15 @@ uniform float interlaced_anim_speed = 1.0;
 uniform float interlaced_anim_amplitude = 1.0;
 uniform float interlaced_fps : hint_range(1.0, 60.0) = 30.0;
 
+group_uniforms Interlaced_Jitter;
+uniform float interlaced_jitter_strength : hint_range(0.0, 0.05) = 0.0;
+uniform float interlaced_jitter_speed : hint_range(0.1, 20.0) = 10.0;
+
+group_uniforms VHS_Tracking;
+uniform float vhs_tracking_strength : hint_range(0.0, 1.0) = 0.0;
+uniform float vhs_tracking_height : hint_range(0.01, 0.5) = 0.08;
+uniform float vhs_tracking_speed : hint_range(-10.0, 10.0) = 2.0;
+
 group_uniforms Sharpness;
 uniform float sharpness : hint_range(0.5, 1.0) = 0.6666666666666666666666666667;
 uniform bool animate_sharpness = false;
@@ -164,6 +173,17 @@ uniform float bloom_anim_speed = 1.0;
 uniform float bloom_anim_amplitude = 1.0;
 uniform vec2 bloom_blur_radius = vec2(4.0, 4.0);
 
+group_uniforms Stylization_FX;
+uniform bool use_gradient_map = false;
+uniform sampler2D gradient_texture : hint_default_white;
+
+uniform bool use_color_quantization = false;
+uniform float color_levels : hint_range(2.0, 64.0) = 16.0;
+
+uniform bool use_auto_exposure = false;
+uniform float exposure_threshold : hint_range(0.0, 1.0) = 0.7;
+uniform float exposure_intensity : hint_range(0.0, 2.0) = 0.5;
+
 group_uniforms Runtime_FX;
 uniform sampler2D degauss_curve;
 uniform float degauss_progress = 1.0; 
@@ -275,7 +295,6 @@ void vertex()
 
 vec2 warp(vec2 uv)
 {
-	// Optimized Scalarized Coordinate Math
 	uv -= 0.5;
 	uv.x /= aspect;
 	uv /= 1.0 - curve * (dot(uv, uv) - 0.25);
@@ -336,7 +355,7 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size)
 	vec3 weight_c = smoothstep(vec3(1.0), vec3(0.0), abs(diff) * v_dyn_pack1.y);
 	vec3 weight_d = smoothstep(vec3(1.0), vec3(0.0), (1.0 - diff) * v_dyn_pack1.y);
 	vec3 weight_e = smoothstep(vec3(1.0), vec3(0.0), (2.0 - diff) * v_dyn_pack1.y);
-	vec3 weight_scaler = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e); // Reciprocal Broadcast Optimization
+	vec3 weight_scaler = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e);
 
 	if (use_scanlines) 
 	{
@@ -410,7 +429,6 @@ vec3 mask(vec3 linear_color, vec2 coords)
 	vec3 primary_col = clamp(target_color, 0.0, 1.0);
 	vec3 highlights = target_color - primary_col;
 	
-	// Optimized Highlight Scaler Fix (Div-by-zero safeguard)
 	if (m.w < 0.999) {
 		highlights *= m.w / (1.0 - m.w);
 	} else {
@@ -427,6 +445,20 @@ void fragment()
 
 	vec2 warped_coords = warp(UV);
 	warped_coords.x += v_degauss_wobble.y;
+
+	if (interlaced_jitter_strength > 0.0) {
+		float row_id = floor(warped_coords.y * tex_size.y);
+		float jitter_mod = sin(TIME * interlaced_jitter_speed + row_id * 1.5) * interlaced_jitter_strength;
+		warped_coords.x += ((int(row_id) & 1) == 0 ? jitter_mod : -jitter_mod);
+	}
+
+	if (vhs_tracking_strength > 0.0) {
+		float track_band = step(1.0 - vhs_tracking_height, fract(warped_coords.y + TIME * vhs_tracking_speed));
+		if (track_band > 0.0) {
+			float pseudo_rand = fract(sin(floor(warped_coords.y * 40.0) + TIME * 10.0) * 43758.5453);
+			warped_coords.x += (pseudo_rand - 0.5) * vhs_tracking_strength * 0.2;
+		}
+	}
 	
 	if (v_degauss_wobble.x > 0.0) {
 		vec2 center_offset = warped_coords - 0.5;
@@ -457,14 +489,13 @@ void fragment()
 	if (use_sweep_stripe) {
 		vec2 centered_uv = warped_coords - 0.5;
 		
-		// Unrolled Matrix Multiplication
 		rotated_uv = vec2(
 			centered_uv.x * v_stripe_calc.y - centered_uv.y * v_stripe_calc.z,
 			centered_uv.x * v_stripe_calc.z + centered_uv.y * v_stripe_calc.y
 		) + 0.5;
 
 		float half_w = stripe_width * 0.5;
-		float norm_dist = abs(rotated_uv.y - v_stripe_calc.x) / half_w; // Factored out divisor entirely
+		float norm_dist = abs(rotated_uv.y - v_stripe_calc.x) / half_w;
 
 		if (norm_dist <= 1.0) {
 			if (stripe_profile == 1) { 
@@ -557,6 +588,21 @@ void fragment()
 
 	col = mask(col, FRAGCOORD.xy * v_time_pack2.w);
 
+	if (use_auto_exposure) {
+		float luma = dot(col, HUE_LUMA);
+		col = mix(col, vec3(1.0), smoothstep(exposure_threshold, 1.0, luma) * exposure_intensity);
+	}
+
+	if (use_color_quantization) {
+		col = floor(col * color_levels) / color_levels;
+	}
+
+	// --- FEATURE: 1D GRADIENT MAPPING / DUOTONE ---
+	if (use_gradient_map) {
+		float luma = dot(col, HUE_LUMA);
+		col = textureLod(gradient_texture, vec2(clamp(luma, 0.0, 1.0), 0.0), 0.0).rgb;
+	}
+
 	if (v_dyn_pack2.w > 0.0) {
 		vec2 offX = vec2(bloom_blur_radius.x * tex_pixel_size.x, 0.0);
 		vec2 offY = vec2(0.0, bloom_blur_radius.y * tex_pixel_size.y);
@@ -567,7 +613,7 @@ void fragment()
 		               + srgb_to_linear(texture(tex, warped_coords + offY).rgb)
 		               + srgb_to_linear(texture(tex, warped_coords - offY).rgb);
 		
-		col += max(raw_bloom * 0.2 - bloom_threshold, 0.0) * v_dyn_pack2.w; // Optimized Max Logic
+		col += max(raw_bloom * 0.2 - bloom_threshold, 0.0) * v_dyn_pack2.w; 
 	}
 
     COLOR.rgb = linear_to_srgb(col);

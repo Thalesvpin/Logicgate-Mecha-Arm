@@ -8,6 +8,10 @@ uniform float contrast : hint_range(0.0, 2.0) = 1.0;
 uniform float saturation : hint_range(0.0, 2.0) = 1.0;
 uniform float hue : hint_range(0.0, 1.0) = 0.0;
 
+// Gradient Map Controls
+uniform bool use_gradient_map = false;
+uniform sampler2D gradient_texture : source_color, filter_linear, repeat_disable;
+
 // Effect Controls
 uniform float vignette_intensity : hint_range(0.0, 1.0) = 0.4;
 uniform float vignette_smoothness : hint_range(0.1, 2.0) = 0.8;
@@ -51,15 +55,21 @@ void fragment() {
     vec3 col_g = texture(screen_texture, uv).rgb;
     vec3 col_b = texture(screen_texture, uv - centered_uv * chromatic_aberration).rgb;
     
-    // 2. Apply color corrections to each sample so the base image is graded first
+    // 2. Apply color corrections to each sample
     col_r = apply_color_corrections(col_r);
     col_g = apply_color_corrections(col_g);
     col_b = apply_color_corrections(col_b);
     
-    // 3. Assemble the final color using the color-adjusted channels
+    // 3. Assemble final color channels
     vec3 col = vec3(col_r.r, col_g.g, col_b.b);
     
-    // 4. Optimized Vignette applied last
+    // 4. Gradient Map (Applied if toggled on)
+    if (use_gradient_map) {
+        float luminance = dot(col, vec3(0.2126, 0.7152, 0.0722));
+        col = texture(gradient_texture, vec2(luminance, 0.0)).rgb;
+    }
+    
+    // 5. Optimized Vignette applied last
     float dist_sq = dot(centered_uv, centered_uv);
     float vignette = smoothstep(0.25, vignette_smoothness * 0.25, dist_sq * (vignette_intensity + 0.5));
     col = mix(col, col * (1.0 - vignette_intensity), vignette);

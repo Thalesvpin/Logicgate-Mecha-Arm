@@ -51,8 +51,8 @@ shader_parameter/gradient_offset = 0.0
 shader_parameter/repeat_gradient = false
 shader_parameter/enable_pulsation = true
 shader_parameter/animation_speed = 0.50000002375
-shader_parameter/pulse_min_offset = 9.49999998667295e-08
-shader_parameter/pulse_max_offset = 0.5
+shader_parameter/pulse_min_offset = 0.2320001060200001
+shader_parameter/pulse_max_offset = 0.5870001228824999
 shader_parameter/distortion_strength = 0.0
 shader_parameter/distortion_speed = Vector2(0.1, 0.1)
 shader_parameter/enable_overlay = false
@@ -171,12 +171,21 @@ glow_strength = 1.27
 glow_bloom = 0.09
 adjustment_enabled = true
 
+[sub_resource type="Gradient" id="Gradient_cwri3"]
+offsets = PackedFloat32Array(0, 0.4573991, 0.79820627)
+colors = PackedColorArray(0, 0, 0, 1, 0.93, 0, 0, 1, 0.85, 0.5525, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_2ujkr"]
+gradient = SubResource("Gradient_cwri3")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eetg5"]
 shader = ExtResource("23_l102y")
 shader_parameter/brightness = 1.0
 shader_parameter/contrast = 1.0
-shader_parameter/saturation = 1.330000063175
+shader_parameter/saturation = 1.0
 shader_parameter/hue = 0.0
+shader_parameter/use_gradient_map = false
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_2ujkr")
 shader_parameter/vignette_intensity = 0.0
 shader_parameter/vignette_smoothness = 0.8
 shader_parameter/chromatic_aberration = 0.0
@@ -188,13 +197,20 @@ point_count = 2
 [sub_resource type="CurveTexture" id="CurveTexture_2ujkr"]
 curve = SubResource("Curve_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_bqoei"]
+[sub_resource type="Gradient" id="Gradient_mdhfq"]
+offsets = PackedFloat32Array(0, 0.21973094, 0.80269057)
+colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rvil5"]
+gradient = SubResource("Gradient_mdhfq")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_kbhfa"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_bqoei")
+shader_parameter/tex = SubResource("ViewportTexture_kbhfa")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -212,6 +228,11 @@ shader_parameter/animate_interlaced = false
 shader_parameter/interlaced_anim_speed = 1.0
 shader_parameter/interlaced_anim_amplitude = 1.0
 shader_parameter/interlaced_fps = 30.0
+shader_parameter/interlaced_jitter_strength = 0.0
+shader_parameter/interlaced_jitter_speed = 10.0
+shader_parameter/vhs_tracking_strength = 0.0
+shader_parameter/vhs_tracking_height = 0.08
+shader_parameter/vhs_tracking_speed = 2.0
 shader_parameter/sharpness = 1.0
 shader_parameter/animate_sharpness = false
 shader_parameter/sharpness_anim_speed = 1.0
@@ -231,7 +252,7 @@ shader_parameter/roll_anim_amplitude = 1.0
 shader_parameter/roll_size = 15.0
 shader_parameter/roll_speed = 2.0
 shader_parameter/use_sweep_stripe = true
-shader_parameter/stripe_width = 0.39000001782647997
+shader_parameter/stripe_width = 0.39000001782648
 shader_parameter/stripe_speed = 0.15
 shader_parameter/stripe_interval = 1.00000004424012
 shader_parameter/stripe_offset = 0.570000027075
@@ -259,8 +280,8 @@ shader_parameter/stripe_secondary_wave_profile = 3
 shader_parameter/stripe_secondary_wave_axis = 1
 shader_parameter/stripe_secondary_wave_min = 6.2830002984425
 shader_parameter/stripe_secondary_wave_max = 6.2830002984425
-shader_parameter/stripe_secondary_wave_scale = 7.7660003656251195
-shader_parameter/stripe_secondary_wave_freq = 9.975000470552619
+shader_parameter/stripe_secondary_wave_scale = 7.76600036562512
+shader_parameter/stripe_secondary_wave_freq = 9.97500047055262
 shader_parameter/stripe_secondary_wave_speed = 1.8100010359749987
 shader_parameter/stripe_secondary_wave_intensity = 2.6830001274425
 shader_parameter/stripe_secondary_wave_offset = 0.0
@@ -304,6 +325,13 @@ shader_parameter/animate_bloom = false
 shader_parameter/bloom_anim_speed = 1.0
 shader_parameter/bloom_anim_amplitude = 1.0
 shader_parameter/bloom_blur_radius = Vector2(4, 4)
+shader_parameter/use_gradient_map = false
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_rvil5")
+shader_parameter/use_color_quantization = false
+shader_parameter/color_levels = 16.0
+shader_parameter/use_auto_exposure = false
+shader_parameter/exposure_threshold = 0.7
+shader_parameter/exposure_intensity = 0.5
 shader_parameter/degauss_curve = SubResource("CurveTexture_2ujkr")
 shader_parameter/degauss_progress = 1.0
 shader_parameter/degauss_wobble_strength = 33.1050015724875
