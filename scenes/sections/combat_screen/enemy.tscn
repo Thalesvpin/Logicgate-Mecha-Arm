@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://uxyo2f0d6x2v" path="res://scripts/enemy.gd" id="1_6w5ur"]
 [ext_resource type="Texture2D" uid="uid://tdm62mawpb5d" path="res://assets/skeleton.png" id="1_87g8f"]
 [ext_resource type="Shader" uid="uid://d03k1q5p363w6" path="res://shaders/outline.gdshader" id="3_18xkl"]
-[ext_resource type="Shader" uid="uid://dh3mmqwwbao10" path="res://shaders/ultimate_outline.gdshader" id="3_ct5v2"]
+[ext_resource type="Shader" uid="uid://dh3mmqwwbao10" path="res://shaders/ultimate_outerglow.gdshader" id="3_ct5v2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_18xkl"]
 shader = ExtResource("1_6e57c")
