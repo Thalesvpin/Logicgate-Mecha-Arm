@@ -187,8 +187,6 @@ shader_parameter/use_inner_pattern_texture = false
 shader_parameter/inner_pattern_scale = Vector2(1, 1)
 shader_parameter/inner_pattern_pan_speed = Vector2(0.1, 0)
 shader_parameter/inner_pattern_influence = 0.5
-shader_parameter/use_hue_shift_mapping = false
-shader_parameter/hue_shift_intensity = 0.3
 shader_parameter/use_dissolve = false
 shader_parameter/dissolve_amount = 0.0
 shader_parameter/d_noise_scale = Vector2(1, 1)
@@ -196,7 +194,6 @@ shader_parameter/mask_dissolve = false
 shader_parameter/animate_dissolve = false
 shader_parameter/dissolve_speed = 2.0
 shader_parameter/dissolve_use_ease = false
-shader_parameter/refraction_dispersion = 0.0
 shader_parameter/enable_dithering = true
 shader_parameter/dither_strength_noise = 0.03
 shader_parameter/use_ordered_dither = false
@@ -331,13 +328,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rvil5"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xfmul"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_eyyxj"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_xfmul")
+shader_parameter/tex = SubResource("ViewportTexture_eyyxj")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3

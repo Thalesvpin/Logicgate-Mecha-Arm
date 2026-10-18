@@ -6,7 +6,10 @@ uniform vec2 original_texture_size = vec2(64.0, 64.0);
 // CanvasGroup works natively by feeding the merged children into the screen texture channel
 uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 
-group_uniforms Outer_Glow_Settings;
+// ==========================================
+// OUTDER GLOW SETTINGS
+// ==========================================
+group_uniforms Outer_Glow;
 uniform bool smooth_poisson_distribution = false;
 uniform int max_sampling_limit : hint_range(0, 3) = 0;
 uniform vec4 glow_color : source_color = vec4(0.0, 1.0, 1.0, 1.0);
@@ -24,12 +27,14 @@ uniform float boundary_fade_margin : hint_range(0.0, 0.5) = 0.05;
 uniform bool use_soft_clip = false; 
 uniform float glow_hdr_threshold : hint_range(1.0, 10.0) = 1.0;
 uniform vec2 glow_direction_falloff = vec2(1.0, 1.0);
+
+group_uniforms Outer_Glow.Rim_Lighting;
 uniform float glow_rim_margin : hint_range(0.0, 1.0) = 0.0;
 uniform float glow_rim_feather : hint_range(0.01, 1.0) = 0.05;
 uniform float glow_rim_eccentricity : hint_range(-1.0, 1.0) = 0.0;
 uniform float glow_rim_pulse_frequency : hint_range(0.0, 10.0) = 0.0;
 
-group_uniforms Sharp_Glow_Steps;
+group_uniforms Outer_Glow.Steps_and_Styling;
 uniform bool use_sharp_steps = false;
 uniform float glow_step_count : hint_range(1.0, 10.0) = 3.0;
 uniform bool use_color_banding_palette = false;
@@ -37,7 +42,7 @@ uniform sampler2D step_color_banding_palette : hint_default_black, repeat_disabl
 uniform float step_outline_thickness : hint_range(0.0, 10.0) = 0.0;
 uniform vec4 step_outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 
-group_uniforms Outer_Contour_Outline;
+group_uniforms Outer_Glow.Contour_Outline;
 uniform bool use_contour_outline = false;
 uniform vec4 contour_color_a : source_color = vec4(1.0, 0.85, 0.0, 1.0); 
 uniform vec4 contour_color_b : source_color = vec4(1.0, 0.4, 0.0, 1.0);  
@@ -45,13 +50,13 @@ uniform float contour_thickness : hint_range(0.0, 30.0) = 2.0;
 uniform bool contour_mix_with_glow = false;
 uniform bool contour_pixel_snap = false;
 
-group_uniforms Outer_Glow_Size_Animation;
+group_uniforms Outer_Glow.Size_Animation;
 uniform bool animate_glow = false;
 uniform float pulse_speed : hint_range(0.0, 10.0) = 2.0;
 uniform float min_pulse_scale : hint_range(0.0, 2.0) = 0.5;
 uniform float max_pulse_scale : hint_range(0.0, 5.0) = 1.0;
 
-group_uniforms Outer_Glow_Color_Animation;
+group_uniforms Outer_Glow.Color_Animation;
 uniform bool change_color_over_time = false;
 uniform vec4 starting_color : source_color = vec4(1.0, 0.0, 0.0, 1.0);
 uniform vec4 ending_color : source_color = vec4(0.0, 0.0, 1.0, 1.0);
@@ -63,13 +68,13 @@ uniform float opacity_pulse_speed : hint_range(0.0, 10.0) = 2.0;
 uniform float min_opacity_scale : hint_range(0.0, 1.0) = 0.2;
 uniform float max_opacity_scale : hint_range(0.0, 1.0) = 1.0;
 
-group_uniforms Outer_Glow_Rotation;
+group_uniforms Outer_Glow.Rotation;
 uniform float static_angle : hint_range(0.0, 360.0) = 0.0;
 uniform bool animate_rotation = false;
 uniform float rotation_speed : hint_range(-10.0, 10.0) = 1.0;
 uniform vec2 rotation_pivot_offset = vec2(0.0, 0.0);
 
-group_uniforms Outer_Glow_Pattern_Settings;
+group_uniforms Outer_Glow.Pattern_Settings;
 uniform bool use_pattern_texture = false;
 uniform sampler2D pattern_texture : hint_default_white, repeat_enable;
 uniform vec2 pattern_scale = vec2(1.0, 1.0);
@@ -77,11 +82,14 @@ uniform vec2 pattern_pan_speed = vec2(0.1, 0.0);
 uniform float pattern_influence : hint_range(0.0, 1.0) = 0.5;
 uniform bool pattern_fresnel_modulation = false;
 
-group_uniforms Outer_Glow_God_Rays;
+group_uniforms Outer_Glow.God_Rays;
 uniform bool use_god_rays = false;
 uniform vec2 ray_direction = vec2(0.5, -0.5); 
 uniform float ray_length : hint_range(1.0, 5.0) = 2.0; 
 
+// ==========================================
+// INNER GLOW SETTINGS
+// ==========================================
 group_uniforms Inner_Glow;
 uniform bool use_inner_glow = false;
 uniform vec4 inner_glow_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
@@ -90,13 +98,13 @@ uniform float inner_glow_opacity : hint_range(0.0, 1.0) = 0.5;
 uniform float inner_glow_falloff : hint_range(0.1, 5.0) = 1.0;
 uniform bool inner_glow_ignore_distortion = false;
 
-group_uniforms Inner_Glow_Size_Animation;
+group_uniforms Inner_Glow.Size_Animation;
 uniform bool animate_inner_glow = false;
 uniform float inner_pulse_speed : hint_range(0.0, 10.0) = 2.0;
 uniform float min_inner_pulse_scale : hint_range(0.0, 2.0) = 0.5;
 uniform float max_inner_pulse_scale : hint_range(0.0, 5.0) = 1.0;
 
-group_uniforms Inner_Glow_Color_Animation;
+group_uniforms Inner_Glow.Color_Animation;
 uniform bool change_inner_color_over_time = false;
 uniform vec4 starting_inner_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform vec4 ending_inner_color : source_color = vec4(1.0, 1.0, 0.0, 1.0);
@@ -107,23 +115,22 @@ uniform float inner_opacity_pulse_speed : hint_range(0.0, 10.0) = 2.0;
 uniform float min_inner_opacity_scale : hint_range(0.0, 1.0) = 0.2;
 uniform float max_inner_opacity_scale : hint_range(0.0, 1.0) = 1.0;
 
-group_uniforms Inner_Glow_Rotation;
+group_uniforms Inner_Glow.Rotation;
 uniform float inner_static_angle : hint_range(0.0, 360.0) = 0.0;
 uniform bool animate_inner_rotation = false;
 uniform float inner_rotation_speed : hint_range(-10.0, 10.0) = 1.0;
 
-group_uniforms Inner_Glow_Pattern_Settings;
+group_uniforms Inner_Glow.Pattern_Settings;
 uniform bool use_inner_pattern_texture = false;
 uniform sampler2D inner_pattern_texture : hint_default_white, repeat_enable;
 uniform vec2 inner_pattern_scale = vec2(1.0, 1.0);
 uniform vec2 inner_pattern_pan_speed = vec2(0.1, 0.0);
 uniform float inner_pattern_influence : hint_range(0.0, 1.0) = 0.5;
 
-group_uniforms Sprite_Hue_Shift_Mapping;
-uniform bool use_hue_shift_mapping = false;
-uniform float hue_shift_intensity : hint_range(0.0, 1.0) = 0.3;
-
-group_uniforms Glow_Noise_Dissolve;
+// ==========================================
+// DISSOLVE & NOISE
+// ==========================================
+group_uniforms Dissolve_Effect;
 uniform bool use_dissolve = false;
 uniform sampler2D dissolve_noise : hint_default_black, repeat_enable;
 uniform float dissolve_amount : hint_range(0.0, 1.0) = 0.0;
@@ -133,14 +140,14 @@ uniform bool animate_dissolve = false;
 uniform float dissolve_speed : hint_range(0.0, 10.0) = 2.0;
 uniform bool dissolve_use_ease = false;
 
-group_uniforms Background_Refraction;
-uniform float refraction_dispersion : hint_range(0.0, 1.0) = 0.0;
-
-group_uniforms Anti_Banding_and_Dither;
+// ==========================================
+// RETRO & PIXELATION EFFECTS
+// ==========================================
+group_uniforms Retro_Effects;
 uniform bool enable_dithering = true;
 uniform float dither_strength_noise : hint_range(0.0, 0.2) = 0.03;
 
-group_uniforms Retro_Bayer_Dither;
+group_uniforms Retro_Effects.Bayer_Dither;
 uniform bool use_ordered_dither = false;
 uniform float dither_strength : hint_range(0.0, 1.0) = 0.5;
 uniform float dither_scale : hint_range(1.0, 8.0) = 1.0;
@@ -152,12 +159,15 @@ uniform float dither_color_bleeding : hint_range(0.0, 1.0) = 0.0;
 uniform float dither_animation_speed : hint_range(1.0, 60.0) = 12.0;
 uniform vec4 dither_noise_bleeding_tint : source_color = vec4(1.0, 0.0, 0.0, 1.0);
 
-group_uniforms Retro_Pixel_Art_SubSampling;
+group_uniforms Retro_Effects.Pixelation;
 uniform bool use_pixelate_glow = false;
 uniform float pixelate_size : hint_range(1.0, 32.0) = 4.0;
 uniform bool pixelate_heat_fluid_fluid = false;  
 uniform bool pixelate_heat_fluid_static = false; 
 
+// ==========================================
+// DISTORTION & HEAT
+// ==========================================
 group_uniforms Distortion_and_Heat;
 uniform bool use_distortion = false;
 uniform sampler2D distortion_noise : hint_default_black, repeat_enable;
@@ -246,12 +256,6 @@ float interleaved_gradient_noise(vec2 screen_coord) {
 
 vec2 rotate_vector(vec2 dir, float cos_angle, float sin_angle) {
     return vec2(dir.x * cos_angle - dir.y * sin_angle, dir.x * sin_angle + dir.y * cos_angle);
-}
-
-vec3 hue_shift(vec3 color, float shift) {
-    vec3 k = vec3(0.57735);
-    float cos_angle = cos(shift);
-    return color * cos_angle + cross(k, color) * sin(shift) + k * dot(k, color) * (1.0 - cos_angle);
 }
 
 float get_bayer_matrix(vec2 coord) {
@@ -371,10 +375,6 @@ void fragment() {
     
     vec4 col = texture(screen_texture, tex_uv);
     vec4 active_glow_color = use_gradient_mapping ? texture(glow_gradient, vec2(fract(TIME * gradient_scroll_speed), 0.0)) : v_active_glow_color;
-
-    if (use_hue_shift_mapping && col.a > 0.05) {
-        active_glow_color.rgb = hue_shift(active_glow_color.rgb, dot(col.rgb, vec3(0.299, 0.587, 0.114)) * hue_shift_intensity * 6.28);
-    }
 
     float total_alpha = 0.0;
     float inner_alpha = 0.0;
