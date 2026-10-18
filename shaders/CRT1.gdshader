@@ -1,5 +1,5 @@
 // CRT Shader by Harrison Allen
-// V12 - Master Optimized, Proportional Resolution Independence, Optional Scanline Toggle
+// V19 - Independent Multipath Echo Animations, Master Optimized, Stretch-Proof
 
 shader_type canvas_item;
 
@@ -23,7 +23,8 @@ uniform float mask_brightness_anim_amplitude = 1.0;
 group_uniforms Scanlines;
 uniform bool use_scanlines = false;
 uniform float scanline_brightness : hint_range(0.5, 1.0) = 1.0;
-uniform float min_scanline_thickness : hint_range(0.25, 1.0) = 0.5;
+uniform float scanline_beam_width_min : hint_range(0.1, 1.0) = 0.25;
+uniform float scanline_beam_width_max : hint_range(0.5, 3.0) = 1.0;
 
 group_uniforms Interlaced_Flicker;
 uniform float interlaced_strength : hint_range(0.0, 1.0) = 0.0;
@@ -63,8 +64,26 @@ uniform float roll_anim_amplitude = 1.0;
 uniform float roll_size : hint_range(0.0, 100.0) = 15.0;
 uniform float roll_speed : hint_range(-10.0, 10.0) = 2.0;
 
+group_uniforms Multipath_Echo;
+uniform float echo_strength : hint_range(0.0, 1.0) = 0.0;
+uniform bool animate_echo_strength = false;
+uniform sampler2D echo_strength_curve;
+uniform float echo_strength_anim_speed = 1.0;
+uniform float echo_strength_anim_amplitude = 1.0;
+
+uniform float echo_offset : hint_range(-0.05, 0.05) = 0.015;
+uniform bool animate_echo_offset = false;
+uniform sampler2D echo_offset_curve;
+uniform float echo_offset_anim_speed = 1.0;
+uniform float echo_offset_anim_amplitude = 1.0;
+
+group_uniforms Dot_Crawl;
+uniform float dot_crawl_strength : hint_range(0.0, 1.0) = 0.0;
+uniform float dot_crawl_speed : hint_range(0.0, 20.0) = 15.0;
+
 group_uniforms Signal_Loss_Glitch;
 uniform float glitch_strength : hint_range(0.0, 1.0) = 0.0;
+uniform float vsync_tearing : hint_range(0.0, 1.0) = 0.0;
 uniform bool animate_glitch = false;
 uniform sampler2D glitch_curve;
 uniform float glitch_anim_speed = 1.0;
@@ -74,6 +93,7 @@ uniform float glitch_size : hint_range(0.01, 1.0) = 0.05;
 
 group_uniforms Static_Noise;
 uniform float noise_strength : hint_range(0.0, 0.5) = 0.03;
+uniform bool chroma_noise = false;
 uniform bool animate_noise = false;
 uniform sampler2D noise_curve;
 uniform float noise_anim_speed = 1.0;
@@ -86,17 +106,19 @@ uniform bool animate_bloom = false;
 uniform sampler2D bloom_curve;
 uniform float bloom_anim_speed = 1.0;
 uniform float bloom_anim_amplitude = 1.0;
-uniform float bloom_blur_radius : hint_range(0.0, 10.0) = 4.0;
+uniform vec2 bloom_blur_radius = vec2(4.0, 4.0);
 
 group_uniforms;
 
 varying flat float v_wobble;
 varying flat vec4 v_dyn_pack1; 
 varying flat vec4 v_dyn_pack2; 
+varying flat vec4 v_dyn_pack3; 
 varying flat vec4 v_glitch_field; 
 
 const float TWO_THIRD_PI = 2.09439510239;
 const float FOUR_THIRD_PI = 4.18879020479;
+const vec3 PHASE_OFFSETS = vec3(0.0, 2.09439510239, 4.18879020479); 
 
 void vertex()
 {
@@ -127,6 +149,12 @@ void vertex()
 
 	v_dyn_pack2.w = bloom_multiplier;
 	if (animate_bloom) v_dyn_pack2.w += textureLod(bloom_curve, vec2(fract(TIME * bloom_anim_speed), 0.0), 0.0).r * bloom_anim_amplitude;
+
+	v_dyn_pack3.x = echo_strength;
+	if (animate_echo_strength) v_dyn_pack3.x += textureLod(echo_strength_curve, vec2(fract(TIME * echo_strength_anim_speed), 0.0), 0.0).r * echo_strength_anim_amplitude;
+
+	v_dyn_pack3.y = echo_offset;
+	if (animate_echo_offset) v_dyn_pack3.y += textureLod(echo_offset_curve, vec2(fract(TIME * echo_offset_anim_speed), 0.0), 0.0).r * echo_offset_anim_amplitude;
 
 	float glitch_time = floor(TIME * 20.0);
 	float r1 = fract(sin(glitch_time * 91.2228) * 43758.5453);
@@ -186,7 +214,6 @@ vec3 sample_image(vec2 uv)
 
 	if (use_scanlines) 
 	{
-		// 10-Tap Heavy Branch (Active only when toggled ON)
 		int iy = int(uv.y + 0.5) - 1;
 		int lower_y = iy + 1;
 
@@ -205,8 +232,8 @@ vec3 sample_image(vec2 uv)
 		vec3 upper_col = (upper_a * weight_a + upper_b * weight_b + upper_c * weight_c + upper_d * weight_d + upper_e * weight_e) * weight_scaler * scanline_brightness;
 		vec3 lower_col = (lower_a * weight_a + lower_b * weight_b + lower_c * weight_c + lower_d * weight_d + lower_e * weight_e) * weight_scaler * scanline_brightness;
 
-		vec3 upper_thickness = mix(vec3(min_scanline_thickness), vec3(1.0), upper_col);
-		vec3 lower_thickness = mix(vec3(min_scanline_thickness), vec3(1.0), lower_col);
+		vec3 upper_thickness = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), upper_col);
+		vec3 lower_thickness = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), lower_col);
 		
 		float sawtooth = (uv.y + 0.5) - float(iy);
 
@@ -223,7 +250,6 @@ vec3 sample_image(vec2 uv)
 	} 
 	else 
 	{
-		// 5-Tap Lightweight Branch (Active when toggled OFF)
 		int iy = int(floor(uv.y));
 		
 		vec3 upper_a = srgb_to_linear(texelFetch(tex, ivec2(ix - 2, iy), 0).rgb);
@@ -247,7 +273,7 @@ vec4 generate_mask(vec2 coords)
 	{
 		case 1: { 
 			float x_phase = coords.x * TWO_THIRD_PI;
-			vec3 rgb = 0.5 + 0.5 * cos(x_phase - vec3(0.0, TWO_THIRD_PI, FOUR_THIRD_PI));
+			vec3 rgb = 0.5 + 0.5 * cos(x_phase - PHASE_OFFSETS);
 			float y_wave = 0.5 + 0.5 * cos(coords.y * PI);
 			return vec4(rgb * y_wave, 0.25);
 		}
@@ -258,17 +284,17 @@ vec4 generate_mask(vec2 coords)
 		}
 		case 3: { 
 			float x_phase = coords.x * TWO_THIRD_PI;
-			vec3 rgb = clamp(0.5 + 0.8 * cos(x_phase - vec3(0.0, TWO_THIRD_PI, FOUR_THIRD_PI)), 0.0, 1.0);
+			vec3 rgb = clamp(0.5 + 0.8 * cos(x_phase - PHASE_OFFSETS), 0.0, 1.0);
 			return vec4(rgb, 0.25);
 		}
 		case 4: { 
 			float x_phase = coords.x * TWO_THIRD_PI;
-			vec3 rgb = 0.5 + 0.5 * cos(x_phase - vec3(0.0, TWO_THIRD_PI, FOUR_THIRD_PI));
+			vec3 rgb = 0.5 + 0.5 * cos(x_phase - PHASE_OFFSETS);
 			return vec4(rgb, 0.3125);
 		}
 		case 5: { 
 			float x_phase = coords.x * TWO_THIRD_PI;
-			vec3 rgb = 0.5 + 0.5 * cos(x_phase - vec3(0.0, TWO_THIRD_PI, FOUR_THIRD_PI));
+			vec3 rgb = 0.5 + 0.5 * cos(x_phase - PHASE_OFFSETS);
 			float col_idx = floor(coords.x / 1.5);
 			float y_phase = (coords.y + mod(col_idx, 2.0) * 0.5) * TAU;
 			float slot_y = 0.5 + 0.5 * cos(y_phase);
@@ -276,7 +302,7 @@ vec4 generate_mask(vec2 coords)
 		}
 		case 6: { 
 			float line_group = mod(floor(coords.x), 3.0);
-			float intensity = (line_group == 0.0) ? 0.6 : 1.0;
+			float intensity = (line_group < 0.5) ? 0.6 : 1.0;
 			return vec4(vec3(1.0), intensity);
 		}
 		default:
@@ -307,30 +333,69 @@ void fragment()
 	vec2 warped_coords = warp(UV, aspect, curve);
 	warped_coords.x += v_wobble;
 
-	float glitch_band = step(abs(warped_coords.y - v_glitch_field.x), glitch_size);
-	warped_coords.x += glitch_band * v_glitch_field.y;
+	if (v_dyn_pack2.y > 0.0) {
+		float glitch_band = step(abs(warped_coords.y - v_glitch_field.x), glitch_size);
+		warped_coords.x += glitch_band * v_glitch_field.y;
+	}
+	
+	if (vsync_tearing > 0.0) {
+		float tear_dist = warped_coords.y - fract(TIME * 0.1);
+		float tear_skew = exp(-100.0 * tear_dist * tear_dist) * sin(warped_coords.y * 150.0);
+		warped_coords.x += tear_skew * vsync_tearing;
+	}
 
 	vec3 col = sample_image(warped_coords);
 
-	float roll_line = sin(warped_coords.y * roll_size - TIME * roll_speed);
-	col += col * smoothstep(0.8, 1.0, roll_line) * v_dyn_pack2.x;
+	if (dot_crawl_strength > 0.0) {
+		vec3 neighbor = srgb_to_linear(texture(tex, warped_coords + vec2(1.0 / float(textureSize(tex, 0).x), 0.0)).rgb);
+		float edge = length(col - neighbor);
+		float crawl = sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + TIME * dot_crawl_speed);
+		col += edge * crawl * dot_crawl_strength;
+	}
 
-	float noise_val = fract(sin(dot(warped_coords, vec2(12.9898, 78.233)) + v_glitch_field.w) * 43758.5453);
-	col += (noise_val - 0.5) * v_dyn_pack2.z;
+	if (v_dyn_pack3.x > 0.0) {
+		vec3 echo_col = srgb_to_linear(texture(tex, warped_coords - vec2(v_dyn_pack3.y, 0.0)).rgb);
+		col += echo_col * v_dyn_pack3.x;
+	}
 
-	vec2 normalized_coords = vec2(1080.0 * (SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x), 1080.0);
-	vec2 mask_coords = warped_coords * normalized_coords / max(mask_scale, 0.01);
+	if (v_dyn_pack2.x > 0.0) {
+		float roll_line = sin(warped_coords.y * roll_size - TIME * roll_speed);
+		col += col * smoothstep(0.8, 1.0, roll_line) * v_dyn_pack2.x;
+	}
+
+	float inv_mask_scale = 1.0 / max(mask_scale, 0.01);
+
+	if (v_dyn_pack2.z > 0.0) {
+		vec2 noise_coords = FRAGCOORD.xy * inv_mask_scale;
+		vec3 noise_val;
+		float base_dot = dot(noise_coords, vec2(12.9898, 78.233)) + v_glitch_field.w;
+		
+		if (chroma_noise) {
+			noise_val.r = fract(sin(base_dot) * 43758.5453);
+			noise_val.g = fract(sin(dot(noise_coords, vec2(39.346, 11.135)) + v_glitch_field.w) * 43758.5453);
+			noise_val.b = fract(sin(dot(noise_coords, vec2(73.156, 52.235)) + v_glitch_field.w) * 43758.5453);
+		} else {
+			noise_val = vec3(fract(sin(base_dot) * 43758.5453));
+		}
+		col += (noise_val - 0.5) * v_dyn_pack2.z;
+	}
+
+	vec2 mask_coords = FRAGCOORD.xy * inv_mask_scale;
 	col = mask(col, mask_coords);
 
-	vec2 blur_offset = vec2(bloom_blur_radius) / vec2(textureSize(tex, 0));
-	vec3 raw_bloom = srgb_to_linear(texture(tex, warped_coords).rgb);
-	raw_bloom += srgb_to_linear(texture(tex, warped_coords + vec2(blur_offset.x, 0.0)).rgb);
-	raw_bloom += srgb_to_linear(texture(tex, warped_coords + vec2(-blur_offset.x, 0.0)).rgb);
-	raw_bloom += srgb_to_linear(texture(tex, warped_coords + vec2(0.0, blur_offset.y)).rgb);
-	raw_bloom += srgb_to_linear(texture(tex, warped_coords + vec2(0.0, -blur_offset.y)).rgb);
-	raw_bloom *= 0.2; 
-	
-	col += max(raw_bloom - vec3(bloom_threshold), vec3(0.0)) * v_dyn_pack2.w;
+	if (v_dyn_pack2.w > 0.0) {
+		vec2 tex_pixel_size = 1.0 / vec2(textureSize(tex, 0));
+		vec2 blur_offset = bloom_blur_radius * tex_pixel_size;
+		
+		vec3 raw_bloom = srgb_to_linear(texture(tex, warped_coords).rgb);
+		raw_bloom += srgb_to_linear(texture(tex, warped_coords + vec2(blur_offset.x, 0.0)).rgb);
+		raw_bloom += srgb_to_linear(texture(tex, warped_coords + vec2(-blur_offset.x, 0.0)).rgb);
+		raw_bloom += srgb_to_linear(texture(tex, warped_coords + vec2(0.0, blur_offset.y)).rgb);
+		raw_bloom += srgb_to_linear(texture(tex, warped_coords + vec2(0.0, -blur_offset.y)).rgb);
+		raw_bloom *= 0.2; 
+		
+		col += max(raw_bloom - vec3(bloom_threshold), vec3(0.0)) * v_dyn_pack2.w;
+	}
 
 	COLOR.rgb = linear_to_srgb(col);
 }

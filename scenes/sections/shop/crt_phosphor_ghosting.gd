@@ -11,8 +11,7 @@ extends ColorRect
 @export_range(0.1, 5.0) var mask_scale_multiplier: float = 1.0:
 	set(val):
 		mask_scale_multiplier = val
-		if material != null:
-			material.set_shader_parameter("mask_scale", mask_scale_multiplier)
+		_update_resolution_params() 
 
 var vp_a: SubViewport
 var vp_b: SubViewport
@@ -24,11 +23,11 @@ var accum_mat: ShaderMaterial
 var _last_decay: float = -1.0
 var _last_threshold: float = -1.0
 var _last_gradient: GradientTexture1D = null
+var _last_scale: float = -1.0
 
 func _ready() -> void:
 	if material != null:
 		material.resource_local_to_scene = true
-		material.set_shader_parameter("mask_scale", mask_scale_multiplier)
 
 	var shader = Shader.new()
 	shader.code = """
@@ -84,7 +83,28 @@ func _ready() -> void:
 	vp_a.add_child(rect_a)
 	vp_b.add_child(rect_b)
 
+	get_viewport().size_changed.connect(_update_resolution_params)
+	_update_resolution_params()
+
 	RenderingServer.frame_post_draw.connect(_on_frame_post_draw)
+
+func _update_resolution_params() -> void:
+	if not is_inside_tree() or material == null:
+		return
+		
+	var screen_size = get_viewport().get_visible_rect().size
+	if screen_size.x <= 0.0 or screen_size.y <= 0.0:
+		return
+		
+	var base_auto_scale = max(1.0, round(screen_size.y / 1080.0 * 10.0) / 10.0)
+	var final_scale = base_auto_scale * mask_scale_multiplier
+
+	if _last_scale != final_scale:
+		material.set_shader_parameter("mask_scale", final_scale)
+		_last_scale = final_scale
+
+	var current_aspect = screen_size.y / screen_size.x
+	material.set_shader_parameter("aspect", current_aspect)
 
 func _on_frame_post_draw() -> void:
 	if not is_inside_tree() or not is_instance_valid(game_viewport):
@@ -98,11 +118,14 @@ func _on_frame_post_draw() -> void:
 		vp_a.size = current_size
 		vp_b.size = current_size
 
+	# OPTIMIZATION: Cached active frame texture to eliminate redundant hardware queries
+	var live_frame = game_viewport.get_texture()
+
 	if ghost_duration <= 0.0:
 		if vp_a.render_target_update_mode != SubViewport.UPDATE_DISABLED:
 			vp_a.render_target_update_mode = SubViewport.UPDATE_DISABLED
 			vp_b.render_target_update_mode = SubViewport.UPDATE_DISABLED
-		material.set_shader_parameter("tex", game_viewport.get_texture())
+		material.set_shader_parameter("tex", live_frame)
 		return
 	elif vp_a.render_target_update_mode == SubViewport.UPDATE_DISABLED:
 		vp_a.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -125,7 +148,7 @@ func _on_frame_post_draw() -> void:
 			accum_mat.set_shader_parameter("ghost_gradient", ghost_gradient)
 		_last_gradient = ghost_gradient
 
-	accum_mat.set_shader_parameter("current_frame", game_viewport.get_texture())
+	accum_mat.set_shader_parameter("current_frame", live_frame)
 
 	var active_vp = vp_a if ping_pong else vp_b
 	var inactive_vp = vp_b if ping_pong else vp_a

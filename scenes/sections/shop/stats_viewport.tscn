@@ -181,13 +181,13 @@ shader_parameter/vignette_intensity = 0.0
 shader_parameter/vignette_smoothness = 0.8
 shader_parameter/chromatic_aberration = 0.006000000285
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_a7lv4"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_51nyr"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_a7lv4")
+shader_parameter/tex = SubResource("ViewportTexture_51nyr")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -197,14 +197,15 @@ shader_parameter/animate_mask_brightness = false
 shader_parameter/mask_brightness_anim_speed = 1.0
 shader_parameter/mask_brightness_anim_amplitude = 1.0
 shader_parameter/use_scanlines = true
-shader_parameter/scanline_brightness = 0.75600001216
-shader_parameter/min_scanline_thickness = 0.5
+shader_parameter/scanline_brightness = 0.55600000266
+shader_parameter/scanline_beam_width_min = 0.25
+shader_parameter/scanline_beam_width_max = 2.6690001030275
 shader_parameter/interlaced_strength = 0.038000001805
 shader_parameter/animate_interlaced = false
 shader_parameter/interlaced_anim_speed = 1.0
 shader_parameter/interlaced_anim_amplitude = 1.0
 shader_parameter/interlaced_fps = 30.0
-shader_parameter/sharpness = 0.6890000089775
+shader_parameter/sharpness = 1.0
 shader_parameter/animate_sharpness = false
 shader_parameter/sharpness_anim_speed = 1.0
 shader_parameter/sharpness_anim_amplitude = 1.0
@@ -222,13 +223,25 @@ shader_parameter/roll_anim_speed = 1.0
 shader_parameter/roll_anim_amplitude = 1.0
 shader_parameter/roll_size = 15.0
 shader_parameter/roll_speed = 2.0
+shader_parameter/echo_strength = 0.0
+shader_parameter/animate_echo_strength = false
+shader_parameter/echo_strength_anim_speed = 1.0
+shader_parameter/echo_strength_anim_amplitude = 1.0
+shader_parameter/echo_offset = 0.015
+shader_parameter/animate_echo_offset = false
+shader_parameter/echo_offset_anim_speed = 1.0
+shader_parameter/echo_offset_anim_amplitude = 1.0
+shader_parameter/dot_crawl_strength = 0.0
+shader_parameter/dot_crawl_speed = 15.0
 shader_parameter/glitch_strength = 0.0
+shader_parameter/vsync_tearing = 0.0
 shader_parameter/animate_glitch = false
 shader_parameter/glitch_anim_speed = 1.0
 shader_parameter/glitch_anim_amplitude = 1.0
 shader_parameter/glitch_rate = 0.05
 shader_parameter/glitch_size = 0.05
-shader_parameter/noise_strength = 0.01600000076
+shader_parameter/noise_strength = 0.0070000003325
+shader_parameter/chroma_noise = true
 shader_parameter/animate_noise = false
 shader_parameter/noise_anim_speed = 1.0
 shader_parameter/noise_anim_amplitude = 1.0
@@ -237,7 +250,7 @@ shader_parameter/bloom_multiplier = 0.5
 shader_parameter/animate_bloom = false
 shader_parameter/bloom_anim_speed = 1.0
 shader_parameter/bloom_anim_amplitude = 1.0
-shader_parameter/bloom_blur_radius = 4.0
+shader_parameter/bloom_blur_radius = Vector2(4, 4)
 
 [sub_resource type="Gradient" id="Gradient_2ujkr"]
 colors = PackedColorArray(1, 0.67058825, 0, 1, 0, 0, 0, 1)
@@ -592,7 +605,6 @@ script = ExtResource("25_2ujkr")
 game_viewport = NodePath("../SubViewportContainer/SubViewport")
 ghost_duration = 1.096
 ghost_gradient = SubResource("GradientTexture1D_gtatl")
-mask_scale_multiplier = 2.0
 
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]
