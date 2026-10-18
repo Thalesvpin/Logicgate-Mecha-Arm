@@ -30,30 +30,39 @@ vec3 hsv_to_rgb(vec3 c) {
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
+// Helper to apply full color grading to any color sample
+vec3 apply_color_corrections(vec3 col) {
+    // Combined Brightness & Contrast
+    col = (col * brightness - 0.5) * contrast + 0.5;
+    
+    // Hue & Saturation
+    vec3 hsv = rgb_to_hsv(col);
+    hsv.x = mod(hsv.x + hue, 1.0);
+    hsv.y *= saturation;
+    return hsv_to_rgb(hsv);
+}
+
 void fragment() {
     vec2 uv = SCREEN_UV;
     vec2 centered_uv = uv - 0.5;
     
-    // 1. Optimized Chromatic Aberration (3-tap vector construct)
-    vec3 col = vec3(
-        texture(screen_texture, uv + centered_uv * chromatic_aberration).r,
-        texture(screen_texture, uv).g,
-        texture(screen_texture, uv - centered_uv * chromatic_aberration).b
-    );
+    // 1. Sample screen texture at offset locations for chromatic aberration
+    vec3 col_r = texture(screen_texture, uv + centered_uv * chromatic_aberration).rgb;
+    vec3 col_g = texture(screen_texture, uv).rgb;
+    vec3 col_b = texture(screen_texture, uv - centered_uv * chromatic_aberration).rgb;
     
-    // 2 & 3. Combined Brightness & Contrast pass (reduced instruction count)
-    col.rgb = (col.rgb * brightness - 0.5) * contrast + 0.5;
+    // 2. Apply color corrections to each sample so the base image is graded first
+    col_r = apply_color_corrections(col_r);
+    col_g = apply_color_corrections(col_g);
+    col_b = apply_color_corrections(col_b);
     
-    // 4. Hue & Saturation
-    vec3 hsv = rgb_to_hsv(col.rgb);
-    hsv.x = mod(hsv.x + hue, 1.0);
-    hsv.y *= saturation;
-    col.rgb = hsv_to_rgb(hsv);
+    // 3. Assemble the final color using the color-adjusted channels
+    vec3 col = vec3(col_r.r, col_g.g, col_b.b);
     
-    // 5. Optimized Vignette (using squared distance to spare ALU cycles)
+    // 4. Optimized Vignette applied last
     float dist_sq = dot(centered_uv, centered_uv);
     float vignette = smoothstep(0.25, vignette_smoothness * 0.25, dist_sq * (vignette_intensity + 0.5));
-    col.rgb = mix(col.rgb, col.rgb * (1.0 - vignette_intensity), vignette);
+    col = mix(col, col * (1.0 - vignette_intensity), vignette);
     
     COLOR = vec4(col, 1.0);
 }
