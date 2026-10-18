@@ -122,7 +122,7 @@ shader = SubResource("Shader_yodio")
 
 [sub_resource type="Gradient" id="Gradient_yodio"]
 offsets = PackedFloat32Array(0, 0.5049505, 1)
-colors = PackedColorArray(0.20392157, 0.9529412, 1, 1, 0.20392157, 0.9529412, 0.7411765, 1, 0.20392157, 0.9529412, 1, 1)
+colors = PackedColorArray(0.20392157, 0.9529412, 1, 1, 0.19949998, 0.95, 0.5997666, 1, 0.20392157, 0.9529412, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
 gradient = SubResource("Gradient_yodio")
@@ -164,22 +164,22 @@ background_mode = 3
 glow_enabled = true
 glow_levels/1 = 16.0
 glow_levels/2 = 16.0
-glow_levels/3 = 5.0
+glow_levels/3 = 16.0
 glow_levels/4 = 0.0
 glow_normalized = true
-glow_strength = 1.29
-glow_bloom = 0.15
+glow_strength = 1.27
+glow_bloom = 0.09
 adjustment_enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eetg5"]
 shader = ExtResource("23_l102y")
 shader_parameter/brightness = 1.0
 shader_parameter/contrast = 1.0
-shader_parameter/saturation = 1.0
+shader_parameter/saturation = 1.330000063175
 shader_parameter/hue = 0.0
 shader_parameter/vignette_intensity = 0.0
 shader_parameter/vignette_smoothness = 0.8
-shader_parameter/chromatic_aberration = 0.006000000285
+shader_parameter/chromatic_aberration = 0.0
 
 [sub_resource type="Curve" id="Curve_mdhfq"]
 _data = [Vector2(0, 0.29729724), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -188,13 +188,13 @@ point_count = 2
 [sub_resource type="CurveTexture" id="CurveTexture_2ujkr"]
 curve = SubResource("Curve_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_xsypw"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_bqoei"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_xsypw")
+shader_parameter/tex = SubResource("ViewportTexture_bqoei")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -204,9 +204,9 @@ shader_parameter/animate_mask_brightness = false
 shader_parameter/mask_brightness_anim_speed = 1.0
 shader_parameter/mask_brightness_anim_amplitude = 1.0
 shader_parameter/use_scanlines = true
-shader_parameter/scanline_brightness = 0.55600000266
+shader_parameter/scanline_brightness = 0.550000002375
 shader_parameter/scanline_beam_width_min = 0.25
-shader_parameter/scanline_beam_width_max = 2.6690001030275
+shader_parameter/scanline_beam_width_max = 3.0
 shader_parameter/interlaced_strength = 0.038000001805
 shader_parameter/animate_interlaced = false
 shader_parameter/interlaced_anim_speed = 1.0
@@ -224,17 +224,63 @@ shader_parameter/wobble_strength = 0.0
 shader_parameter/animate_wobble = false
 shader_parameter/wobble_anim_speed = 1.0
 shader_parameter/wobble_anim_amplitude = 1.0
-shader_parameter/roll_strength = 0.370000017575
+shader_parameter/roll_strength = 0.242000011495
 shader_parameter/animate_roll = false
 shader_parameter/roll_anim_speed = 1.0
 shader_parameter/roll_anim_amplitude = 1.0
 shader_parameter/roll_size = 15.0
 shader_parameter/roll_speed = 2.0
+shader_parameter/use_sweep_stripe = true
+shader_parameter/stripe_width = 0.39000001782647997
+shader_parameter/stripe_speed = 0.15
+shader_parameter/stripe_interval = 1.00000004424012
+shader_parameter/stripe_offset = 0.570000027075
+shader_parameter/stripe_angle = 0.0
+shader_parameter/stripe_profile = 0
+shader_parameter/stripe_smoothness_lead = 1.0
+shader_parameter/stripe_smoothness_trail = 1.0
+shader_parameter/stripe_enable_hue = true
+shader_parameter/stripe_hue_shift = 0.090000004275
+shader_parameter/stripe_hue_oscillate = false
+shader_parameter/stripe_hue_osc_profile = 3
+shader_parameter/stripe_hue_osc_axis = 2
+shader_parameter/stripe_hue_osc_min = 0.0
+shader_parameter/stripe_hue_osc_max = 0.7910000375725
+shader_parameter/stripe_hue_osc_scale = 2.14000009839012
+shader_parameter/stripe_hue_osc_freq = 10.0
+shader_parameter/stripe_hue_osc_speed = 1.835001037162499
+shader_parameter/stripe_hue_osc_intensity = 0.806000038285
+shader_parameter/stripe_hue_osc_offset = 0.0
+shader_parameter/stripe_enable_secondary_hue = false
+shader_parameter/stripe_secondary_hue_shift = 3.14159
+shader_parameter/stripe_secondary_mix = 0.5
+shader_parameter/stripe_secondary_wave_enabled = false
+shader_parameter/stripe_secondary_wave_profile = 3
+shader_parameter/stripe_secondary_wave_axis = 1
+shader_parameter/stripe_secondary_wave_min = 6.2830002984425
+shader_parameter/stripe_secondary_wave_max = 6.2830002984425
+shader_parameter/stripe_secondary_wave_scale = 7.7660003656251195
+shader_parameter/stripe_secondary_wave_freq = 9.975000470552619
+shader_parameter/stripe_secondary_wave_speed = 1.8100010359749987
+shader_parameter/stripe_secondary_wave_intensity = 2.6830001274425
+shader_parameter/stripe_secondary_wave_offset = 0.0
+shader_parameter/stripe_enable_saturation = true
+shader_parameter/stripe_saturation = 1.7610000836475002
+shader_parameter/stripe_enable_brightness = false
+shader_parameter/stripe_brightness = 1.1
+shader_parameter/stripe_enable_contrast = false
+shader_parameter/stripe_contrast = 2.5790001225025
+shader_parameter/stripe_enable_chroma = true
+shader_parameter/stripe_chroma_aberration = 50.0
+shader_parameter/stripe_chroma_red_weight = 5.0
+shader_parameter/stripe_chroma_blue_weight = -5.0
+shader_parameter/stripe_chroma_wave_enabled = true
+shader_parameter/stripe_chroma_wave_freq = 0.342000016245
 shader_parameter/echo_strength = 0.0
 shader_parameter/animate_echo_strength = false
 shader_parameter/echo_strength_anim_speed = 1.0
 shader_parameter/echo_strength_anim_amplitude = 1.0
-shader_parameter/echo_offset = 0.015
+shader_parameter/echo_offset = 0.05000000074506
 shader_parameter/animate_echo_offset = false
 shader_parameter/echo_offset_anim_speed = 1.0
 shader_parameter/echo_offset_anim_amplitude = 1.0
@@ -261,7 +307,7 @@ shader_parameter/bloom_blur_radius = Vector2(4, 4)
 shader_parameter/degauss_curve = SubResource("CurveTexture_2ujkr")
 shader_parameter/degauss_progress = 1.0
 shader_parameter/degauss_wobble_strength = 33.1050015724875
-shader_parameter/degauss_color_split = 4.0
+shader_parameter/degauss_color_split = 6.7030003183925
 shader_parameter/degauss_bloom_multiplier = 10.0
 shader_parameter/degauss_bulge_strength = 0.0
 shader_parameter/degauss_tear_strength = 0.01200000057
