@@ -181,13 +181,20 @@ shader_parameter/vignette_intensity = 0.0
 shader_parameter/vignette_smoothness = 0.8
 shader_parameter/chromatic_aberration = 0.006000000285
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_51nyr"]
+[sub_resource type="Curve" id="Curve_mdhfq"]
+_data = [Vector2(0, 0.29729724), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2ujkr"]
+curve = SubResource("Curve_mdhfq")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gbi44"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_51nyr")
+shader_parameter/tex = SubResource("ViewportTexture_gbi44")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -251,6 +258,16 @@ shader_parameter/animate_bloom = false
 shader_parameter/bloom_anim_speed = 1.0
 shader_parameter/bloom_anim_amplitude = 1.0
 shader_parameter/bloom_blur_radius = Vector2(4, 4)
+shader_parameter/degauss_curve = SubResource("CurveTexture_2ujkr")
+shader_parameter/degauss_progress = 1.0
+shader_parameter/degauss_wobble_strength = 33.1050015724875
+shader_parameter/degauss_color_split = 4.0
+shader_parameter/degauss_bloom_multiplier = 10.0
+shader_parameter/degauss_bulge_strength = 0.0
+shader_parameter/degauss_tear_strength = 0.01200000057
+shader_parameter/degauss_hue_shift_amount = 1.234000058615
+shader_parameter/degauss_invert_strength = 0.0
+shader_parameter/degauss_ripple_strength = 0.0
 
 [sub_resource type="Gradient" id="Gradient_2ujkr"]
 colors = PackedColorArray(1, 0.67058825, 0, 1, 0, 0, 0, 1)

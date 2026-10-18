@@ -1,5 +1,5 @@
 // CRT Shader by Harrison Allen
-// V19 - Independent Multipath Echo Animations, Master Optimized, Stretch-Proof
+// V24 - Fixed TexelFetch Signature, Stylized Arcade Degauss, Master Optimized
 
 shader_type canvas_item;
 
@@ -70,7 +70,6 @@ uniform bool animate_echo_strength = false;
 uniform sampler2D echo_strength_curve;
 uniform float echo_strength_anim_speed = 1.0;
 uniform float echo_strength_anim_amplitude = 1.0;
-
 uniform float echo_offset : hint_range(-0.05, 0.05) = 0.015;
 uniform bool animate_echo_offset = false;
 uniform sampler2D echo_offset_curve;
@@ -108,8 +107,23 @@ uniform float bloom_anim_speed = 1.0;
 uniform float bloom_anim_amplitude = 1.0;
 uniform vec2 bloom_blur_radius = vec2(4.0, 4.0);
 
+group_uniforms Runtime_FX;
+uniform sampler2D degauss_curve;
+uniform float degauss_progress = 1.0; 
+
+group_uniforms Manual_Degauss_Settings;
+uniform float degauss_wobble_strength : hint_range(0.0, 500.0) = 250.0;
+uniform float degauss_color_split : hint_range(0.0, 10.0) = 4.0;
+uniform float degauss_bloom_multiplier : hint_range(0.0, 10.0) = 2.0;
+uniform float degauss_bulge_strength : hint_range(0.0, 1.0) = 0.1;
+uniform float degauss_tear_strength : hint_range(0.0, 1.0) = 0.2;
+uniform float degauss_hue_shift_amount : hint_range(0.0, 6.28318) = 3.14159;
+uniform float degauss_invert_strength : hint_range(0.0, 1.0) = 0.3;
+uniform float degauss_ripple_strength : hint_range(0.0, 0.2) = 0.05;
+
 group_uniforms;
 
+varying flat float v_degauss_energy;
 varying flat float v_wobble;
 varying flat vec4 v_dyn_pack1; 
 varying flat vec4 v_dyn_pack2; 
@@ -122,12 +136,21 @@ const vec3 PHASE_OFFSETS = vec3(0.0, 2.09439510239, 4.18879020479);
 
 void vertex()
 {
+	v_degauss_energy = 0.0;
+	if (degauss_progress < 1.0) {
+		v_degauss_energy = textureLod(degauss_curve, vec2(degauss_progress, 0.0), 0.0).r;
+	}
+
 	float _wobble = wobble_strength;
 	if (animate_wobble) _wobble += textureLod(wobble_curve, vec2(fract(TIME * wobble_anim_speed), 0.0), 0.0).r * wobble_anim_amplitude;
+	
+	_wobble += v_degauss_energy * degauss_wobble_strength; 
 	v_wobble = cos(TIME * TAU * 15.0) * _wobble / 8192.0;
 
 	v_dyn_pack1.x = color_offset;
 	if (animate_color_offset) v_dyn_pack1.x += textureLod(color_offset_curve, vec2(fract(TIME * color_offset_anim_speed), 0.0), 0.0).r * color_offset_anim_amplitude;
+	
+	v_dyn_pack1.x += v_degauss_energy * degauss_color_split;
 
 	v_dyn_pack1.y = sharpness;
 	if (animate_sharpness) v_dyn_pack1.y += textureLod(sharpness_curve, vec2(fract(TIME * sharpness_anim_speed), 0.0), 0.0).r * sharpness_anim_amplitude;
@@ -149,6 +172,8 @@ void vertex()
 
 	v_dyn_pack2.w = bloom_multiplier;
 	if (animate_bloom) v_dyn_pack2.w += textureLod(bloom_curve, vec2(fract(TIME * bloom_anim_speed), 0.0), 0.0).r * bloom_anim_amplitude;
+	
+	v_dyn_pack2.w += v_degauss_energy * degauss_bloom_multiplier;
 
 	v_dyn_pack3.x = echo_strength;
 	if (animate_echo_strength) v_dyn_pack3.x += textureLod(echo_strength_curve, vec2(fract(TIME * echo_strength_anim_speed), 0.0), 0.0).r * echo_strength_anim_amplitude;
@@ -192,6 +217,16 @@ vec3 srgb_to_linear(vec3 col)
 		col / 12.92,
 		lessThan(col, vec3(0.04045))
 	);
+}
+
+vec3 shift_hue(vec3 color, float shift)
+{
+	mat3 rot = mat3(
+		vec3(0.299, 0.587, 0.114) + vec3(0.701, -0.587, -0.114) * cos(shift) + vec3(0.168, 0.330, -0.497) * sin(shift),
+		vec3(0.299, 0.587, 0.114) + vec3(-0.299, 0.413, -0.114) * cos(shift) + vec3(0.328, -0.335, 0.007) * sin(shift),
+		vec3(0.299, 0.587, 0.114) + vec3(-0.299, -0.587, 0.886) * cos(shift) + vec3(-1.250, 1.050, 0.200) * sin(shift)
+	);
+	return clamp(color * rot, 0.0, 1.0);
 }
 
 vec3 sample_image(vec2 uv)
@@ -332,6 +367,19 @@ void fragment()
 {
 	vec2 warped_coords = warp(UV, aspect, curve);
 	warped_coords.x += v_wobble;
+	
+	if (v_degauss_energy > 0.0) {
+		vec2 center_offset = warped_coords - 0.5;
+		float dist = length(center_offset);
+		
+		float bulge = sin(dist * 20.0 - TIME * 60.0) * degauss_bulge_strength * v_degauss_energy;
+		float ripple = sin(dist * 50.0 - TIME * 30.0) * degauss_ripple_strength * v_degauss_energy;
+		warped_coords += center_offset * (bulge + ripple);
+		
+		float tear_dist = warped_coords.y - fract(TIME * 0.2);
+		float tear_skew = exp(-50.0 * tear_dist * tear_dist) * sin(warped_coords.y * 100.0);
+		warped_coords.x += tear_skew * v_degauss_energy * degauss_tear_strength;
+	}
 
 	if (v_dyn_pack2.y > 0.0) {
 		float glitch_band = step(abs(warped_coords.y - v_glitch_field.x), glitch_size);
@@ -345,6 +393,15 @@ void fragment()
 	}
 
 	vec3 col = sample_image(warped_coords);
+
+	if (v_degauss_energy > 0.0) {
+		if (degauss_hue_shift_amount > 0.0) {
+			col = shift_hue(col, v_degauss_energy * degauss_hue_shift_amount);
+		}
+		if (degauss_invert_strength > 0.0) {
+			col = mix(col, vec3(1.0) - col, v_degauss_energy * degauss_invert_strength);
+		}
+	}
 
 	if (dot_crawl_strength > 0.0) {
 		vec3 neighbor = srgb_to_linear(texture(tex, warped_coords + vec2(1.0 / float(textureSize(tex, 0).x), 0.0)).rgb);
