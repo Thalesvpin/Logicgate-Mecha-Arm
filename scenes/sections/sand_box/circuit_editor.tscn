@@ -4,25 +4,58 @@
 [ext_resource type="Script" uid="uid://bqns55ri5mqa5" path="res://scripts/circuit_cam.gd" id="1_n5154"]
 [ext_resource type="Shader" uid="uid://bqihww206h1cw" path="res://shaders/grid_2d.gdshader" id="2_isu2o"]
 [ext_resource type="Script" uid="uid://y6nreclkpn6v" path="res://scripts/sandbox.gd" id="2_s76oy"]
+[ext_resource type="Script" uid="uid://c8n7m6nfj3t3" path="res://scenes/sections/sand_box/background_grid_shadercontroller.gd" id="3_psau8"]
 [ext_resource type="PackedScene" uid="uid://bwu5fuinlw5ui" path="res://scenes/sections/sand_box/game_output_manager.tscn" id="6_7i7tw"]
 [ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/sections/sand_box/game_input_manager.tscn" id="6_lwkx8"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="8_kaha7"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="8_psau8"]
 [ext_resource type="Texture2D" uid="uid://yiixgalslpim" path="res://assets/ENFERMEIRA.png" id="8_rsy7x"]
 
+[sub_resource type="Gradient" id="Gradient_psau8"]
+offsets = PackedFloat32Array(0, 0.328125, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.84523815, 0.84523815, 0.84523815, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_psau8"]
+gradient = SubResource("Gradient_psau8")
+
+[sub_resource type="Gradient" id="Gradient_pvlru"]
+offsets = PackedFloat32Array(0.5572917, 0.6302083, 0.9114583)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_28udb"]
+gradient = SubResource("Gradient_pvlru")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8qd3f"]
 shader = ExtResource("2_isu2o")
 shader_parameter/bg_color = Color(0.08, 0.08, 0.1, 1)
 shader_parameter/grid_color = Color(0.2, 0.5, 1, 1)
 shader_parameter/subgrid_color = Color(0.15, 0.15, 0.22, 1)
-shader_parameter/grid_style = 0
-shader_parameter/grid_pixel_size = 100.0
-shader_parameter/line_thickness = 2.0
-shader_parameter/dot_size = 2.0
+shader_parameter/use_checkerboard = false
+shader_parameter/checker_color = Color(0.1, 0.1, 0.12, 1)
+shader_parameter/use_mouse_highlight = true
+shader_parameter/absolute_highlight = true
+shader_parameter/highlight_main_grid = false
+shader_parameter/highlight_subgrid = true
+shader_parameter/highlight_background = false
+shader_parameter/highlight_radius = 285.0000130625
+shader_parameter/highlight_intensity = 0.394000018715
+shader_parameter/highlight_gradient = SubResource("GradientTexture1D_psau8")
+shader_parameter/highlight_opacity_gradient = SubResource("GradientTexture1D_28udb")
+shader_parameter/mouse_global_pos = Vector2(962.3496, 800.63074)
+shader_parameter/main_grid_style = 0
+shader_parameter/main_line_thickness = 2.0
+shader_parameter/main_dot_size = 4.0
+shader_parameter/subgrid_style = 1
+shader_parameter/absolute_subgrid = true
+shader_parameter/absolute_subgrid_size = 20.0
 shader_parameter/subgrid_divisions = 5.0
-shader_parameter/subgrid_thickness = 1.0
+shader_parameter/subgrid_line_thickness = 1.0
+shader_parameter/subgrid_dot_size = 2.0
+shader_parameter/grid_pixel_size = 100.0
+shader_parameter/line_smoothness = 0.0
+shader_parameter/dot_smoothness = 0.0
 shader_parameter/pan_offset = Vector2(0, 0)
-shader_parameter/zoom = 1.0
+shader_parameter/zoom = 0.40000001574012
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
 size = Vector2(1169, 663)
@@ -34,7 +67,6 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Environment" id="Environment_eofqg"]
 background_mode = 3
-glow_enabled = true
 glow_normalized = true
 glow_intensity = 0.7
 glow_bloom = 0.65
@@ -43,7 +75,7 @@ glow_bloom = 0.65
 shader = ExtResource("8_psau8")
 shader_parameter/brightness = 1.0
 shader_parameter/contrast = 1.0
-shader_parameter/saturation = 2.0
+shader_parameter/saturation = 1.0
 shader_parameter/hue = 0.0
 shader_parameter/use_gradient_map = false
 shader_parameter/vignette_intensity = 0.0
@@ -216,15 +248,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=2134788273]
+[node name="Background Grid" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=2134788273]
 material = SubResource("ShaderMaterial_8qd3f")
 custom_minimum_size = Vector2(7000, 4000)
 custom_maximum_size = Vector2(7000, 4000)
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(-1000, 0)
+mouse_filter = 2
 color = Color(0.7666196, 0.76661956, 0.76661956, 1)
+script = ExtResource("3_psau8")
 
 [node name="Sandbox" type="Node2D" parent="SubViewportContainer/SubViewport" unique_id=345735980]
 script = ExtResource("2_s76oy")
@@ -315,6 +350,7 @@ environment = SubResource("Environment_eofqg")
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport" unique_id=731735636]
 
 [node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=631629316]
+visible = false
 material = SubResource("ShaderMaterial_cqbp4")
 anchors_preset = 15
 anchor_right = 1.0
@@ -324,6 +360,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="CRT" type="ColorRect" parent="." unique_id=81511356]
+visible = false
 material = SubResource("ShaderMaterial_eofqg")
 layout_mode = 2
 mouse_filter = 2
