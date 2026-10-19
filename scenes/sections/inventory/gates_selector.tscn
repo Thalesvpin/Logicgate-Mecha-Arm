@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://dinaa4hu5artv" path="res://scenes/sections/inventory/inventory_gate.tscn" id="1_llgc5"]
 [ext_resource type="Script" uid="uid://badjj82igaj2l" path="res://scripts/gates_selector.gd" id="1_rn4rn"]
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="2_3e3yi"]
+[ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="4_abqy0"]
+[ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="5_vwx3o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.09019608, 0.05882353, 0, 1)
@@ -31,6 +33,159 @@ font_color = Color(1, 0.8745098, 0.18039216, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
 font_size = 41
 font_color = Color(0.7137255, 1, 0.6901961, 1)
+
+[sub_resource type="Environment" id="Environment_mjyp6"]
+background_mode = 3
+glow_enabled = true
+glow_bloom = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jnc7b"]
+shader = ExtResource("4_abqy0")
+shader_parameter/brightness = 1.0
+shader_parameter/contrast = 1.0
+shader_parameter/saturation = 2.0
+shader_parameter/hue = 0.0
+shader_parameter/use_gradient_map = false
+shader_parameter/vignette_intensity = 0.0
+shader_parameter/vignette_smoothness = 0.8
+shader_parameter/chromatic_aberration = 0.003
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_eetg5"]
+viewport_path = NodePath("SubViewportContainer/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mjyp6"]
+resource_local_to_scene = true
+shader = ExtResource("5_vwx3o")
+shader_parameter/tex = SubResource("ViewportTexture_eetg5")
+shader_parameter/curve = 0.0
+shader_parameter/aspect = 0.75
+shader_parameter/mask_type = 6
+shader_parameter/mask_scale = 1.0
+shader_parameter/mask_brightness = 1.0
+shader_parameter/animate_mask_brightness = false
+shader_parameter/mask_brightness_anim_speed = 1.0
+shader_parameter/mask_brightness_anim_amplitude = 1.0
+shader_parameter/use_scanlines = false
+shader_parameter/scanline_brightness = 1.0
+shader_parameter/scanline_beam_width_min = 0.25
+shader_parameter/scanline_beam_width_max = 1.0
+shader_parameter/interlaced_strength = 0.0
+shader_parameter/animate_interlaced = false
+shader_parameter/interlaced_anim_speed = 1.0
+shader_parameter/interlaced_anim_amplitude = 1.0
+shader_parameter/interlaced_fps = 30.0
+shader_parameter/interlaced_jitter_strength = 0.0
+shader_parameter/interlaced_jitter_speed = 10.0
+shader_parameter/vhs_tracking_strength = 0.0
+shader_parameter/vhs_tracking_height = 0.08
+shader_parameter/vhs_tracking_speed = 2.0
+shader_parameter/sharpness = 0.6666667
+shader_parameter/animate_sharpness = false
+shader_parameter/sharpness_anim_speed = 1.0
+shader_parameter/sharpness_anim_amplitude = 1.0
+shader_parameter/color_offset = 0.0
+shader_parameter/animate_color_offset = false
+shader_parameter/color_offset_anim_speed = 1.0
+shader_parameter/color_offset_anim_amplitude = 1.0
+shader_parameter/wobble_strength = 0.0
+shader_parameter/animate_wobble = false
+shader_parameter/wobble_anim_speed = 1.0
+shader_parameter/wobble_anim_amplitude = 1.0
+shader_parameter/roll_strength = 0.03
+shader_parameter/animate_roll = false
+shader_parameter/roll_anim_speed = 1.0
+shader_parameter/roll_anim_amplitude = 1.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_speed = 2.0
+shader_parameter/use_sweep_stripe = false
+shader_parameter/stripe_width = 0.15
+shader_parameter/stripe_speed = 0.15
+shader_parameter/stripe_interval = 3.0
+shader_parameter/stripe_offset = 0.0
+shader_parameter/stripe_angle = 0.0
+shader_parameter/stripe_profile = 0
+shader_parameter/stripe_smoothness_lead = 0.3
+shader_parameter/stripe_smoothness_trail = 0.3
+shader_parameter/stripe_enable_hue = false
+shader_parameter/stripe_hue_shift = 1.57
+shader_parameter/stripe_hue_oscillate = false
+shader_parameter/stripe_hue_osc_profile = 0
+shader_parameter/stripe_hue_osc_axis = 0
+shader_parameter/stripe_hue_osc_min = 0.0
+shader_parameter/stripe_hue_osc_max = 3.14159
+shader_parameter/stripe_hue_osc_scale = 1.0
+shader_parameter/stripe_hue_osc_freq = 10.0
+shader_parameter/stripe_hue_osc_speed = 5.0
+shader_parameter/stripe_hue_osc_intensity = 1.0
+shader_parameter/stripe_hue_osc_offset = 0.0
+shader_parameter/stripe_enable_secondary_hue = false
+shader_parameter/stripe_secondary_hue_shift = 3.14159
+shader_parameter/stripe_secondary_mix = 0.5
+shader_parameter/stripe_secondary_wave_enabled = false
+shader_parameter/stripe_secondary_wave_profile = 0
+shader_parameter/stripe_secondary_wave_axis = 0
+shader_parameter/stripe_secondary_wave_min = 0.0
+shader_parameter/stripe_secondary_wave_max = 3.14159
+shader_parameter/stripe_secondary_wave_scale = 1.0
+shader_parameter/stripe_secondary_wave_freq = 10.0
+shader_parameter/stripe_secondary_wave_speed = 8.0
+shader_parameter/stripe_secondary_wave_intensity = 1.0
+shader_parameter/stripe_secondary_wave_offset = 0.0
+shader_parameter/stripe_enable_saturation = false
+shader_parameter/stripe_saturation = 1.2
+shader_parameter/stripe_enable_brightness = false
+shader_parameter/stripe_brightness = 1.1
+shader_parameter/stripe_enable_contrast = false
+shader_parameter/stripe_contrast = 1.1
+shader_parameter/stripe_enable_chroma = false
+shader_parameter/stripe_chroma_aberration = 5.0
+shader_parameter/stripe_chroma_red_weight = 1.0
+shader_parameter/stripe_chroma_blue_weight = 1.0
+shader_parameter/stripe_chroma_wave_enabled = false
+shader_parameter/stripe_chroma_wave_freq = 25.0
+shader_parameter/echo_strength = 0.0
+shader_parameter/animate_echo_strength = false
+shader_parameter/echo_strength_anim_speed = 1.0
+shader_parameter/echo_strength_anim_amplitude = 1.0
+shader_parameter/echo_offset = 0.015
+shader_parameter/animate_echo_offset = false
+shader_parameter/echo_offset_anim_speed = 1.0
+shader_parameter/echo_offset_anim_amplitude = 1.0
+shader_parameter/dot_crawl_strength = 0.0
+shader_parameter/dot_crawl_speed = 15.0
+shader_parameter/glitch_strength = 0.0
+shader_parameter/vsync_tearing = 0.0
+shader_parameter/animate_glitch = false
+shader_parameter/glitch_anim_speed = 1.0
+shader_parameter/glitch_anim_amplitude = 1.0
+shader_parameter/glitch_rate = 0.05
+shader_parameter/glitch_size = 0.05
+shader_parameter/noise_strength = 0.03
+shader_parameter/chroma_noise = false
+shader_parameter/animate_noise = false
+shader_parameter/noise_anim_speed = 1.0
+shader_parameter/noise_anim_amplitude = 1.0
+shader_parameter/bloom_threshold = 0.6
+shader_parameter/bloom_multiplier = 0.5
+shader_parameter/animate_bloom = false
+shader_parameter/bloom_anim_speed = 1.0
+shader_parameter/bloom_anim_amplitude = 1.0
+shader_parameter/bloom_blur_radius = Vector2(4, 4)
+shader_parameter/use_gradient_map = false
+shader_parameter/use_color_quantization = false
+shader_parameter/color_levels = 16.0
+shader_parameter/use_auto_exposure = false
+shader_parameter/exposure_threshold = 0.7
+shader_parameter/exposure_intensity = 0.5
+shader_parameter/degauss_progress = 1.0
+shader_parameter/degauss_wobble_strength = 250.0
+shader_parameter/degauss_color_split = 4.0
+shader_parameter/degauss_bloom_multiplier = 2.0
+shader_parameter/degauss_bulge_strength = 0.1
+shader_parameter/degauss_tear_strength = 0.2
+shader_parameter/degauss_hue_shift_amount = 3.14159
+shader_parameter/degauss_invert_strength = 0.3
+shader_parameter/degauss_ripple_strength = 0.05
 
 [node name="GatesSelector" type="PanelContainer" unique_id=1904067160]
 anchors_preset = 15
@@ -181,3 +336,22 @@ text = "Vender"
 label_settings = SubResource("LabelSettings_eofqg")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=1792088657]
+environment = SubResource("Environment_mjyp6")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport" unique_id=699706200]
+
+[node name="Color PostProcess Adjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=508836002]
+material = SubResource("ShaderMaterial_jnc7b")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1511101606]
+material = SubResource("ShaderMaterial_mjyp6")
+layout_mode = 2
+mouse_filter = 2
