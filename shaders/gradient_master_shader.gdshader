@@ -15,6 +15,7 @@ uniform bool repeat_gradient = false;
 // SUBGROUP: Base Pulsation Effects
 group_uniforms Base_Gradient.Pulsation_Effects;
 uniform bool enable_pulsation = false;
+uniform sampler2D base_pulse_curve : hint_default_black, filter_linear, repeat_disable;
 uniform float animation_speed : hint_range(0.0, 10.0) = 1.0;
 uniform float pulse_min_offset : hint_range(-2.0, 2.0) = -0.5;
 uniform float pulse_max_offset : hint_range(-2.0, 2.0) = 0.5;
@@ -31,20 +32,41 @@ uniform vec2 distortion_speed = vec2(0.1, 0.1);
 group_uniforms Overlay_Settings;
 uniform bool enable_overlay = false;
 uniform int overlay_blend_mode : hint_enum("Normal", "Multiply", "Add", "Screen") = 0;
-uniform vec4 overlay_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform int overlay_type : hint_enum("Horizontal", "Vertical", "Radial", "Mirrored") = 2;
-uniform float overlay_rotation_degrees : hint_range(0.0, 360.0) = 0.0;
-uniform float overlay_scale : hint_range(0.1, 10.0) = 1.0;
-uniform float overlay_smoothing : hint_range(0.0, 5.0) = 0.5;
-uniform float overlay_offset : hint_range(-2.0, 2.0) = 0.0;
-uniform bool overlay_invert_fade = false;
 
-// SUBGROUP: Overlay Pulsation Settings
-group_uniforms Overlay_Settings.Pulsation_Effects;
+// SUBGROUP: Overlay Color
+group_uniforms Overlay_Settings.Color;
+uniform sampler2D overlay_gradient_texture : source_color, filter_linear, repeat_disable;
+uniform int overlay_gradient_type : hint_enum("Horizontal", "Vertical", "Radial", "Mirrored") = 2;
+uniform float overlay_gradient_rotation_degrees : hint_range(0.0, 360.0) = 0.0;
+uniform float overlay_gradient_scale : hint_range(0.1, 10.0) = 1.0;
+uniform float overlay_gradient_smoothing : hint_range(0.0, 5.0) = 0.5;
+uniform float overlay_gradient_offset : hint_range(-2.0, 2.0) = 0.0;
+uniform bool overlay_repeat_gradient = false;
+
+group_uniforms Overlay_Settings.Color_Pulsation;
 uniform bool overlay_enable_pulsation = false;
+uniform sampler2D overlay_color_pulse_curve : hint_default_black, filter_linear, repeat_disable;
 uniform float overlay_animation_speed : hint_range(0.0, 10.0) = 1.0;
 uniform float overlay_pulse_min_offset : hint_range(-2.0, 2.0) = -0.5;
 uniform float overlay_pulse_max_offset : hint_range(-2.0, 2.0) = 0.5;
+
+// SUBGROUP: Overlay Opacity (Spatial Gradient + Anim Curve)
+group_uniforms Overlay_Settings.Opacity;
+uniform bool enable_overlay_opacity = false;
+uniform sampler2D overlay_opacity_texture : hint_default_white, filter_linear, repeat_disable; // REVERTED to standard texture slot for Gradient1D
+uniform int overlay_opacity_type : hint_enum("Horizontal", "Vertical", "Radial", "Mirrored") = 2;
+uniform float overlay_opacity_rotation_degrees : hint_range(0.0, 360.0) = 0.0;
+uniform float overlay_opacity_scale : hint_range(0.1, 10.0) = 1.0;
+uniform float overlay_opacity_smoothing : hint_range(0.0, 5.0) = 0.5;
+uniform float overlay_opacity_offset : hint_range(-2.0, 2.0) = 0.0;
+uniform bool overlay_opacity_repeat = false;
+
+group_uniforms Overlay_Settings.Opacity_Pulsation;
+uniform bool overlay_opacity_enable_pulsation = false;
+uniform sampler2D overlay_opacity_pulse_curve : hint_default_black, filter_linear, repeat_disable; // KEEPS Curve control for animation
+uniform float overlay_opacity_animation_speed : hint_range(0.0, 10.0) = 1.0;
+uniform float overlay_opacity_pulse_min_offset : hint_range(-2.0, 2.0) = -0.5;
+uniform float overlay_opacity_pulse_max_offset : hint_range(-2.0, 2.0) = 0.5;
 
 // =============================================================================
 // MAIN GROUP 3: Shape & Corners
@@ -71,6 +93,7 @@ uniform bool outline_repeat_gradient = false;
 // SUBGROUP: Outline Pulsation Settings
 group_uniforms Outline_Settings.Pulsation_Effects;
 uniform bool outline_enable_pulsation = false;
+uniform sampler2D outline_pulse_curve : hint_default_black, filter_linear, repeat_disable;
 uniform float outline_animation_speed : hint_range(0.0, 10.0) = 1.0;
 uniform float outline_pulse_min_offset : hint_range(-2.0, 2.0) = -0.5;
 uniform float outline_pulse_max_offset : hint_range(-2.0, 2.0) = 0.5;
@@ -102,11 +125,13 @@ group_uniforms;
 varying vec2 local_pos;
 varying flat float v_exp_double;
 varying flat vec2 v_trig_grad;
-varying flat vec2 v_trig_over;
+varying flat vec2 v_trig_over_color;
+varying flat vec2 v_trig_over_opacity;
 varying flat vec2 v_trig_out;
 varying flat vec2 v_trig_shine;
 varying flat float v_inv_grad_scale;
-varying flat float v_inv_over_scale;
+varying flat float v_inv_over_color_scale;
+varying flat float v_inv_over_opacity_scale;
 varying flat float v_inv_out_scale;
 varying flat float v_shine_cycle;
 varying flat float v_shine_start;
@@ -127,8 +152,11 @@ void vertex() {
 	float r_grad = radians(gradient_rotation_degrees);
 	v_trig_grad = vec2(sin(r_grad), cos(r_grad));
 
-	float r_over = radians(overlay_rotation_degrees);
-	v_trig_over = vec2(sin(r_over), cos(r_over));
+	float r_over_col = radians(overlay_gradient_rotation_degrees);
+	v_trig_over_color = vec2(sin(r_over_col), cos(r_over_col));
+
+	float r_over_op = radians(overlay_opacity_rotation_degrees);
+	v_trig_over_opacity = vec2(sin(r_over_op), cos(r_over_op));
 
 	float r_out = radians(outline_gradient_rotation_degrees);
 	v_trig_out = vec2(sin(r_out), cos(r_out));
@@ -137,19 +165,18 @@ void vertex() {
 	v_trig_shine = vec2(sin(r_shine), cos(r_shine));
 
 	v_inv_grad_scale = 1.0 / max(gradient_scale, 0.001);
-	v_inv_over_scale = 1.0 / max(overlay_scale, 0.001);
+	v_inv_over_color_scale = 1.0 / max(overlay_gradient_scale, 0.001);
+	v_inv_over_opacity_scale = 1.0 / max(overlay_opacity_scale, 0.001);
 	v_inv_out_scale = 1.0 / max(outline_gradient_scale, 0.001);
 
 	v_shine_cycle = 1.0 + (outline_shine_delay * outline_shine_speed);
 	float sweep_bound = 0.75 + outline_shine_width;
 	
-	// Resolved ternary mapping directly in vertex
 	v_shine_start = outline_shine_reverse ? 0.5 + sweep_bound : 0.5 - sweep_bound;
 	v_shine_end = outline_shine_reverse ? 0.5 - sweep_bound : 0.5 + sweep_bound;
 	
 	v_shine_solid_core = outline_shine_width * (1.0 - outline_shine_softness);
 	
-	// Pre-calculate boundary limits
 	v_outline_mask_edge = 1.0 + outline_blur;
 	v_shape_alpha_edge = enable_outline ? outline_width : 0.0;
 	v_shape_alpha_edge_blend = v_shape_alpha_edge + 1.5;
@@ -176,8 +203,7 @@ float rounded_box_sdf(vec2 p, vec2 b, float r) {
 	return min(max(q.x, q.y), 0.0) + length(max(q, 0.0)) - r;
 }
 
-// Consolidates the math for all three gradients into one reusable pass
-float get_gradient_factor(vec2 uv_cen, vec2 trig, float inv_scale, int type, float offset, bool pulse, float p_min, float p_max, float a_speed, bool rep, float smooth_val) {
+float get_gradient_factor(vec2 uv_cen, vec2 trig, float inv_scale, int type, float final_offset, bool rep, float smooth_val) {
 	vec2 uv = vec2(
 		uv_cen.x * trig.y - uv_cen.y * trig.x,
 		uv_cen.x * trig.x + uv_cen.y * trig.y
@@ -191,10 +217,7 @@ float get_gradient_factor(vec2 uv_cen, vec2 trig, float inv_scale, int type, flo
 		case 3: factor = abs(uv.y - 0.5) * inv_scale * 2.0; break;
 	}
 
-	offset = pulse ? mix(p_min, p_max, sin(TIME * a_speed) * 0.5 + 0.5) : offset;
-	factor -= offset;
-
-	// Native GLSL fract automatically resolves negative wrapping. Eliminated branching block.
+	factor -= final_offset;
 	factor = rep ? fract(factor) : clamp(factor, 0.0, 1.0);
 
 	return calculate_smoothed_factor(factor, smooth_val);
@@ -222,25 +245,45 @@ void fragment() {
 	// ------------------------------------------
 	// PASS 1: Base Multi-Color Gradient
 	// ------------------------------------------
-	float base_factor = get_gradient_factor(
-		distorted_uv_cen, v_trig_grad, v_inv_grad_scale, gradient_type, gradient_offset, 
-		enable_pulsation, pulse_min_offset, pulse_max_offset, animation_speed, repeat_gradient, gradient_smoothing
-	);
+	float base_offset = gradient_offset;
+	if (enable_pulsation) {
+		float pulse_eval = texture(base_pulse_curve, vec2(fract(TIME * animation_speed), 0.0)).r;
+		base_offset = mix(pulse_min_offset, pulse_max_offset, pulse_eval);
+	}
+	
+	float base_factor = get_gradient_factor(distorted_uv_cen, v_trig_grad, v_inv_grad_scale, gradient_type, base_offset, repeat_gradient, gradient_smoothing);
 	vec4 final_color = texture(gradient_texture, vec2(base_factor, 0.0));
 
 	// ------------------------------------------
-	// PASS 2: Overlay Fade & Blend Modes
+	// PASS 2: Overlay Color & Opacity
 	// ------------------------------------------
 	if (enable_overlay) {
-		float over_factor = get_gradient_factor(
-			base_uv_cen, v_trig_over, v_inv_over_scale, overlay_type, overlay_offset, 
-			overlay_enable_pulsation, overlay_pulse_min_offset, overlay_pulse_max_offset, overlay_animation_speed, false, overlay_smoothing
-		);
-
-		// Driver evaluates this ternary at compile time if invert is true
-		float fade = overlay_invert_fade ? over_factor : 1.0 - over_factor;
-		vec4 over_layer = vec4(overlay_color.rgb, overlay_color.a * fade);
+		// Overlay Color
+		float over_col_offset = overlay_gradient_offset;
+		if (overlay_enable_pulsation) {
+			float pulse_eval = texture(overlay_color_pulse_curve, vec2(fract(TIME * overlay_animation_speed), 0.0)).r;
+			over_col_offset = mix(overlay_pulse_min_offset, overlay_pulse_max_offset, pulse_eval);
+		}
 		
+		float over_col_factor = get_gradient_factor(base_uv_cen, v_trig_over_color, v_inv_over_color_scale, overlay_gradient_type, over_col_offset, overlay_repeat_gradient, overlay_gradient_smoothing);
+		vec4 over_layer = texture(overlay_gradient_texture, vec2(over_col_factor, 0.0));
+		
+		// Overlay Opacity
+		if (enable_overlay_opacity) {
+			float over_op_offset = overlay_opacity_offset;
+			if (overlay_opacity_enable_pulsation) {
+				float op_pulse_eval = texture(overlay_opacity_pulse_curve, vec2(fract(TIME * overlay_opacity_animation_speed), 0.0)).r;
+				over_op_offset = mix(overlay_opacity_pulse_min_offset, overlay_opacity_pulse_max_offset, op_pulse_eval);
+			}
+			
+			float over_op_factor = get_gradient_factor(base_uv_cen, v_trig_over_opacity, v_inv_over_opacity_scale, overlay_opacity_type, over_op_offset, overlay_opacity_repeat, overlay_opacity_smoothing);
+			
+			// Evaluate the spatial opacity Gradient1D (reads the Red/Grayscale channel to act as an alpha mask)
+			float mask_val = texture(overlay_opacity_texture, vec2(over_op_factor, 0.0)).r;
+			over_layer.a *= mask_val;
+		}
+
+		// Apply Blend Mode
 		switch (overlay_blend_mode) {
 			case 0: final_color.rgb = mix(final_color.rgb, over_layer.rgb, over_layer.a); break;
 			case 1: final_color.rgb = mix(final_color.rgb, final_color.rgb * over_layer.rgb, over_layer.a); break;
@@ -256,13 +299,15 @@ void fragment() {
 	float d = rounded_box_sdf(pixel_pos, half_size, min(corner_radius, min(half_size.x, half_size.y)));
 	
 	if (enable_outline) {
-		float out_factor = get_gradient_factor(
-			distorted_uv_cen, v_trig_out, v_inv_out_scale, outline_gradient_type, outline_gradient_offset, 
-			outline_enable_pulsation, outline_pulse_min_offset, outline_pulse_max_offset, outline_animation_speed, outline_repeat_gradient, outline_gradient_smoothing
-		);
+		float out_offset = outline_gradient_offset;
+		if (outline_enable_pulsation) {
+			float out_pulse_eval = texture(outline_pulse_curve, vec2(fract(TIME * outline_animation_speed), 0.0)).r;
+			out_offset = mix(outline_pulse_min_offset, outline_pulse_max_offset, out_pulse_eval);
+		}
+		
+		float out_factor = get_gradient_factor(distorted_uv_cen, v_trig_out, v_inv_out_scale, outline_gradient_type, out_offset, outline_repeat_gradient, outline_gradient_smoothing);
 		vec4 out_color = texture(outline_gradient_texture, vec2(out_factor, 0.0));
 
-		// Outline Sweeping Shine
 		if (outline_enable_shine) {
 			vec2 shine_uv = vec2(
 				base_uv_cen.x * v_trig_shine.y - base_uv_cen.y * v_trig_shine.x,
@@ -271,7 +316,6 @@ void fragment() {
 			
 			float sweep_time = mod(TIME * outline_shine_speed, v_shine_cycle);
 			
-			// Ternary eliminates heavy mix math when shine is in the "delay" phase
 			float current_shine_pos = sweep_time <= 1.0 ? mix(v_shine_start, v_shine_end, sweep_time) : -10.0;
 			float shine_power = 1.0 - smoothstep(v_shine_solid_core, outline_shine_width, abs(shine_uv.x - current_shine_pos));
 			
@@ -293,7 +337,6 @@ void fragment() {
 	// ANTI-BANDING (Dithering)
 	// ------------------------------------------
 	if (enable_dithering) {
-		// FMA targeted multiplication
 		final_color.rgb += (vec3(random(FRAGCOORD.xy)) * 0.015) - 0.0075;
 	}
 

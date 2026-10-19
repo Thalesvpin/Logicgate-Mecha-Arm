@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://dio5bonyon16v"]
 
 [ext_resource type="Script" uid="uid://ldot6iyuc8pk" path="res://scripts/combat_screen.gd" id="1_lvmae"]
+[ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradient_master_shader.gdshader" id="2_rn7nk"]
+[ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="3_civbc"]
 [ext_resource type="PackedScene" uid="uid://bxfhcehr6iuwn" path="res://scenes/sections/combat_screen/player_status_bar.tscn" id="3_n1e1p"]
 [ext_resource type="PackedScene" uid="uid://ds4l1rshegbqx" path="res://scenes/sections/combat_screen/heavy_attack_panel.tscn" id="4_iibci"]
 [ext_resource type="PackedScene" uid="uid://c4bbrc2r7q5fe" path="res://scenes/sections/combat_screen/combat_money_panel.tscn" id="4_nwxw2"]
@@ -13,6 +15,117 @@ border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Gradient" id="Gradient_civbc"]
+offsets = PackedFloat32Array(0, 0.7630923)
+colors = PackedColorArray(0.112, 0.18386666, 0.2, 1, 0.06451545, 0.09321738, 0.18211052, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rn7nk"]
+gradient = SubResource("Gradient_civbc")
+
+[sub_resource type="Curve" id="Curve_civbc"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.48693582, 0.5111111), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_rn7nk"]
+curve = SubResource("Curve_civbc")
+
+[sub_resource type="Gradient" id="Gradient_rn7nk"]
+colors = PackedColorArray(0.59, 0, 0.029500112, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_civbc"]
+gradient = SubResource("Gradient_rn7nk")
+
+[sub_resource type="Curve" id="Curve_se3ji"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.50831354, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_niart"]
+curve = SubResource("Curve_se3ji")
+
+[sub_resource type="Gradient" id="Gradient_niart"]
+colors = PackedColorArray(0.080783345, 0.080783345, 0.080783345, 1, 0.40705642, 0.4070561, 0.40705615, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_niart"]
+gradient = SubResource("Gradient_niart")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nwxw2"]
+shader = ExtResource("2_rn7nk")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_rn7nk")
+shader_parameter/gradient_type = 3
+shader_parameter/gradient_rotation_degrees = 0.0
+shader_parameter/gradient_scale = 0.87400003825512
+shader_parameter/gradient_smoothing = 1.0000000475
+shader_parameter/gradient_offset = 0.0
+shader_parameter/repeat_gradient = false
+shader_parameter/enable_pulsation = false
+shader_parameter/animation_speed = 0.0750000035625
+shader_parameter/pulse_min_offset = 0.7050001284874998
+shader_parameter/pulse_max_offset = -1.0329999540675
+shader_parameter/distortion_strength = 0.0
+shader_parameter/distortion_speed = Vector2(0.1, 0.1)
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_gradient_texture = SubResource("GradientTexture1D_civbc")
+shader_parameter/overlay_gradient_type = 3
+shader_parameter/overlay_gradient_rotation_degrees = 0.0
+shader_parameter/overlay_gradient_scale = 1.0
+shader_parameter/overlay_gradient_smoothing = 0.5
+shader_parameter/overlay_gradient_offset = 0.0
+shader_parameter/overlay_repeat_gradient = false
+shader_parameter/overlay_enable_pulsation = true
+shader_parameter/overlay_color_pulse_curve = SubResource("CurveTexture_rn7nk")
+shader_parameter/overlay_animation_speed = 0.0310000014725
+shader_parameter/overlay_pulse_min_offset = -0.5
+shader_parameter/overlay_pulse_max_offset = 0.5
+shader_parameter/enable_overlay_opacity = true
+shader_parameter/overlay_opacity_texture = SubResource("GradientTexture1D_niart")
+shader_parameter/overlay_opacity_type = 3
+shader_parameter/overlay_opacity_rotation_degrees = 0.0
+shader_parameter/overlay_opacity_scale = 1.0
+shader_parameter/overlay_opacity_smoothing = 1.0000000475
+shader_parameter/overlay_opacity_offset = 0.0
+shader_parameter/overlay_opacity_repeat = false
+shader_parameter/overlay_opacity_enable_pulsation = true
+shader_parameter/overlay_opacity_pulse_curve = SubResource("CurveTexture_niart")
+shader_parameter/overlay_opacity_animation_speed = 0.0310000014725
+shader_parameter/overlay_opacity_pulse_min_offset = -0.9999999525000001
+shader_parameter/overlay_opacity_pulse_max_offset = 0.5
+shader_parameter/corner_radius = 0.0
+shader_parameter/enable_outline = false
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_blur = 0.0
+shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_gradient_rotation_degrees = 0.0
+shader_parameter/outline_gradient_scale = 1.0
+shader_parameter/outline_gradient_smoothing = 0.5
+shader_parameter/outline_gradient_offset = 0.0
+shader_parameter/outline_repeat_gradient = false
+shader_parameter/outline_enable_pulsation = false
+shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_min_offset = -0.5
+shader_parameter/outline_pulse_max_offset = 0.5
+shader_parameter/outline_enable_shine = false
+shader_parameter/outline_shine_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_intensity = 1.0
+shader_parameter/outline_shine_speed = 1.0
+shader_parameter/outline_shine_delay = 2.0
+shader_parameter/outline_shine_width = 0.15
+shader_parameter/outline_shine_softness = 0.5
+shader_parameter/outline_shine_angle = 45.0
+shader_parameter/outline_shine_reverse = false
+shader_parameter/enable_dithering = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_niart"]
+shader = ExtResource("3_civbc")
+shader_parameter/brightness = 1.0
+shader_parameter/contrast = 1.0
+shader_parameter/saturation = 1.1530000547675
+shader_parameter/hue = 0.0
+shader_parameter/use_gradient_map = false
+shader_parameter/vignette_intensity = 0.60800002888
+shader_parameter/vignette_smoothness = 2.0
+shader_parameter/chromatic_aberration = 0.003
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ur3c"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
@@ -72,6 +185,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
+
+[node name="Background" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1798887144]
+material = SubResource("ShaderMaterial_nwxw2")
+layout_mode = 2
+mouse_filter = 1
+
+[node name="BG Color PostProcess Adjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer/Background" unique_id=620412165]
+material = SubResource("ShaderMaterial_niart")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="TopPanels" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=265795835]
 layout_mode = 2

@@ -46,13 +46,13 @@ shader_parameter/vignette_intensity = 0.0
 shader_parameter/vignette_smoothness = 0.8
 shader_parameter/chromatic_aberration = 0.003
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_esiv2"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ddtco"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eetg5"]
 resource_local_to_scene = true
 shader = ExtResource("4_snh1h")
-shader_parameter/tex = SubResource("ViewportTexture_esiv2")
+shader_parameter/tex = SubResource("ViewportTexture_ddtco")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 0.75
 shader_parameter/mask_type = 6

@@ -28,7 +28,7 @@ label_settings = SubResource("LabelSettings_qmxhh")
 
 [node name="GameName" type="Label" parent="HBoxContainer" unique_id=592471104]
 layout_mode = 2
-text = "Logicgate Mecha Arm v1.2.4  ● "
+text = "Logicgate Mecha Arm v0.0.2  ● "
 label_settings = ExtResource("1_ttyke")
 
 [node name="RunTime" type="Label" parent="HBoxContainer" unique_id=292414987]

@@ -25,7 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://h1tn1umy07el" path="res://assets/sprite_StatUpgrade_xrayArm.png" id="22_yodio"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="23_l102y"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="24_nwtl1"]
-[ext_resource type="Script" uid="uid://bnt1kahox4rrd" path="res://scenes/sections/shop/crt_phosphor_ghosting.gd" id="25_2ujkr"]
+[ext_resource type="Script" uid="uid://bnt1kahox4rrd" path="res://scripts/crt_phosphor_ghosting.gd" id="25_2ujkr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -478,7 +478,6 @@ colors = PackedColorArray(1, 0.67058825, 0, 1, 0, 0, 0, 1)
 gradient = SubResource("Gradient_2ujkr")
 
 [node name="StatsViewport" type="PanelContainer" unique_id=131166221]
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -620.0
