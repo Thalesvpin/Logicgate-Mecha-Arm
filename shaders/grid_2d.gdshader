@@ -23,22 +23,22 @@ uniform sampler2D highlight_opacity_gradient : hint_default_white;
 uniform vec2 mouse_global_pos = vec2(-10000.0); 
 
 group_uniforms MainGrid;
-uniform int main_grid_style : hint_enum("Lines", "Dots") = 0;
+uniform int main_grid_style : hint_enum("Lines", "Dots", "Crosses") = 0;
 uniform float main_line_thickness : hint_range(0.5, 10.0) = 2.0;
-uniform float main_dot_size : hint_range(0.5, 20.0) = 4.0;
+uniform float main_dot_cross_size : hint_range(0.5, 20.0) = 4.0;
 
 group_uniforms Subgrid;
-uniform int subgrid_style : hint_enum("Lines", "Dots") = 0;
+uniform int subgrid_style : hint_enum("Lines", "Dots", "Crosses") = 0;
 uniform bool absolute_subgrid = false; 
 uniform float absolute_subgrid_size : hint_range(10.0, 500.0) = 20.0; 
 uniform float subgrid_divisions : hint_range(1.0, 10.0) = 5.0;
 uniform float subgrid_line_thickness : hint_range(0.5, 5.0) = 1.0;
-uniform float subgrid_dot_size : hint_range(0.5, 10.0) = 2.0;
+uniform float subgrid_dot_cross_size : hint_range(0.5, 10.0) = 2.0;
 
 group_uniforms Settings;
 uniform float grid_pixel_size : hint_range(10.0, 500.0) = 100.0;
 uniform float line_smoothness : hint_range(0.0, 10.0) = 1.0;
-uniform float dot_smoothness : hint_range(0.0, 10.0) = 1.0;
+uniform float dot_cross_smoothness : hint_range(0.0, 10.0) = 1.0;
 
 group_uniforms Viewport;
 uniform vec2 pan_offset = vec2(0.0);
@@ -49,6 +49,11 @@ varying vec2 absolute_uv;
 varying vec2 global_pos;
 varying float v_camera_zoom;
 
+varying float v_main_thresh;
+varying float v_sub_thresh;
+varying float v_main_smooth;
+varying float v_sub_smooth;
+
 void vertex() {
 	global_pos = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
 	
@@ -57,6 +62,27 @@ void vertex() {
 	// Calculate and store camera zoom for both absolute features
 	v_camera_zoom = length(CANVAS_MATRIX[0].xy);
 	absolute_uv = ((VERTEX * v_camera_zoom) + pan_offset) / absolute_subgrid_size;
+	
+	if (main_grid_style == 0) {
+		v_main_thresh = main_line_thickness;
+	} else if (main_grid_style == 1) {
+		v_main_thresh = main_dot_cross_size;
+	} else {
+		v_main_thresh = 0.0;
+	}
+	
+	if (subgrid_style == 0) {
+		v_sub_thresh = subgrid_line_thickness;
+	} else if (subgrid_style == 1) {
+		v_sub_thresh = subgrid_dot_cross_size;
+	} else {
+		v_sub_thresh = 0.0;
+	}
+	
+	float ms = (main_grid_style == 0) ? line_smoothness : dot_cross_smoothness;
+	float ss = (subgrid_style == 0) ? line_smoothness : dot_cross_smoothness;
+	v_main_smooth = max(0.001, ms);
+	v_sub_smooth = max(0.001, ss);
 }
 
 void fragment() {
@@ -76,36 +102,39 @@ void fragment() {
 	float main_val = 0.0;
 	float sub_val = 0.0;
 	
-	float main_thresh = (main_grid_style == 0) ? main_line_thickness : main_dot_size;
-	float sub_thresh = (subgrid_style == 0) ? subgrid_line_thickness : subgrid_dot_size;
-	
-	float main_smooth = (main_grid_style == 0) ? line_smoothness : dot_smoothness;
-	float sub_smooth = (subgrid_style == 0) ? line_smoothness : dot_smoothness;
-	
 	// --- Subgrid Calculations ---
 	if (subgrid_style == 0) { // Lines
 		vec2 sub_grid = abs(fract(active_sub_uv - 0.5) - 0.5) / sub_fw;
 		sub_val = min(sub_grid.x, sub_grid.y);
-	} else { // Dots
+	} else if (subgrid_style == 1) { // Dots
 		vec2 sub_pos = (fract(active_sub_uv) - 0.5) / sub_fw;
 		sub_val = length(sub_pos);
+	} else { // Crosses
+		vec2 sub_pos = (fract(active_sub_uv) - 0.5) / sub_fw;
+		vec2 p = abs(sub_pos);
+		float th = max(1.0, subgrid_dot_cross_size * 0.35);
+		float sz = subgrid_dot_cross_size;
+		sub_val = min(max(p.x - th, p.y - sz), max(p.y - th, p.x - sz));
 	}
 	
 	// --- Main Grid Calculations ---
 	if (main_grid_style == 0) { // Lines
 		vec2 main_grid = abs(fract(grid_uv - 0.5) - 0.5) / main_fw;
 		main_val = min(main_grid.x, main_grid.y);
-	} else { // Dots
+	} else if (main_grid_style == 1) { // Dots
 		vec2 main_pos = (fract(grid_uv) - 0.5) / main_fw;
 		main_val = length(main_pos);
+	} else { // Crosses
+		vec2 main_pos = (fract(grid_uv) - 0.5) / main_fw;
+		vec2 p = abs(main_pos);
+		float th = max(1.0, main_dot_cross_size * 0.35);
+		float sz = main_dot_cross_size;
+		main_val = min(max(p.x - th, p.y - sz), max(p.y - th, p.x - sz));
 	}
 	
 	// --- Rendering Masks ---
-	float safe_sub_smooth = max(0.001, sub_smooth);
-	float safe_main_smooth = max(0.001, main_smooth);
-	
-	float sub_alpha = 1.0 - smoothstep(sub_thresh - safe_sub_smooth, sub_thresh + safe_sub_smooth, sub_val);
-	float main_alpha = 1.0 - smoothstep(main_thresh - safe_main_smooth, main_thresh + safe_main_smooth, main_val);
+	float sub_alpha = 1.0 - smoothstep(v_sub_thresh - v_sub_smooth, v_sub_thresh + v_sub_smooth, sub_val);
+	float main_alpha = 1.0 - smoothstep(v_main_thresh - v_main_smooth, v_main_thresh + v_main_smooth, main_val);
 	
 	// --- Background & Checkerboard ---
 	vec4 final_bg = bg_color;
@@ -124,7 +153,6 @@ void fragment() {
 	if (use_mouse_highlight) {
 		float mouse_dist = length(global_pos - mouse_global_pos);
 		
-		// If absolute highlight is enabled, convert the world distance to screen distance
 		if (absolute_highlight) {
 			mouse_dist *= v_camera_zoom;
 		}
