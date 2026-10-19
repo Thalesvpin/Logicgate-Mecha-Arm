@@ -26,6 +26,7 @@
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="23_l102y"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="24_nwtl1"]
 [ext_resource type="Script" uid="uid://bnt1kahox4rrd" path="res://scripts/crt_phosphor_ghosting.gd" id="25_2ujkr"]
+[ext_resource type="Shader" uid="uid://chr5yh64fe4ws" path="res://shaders/CRTpass2.gdshader" id="27_cwri3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -58,17 +59,27 @@ shader_parameter/distortion_strength = 0.0
 shader_parameter/distortion_speed = Vector2(0.1, 0.1)
 shader_parameter/enable_overlay = false
 shader_parameter/overlay_blend_mode = 0
-shader_parameter/overlay_color = Color(0, 1, 1, 0.3137255)
-shader_parameter/overlay_type = 1
-shader_parameter/overlay_rotation_degrees = 0.0
-shader_parameter/overlay_scale = 1.0
-shader_parameter/overlay_smoothing = 1.0000000475
-shader_parameter/overlay_offset = 0.0
-shader_parameter/overlay_invert_fade = true
+shader_parameter/overlay_gradient_type = 2
+shader_parameter/overlay_gradient_rotation_degrees = 0.0
+shader_parameter/overlay_gradient_scale = 1.0
+shader_parameter/overlay_gradient_smoothing = 0.5
+shader_parameter/overlay_gradient_offset = 0.0
+shader_parameter/overlay_repeat_gradient = false
 shader_parameter/overlay_enable_pulsation = false
 shader_parameter/overlay_animation_speed = 2.000000095
 shader_parameter/overlay_pulse_min_offset = 9.49999998667295e-08
 shader_parameter/overlay_pulse_max_offset = 0.5
+shader_parameter/enable_overlay_opacity = false
+shader_parameter/overlay_opacity_type = 2
+shader_parameter/overlay_opacity_rotation_degrees = 0.0
+shader_parameter/overlay_opacity_scale = 1.0
+shader_parameter/overlay_opacity_smoothing = 0.5
+shader_parameter/overlay_opacity_offset = 0.0
+shader_parameter/overlay_opacity_repeat = false
+shader_parameter/overlay_opacity_enable_pulsation = false
+shader_parameter/overlay_opacity_animation_speed = 1.0
+shader_parameter/overlay_opacity_pulse_min_offset = -0.5
+shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radius = 0.0
 shader_parameter/enable_outline = false
 shader_parameter/outline_width = 2.0
@@ -332,13 +343,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rvil5"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_h6war"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_glr7t"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_h6war")
+shader_parameter/tex = SubResource("ViewportTexture_glr7t")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -477,7 +488,52 @@ colors = PackedColorArray(1, 0.67058825, 0, 1, 0, 0, 0, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_gtatl"]
 gradient = SubResource("Gradient_2ujkr")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_veuwc"]
+shader = ExtResource("27_cwri3")
+shader_parameter/sec_mask_pattern = 1
+shader_parameter/sec_mask_scale = 12.277000579897619
+shader_parameter/sec_mask_smoothness = 0.1
+shader_parameter/sec_mask_invert = false
+shader_parameter/aspect = 1.3000000379999999
+shader_parameter/sec_hue_shift = 2.15600010241
+shader_parameter/sec_saturation = 1.0
+shader_parameter/sec_brightness = 1.0
+shader_parameter/sec_contrast = 1.0
+shader_parameter/sec_use_sharpness = false
+shader_parameter/sec_sharpness = 1.0
+shader_parameter/sec_use_wobble = false
+shader_parameter/sec_wobble_strength = 1.0
+shader_parameter/sec_wobble_speed = 1.0
+shader_parameter/sec_use_sweep = false
+shader_parameter/sec_sweep_width = 0.15
+shader_parameter/sec_sweep_speed = 0.15
+shader_parameter/sec_sweep_interval = 3.0
+shader_parameter/sec_sweep_offset = 0.0
+shader_parameter/sec_sweep_angle = 0.0
+shader_parameter/sec_sweep_hue = 1.57
+shader_parameter/sec_sweep_saturation = 1.2
+shader_parameter/sec_sweep_brightness = 1.2
+shader_parameter/sec_use_echo = false
+shader_parameter/sec_echo_strength = 0.5
+shader_parameter/sec_echo_offset = 0.015
+shader_parameter/sec_use_dot_crawl = false
+shader_parameter/sec_dot_crawl_strength = 0.5
+shader_parameter/sec_dot_crawl_speed = 15.0
+shader_parameter/sec_use_interlaced_flicker = false
+shader_parameter/sec_interlaced_strength = 0.5
+shader_parameter/sec_use_interlaced_jitter = false
+shader_parameter/sec_jitter_strength = 0.005
+shader_parameter/sec_jitter_speed = 10.0
+shader_parameter/sec_use_roll = false
+shader_parameter/sec_roll_strength = 0.1
+shader_parameter/sec_roll_speed = 2.0
+shader_parameter/sec_roll_size = 15.0
+shader_parameter/sec_use_noise = false
+shader_parameter/sec_noise_strength = 0.1
+shader_parameter/sec_chroma_noise = false
+
 [node name="StatsViewport" type="PanelContainer" unique_id=131166221]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -620.0
@@ -840,6 +896,14 @@ script = ExtResource("25_2ujkr")
 game_viewport = NodePath("../SubViewportContainer/SubViewport")
 ghost_duration = 1.096
 ghost_gradient = SubResource("GradientTexture1D_gtatl")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=90532760]
+copy_mode = 2
+
+[node name="CRTpass2 Shader" type="ColorRect" parent="." unique_id=741939067]
+material = SubResource("ShaderMaterial_veuwc")
+layout_mode = 2
+mouse_filter = 1
 
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]
