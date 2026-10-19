@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://baqoni5l2stja" path="res://scripts/classes/implant_effects/add_max_shield.gd" id="5_bjxrv"]
 [ext_resource type="Script" uid="uid://b11kn64b4nt23" path="res://scripts/classes/implant_effects/add_mitigation_percent.gd" id="6_b1s8o"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="7_rp1cn"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="8_owhjj"]
 
 [sub_resource type="Resource" id="Resource_kd4ij"]
 script = ExtResource("2_7h803")
@@ -30,8 +31,10 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 [resource]
 script = ExtResource("7_rp1cn")
 id = 42
+name = "bio hack 42"
 description = "+X de Durabilidade e Mitigação de Dano dos Escudos."
 type = 1
+texture = ExtResource("8_owhjj")
 trigger = 13
 effect = Array[ExtResource("4_qpe13")]([SubResource("Resource_vueux"), SubResource("Resource_ogk28")])
 conditions = Array[ExtResource("1_0oml7")]([SubResource("Resource_kd4ij")])

@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_yhicf"]
 [ext_resource type="Script" uid="uid://qf22s6n7n8wj" path="res://scripts/classes/implant_effects/undone/add_money.gd" id="5_cd7ov"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_ij547"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="7_aj127"]
 
 [sub_resource type="Resource" id="Resource_itaai"]
 script = ExtResource("2_qgbc7")
@@ -26,8 +27,10 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 [resource]
 script = ExtResource("6_ij547")
 id = 23
+name = "bio hack 23"
 description = "quando ativado, instantaneamente ganhe o dobro do seu Dinheiro (limitado a ganhar, no máximo, $X). Pode ser ativado até 1 vez (por padrão)."
 type = 1
+texture = ExtResource("7_aj127")
 rarity = 1
 consumable = true
 uses_amount = 1

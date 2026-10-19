@@ -101,6 +101,45 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 bg_color = Color(0.6, 0.6, 0.6, 0)
 shadow_color = Color(0, 0, 0, 0)
 
+[sub_resource type="Gradient" id="Gradient_yodio"]
+offsets = PackedFloat32Array(0, 0.5049505, 1)
+colors = PackedColorArray(0.20392157, 0.9529412, 1, 1, 0.19949998, 0.95, 0.5997666, 1, 0.20392157, 0.9529412, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_yodio")
+
+[sub_resource type="Curve" id="Curve_gtatl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_a7lv4"]
+curve = SubResource("Curve_gtatl")
+
+[sub_resource type="Curve" id="Curve_yodio"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.40416667, 0.46206892), 0.0, 0.0, 0, 0, Vector2(0.70416665, 0.66896546), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_l102y"]
+curve = SubResource("Curve_yodio")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mjyp6"]
+shader = ExtResource("22_l102y")
+shader_parameter/effect_enabled = true
+shader_parameter/source_color_val = Color(0.20392, 0.95294, 1, 1)
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_offset = 0.6570000312075
+shader_parameter/animate_offset = true
+shader_parameter/offset_curve = SubResource("CurveTexture_a7lv4")
+shader_parameter/offset_animation_speed = 0.0510000024225
+shader_parameter/animate_opacity = true
+shader_parameter/opacity_curve = SubResource("CurveTexture_l102y")
+shader_parameter/opacity_animation_speed = 0.1970000093575
+shader_parameter/opacity = 1.0
+shader_parameter/tolerance = 0.3430000162925
+shader_parameter/gradient_smoothing = 0.05
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_esiv2"]
 shader = ExtResource("21_mdhfq")
 shader_parameter/original_texture_size = Vector2(3000, 3000)
@@ -113,17 +152,17 @@ shader_parameter/glow_opacity = 1.0
 shader_parameter/glow_softness = 0.5
 shader_parameter/glow_smooth_gamma = 1.0
 shader_parameter/glow_blend_mode = 0
-shader_parameter/use_gradient_mapping = false
-shader_parameter/gradient_scroll_speed = 0.0
 shader_parameter/mask_core_texture = false
 shader_parameter/boundary_fade_margin = 0.05
 shader_parameter/use_soft_clip = false
 shader_parameter/glow_hdr_threshold = 1.0
 shader_parameter/glow_direction_falloff = Vector2(1, 1)
-shader_parameter/glow_rim_margin = 0.0
-shader_parameter/glow_rim_feather = 0.05
-shader_parameter/glow_rim_eccentricity = 0.0
-shader_parameter/glow_rim_pulse_frequency = 0.0
+shader_parameter/temporal_glow_jitter = false
+shader_parameter/glow_jitter_strength = 1.0
+shader_parameter/smooth_alpha_curve = false
+shader_parameter/use_gradient_mapping = false
+shader_parameter/use_opacity_gradient = false
+shader_parameter/gradient_scroll_speed = 0.0
 shader_parameter/use_sharp_steps = false
 shader_parameter/glow_step_count = 3.0
 shader_parameter/use_color_banding_palette = false
@@ -161,6 +200,10 @@ shader_parameter/pattern_fresnel_modulation = false
 shader_parameter/use_god_rays = false
 shader_parameter/ray_direction = Vector2(0.5, -0.5)
 shader_parameter/ray_length = 2.0
+shader_parameter/glow_rim_margin = 0.0
+shader_parameter/glow_rim_feather = 0.05
+shader_parameter/glow_rim_eccentricity = 0.0
+shader_parameter/glow_rim_pulse_frequency = 0.0
 shader_parameter/use_inner_glow = false
 shader_parameter/inner_glow_color = Color(1, 1, 1, 1)
 shader_parameter/inner_glow_size = 5.0
@@ -214,17 +257,17 @@ shader_parameter/use_distortion = false
 shader_parameter/distortion_strength = 0.02
 shader_parameter/distortion_speed = Vector2(0, -0.2)
 shader_parameter/distort_texture_as_well = false
+shader_parameter/distortion_chromatic_aberration = 0.0
+shader_parameter/distortion_multi_frequency = false
 shader_parameter/heat_asymmetric_rise = false
 shader_parameter/heat_top_heavy_factor = 2.5
+shader_parameter/heat_wind_shear = 0.0
+shader_parameter/heat_distance_fade = 0.0
 shader_parameter/use_convection_fluid = false
 shader_parameter/convection_vortex_twist = 1.0
 shader_parameter/convection_bubble_frequency = 2.0
 shader_parameter/convection_speed = 1.0
 shader_parameter/convection_wave_amplitude = 1.0
-shader_parameter/distortion_chromatic_aberration = 0.0
-shader_parameter/heat_wind_shear = 0.0
-shader_parameter/heat_distance_fade = 0.0
-shader_parameter/distortion_multi_frequency = false
 shader_parameter/procedural_noise_scale = Vector2(10, 10)
 shader_parameter/procedural_noise_speed = 2.0
 shader_parameter/procedural_noise_direction = Vector2(0, -1)
@@ -244,45 +287,6 @@ shader_parameter/glitch_frequency_lanes = 30.0
 shader_parameter/glitch_update_speed = 8.0
 shader_parameter/glitch_displacement_force = 0.35
 
-[sub_resource type="Gradient" id="Gradient_yodio"]
-offsets = PackedFloat32Array(0, 0.5049505, 1)
-colors = PackedColorArray(0.20392157, 0.9529412, 1, 1, 0.19949998, 0.95, 0.5997666, 1, 0.20392157, 0.9529412, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
-gradient = SubResource("Gradient_yodio")
-
-[sub_resource type="Curve" id="Curve_gtatl"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_a7lv4"]
-curve = SubResource("Curve_gtatl")
-
-[sub_resource type="Curve" id="Curve_yodio"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.40416667, 0.46206892), 0.0, 0.0, 0, 0, Vector2(0.70416665, 0.66896546), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 4
-
-[sub_resource type="CurveTexture" id="CurveTexture_l102y"]
-curve = SubResource("Curve_yodio")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mjyp6"]
-shader = ExtResource("22_l102y")
-shader_parameter/effect_enabled = true
-shader_parameter/source_color_val = Color(0.20392, 0.95294, 1, 1)
-shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
-shader_parameter/gradient_type = 0
-shader_parameter/gradient_scale = 1.0
-shader_parameter/gradient_offset = 0.6570000312075
-shader_parameter/animate_offset = true
-shader_parameter/offset_curve = SubResource("CurveTexture_a7lv4")
-shader_parameter/offset_animation_speed = 0.0510000024225
-shader_parameter/animate_opacity = true
-shader_parameter/opacity_curve = SubResource("CurveTexture_l102y")
-shader_parameter/opacity_animation_speed = 0.1970000093575
-shader_parameter/opacity = 1.0
-shader_parameter/tolerance = 0.3430000162925
-shader_parameter/gradient_smoothing = 0.05
-
 [sub_resource type="Environment" id="Environment_eofqg"]
 background_mode = 3
 glow_enabled = true
@@ -296,7 +300,7 @@ glow_bloom = 0.09
 adjustment_enabled = true
 
 [sub_resource type="Gradient" id="Gradient_cwri3"]
-offsets = PackedFloat32Array(0, 0.4573991, 0.79820627)
+offsets = PackedFloat32Array(0, 0.45771143, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.93, 0, 0, 1, 0.85, 0.5525, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_2ujkr"]
@@ -328,13 +332,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rvil5"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_a13rr"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_h6war"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_a13rr")
+shader_parameter/tex = SubResource("ViewportTexture_h6war")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -767,6 +771,18 @@ visible = false
 layout_mode = 2
 mouse_filter = 1
 
+[node name="BackBufferCopy" type="BackBufferCopy" parent="SubViewportContainer/SubViewport" unique_id=70675939]
+copy_mode = 2
+
+[node name="ColorToGradient Remapper" type="ColorRect" parent="SubViewportContainer/SubViewport" unique_id=1367994825]
+material = SubResource("ShaderMaterial_mjyp6")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [node name="Control" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=895439523]
 anchors_preset = 7
 anchor_left = 0.5
@@ -802,18 +818,6 @@ offset_transform_enabled = true
 offset_transform_position_ratio = Vector2(0, 0.265)
 texture = ExtResource("22_yodio")
 stretch_mode = 4
-
-[node name="BackBufferCopy" type="BackBufferCopy" parent="SubViewportContainer/SubViewport" unique_id=70675939]
-copy_mode = 2
-
-[node name="ColorToGradient Remapper" type="ColorRect" parent="SubViewportContainer/SubViewport" unique_id=1367994825]
-material = SubResource("ShaderMaterial_mjyp6")
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=156393520]
 environment = SubResource("Environment_eofqg")

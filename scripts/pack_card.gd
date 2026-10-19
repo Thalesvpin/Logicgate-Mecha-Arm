@@ -7,6 +7,7 @@ var choices_amount: int = 1
 var chosen: Array[Implant]
 
 func randomize_options() -> void:
+	print('rodei')
 	chosen = []
 	for i in range(items_amount):
 		chosen.append(Global.get_random_implant(chosen))

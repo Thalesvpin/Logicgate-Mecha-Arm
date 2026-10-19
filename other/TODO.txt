@@ -1,7 +1,7 @@
 -PRA FICAR JOGAVEL
-    -configurar btn de sair da loja
-    -reroll
-    -pacotes
+	-configurar btn de sair da loja
+	-reroll
+	-pacotes
 
 
 definir preços
@@ -11,8 +11,8 @@ THALES:
 nomes e icones dos implantes
 -LOJA
 criar scipt generico pra usar o color remap no stats viewport
+quando fechar a loja, limpar ela
 -SHADER
-add parametros no gradient
 -COMBATE
 barras de stats psicar branco ao reduzir
 dmg numbers na tela
@@ -61,11 +61,3 @@ sprite do braço raio x
 -COMBATE
 sprite do personagem principal
 sprite do boss q falta
-
-
-
-
-
-
-
-

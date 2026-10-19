@@ -107,7 +107,6 @@ font_size = 22
 [node name="PackCard" type="PanelContainer" unique_id=1952346557]
 custom_minimum_size = Vector2(200, 365)
 custom_maximum_size = Vector2(200, 365)
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2

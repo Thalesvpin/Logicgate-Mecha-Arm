@@ -5,8 +5,12 @@ extends PanelContainer
 
 var rarity: Global.Rarity
 
+func _ready() -> void:
+	print('open ready: ', implant_card)
+
 func load_implant(implant: Implant) -> void:
 	set_rarity(implant.rarity)
+	print('OPEN PACK ITEM: ', implant_card)
 	implant_card.resource = implant
 	implant_card.load_resource()
 

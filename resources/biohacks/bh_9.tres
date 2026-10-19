@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_7nm7x"]
 [ext_resource type="Script" uid="uid://bsma7115xysdu" path="res://scripts/classes/implant_effects/repair_shield.gd" id="5_uh1f0"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_3qsup"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="7_i8dcp"]
 
 [sub_resource type="Resource" id="Resource_jcl8f"]
 script = ExtResource("2_cl6hb")
@@ -26,8 +27,10 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 [resource]
 script = ExtResource("6_3qsup")
 id = 9
+name = "bio hack 9"
 description = "quando ativado, este Modifier conserta 1 Escudo do jogador para o Máximo. Pode ser ativado até 3 vezes (por padrão)."
 type = 1
+texture = ExtResource("7_i8dcp")
 consumable = true
 uses_amount = 3
 effect = Array[ExtResource("4_7nm7x")]([SubResource("Resource_m8er1")])

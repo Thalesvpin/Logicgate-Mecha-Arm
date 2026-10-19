@@ -22,8 +22,17 @@ corner_radius_bottom_right = 11
 corner_radius_bottom_left = 11
 
 [node name="OpenPackItem" type="PanelContainer" unique_id=211604801]
-offset_right = 388.0
-offset_bottom = 189.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -194.0
+offset_top = -94.5
+offset_right = 114.0
+offset_bottom = 94.5
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_lhu5f")
@@ -44,6 +53,8 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=144731477]
+custom_minimum_size = Vector2(280, 0)
+custom_maximum_size = Vector2(280, -1)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 10

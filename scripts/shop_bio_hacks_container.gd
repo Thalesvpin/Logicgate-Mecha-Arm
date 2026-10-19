@@ -26,16 +26,25 @@ func get_random_implant(last = null) -> Implant:
 	var result
 	
 	chance = Global.random.next() % 100
+	var chance1 = chance
 	if chance < 40:
 		list = Global.bh_commom
+		if list == []:
+			printerr('n tem raridade comum')
 	elif chance < 70:
 		list = Global.bh_rare
+		if list == []:
+			printerr('n tem raridade raro')
 	elif chance < 90:
 		list = Global.bh_ultra_rare
+		if list == []:
+			printerr('n tem raridade ultra raro')
 	else:
 		list = Global.bh_legendary
+		if list == []:
+			printerr('n tem raridade lendario')
 	
-	chance  = Global.random.next() % list.size()
+	chance = Global.random.next() % list.size()
 	if last == list[chance]:
 		result = get_random_implant(last)
 	else:
@@ -46,9 +55,9 @@ func add_implants() -> void:
 	var imp1 = SHOP_BIO_HACK_ITEM.instantiate()
 	var imp2 = SHOP_BIO_HACK_ITEM.instantiate()
 	
-	imp1.resource = implants[0]
-	imp2.resource = implants[1]
+	imp1.implant = implants[0]
+	imp2.implant = implants[1]
 	
 	implants_holder.add_child(imp1)
 	implants_holder.add_child(imp2)
-	move_child(imp1, 0)
+	implants_holder.move_child(imp1, 0)

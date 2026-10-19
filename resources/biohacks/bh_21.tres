@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="7_p32w8"]
 [ext_resource type="Script" uid="uid://byl7rod47gfwb" path="res://scripts/classes/implant_effects/add_max_health_percent.gd" id="8_ybu8r"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="9_rxr70"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="10_unt26"]
 
 [sub_resource type="Resource" id="Resource_8swwv"]
 script = ExtResource("2_eabjd")
@@ -45,8 +46,10 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 [resource]
 script = ExtResource("9_rxr70")
 id = 21
+name = "bio hack 21"
 description = "quando ativado, este Bio Hack Cura a sua Vida até o Máximo, e conserta todos os Escudos, mas permanentemente diminui -X% pontos do seu Dano Base e -Y% de Vida Máxima. Pode ser ativado até 1 vez (por padrão)."
 type = 1
+texture = ExtResource("10_unt26")
 rarity = 1
 corrupted = true
 consumable = true

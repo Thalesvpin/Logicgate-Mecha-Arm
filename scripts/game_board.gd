@@ -105,8 +105,10 @@ func open_shop() -> void:
 
 ##fazer essa parte no shop apos emitir um singal
 func _open_shop():
-	shop.show()
-	shop.open()
+	EventBus.open_shop.emit()
+	print('emitiu')
+	#shop.show()
+	#shop.open()
 	stats_viewport.show()
 	stats_viewport.glow()
 	close_battle()
@@ -166,5 +168,5 @@ func _input(event: InputEvent) -> void:
 		#open_shop()
 		#var a = ChargeHeavyAttackEffect.new()
 		#a.apply()
-		Global.circuit_editor.block_sandbox('player')
-	
+		#Global.circuit_editor.block_sandbox('player')
+		EventBus.battle_ended.emit(true)

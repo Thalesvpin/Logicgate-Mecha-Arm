@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_cmvsa"]
 [ext_resource type="Script" uid="uid://cidfqydo35ysg" path="res://scripts/classes/implant_effects/add_max_health_flat.gd" id="5_xvljo"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_f2v3d"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="7_dusxr"]
 
 [sub_resource type="Resource" id="Resource_fwu55"]
 script = ExtResource("2_kbe3s")
@@ -25,8 +26,10 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 [resource]
 script = ExtResource("6_f2v3d")
 id = 41
+name = "bio hack 41"
 description = "+X de Vida Máxima."
 type = 1
+texture = ExtResource("7_dusxr")
 trigger = 13
 effect = Array[ExtResource("4_cmvsa")]([SubResource("Resource_l77rm")])
 conditions = Array[ExtResource("1_de0bv")]([SubResource("Resource_fwu55")])

@@ -9,7 +9,7 @@ const IMPLANT_CARD = preload("uid://w1qq1p4375fn")
 
 func _ready() -> void:
 	Global.bio_hacks_container = self
-	EventBus.bio_hack_added.connect(add_implant)
+	#EventBus.bio_hack_added.connect(add_implant)
 	update_counter()
 	sub_viewport_container.custom_minimum_size = panel_container.get_combined_minimum_size()
 

@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_fvp65"]
 [ext_resource type="Script" uid="uid://dt1iryly4dgrs" path="res://scripts/classes/implant_effects/charge_heavy_attack.gd" id="5_avy66"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_vsf2o"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="7_uiox0"]
 
 [sub_resource type="Resource" id="Resource_7065v"]
 script = ExtResource("2_jnyxr")
@@ -26,8 +27,10 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 [resource]
 script = ExtResource("6_vsf2o")
 id = 33
+name = "bio hack 33"
 description = "Sempre que um Acerto Crítico matar um Inimigo, o Ataque Carregado é 100% Carregado."
 type = 1
+texture = ExtResource("7_uiox0")
 rarity = 1
 trigger = 5
 effect = Array[ExtResource("4_fvp65")]([SubResource("Resource_7ic4m")])

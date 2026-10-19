@@ -131,7 +131,8 @@ var rarity_textures: Dictionary[Rarity, Texture2D] = {
 	#return template
 
 func _ready() -> void:
-	#load_implants()
+	print('n rodou ne')
+	load_implants()
 	pass
 
 func pause_game(value: bool) -> void:
@@ -193,12 +194,26 @@ var bh_commom: Array[Implant] = []
 var bh_rare: Array[Implant] = []
 var bh_ultra_rare: Array[Implant] = []
 var bh_legendary: Array[Implant] = []
+
 func load_implants() -> void:
 	var tech_mods_path: String = "res://resources/techmods/"
 	var bio_hacks_path: String = "res://resources/biohacks/"
 	
 	sort(tech_mods_path)
 	sort(bio_hacks_path)
+	print('\nall_commom: ', all_commom)
+	print('all_rare: ', all_rare)
+	print('all_ultra_rare: ', all_ultra_rare)
+	print('all_legendary: ', all_legendary)
+	print('tm_commom: ', tm_commom)
+	print('tm_rare: ', tm_rare)
+	print('tm_ultra_rare: ', tm_ultra_rare)
+	print('tm_legendary: ', tm_legendary)
+	print('bh_commom: ', bh_commom)
+	print('bh_rare: ', bh_rare)
+	print('bh_ultra_rare: ', bh_ultra_rare)
+	print('bh_legendary: ', bh_legendary)
+	print('\n')
 
 func sort(path: String) -> void:
 	sort_rarity(path)

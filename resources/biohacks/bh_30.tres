@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_4dp4n"]
 [ext_resource type="Script" uid="uid://drkh7n0dptl6c" path="res://scripts/classes/implant_effects/undone/deal_damage.gd" id="4_e0i7a"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_je1bc"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="7_je1bc"]
 
 [sub_resource type="Resource" id="Resource_gtatl"]
 script = ExtResource("2_4dp4n")
@@ -26,8 +27,10 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 [resource]
 script = ExtResource("4_je1bc")
 id = 30
+name = "bio hack 30"
 description = "toda vez que um inimigo morre, todos os outros inimigos tomam uma pequena quantidade de Dano."
 type = 1
+texture = ExtResource("7_je1bc")
 trigger = 6
 effect = Array[ExtResource("3_4dp4n")]([SubResource("Resource_je1bc")])
 conditions = Array[ExtResource("1_hgl4e")]([SubResource("Resource_gtatl")])

@@ -7,11 +7,11 @@ extends PanelContainer
 @onready var wall: PanelContainer = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D/CollisionShape2D/Wall
 @onready var sub_viewport: SubViewport = $SubViewportContainer/SubViewport
 @onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
-@onready var attack_container: Control = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Attack
-@onready var shield_regen: Control = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/ShieldRegen
-@onready var self_damage_container: Control = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/SelfDamage
-@onready var heal_container: Control = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Heal
 @onready var block_input: PanelContainer = $SubViewportContainer/SubViewport/Control2/BlockInput
+@onready var heal_container: Control = $Control/Heal
+@onready var shield_regen: Control = $Control/ShieldRegen
+@onready var attack_container: Control = $Control/Attack
+@onready var self_damage_container: Control = $Control/SelfDamage
 
 var execution_sequence: Array
 var all_gate_inputs: Array
