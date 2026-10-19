@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="4_ihy3r"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="5_jnc7b"]
 [ext_resource type="Shader" uid="uid://chr5yh64fe4ws" path="res://shaders/CRTpass2.gdshader" id="6_j5bc0"]
+[ext_resource type="Script" uid="uid://cqb2mhqkx5vxd" path="res://scenes/sections/shop/CRTpass2_shadercontroller.gd" id="7_pkk5a"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1lvlk"]
 bg_color = Color(0, 0, 0, 1)
@@ -185,7 +186,7 @@ shader_parameter/sec_mask_pattern = 0
 shader_parameter/sec_mask_scale = 10.0
 shader_parameter/sec_mask_smoothness = 0.1
 shader_parameter/sec_mask_invert = false
-shader_parameter/aspect = 1.3000000379999999
+shader_parameter/rect_aspect = 1.7778
 shader_parameter/sec_hue_shift = 0.0
 shader_parameter/sec_saturation = 1.0
 shader_parameter/sec_brightness = 3.0
@@ -331,3 +332,4 @@ copy_mode = 2
 material = SubResource("ShaderMaterial_eetg5")
 layout_mode = 2
 mouse_filter = 1
+script = ExtResource("7_pkk5a")

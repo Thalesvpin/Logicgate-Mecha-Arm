@@ -27,6 +27,7 @@
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="24_nwtl1"]
 [ext_resource type="Script" uid="uid://bnt1kahox4rrd" path="res://scripts/crt_phosphor_ghosting.gd" id="25_2ujkr"]
 [ext_resource type="Shader" uid="uid://chr5yh64fe4ws" path="res://shaders/CRTpass2.gdshader" id="27_cwri3"]
+[ext_resource type="Script" uid="uid://cqb2mhqkx5vxd" path="res://scenes/sections/shop/CRTpass2_shadercontroller.gd" id="28_rvil5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -343,13 +344,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_rvil5"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_glr7t"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_n213t"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_glr7t")
+shader_parameter/tex = SubResource("ViewportTexture_n213t")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -491,10 +492,10 @@ gradient = SubResource("Gradient_2ujkr")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_veuwc"]
 shader = ExtResource("27_cwri3")
 shader_parameter/sec_mask_pattern = 1
-shader_parameter/sec_mask_scale = 12.277000579897619
+shader_parameter/sec_mask_scale = 10.0
 shader_parameter/sec_mask_smoothness = 0.1
 shader_parameter/sec_mask_invert = false
-shader_parameter/aspect = 1.3000000379999999
+shader_parameter/rect_aspect = 1.205607476635514
 shader_parameter/sec_hue_shift = 2.15600010241
 shader_parameter/sec_saturation = 1.0
 shader_parameter/sec_brightness = 1.0
@@ -904,6 +905,7 @@ copy_mode = 2
 material = SubResource("ShaderMaterial_veuwc")
 layout_mode = 2
 mouse_filter = 1
+script = ExtResource("28_rvil5")
 
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]

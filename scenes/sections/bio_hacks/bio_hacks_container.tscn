@@ -5,6 +5,7 @@
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="3_3a434"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="4_snh1h"]
 [ext_resource type="Shader" uid="uid://chr5yh64fe4ws" path="res://shaders/CRTpass2.gdshader" id="5_x5458"]
+[ext_resource type="Script" uid="uid://cqb2mhqkx5vxd" path="res://scenes/sections/shop/CRTpass2_shadercontroller.gd" id="6_unovg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0, 0, 0, 1)
@@ -190,10 +191,10 @@ shader_parameter/sec_mask_pattern = 0
 shader_parameter/sec_mask_scale = 10.0
 shader_parameter/sec_mask_smoothness = 0.1
 shader_parameter/sec_mask_invert = false
-shader_parameter/aspect = 1.3000000379999999
+shader_parameter/rect_aspect = 1.7778
 shader_parameter/sec_hue_shift = 0.0
 shader_parameter/sec_saturation = 1.0
-shader_parameter/sec_brightness = 1.5860000753349999
+shader_parameter/sec_brightness = 1.586000075335
 shader_parameter/sec_contrast = 1.0
 shader_parameter/sec_use_sharpness = false
 shader_parameter/sec_sharpness = 1.0
@@ -335,3 +336,4 @@ copy_mode = 2
 material = SubResource("ShaderMaterial_0vipy")
 layout_mode = 2
 mouse_filter = 1
+script = ExtResource("6_unovg")
