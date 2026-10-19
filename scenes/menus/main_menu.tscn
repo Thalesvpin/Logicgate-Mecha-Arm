@@ -2,11 +2,54 @@
 
 [ext_resource type="Script" uid="uid://dcmllje4m1vno" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="Texture2D" uid="uid://ce403gokpmwt5" path="res://assets/Check.svg" id="2_ovrgc"]
+[ext_resource type="Shader" uid="uid://bdt6cndq2dv0d" path="res://shaders/backlit_button.gdshader" id="3_2o76q"]
+[ext_resource type="Script" uid="uid://bwee0efqucus8" path="res://scripts/backlit_button_shadercontrol.gd" id="4_6bivr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eetg5"]
+shader = ExtResource("3_2o76q")
+shader_parameter/rect_size = Vector2(304, 174)
+shader_parameter/bevel_width = 22.734001032365
+shader_parameter/bevel_smoothness = 2.9390001396025
+shader_parameter/bevel_color = Color(0.18, 0.18, 0.18, 1)
+shader_parameter/bevel_opacity = 0.93200004427
+shader_parameter/light_direction = Vector2(-0.707, -0.707)
+shader_parameter/bevel_highlight = 1.27600006061
+shader_parameter/bevel_shadow = 0.7550000358625
+shader_parameter/smoothness = 0.1570000074575
+shader_parameter/specular_intensity = 1.3630000647425
+shader_parameter/fresnel_power = 4.0
+shader_parameter/refraction_distortion = 14.0
+shader_parameter/environment_reflectivity = 0.35
+shader_parameter/texture_tiling = Vector2(1, 1)
+shader_parameter/texture_influence = 0.35
+shader_parameter/procedural_grain = 0.15
+shader_parameter/side_glow_intensity = 1.5
+shader_parameter/side_light_falloff = 1.5
+shader_parameter/side_angle_sensitivity = 0.65
+shader_parameter/side_color_shift = 0.85
+shader_parameter/inner_seam_glow = 1.2
+shader_parameter/base_light_retention = 0.15
+shader_parameter/outer_rim_glow = 0.4
+shader_parameter/cap_color = Color(0.12, 0.12, 0.12, 0.9)
+shader_parameter/cap_transparency = 0.5
+shader_parameter/is_active = false
+shader_parameter/bulb_count = 2
+shader_parameter/bulb_size = 0.12
+shader_parameter/bulb_off_color = Color(0.25, 0.2, 0.1, 0.8)
+shader_parameter/bulb_on_color = Color(1, 0.95, 0.8, 1)
+shader_parameter/backlight_intensity = 1.54800007353
+shader_parameter/backlight_color = Color(1, 0.68, 0.1, 1)
+shader_parameter/light_scatter = 0.64300002728262
+shader_parameter/frosted_diffusion = 0.1770000084075
 
 [node name="MainMenu" type="CenterContainer" unique_id=771463273]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -33.0
+offset_top = -1.0
+offset_right = -33.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -67,6 +110,35 @@ theme_override_font_sizes/font_size = 32
 [node name="SubmitSeed" type="Button" parent="CanvasLayer/VBoxContainer/SeedContainer" unique_id=1599221385]
 layout_mode = 2
 icon = ExtResource("2_ovrgc")
+
+[node name="DebugColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1422442231]
+offset_left = 155.0
+offset_top = 160.0
+offset_right = 630.0
+offset_bottom = 428.0
+color = Color(0.20963871, 0.45288533, 0.3940587, 1)
+
+[node name="Button" type="Button" parent="CanvasLayer" unique_id=1160187860]
+material = SubResource("ShaderMaterial_eetg5")
+offset_left = 235.0
+offset_top = 203.0
+offset_right = 539.0
+offset_bottom = 377.0
+script = ExtResource("4_6bivr")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Button" unique_id=268755702]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 73
+text = "PAUSE"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/AddSeed" to="." method="_on_add_seed_pressed"]
