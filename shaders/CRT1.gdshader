@@ -164,15 +164,6 @@ uniform sampler2D noise_curve;
 uniform float noise_anim_speed = 1.0;
 uniform float noise_anim_amplitude = 1.0;
 
-group_uniforms Phosphor_Bloom;
-uniform float bloom_threshold : hint_range(0.0, 1.0) = 0.6;
-uniform float bloom_multiplier : hint_range(0.0, 5.0) = 0.5;
-uniform bool animate_bloom = false;
-uniform sampler2D bloom_curve;
-uniform float bloom_anim_speed = 1.0;
-uniform float bloom_anim_amplitude = 1.0;
-uniform vec2 bloom_blur_radius = vec2(4.0, 4.0);
-
 group_uniforms Stylization_FX;
 uniform bool use_gradient_map = false;
 uniform sampler2D gradient_texture : hint_default_white;
@@ -191,7 +182,6 @@ uniform float degauss_progress = 1.0;
 group_uniforms Manual_Degauss_Settings;
 uniform float degauss_wobble_strength : hint_range(0.0, 500.0) = 250.0;
 uniform float degauss_color_split : hint_range(0.0, 10.0) = 4.0;
-uniform float degauss_bloom_multiplier : hint_range(0.0, 10.0) = 2.0;
 uniform float degauss_bulge_strength : hint_range(0.0, 1.0) = 0.1;
 uniform float degauss_tear_strength : hint_range(0.0, 1.0) = 0.2;
 uniform float degauss_hue_shift_amount : hint_range(0.0, 6.28318) = 3.14159;
@@ -203,7 +193,7 @@ group_uniforms;
 // Compressed Varying Data Registers
 varying flat vec2 v_degauss_wobble;
 varying flat vec4 v_dyn_pack1; 
-varying flat vec4 v_dyn_pack2; 
+varying flat vec3 v_dyn_pack2; 
 varying flat vec4 v_dyn_pack3; 
 varying flat vec4 v_glitch_field; 
 varying flat vec3 v_stripe_calc;
@@ -259,10 +249,6 @@ void vertex()
 
 	v_dyn_pack2.z = noise_strength;
 	if (animate_noise) v_dyn_pack2.z += textureLod(noise_curve, vec2(fract(TIME * noise_anim_speed), 0.0), 0.0).r * noise_anim_amplitude;
-
-	v_dyn_pack2.w = bloom_multiplier;
-	if (animate_bloom) v_dyn_pack2.w += textureLod(bloom_curve, vec2(fract(TIME * bloom_anim_speed), 0.0), 0.0).r * bloom_anim_amplitude;
-	v_dyn_pack2.w += _degauss * degauss_bloom_multiplier;
 
 	v_dyn_pack3.x = echo_strength;
 	if (animate_echo_strength) v_dyn_pack3.x += textureLod(echo_strength_curve, vec2(fract(TIME * echo_strength_anim_speed), 0.0), 0.0).r * echo_strength_anim_amplitude;
@@ -342,28 +328,44 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size)
 {
 	vec2 scaled_uv = uv * tex_size;
 	int ix = int(floor(scaled_uv.x));
-	float diff_base = fract(scaled_uv.x) - 0.5; 
 	
-	vec3 diff = vec3(
-		diff_base - (v_dyn_pack1.x + local_chroma_offset.x), 
-		diff_base, 
-		diff_base + (v_dyn_pack1.x + local_chroma_offset.y)
-	);
+	// Fast Path: Bypasses the 5-tap horizontal blur entirely if sharpness is neutral (1.0) and no chroma shift is active.
+	bool fast = (v_dyn_pack1.y >= 0.999 && v_dyn_pack1.x == 0.0 && local_chroma_offset == vec2(0.0));
+	
+	vec3 weight_a, weight_b, weight_c, weight_d, weight_e;
+	vec3 weight_scaler_vec = vec3(0.0);
+	
+	if (!fast) {
+		float diff_base = fract(scaled_uv.x) - 0.5; 
+		vec3 diff = vec3(
+			diff_base - (v_dyn_pack1.x + local_chroma_offset.x), 
+			diff_base, 
+			diff_base + (v_dyn_pack1.x + local_chroma_offset.y)
+		);
 
-	vec3 weight_a = smoothstep(vec3(1.0), vec3(0.0), (diff + 2.0) * v_dyn_pack1.y);
-	vec3 weight_b = smoothstep(vec3(1.0), vec3(0.0), (diff + 1.0) * v_dyn_pack1.y);
-	vec3 weight_c = smoothstep(vec3(1.0), vec3(0.0), abs(diff) * v_dyn_pack1.y);
-	vec3 weight_d = smoothstep(vec3(1.0), vec3(0.0), (1.0 - diff) * v_dyn_pack1.y);
-	vec3 weight_e = smoothstep(vec3(1.0), vec3(0.0), (2.0 - diff) * v_dyn_pack1.y);
-	vec3 weight_scaler = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e);
+		weight_a = smoothstep(vec3(1.0), vec3(0.0), (diff + 2.0) * v_dyn_pack1.y);
+		weight_b = smoothstep(vec3(1.0), vec3(0.0), (diff + 1.0) * v_dyn_pack1.y);
+		weight_c = smoothstep(vec3(1.0), vec3(0.0), abs(diff) * v_dyn_pack1.y);
+		weight_d = smoothstep(vec3(1.0), vec3(0.0), (1.0 - diff) * v_dyn_pack1.y);
+		weight_e = smoothstep(vec3(1.0), vec3(0.0), (2.0 - diff) * v_dyn_pack1.y);
+		weight_scaler_vec = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e);
+	}
 
 	if (use_scanlines) 
 	{
 		int iy = int(scaled_uv.y + 0.5) - 1;
 		int lower_y = iy + 1;
 
-		vec3 upper_col = sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler * scanline_brightness;
-		vec3 lower_col = sample_row(ix, lower_y, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler * scanline_brightness;
+		vec3 upper_col;
+		vec3 lower_col;
+		
+		if (fast) {
+			upper_col = srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb) * scanline_brightness;
+			lower_col = srgb_to_linear(texelFetch(tex, ivec2(ix, lower_y), 0).rgb) * scanline_brightness;
+		} else {
+			upper_col = sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec * scanline_brightness;
+			lower_col = sample_row(ix, lower_y, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec * scanline_brightness;
+		}
 
 		vec3 upper_thickness = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), upper_col);
 		vec3 lower_thickness = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), lower_col);
@@ -384,7 +386,14 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size)
 	else 
 	{
 		int iy = int(floor(scaled_uv.y));
-		vec3 color = sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler;
+		vec3 color;
+		
+		if (fast) {
+			color = srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb);
+		} else {
+			color = sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec;
+		}
+		
 		color *= 1.0 - float((iy & 1) ^ int(v_glitch_field.z)) * v_dyn_pack1.w; 
 		return color;
 	}
@@ -579,7 +588,12 @@ void fragment()
 		vec2 noise_coords = FRAGCOORD.xy * v_time_pack2.w;
 		vec3 noise_val;
 		if (chroma_noise) {
-			noise_val = fract(sin(vec3(dot(noise_coords, vec2(12.9898, 78.233)), dot(noise_coords, vec2(39.346, 11.135)), dot(noise_coords, vec2(73.156, 52.235))) + v_glitch_field.w) * 43758.5453);
+			vec3 noise_dots = vec3(
+				dot(noise_coords, vec2(12.9898, 78.233)),
+				dot(noise_coords, vec2(39.346, 11.135)),
+				dot(noise_coords, vec2(73.156, 52.235))
+			);
+			noise_val = fract(sin(noise_dots + v_glitch_field.w) * 43758.5453);
 		} else {
 			noise_val = vec3(fract(sin(dot(noise_coords, vec2(12.9898, 78.233)) + v_glitch_field.w) * 43758.5453));
 		}
@@ -597,23 +611,9 @@ void fragment()
 		col = floor(col * color_levels) / color_levels;
 	}
 
-	// --- FEATURE: 1D GRADIENT MAPPING / DUOTONE ---
 	if (use_gradient_map) {
 		float luma = dot(col, HUE_LUMA);
 		col = textureLod(gradient_texture, vec2(clamp(luma, 0.0, 1.0), 0.0), 0.0).rgb;
-	}
-
-	if (v_dyn_pack2.w > 0.0) {
-		vec2 offX = vec2(bloom_blur_radius.x * tex_pixel_size.x, 0.0);
-		vec2 offY = vec2(0.0, bloom_blur_radius.y * tex_pixel_size.y);
-		
-		vec3 raw_bloom = srgb_to_linear(texture(tex, warped_coords).rgb)
-		               + srgb_to_linear(texture(tex, warped_coords + offX).rgb)
-		               + srgb_to_linear(texture(tex, warped_coords - offX).rgb)
-		               + srgb_to_linear(texture(tex, warped_coords + offY).rgb)
-		               + srgb_to_linear(texture(tex, warped_coords - offY).rgb);
-		
-		col += max(raw_bloom * 0.2 - bloom_threshold, 0.0) * v_dyn_pack2.w; 
 	}
 
     COLOR.rgb = linear_to_srgb(col);

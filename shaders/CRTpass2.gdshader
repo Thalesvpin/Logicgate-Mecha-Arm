@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear;
 
 group_uniforms Sec_Mask;
 uniform int sec_mask_pattern : hint_enum("Dots:0", "Checkerboard:1", "Horizontal:2", "Vertical:3", "Crosshatch:4", "Texture:5") = 0;
@@ -76,6 +76,37 @@ const vec3 HUE_U1 = vec3(0.168, 0.330, -0.497);
 const vec3 HUE_U2 = vec3(0.328, -0.335, 0.007);
 const vec3 HUE_U3 = vec3(-1.250, 1.050, 0.200);
 
+// Pack uniform tracking offsets that do not change per pixel
+varying flat float v_sec_wobble;
+varying flat vec3 v_sec_stripe_calc;
+varying flat vec3 v_sec_time_pack;
+varying flat int v_sec_field;
+
+void vertex() {
+	if (sec_use_wobble) {
+		v_sec_wobble = cos(TIME * TAU * sec_wobble_speed) * sec_wobble_strength * 0.000122;
+	} else {
+		v_sec_wobble = 0.0;
+	}
+
+	if (sec_use_sweep) {
+		float margin = sec_sweep_width * 1.5;
+		v_sec_stripe_calc.x = -margin + fract((TIME * sec_sweep_speed) / sec_sweep_interval + sec_sweep_offset) * (1.0 + margin * 2.0);
+		v_sec_stripe_calc.y = cos(sec_sweep_angle);
+		v_sec_stripe_calc.z = sin(sec_sweep_angle);
+	} else {
+		v_sec_stripe_calc = vec3(0.0);
+	}
+
+	v_sec_time_pack = vec3(
+		TIME * sec_jitter_speed, 
+		TIME * sec_dot_crawl_speed, 
+		TIME * sec_roll_speed
+	);
+	
+	v_sec_field = int(TIME * 30.0) & 1;
+}
+
 vec3 shift_hue(vec3 color, float shift) {
 	float c = cos(shift);
 	float s = sin(shift);
@@ -86,9 +117,8 @@ vec3 shift_hue(vec3 color, float shift) {
 }
 
 float get_secondary_mask(vec2 local_uv) {
-	float val = 0.0;
-	// Anchored to the top-left (0.0) with aspect correction to prevent shifting or stretching
 	vec2 scaled = vec2(local_uv.x * rect_aspect, local_uv.y) * sec_mask_scale;
+	float val = 0.0;
 	
 	if (sec_mask_pattern == 0) {
 		val = smoothstep(0.5 + sec_mask_smoothness, 0.5 - sec_mask_smoothness, length(fract(scaled) - 0.5));
@@ -105,8 +135,7 @@ float get_secondary_mask(vec2 local_uv) {
 		val = max(smoothstep(0.5 + sec_mask_smoothness, 0.5 - sec_mask_smoothness, d1),
 				  smoothstep(0.5 + sec_mask_smoothness, 0.5 - sec_mask_smoothness, d2));
 	} else if (sec_mask_pattern == 5) {
-		val = texture(sec_mask_tex, local_uv).r;
-		val = smoothstep(0.5 - sec_mask_smoothness, 0.5 + sec_mask_smoothness, val);
+		val = smoothstep(0.5 - sec_mask_smoothness, 0.5 + sec_mask_smoothness, texture(sec_mask_tex, local_uv).r);
 	}
 	return sec_mask_invert ? 1.0 - val : val;
 }
@@ -116,18 +145,20 @@ void fragment() {
 	float mask_val = get_secondary_mask(UV);
 	vec4 base_col = texture(SCREEN_TEXTURE, screen_uv);
 	
-	if (mask_val > 0.0) {
+	if (mask_val <= 0.0) {
+		COLOR = base_col;
+	} else {
 		vec2 tex_size = vec2(textureSize(SCREEN_TEXTURE, 0));
 		vec2 tex_pixel_size = 1.0 / tex_size;
 		vec2 warped_uv = screen_uv;
 
 		if (sec_use_wobble) {
-			warped_uv.x += cos(TIME * TAU * sec_wobble_speed) * sec_wobble_strength * 0.000122;
+			warped_uv.x += v_sec_wobble;
 		}
 		
 		if (sec_use_interlaced_jitter) {
 			float row_id = floor(warped_uv.y * tex_size.y);
-			warped_uv.x += ((int(row_id) & 1) == 0 ? 1.0 : -1.0) * sin(TIME * sec_jitter_speed + row_id * 1.5) * sec_jitter_strength;
+			warped_uv.x += ((int(row_id) & 1) == 0 ? 1.0 : -1.0) * sin(v_sec_time_pack.x + row_id * 1.5) * sec_jitter_strength;
 		}
 
 		vec3 col;
@@ -142,22 +173,26 @@ void fragment() {
 			col = texture(SCREEN_TEXTURE, warped_uv).rgb;
 		}
 
-		if (sec_hue_shift > 0.0) col = shift_hue(col, sec_hue_shift);
-		col = mix(vec3(dot(col, HUE_LUMA)), col, sec_saturation);
-		col *= sec_brightness;
-		col = mix(col, clamp((col - 0.5) * sec_contrast + 0.5, 0.0, 1.0), 1.0);
+		if (sec_hue_shift > 0.0001) {
+			col = shift_hue(col, sec_hue_shift);
+		}
+		if (abs(sec_saturation - 1.0) > 0.001) {
+			col = mix(vec3(dot(col, HUE_LUMA)), col, sec_saturation);
+		}
+		if (abs(sec_brightness - 1.0) > 0.001) {
+			col *= sec_brightness;
+		}
+		if (abs(sec_contrast - 1.0) > 0.001) {
+			col = mix(col, clamp((col - 0.5) * sec_contrast + 0.5, 0.0, 1.0), 1.0);
+		}
 
 		if (sec_use_sweep) {
-			float c = cos(sec_sweep_angle);
-			float s = sin(sec_sweep_angle);
 			vec2 sec_rot = vec2(
-				(warped_uv.x - 0.5) * c - (warped_uv.y - 0.5) * s,
-				(warped_uv.x - 0.5) * s + (warped_uv.y - 0.5) * c
+				(warped_uv.x - 0.5) * v_sec_stripe_calc.y - (warped_uv.y - 0.5) * v_sec_stripe_calc.z,
+				(warped_uv.x - 0.5) * v_sec_stripe_calc.z + (warped_uv.y - 0.5) * v_sec_stripe_calc.y
 			) + 0.5;
 			
-			float margin = sec_sweep_width * 1.5;
-			float pos = -margin + fract((TIME * sec_sweep_speed) / sec_sweep_interval + sec_sweep_offset) * (1.0 + margin * 2.0);
-			float norm_dist = abs(sec_rot.y - pos) / (sec_sweep_width * 0.5);
+			float norm_dist = abs(sec_rot.y - v_sec_stripe_calc.x) / (sec_sweep_width * 0.5);
 			
 			if (norm_dist <= 1.0) {
 				float t = clamp((1.0 - norm_dist) / 0.3, 0.0, 1.0);
@@ -174,32 +209,36 @@ void fragment() {
 		}
 
 		if (sec_use_dot_crawl) {
-			col += length(col - texture(SCREEN_TEXTURE, warped_uv + vec2(tex_pixel_size.x, 0.0)).rgb) * sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + TIME * sec_dot_crawl_speed) * sec_dot_crawl_strength;
+			col += length(col - texture(SCREEN_TEXTURE, warped_uv + vec2(tex_pixel_size.x, 0.0)).rgb) * sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + v_sec_time_pack.y) * sec_dot_crawl_strength;
 		}
 
 		if (sec_use_roll) {
-			col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_uv.y * sec_roll_size - TIME * sec_roll_speed)) * sec_roll_strength;
+			col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_uv.y * sec_roll_size - v_sec_time_pack.z)) * sec_roll_strength;
 		}
 
 		if (sec_use_interlaced_flicker) {
 			int iy = int(warped_uv.y * tex_size.y);
-			int field = int(TIME * 30.0) & 1; 
-			col *= 1.0 - float((iy & 1) ^ field) * sec_interlaced_strength;
+			col *= 1.0 - float((iy & 1) ^ v_sec_field) * sec_interlaced_strength;
 		}
 
 		if (sec_use_noise) {
 			vec2 noise_coords = FRAGCOORD.xy;
 			vec3 noise_val;
 			if (sec_chroma_noise) {
-				noise_val = fract(sin(vec3(dot(noise_coords, vec2(12.9898, 78.233)), dot(noise_coords, vec2(39.346, 11.135)), dot(noise_coords, vec2(73.156, 52.235))) + TIME) * 43758.5453);
+				// SIMD Vectorized Noise Generation
+				vec3 noise_dots = vec3(
+					dot(noise_coords, vec2(12.9898, 78.233)),
+					dot(noise_coords, vec2(39.346, 11.135)),
+					dot(noise_coords, vec2(73.156, 52.235))
+				);
+				noise_val = fract(sin(noise_dots + TIME) * 43758.5453);
 			} else {
-				noise_val = vec3(fract(sin(dot(noise_coords, vec2(12.9898, 78.233)) + TIME) * 43758.5453));
+				float n = fract(sin(dot(noise_coords, vec2(12.9898, 78.233)) + TIME) * 43758.5453);
+				noise_val = vec3(n);
 			}
 			col += (noise_val - 0.5) * sec_noise_strength;
 		}
 
 		COLOR = mix(base_col, vec4(clamp(col, 0.0, 1.0), 1.0), mask_val);
-	} else {
-		COLOR = base_col;
 	}
 }
