@@ -1,23 +1,205 @@
 shader_type canvas_item;
 
-uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_linear;
+// --- 1. GLOBAL SETTINGS ---
+group_uniforms Global_Settings;
+uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap, repeat_disable;
+uniform bool invert_colors = false;
+uniform bool invert_before_grading = false;
 
-// HSCB Controls
-uniform float brightness : hint_range(0.0, 2.0) = 1.0;
-uniform float contrast : hint_range(0.0, 2.0) = 1.0;
-uniform float saturation : hint_range(0.0, 2.0) = 1.0;
+// --- 2. TONEMAPPING ---
+
+// HUE
+group_uniforms Tonemapping.Hue;
 uniform float hue : hint_range(0.0, 1.0) = 0.0;
+group_uniforms Tonemapping.Hue.Spatial_Mask;
+uniform bool hue_spatial_enable = false;
+uniform sampler2D hue_spatial_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float hue_spatial_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform float hue_spatial_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform bool hue_spatial_invert = false;
 
-// Gradient Map Controls
+// SATURATION
+group_uniforms Tonemapping.Saturation;
+uniform float saturation : hint_range(0.0, 2.0) = 1.0;
+group_uniforms Tonemapping.Saturation.Spatial_Mask;
+uniform bool saturation_spatial_enable = false;
+uniform sampler2D saturation_spatial_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float saturation_spatial_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform float saturation_spatial_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform bool saturation_spatial_invert = false;
+
+// BRIGHTNESS
+group_uniforms Tonemapping.Brightness;
+uniform float brightness : hint_range(0.0, 2.0) = 1.0;
+group_uniforms Tonemapping.Brightness.Spatial_Mask;
+uniform bool brightness_spatial_enable = false;
+uniform sampler2D brightness_spatial_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float brightness_spatial_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform float brightness_spatial_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform bool brightness_spatial_invert = false;
+
+// CONTRAST
+group_uniforms Tonemapping.Contrast;
+uniform float contrast : hint_range(0.0, 2.0) = 1.0;
+group_uniforms Tonemapping.Contrast.Spatial_Mask;
+uniform bool contrast_spatial_enable = false;
+uniform sampler2D contrast_spatial_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float contrast_spatial_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform float contrast_spatial_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform bool contrast_spatial_invert = false;
+
+// EXPOSURE
+group_uniforms Tonemapping.Exposure;
+uniform float exposure : hint_range(-2.0, 2.0) = 0.0;
+group_uniforms Tonemapping.Exposure.Spatial_Mask;
+uniform bool exposure_spatial_enable = false;
+uniform sampler2D exposure_spatial_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float exposure_spatial_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform float exposure_spatial_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform bool exposure_spatial_invert = false;
+
+// COLOR TEMP
+group_uniforms Tonemapping.Color_Temp;
+uniform float color_temp : hint_range(-1.0, 1.0) = 0.0; 
+group_uniforms Tonemapping.Color_Temp.Spatial_Mask;
+uniform bool color_temp_spatial_enable = false;
+uniform sampler2D color_temp_spatial_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float color_temp_spatial_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform float color_temp_spatial_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform bool color_temp_spatial_invert = false;
+
+// --- 3. GRADIENT MAP ---
+group_uniforms Gradient_Map;
 uniform bool use_gradient_map = false;
+uniform bool grad_before_tonemapping = true;
 uniform sampler2D gradient_texture : source_color, filter_linear, repeat_disable;
+uniform float grad_mix : hint_range(0.0, 1.0) = 1.0;
+uniform int grad_blend_mode : hint_enum("Normal,Multiply,Screen,Overlay,Add,Subtract,Difference,Lighten,Darken,Hard Light") = 0;
+uniform float grad_gamma : hint_range(0.1, 3.0) = 1.0;
+uniform float grad_min_lum : hint_range(0.0, 1.0) = 0.0;
+uniform float grad_max_lum : hint_range(0.0, 1.0) = 1.0;
+uniform bool grad_invert = false;
 
-// Effect Controls
-uniform float vignette_intensity : hint_range(0.0, 1.0) = 0.4;
-uniform float vignette_smoothness : hint_range(0.1, 2.0) = 0.8;
-uniform float chromatic_aberration : hint_range(0.0, 0.02) = 0.003;
+// Spatial Gradient Mix Controls
+group_uniforms Gradient_Map.Spatial_Controls;
+uniform bool use_spatial_grad_mix = false;
+uniform int spatial_grad_type : hint_enum("Linear,Radial,Reflected") = 0;
+uniform sampler2D grad_mix_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float grad_mix_scale : hint_range(0.1, 10.0) = 1.0;
+uniform float grad_mix_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform vec2 grad_mix_center = vec2(0.5, 0.5);
+uniform float grad_mix_smoothness : hint_range(0.0, 1.0) = 1.0;
+uniform float grad_mix_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform bool grad_mix_invert = false;
 
-// Branchless RGB to HSV conversion
+
+// --- 4. COLOR BLINDNESS ---
+group_uniforms Color_Blindness;
+uniform int color_blindness_mode : hint_enum("Off,Protanopia,Deuteranopia,Tritanopia") = 0;
+
+// --- 5. BLURS ---
+group_uniforms Blurs;
+uniform sampler2D blur_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float blur_mask_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform float blur_mask_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform bool blur_mask_invert = false;
+
+uniform bool use_gaussian_blur = false;
+uniform float gaussian_blur_intensity : hint_range(0.0, 5.0) = 0.0;
+
+uniform int blur_samples : hint_range(2, 32) = 8;
+uniform bool use_blur_smoothing = false;
+uniform int blur_smoothing_mode : hint_enum("Sandy Jitter,Soft Jitter") = 0;
+uniform float blur_smoothing_intensity : hint_range(0.0, 1.0) = 0.5;
+
+uniform bool use_radial_blur = false;
+uniform float radial_blur_intensity : hint_range(0.0, 1.0) = 0.05;
+uniform vec2 radial_blur_center = vec2(0.5, 0.5);
+
+uniform bool use_directional_blur = false;
+uniform float dir_blur_intensity : hint_range(0.0, 1.0) = 0.0;
+uniform float dir_blur_angle : hint_range(0.0, 360.0) = 0.0;
+
+// --- 6. CHROMATIC ABERRATION ---
+group_uniforms Chromatic_Aberration;
+uniform bool use_chromatic_aberration = false;
+group_uniforms Chromatic_Aberration.Spatial_Mask;
+uniform sampler2D ca_mask : hint_default_white, filter_linear, repeat_enable;
+uniform float ca_mask_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
+uniform float ca_mask_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform bool ca_mask_invert = false;
+
+group_uniforms Chromatic_Aberration;
+uniform int ca_type : hint_enum("Linear,Radial,Reflected") = 0;
+uniform float chromatic_aberration : hint_range(0.0, 1.0) = 0.02; 
+uniform float ca_angle : hint_range(0.0, 360.0) = 0.0;
+uniform vec2 ca_center = vec2(0.5, 0.5);
+
+uniform bool use_5tap_ca = false;
+uniform vec3 ca_color_1 : source_color = vec3(1.0, 0.0, 0.0);
+uniform vec3 ca_color_inter_1 : source_color = vec3(1.0, 0.5, 0.0);
+uniform vec3 ca_color_2 : source_color = vec3(0.0, 1.0, 0.0);
+uniform vec3 ca_color_inter_2 : source_color = vec3(0.0, 0.5, 1.0);
+uniform vec3 ca_color_3 : source_color = vec3(0.0, 0.0, 1.0);
+
+// --- 7. VIGNETTE ---
+group_uniforms Vignette;
+uniform bool use_vignette = false;
+uniform sampler2D vignette_gradient : hint_default_white, source_color, filter_linear, repeat_disable;
+uniform sampler2D vignette_opacity_mask : hint_default_white, filter_linear, repeat_disable;
+uniform int vignette_blend_mode : hint_enum("Normal,Multiply,Screen,Overlay,Add,Subtract,Difference,Lighten,Darken,Hard Light") = 0;
+uniform float vignette_scale : hint_range(0.1, 3.0) = 1.0;
+uniform float vignette_master_opacity : hint_range(0.0, 1.0) = 1.0;
+
+// --- 8. STYLIZATION ---
+group_uniforms Stylization;
+uniform float posterization_steps : hint_range(0.0, 256.0) = 0.0; 
+
+uniform bool use_halftone = false;
+uniform float halftone_size : hint_range(1.0, 50.0) = 4.0;
+uniform float halftone_angle : hint_range(0.0, 360.0) = 45.0;
+uniform float halftone_smoothness : hint_range(0.0, 1.0) = 0.1;
+uniform vec3 halftone_dot_color : source_color = vec3(0.0);
+uniform vec3 halftone_bg_color : source_color = vec3(1.0);
+uniform float halftone_opacity : hint_range(0.0, 1.0) = 1.0;
+
+uniform bool use_dithering = false;
+uniform float dither_size : hint_range(1.0, 10.0) = 1.0;
+uniform vec3 dither_color_1 : source_color = vec3(0.0);
+uniform vec3 dither_color_2 : source_color = vec3(1.0);
+uniform float dither_opacity : hint_range(0.0, 1.0) = 1.0;
+
+// --- 9. OVERLAYS ---
+group_uniforms Overlays;
+uniform bool use_film_grain = false;
+uniform float film_grain_intensity : hint_range(0.0, 1.0) = 0.0;
+uniform float film_grain_size : hint_range(0.1, 30.0) = 1.0;
+uniform float film_grain_speed : hint_range(1.0, 60.0) = 24.0;
+uniform bool film_grain_colored = false;
+
+uniform bool use_lens_dirt = false;
+uniform sampler2D lens_dirt_texture : hint_default_black, source_color, filter_linear, repeat_disable;
+uniform float lens_dirt_intensity : hint_range(0.0, 2.0) = 0.0;
+uniform float lens_dirt_threshold : hint_range(0.0, 1.0) = 0.5;
+
+
+// ==========================================
+// CONSTANTS & HELPER FUNCTIONS
+// ==========================================
+
+const vec3 LUM_COEFF = vec3(0.2126, 0.7152, 0.0722);
+
+const float bayer_matrix[16] = float[](
+    0.0/16.0, 8.0/16.0, 2.0/16.0, 10.0/16.0,
+    12.0/16.0, 4.0/16.0, 14.0/16.0, 6.0/16.0,
+    3.0/16.0, 11.0/16.0, 1.0/16.0, 9.0/16.0,
+    15.0/16.0, 7.0/16.0, 13.0/16.0, 5.0/16.0
+);
+
+float hash(vec2 seed) {
+    return fract(sin(dot(seed, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
 vec3 rgb_to_hsv(vec3 c) {
     vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
     vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
@@ -27,52 +209,294 @@ vec3 rgb_to_hsv(vec3 c) {
     return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 }
 
-// Branchless HSV to RGB conversion
 vec3 hsv_to_rgb(vec3 c) {
     vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
     vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-// Helper to apply full color grading to any color sample
-vec3 apply_color_corrections(vec3 col) {
-    // Combined Brightness & Contrast
-    col = (col * brightness - 0.5) * contrast + 0.5;
-    
-    // Hue & Saturation
-    vec3 hsv = rgb_to_hsv(col);
-    hsv.x = mod(hsv.x + hue, 1.0);
-    hsv.y *= saturation;
-    return hsv_to_rgb(hsv);
+vec3 apply_blend_mode(vec3 base, vec3 blend, int mode) {
+    if (mode == 0) return blend; // Normal
+    if (mode == 1) return base * blend; // Multiply
+    if (mode == 2) return 1.0 - (1.0 - base) * (1.0 - blend); // Screen
+    if (mode == 3) { // Overlay
+        vec3 is_light = step(0.5, base);
+        return mix(2.0 * base * blend, 1.0 - 2.0 * (1.0 - base) * (1.0 - blend), is_light);
+    }
+    if (mode == 4) return base + blend; // Add
+    if (mode == 5) return max(base - blend, vec3(0.0)); // Subtract
+    if (mode == 6) return abs(base - blend); // Difference
+    if (mode == 7) return max(base, blend); // Lighten
+    if (mode == 8) return min(base, blend); // Darken
+    if (mode == 9) { // Hard Light
+        vec3 is_light = step(0.5, blend);
+        return mix(2.0 * base * blend, 1.0 - 2.0 * (1.0 - base) * (1.0 - blend), is_light);
+    }
+    return blend;
 }
 
-void fragment() {
-    vec2 uv = SCREEN_UV;
+// Master function for all Spatial Masks: Handles Rotation and X-axis Scrolling natively.
+float get_spatial_mask(sampler2D tex, vec2 uv, float scroll_speed, float rot_degrees, bool invert) {
     vec2 centered_uv = uv - 0.5;
     
-    // 1. Sample screen texture at offset locations for chromatic aberration
-    vec3 col_r = texture(screen_texture, uv + centered_uv * chromatic_aberration).rgb;
-    vec3 col_g = texture(screen_texture, uv).rgb;
-    vec3 col_b = texture(screen_texture, uv - centered_uv * chromatic_aberration).rgb;
+    float rot_rad = radians(rot_degrees);
+    vec2 sincos = vec2(sin(rot_rad), cos(rot_rad));
+    mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
     
-    // 2. Apply color corrections to each sample
-    col_r = apply_color_corrections(col_r);
-    col_g = apply_color_corrections(col_g);
-    col_b = apply_color_corrections(col_b);
+    vec2 transformed_uv = rm * centered_uv + 0.5;
+    transformed_uv.x -= TIME * scroll_speed; // Scrolls cleanly left/right relative to rotation
     
-    // 3. Assemble final color channels
-    vec3 col = vec3(col_r.r, col_g.g, col_b.b);
+    float m = texture(tex, fract(transformed_uv)).r;
+    return invert ? 1.0 - m : m;
+}
+
+// ==========================================
+// CORE RENDERING FUNCTIONS
+// ==========================================
+
+vec3 apply_gradient_map(vec3 col, vec2 uv) {
+    if (!use_gradient_map) return col;
     
-    // 4. Gradient Map (Applied if toggled on)
-    if (use_gradient_map) {
-        float luminance = dot(col, vec3(0.2126, 0.7152, 0.0722));
-        col = texture(gradient_texture, vec2(luminance, 0.0)).rgb;
+    float lum = dot(col, LUM_COEFF);
+    lum += (hash(uv) - 0.5) * 0.015; // Anti-banding
+    
+    lum = pow(clamp(lum, 0.0, 1.0), grad_gamma); 
+    if (grad_invert) lum = 1.0 - lum;            
+    
+    vec3 grad_color = texture(gradient_texture, vec2(lum, 0.0)).rgb;
+    float threshold_mask = step(grad_min_lum, lum) * step(lum, grad_max_lum);
+    
+    float current_mix = grad_mix;
+    if (use_spatial_grad_mix) {
+        vec2 centered_uv = uv - grad_mix_center;
+        
+        float rot = radians(grad_mix_rotation);
+        vec2 sincos = vec2(sin(rot), cos(rot));
+        mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
+        
+        vec2 rot_uv = (rm * centered_uv) * grad_mix_scale + 0.5;
+        float grad_coord = 0.0;
+        
+        if (spatial_grad_type == 0) grad_coord = rot_uv.x;
+        else if (spatial_grad_type == 1) grad_coord = length(centered_uv * grad_mix_scale);
+        else if (spatial_grad_type == 2) grad_coord = abs(rot_uv.x - 0.5) * 2.0;
+        
+        // Scroll the mask coordinate left/right geometry safely
+        grad_coord -= TIME * grad_mix_scroll_speed;
+        grad_coord = fract(grad_coord);
+        
+        if (grad_mix_invert) grad_coord = 1.0 - grad_coord;
+        grad_coord = smoothstep(0.0, clamp(grad_mix_smoothness, 0.001, 1.0), grad_coord);
+        
+        vec2 final_mask_uv = vec2(grad_coord, rot_uv.y);
+        current_mix *= texture(grad_mix_mask, fract(final_mask_uv)).r;
     }
     
-    // 5. Optimized Vignette applied last
-    float dist_sq = dot(centered_uv, centered_uv);
-    float vignette = smoothstep(0.25, vignette_smoothness * 0.25, dist_sq * (vignette_intensity + 0.5));
-    col = mix(col, col * (1.0 - vignette_intensity), vignette);
+    vec3 blended = apply_blend_mode(col, grad_color, grad_blend_mode);
+    return mix(col, blended, current_mix * threshold_mask);
+}
+
+vec3 apply_tonemapping(vec3 col, vec2 uv) {
+    if (invert_colors && invert_before_grading) col = 1.0 - col;
     
-    COLOR = vec4(col, 1.0);
+    vec3 hsv = rgb_to_hsv(col);
+    
+    // 1. Hue
+    if (hue != 0.0) {
+        float target_hue = fract(hsv.x + hue);
+        float m = hue_spatial_enable ? get_spatial_mask(hue_spatial_mask, uv, hue_spatial_scroll_speed, hue_spatial_rotation, hue_spatial_invert) : 1.0;
+        hsv.x = mix(hsv.x, target_hue, m);
+    }
+    
+    // 2. Saturation
+    if (saturation != 1.0) {
+        float target_sat = hsv.y * saturation;
+        float m = saturation_spatial_enable ? get_spatial_mask(saturation_spatial_mask, uv, saturation_spatial_scroll_speed, saturation_spatial_rotation, saturation_spatial_invert) : 1.0;
+        hsv.y = mix(hsv.y, target_sat, m);
+    }
+    col = hsv_to_rgb(hsv);
+    
+    // 3. Brightness
+    if (brightness != 1.0) {
+        float m = brightness_spatial_enable ? get_spatial_mask(brightness_spatial_mask, uv, brightness_spatial_scroll_speed, brightness_spatial_rotation, brightness_spatial_invert) : 1.0;
+        col = mix(col, col * brightness, m);
+    }
+    
+    // 4. Contrast
+    if (contrast != 1.0) {
+        vec3 target_col = (col - 0.5) * contrast + 0.5;
+        float m = contrast_spatial_enable ? get_spatial_mask(contrast_spatial_mask, uv, contrast_spatial_scroll_speed, contrast_spatial_rotation, contrast_spatial_invert) : 1.0;
+        col = mix(col, target_col, m);
+    }
+    
+    // 5. Exposure
+    if (exposure != 0.0) {
+        float m = exposure_spatial_enable ? get_spatial_mask(exposure_spatial_mask, uv, exposure_spatial_scroll_speed, exposure_spatial_rotation, exposure_spatial_invert) : 1.0;
+        col *= mix(1.0, exp2(exposure), m);
+    }
+    
+    // 6. Color Temp
+    if (color_temp != 0.0) {
+        vec3 temp_col = color_temp > 0.0 ? vec3(1.0, 0.6, 0.2) : vec3(0.2, 0.6, 1.0);
+        vec3 target_col = mix(col, col * temp_col, abs(color_temp));
+        float m = color_temp_spatial_enable ? get_spatial_mask(color_temp_spatial_mask, uv, color_temp_spatial_scroll_speed, color_temp_spatial_rotation, color_temp_spatial_invert) : 1.0;
+        col = mix(col, target_col, m);
+    }
+    
+    return col;
+}
+
+vec3 get_blurred_screen(vec2 uv, float mipmap_blur, float blur_mask_val) {
+    float r_int = use_radial_blur ? (radial_blur_intensity * blur_mask_val) : 0.0;
+    float d_int = use_directional_blur ? (dir_blur_intensity * blur_mask_val) : 0.0;
+    
+    if (r_int > 0.0 || d_int > 0.0) {
+        vec3 col = vec3(0.0);
+        float d_angle = radians(dir_blur_angle);
+        vec2 d_vec = vec2(cos(d_angle), sin(d_angle)) * d_int;
+        
+        float jitter = 0.0;
+        float actual_mip = mipmap_blur;
+        
+        if (use_blur_smoothing) {
+            jitter = hash(uv) * blur_smoothing_intensity;
+            if (blur_smoothing_mode == 1) actual_mip += 1.5; 
+        }
+        
+        for (int i = 0; i < blur_samples; i++) {
+            vec2 suv = uv;
+            float f_i = (float(i) + jitter) / float(blur_samples);
+            
+            if (r_int > 0.0) suv += (uv - radial_blur_center) * (f_i * r_int);
+            if (d_int > 0.0) suv += d_vec * (f_i - 0.5);
+            
+            col += textureLod(screen_texture, suv, actual_mip).rgb;
+        }
+        return col / float(blur_samples);
+    }
+    return textureLod(screen_texture, uv, mipmap_blur).rgb;
+}
+
+// Stage 1: The "World" (Can be safely distorted by Chromatic Aberration)
+vec3 get_base_color(vec2 uv, float blur_mask_val, float actual_blur) {
+    vec3 col = get_blurred_screen(uv, actual_blur, blur_mask_val);
+    if (use_gradient_map && grad_before_tonemapping) col = apply_gradient_map(col, uv);
+    col = apply_tonemapping(col, uv);
+    if (use_gradient_map && !grad_before_tonemapping) col = apply_gradient_map(col, uv);
+    return col;
+}
+
+// Stage 2: Camera Overlays (Executes only ONCE per pixel, massively saving performance)
+vec3 apply_overlays(vec3 col, vec2 uv, vec2 screen_pixel_size) {
+    if (posterization_steps > 0.0) col = floor(col * posterization_steps) / posterization_steps;
+
+    float current_lum = dot(col, LUM_COEFF);
+
+    if (use_halftone) {
+        float rot = radians(halftone_angle);
+        vec2 sincos = vec2(sin(rot), cos(rot));
+        mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
+        
+        vec2 rot_uv = rm * (uv / screen_pixel_size / halftone_size);
+        vec2 grid_uv = fract(rot_uv);
+        
+        float dist = length(grid_uv - 0.5); 
+        float radius = (1.0 - current_lum) * 0.707; 
+        float circle = smoothstep(radius - halftone_smoothness, radius + halftone_smoothness, dist);
+        
+        vec3 half_col = mix(halftone_dot_color, halftone_bg_color, circle);
+        col = mix(col, half_col, halftone_opacity);
+        current_lum = dot(col, LUM_COEFF); 
+    } 
+    
+    if (use_dithering) {
+        vec2 dith_pos = (uv / screen_pixel_size) / dither_size;
+        int bx = int(dith_pos.x) % 4; 
+        int by = int(dith_pos.y) % 4;
+        float threshold = bayer_matrix[bx + by * 4];
+        
+        vec3 dithered = mix(dither_color_1, dither_color_2, step(threshold, current_lum));
+        col = mix(col, dithered, dither_opacity);
+    }
+
+    if (use_vignette) {
+        vec2 centered_uv = uv - 0.5;
+        float dist_sq = dot(centered_uv, centered_uv) * vignette_scale;
+        
+        vec3 vig_color = texture(vignette_gradient, vec2(clamp(dist_sq, 0.0, 1.0), 0.0)).rgb;
+        float vig_alpha = texture(vignette_opacity_mask, vec2(clamp(dist_sq, 0.0, 1.0), 0.0)).r * vignette_master_opacity; 
+        
+        vec3 blended = apply_blend_mode(col, vig_color, vignette_blend_mode);
+        col = mix(col, blended, vig_alpha);
+    }
+
+    if (use_lens_dirt && lens_dirt_intensity > 0.0) {
+        current_lum = dot(col, LUM_COEFF);
+        vec3 dirt = texture(lens_dirt_texture, uv).rgb;
+        col += dirt * smoothstep(lens_dirt_threshold, 1.0, current_lum) * lens_dirt_intensity;
+    }
+
+    if (use_film_grain && film_grain_intensity > 0.0) {
+        vec2 grain_uv = (uv / screen_pixel_size) / (film_grain_size * 10.0);
+        float t = floor(TIME * film_grain_speed);
+        
+        float n_r = hash(grain_uv + vec2(t, t * 0.7));
+        float n_g = hash(grain_uv + vec2(t + 1.5, t * 1.3));
+        float n_b = hash(grain_uv + vec2(t + 2.7, t * 0.4));
+        
+        vec3 grain = mix(vec3(n_r), vec3(n_r, n_g, n_b), float(film_grain_colored));
+        col += (grain - 0.5) * film_grain_intensity * 0.4;
+    }
+
+    if (invert_colors && !invert_before_grading) col = 1.0 - col;
+
+    if (color_blindness_mode == 1) { 
+        col = vec3(dot(col, vec3(0.56667, 0.43333, 0.0)), dot(col, vec3(0.55833, 0.44167, 0.0)), dot(col, vec3(0.0, 0.24167, 0.75833)));
+    } else if (color_blindness_mode == 2) { 
+        col = vec3(dot(col, vec3(0.625, 0.375, 0.0)), dot(col, vec3(0.7, 0.3, 0.0)), dot(col, vec3(0.0, 0.3, 0.7)));
+    } else if (color_blindness_mode == 3) { 
+        col = vec3(dot(col, vec3(0.95, 0.05, 0.0)), dot(col, vec3(0.0, 0.43333, 0.56667)), dot(col, vec3(0.0, 0.475, 0.525)));
+    }
+
+    return col;
+}
+
+// ==========================================
+// MAIN FRAGMENT ROOT
+// ==========================================
+void fragment() {
+    vec2 uv = SCREEN_UV;
+    float blur_mask_val = get_spatial_mask(blur_mask, uv, blur_mask_scroll_speed, blur_mask_rotation, blur_mask_invert);
+    float actual_blur = use_gaussian_blur ? (gaussian_blur_intensity * blur_mask_val) : 0.0;
+    vec2 screen_pixel_size = 1.0 / vec2(textureSize(screen_texture, 0)); 
+    vec3 col;
+
+    if (use_chromatic_aberration) {
+        float ca_m = get_spatial_mask(ca_mask, uv, ca_mask_scroll_speed, ca_mask_rotation, ca_mask_invert);
+        vec2 ca_offset = vec2(0.0);
+        float ca_rad = radians(ca_angle);
+        vec2 sincos = vec2(sin(ca_rad), cos(ca_rad));
+        
+        if (ca_type == 0) ca_offset = vec2(sincos.y, sincos.x) * chromatic_aberration * ca_m;
+        else if (ca_type == 1) ca_offset = (uv - ca_center) * chromatic_aberration * ca_m;
+        else if (ca_type == 2) ca_offset = reflect(uv - ca_center, vec2(sincos.y, sincos.x)) * chromatic_aberration * ca_m;
+        
+        if (use_5tap_ca) {
+            vec3 c1 = get_base_color(uv + ca_offset, blur_mask_val, actual_blur);
+            vec3 c2 = get_base_color(uv + ca_offset * 0.5, blur_mask_val, actual_blur);
+            vec3 c3 = get_base_color(uv, blur_mask_val, actual_blur);
+            vec3 c4 = get_base_color(uv - ca_offset * 0.5, blur_mask_val, actual_blur);
+            vec3 c5 = get_base_color(uv - ca_offset, blur_mask_val, actual_blur);
+            col = (c1 * ca_color_1) + (c2 * ca_color_inter_1) + (c3 * ca_color_2) + (c4 * ca_color_inter_2) + (c5 * ca_color_3);
+        } else {
+            vec3 c1 = get_base_color(uv + ca_offset, blur_mask_val, actual_blur);
+            vec3 c2 = get_base_color(uv, blur_mask_val, actual_blur);
+            vec3 c3 = get_base_color(uv - ca_offset, blur_mask_val, actual_blur);
+            col = (c1 * ca_color_1) + (c2 * ca_color_2) + (c3 * ca_color_3);
+        }
+    } else {
+        col = get_base_color(uv, blur_mask_val, actual_blur);
+    }
+
+    COLOR = vec4(clamp(apply_overlays(col, uv, screen_pixel_size), 0.0, 1.0), 1.0);
 }

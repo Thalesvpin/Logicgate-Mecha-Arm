@@ -311,24 +311,155 @@ glow_strength = 1.27
 glow_bloom = 0.09
 adjustment_enabled = true
 
+[sub_resource type="Gradient" id="Gradient_dyu83"]
+offsets = PackedFloat32Array(0, 0.45147678, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rvil5"]
+gradient = SubResource("Gradient_dyu83")
+
+[sub_resource type="Gradient" id="Gradient_5x5df"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5rky6"]
+gradient = SubResource("Gradient_5x5df")
+
 [sub_resource type="Gradient" id="Gradient_cwri3"]
-offsets = PackedFloat32Array(0, 0.45771143, 1)
+offsets = PackedFloat32Array(0, 0.51476794, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.93, 0, 0, 1, 0.85, 0.5525, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_2ujkr"]
 gradient = SubResource("Gradient_cwri3")
 
+[sub_resource type="Gradient" id="Gradient_cavhk"]
+offsets = PackedFloat32Array(0, 0.48258707, 1)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_dyu83"]
+gradient = SubResource("Gradient_cavhk")
+
+[sub_resource type="Gradient" id="Gradient_rvil5"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.82, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cavhk"]
+gradient = SubResource("Gradient_rvil5")
+
+[sub_resource type="Gradient" id="Gradient_3mfmp"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5x5df"]
+gradient = SubResource("Gradient_3mfmp")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eetg5"]
 shader = ExtResource("23_l102y")
-shader_parameter/brightness = 1.0
-shader_parameter/contrast = 1.0
-shader_parameter/saturation = 1.30000006175
+shader_parameter/invert_colors = false
+shader_parameter/invert_before_grading = false
 shader_parameter/hue = 0.0
+shader_parameter/hue_spatial_enable = true
+shader_parameter/hue_spatial_mask = SubResource("GradientTexture1D_dyu83")
+shader_parameter/hue_spatial_scroll_speed = 0.14700010198250002
+shader_parameter/hue_spatial_rotation = 0.0
+shader_parameter/hue_spatial_invert = false
+shader_parameter/saturation = 1.30000006175
+shader_parameter/saturation_spatial_enable = false
+shader_parameter/saturation_spatial_scroll_speed = 0.0
+shader_parameter/saturation_spatial_rotation = 0.0
+shader_parameter/saturation_spatial_invert = false
+shader_parameter/brightness = 1.0
+shader_parameter/brightness_spatial_enable = false
+shader_parameter/brightness_spatial_scroll_speed = 0.0
+shader_parameter/brightness_spatial_rotation = 0.0
+shader_parameter/brightness_spatial_invert = false
+shader_parameter/contrast = 1.0
+shader_parameter/contrast_spatial_enable = false
+shader_parameter/contrast_spatial_scroll_speed = 0.0
+shader_parameter/contrast_spatial_rotation = 0.0
+shader_parameter/contrast_spatial_invert = false
+shader_parameter/exposure = 0.0
+shader_parameter/exposure_spatial_enable = false
+shader_parameter/exposure_spatial_scroll_speed = 0.0
+shader_parameter/exposure_spatial_rotation = 0.0
+shader_parameter/exposure_spatial_invert = false
+shader_parameter/color_temp = 0.0
+shader_parameter/color_temp_spatial_enable = false
+shader_parameter/color_temp_spatial_scroll_speed = 0.0
+shader_parameter/color_temp_spatial_rotation = 0.0
+shader_parameter/color_temp_spatial_invert = false
 shader_parameter/use_gradient_map = false
+shader_parameter/grad_before_tonemapping = true
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_2ujkr")
-shader_parameter/vignette_intensity = 0.0
-shader_parameter/vignette_smoothness = 0.8
-shader_parameter/chromatic_aberration = 0.0
+shader_parameter/grad_mix = 1.0
+shader_parameter/grad_blend_mode = 0
+shader_parameter/grad_gamma = 1.0
+shader_parameter/grad_min_lum = 0.0
+shader_parameter/grad_max_lum = 1.0
+shader_parameter/grad_invert = false
+shader_parameter/use_spatial_grad_mix = true
+shader_parameter/spatial_grad_type = 0
+shader_parameter/grad_mix_mask = SubResource("GradientTexture1D_5rky6")
+shader_parameter/grad_mix_scale = 0.93200004101012
+shader_parameter/grad_mix_rotation = 0.0
+shader_parameter/grad_mix_center = Vector2(0.5, 0.5)
+shader_parameter/grad_mix_smoothness = 1.0
+shader_parameter/grad_mix_scroll_speed = 0.0
+shader_parameter/grad_mix_invert = false
+shader_parameter/color_blindness_mode = 0
+shader_parameter/blur_mask = SubResource("GradientTexture1D_rvil5")
+shader_parameter/blur_mask_scroll_speed = 0.15600010241000017
+shader_parameter/blur_mask_rotation = 0.0
+shader_parameter/blur_mask_invert = false
+shader_parameter/use_gaussian_blur = false
+shader_parameter/gaussian_blur_intensity = 2.2410001064475
+shader_parameter/blur_samples = 8
+shader_parameter/use_blur_smoothing = false
+shader_parameter/blur_smoothing_mode = 0
+shader_parameter/blur_smoothing_intensity = 0.5
+shader_parameter/use_radial_blur = false
+shader_parameter/radial_blur_intensity = 0.05
+shader_parameter/radial_blur_center = Vector2(0.5, 0.5)
+shader_parameter/use_directional_blur = false
+shader_parameter/dir_blur_intensity = 0.0910000043225
+shader_parameter/dir_blur_angle = 0.0
+shader_parameter/use_chromatic_aberration = false
+shader_parameter/ca_type = 0
+shader_parameter/chromatic_aberration = 0.0050000002375
+shader_parameter/ca_angle = 0.0
+shader_parameter/ca_center = Vector2(0.5, 0.5)
+shader_parameter/use_5tap_ca = false
+shader_parameter/ca_color_1 = Color(1, 0, 0, 1)
+shader_parameter/ca_color_inter_1 = Color(1, 0.5, 0, 1)
+shader_parameter/ca_color_2 = Color(0, 1, 0, 1)
+shader_parameter/ca_color_inter_2 = Color(0, 0.5, 1, 1)
+shader_parameter/ca_color_3 = Color(0, 0, 1, 1)
+shader_parameter/ca_mask_scroll_speed = 0.0
+shader_parameter/ca_mask_rotation = 0.0
+shader_parameter/ca_mask_invert = false
+shader_parameter/use_vignette = false
+shader_parameter/vignette_gradient = SubResource("GradientTexture1D_cavhk")
+shader_parameter/vignette_opacity_mask = SubResource("GradientTexture1D_5x5df")
+shader_parameter/vignette_blend_mode = 0
+shader_parameter/vignette_scale = 1.0
+shader_parameter/vignette_master_opacity = 1.0
+shader_parameter/posterization_steps = 0.0
+shader_parameter/use_halftone = false
+shader_parameter/halftone_size = 4.0
+shader_parameter/halftone_angle = 45.0
+shader_parameter/halftone_smoothness = 0.1
+shader_parameter/halftone_dot_color = Color(0, 0, 0, 1)
+shader_parameter/halftone_bg_color = Color(1, 1, 1, 1)
+shader_parameter/halftone_opacity = 1.0
+shader_parameter/use_dithering = false
+shader_parameter/dither_size = 1.0
+shader_parameter/dither_color_1 = Color(0, 0, 0, 1)
+shader_parameter/dither_color_2 = Color(1, 1, 1, 1)
+shader_parameter/dither_opacity = 1.0
+shader_parameter/use_film_grain = false
+shader_parameter/film_grain_intensity = 0.2150000102125
+shader_parameter/film_grain_size = 1.0
+shader_parameter/film_grain_speed = 60.0
+shader_parameter/film_grain_colored = true
+shader_parameter/use_lens_dirt = false
+shader_parameter/lens_dirt_intensity = 0.0
+shader_parameter/lens_dirt_threshold = 0.5
 
 [sub_resource type="Curve" id="Curve_mdhfq"]
 _data = [Vector2(0, 0.29729724), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -341,16 +472,16 @@ curve = SubResource("Curve_mdhfq")
 offsets = PackedFloat32Array(0, 0.21973094, 0.80269057)
 colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_rvil5"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_oiev1"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_pv7kd"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_oiev1")
+shader_parameter/tex = SubResource("ViewportTexture_pv7kd")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
@@ -460,7 +591,7 @@ shader_parameter/animate_noise = false
 shader_parameter/noise_anim_speed = 1.0
 shader_parameter/noise_anim_amplitude = 1.0
 shader_parameter/use_gradient_map = false
-shader_parameter/gradient_texture = SubResource("GradientTexture1D_rvil5")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_3mfmp")
 shader_parameter/use_color_quantization = false
 shader_parameter/color_levels = 16.0
 shader_parameter/use_auto_exposure = false
@@ -897,7 +1028,7 @@ copy_mode = 2
 [node name="CRTpass2 Shader" type="ColorRect" parent="." unique_id=741939067]
 material = SubResource("ShaderMaterial_veuwc")
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 script = ExtResource("28_rvil5")
 
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
