@@ -215,18 +215,15 @@ uniform float glitch_update_speed : hint_range(1.0, 60.0) = 8.0;
 uniform float glitch_displacement_force : hint_range(0.0, 2.0) = 0.35;
 
 
-// === GLOBAL OPTIMIZATION CONSTANTS ===
+// === GLOBAL OPTIMIZATION CONSTANTS & MATRICES ===
 const float BAYER[16] = float[16](
-    0.0, 0.5, 0.125, 0.625,
-    0.75, 0.25, 0.875, 0.375,
-    0.1875, 0.6875, 0.0625, 0.5625,
-    0.9375, 0.4375, 0.8125, 0.3125
+    0.0, 0.5, 0.125, 0.625,  0.75, 0.25, 0.875, 0.375,
+    0.1875, 0.6875, 0.0625, 0.5625,  0.9375, 0.4375, 0.8125, 0.3125
 );
 
-const float C_GOLD = 0.73010729;
-const float S_GOLD = 0.68333215;
-const float C_30 = 0.86602540378; 
-const float S_30 = 0.5;
+// Pre-calculated Hardware Rotation Matrices
+const mat2 ROT_GOLD = mat2(vec2(0.73010729, 0.68333215), vec2(-0.68333215, 0.73010729));
+const mat2 ROT_30 = mat2(vec2(0.86602540378, 0.5), vec2(-0.5, 0.86602540378));
 
 // === VARYINGS FOR PRE-CALCULATED MATH ===
 varying float v_current_size;
@@ -250,17 +247,13 @@ float interleaved_gradient_noise(vec2 screen_coord) {
     return fract(magic.z * fract(dot(screen_coord, magic.xy)));
 }
 
-vec2 rotate_vector(vec2 dir, float cos_angle, float sin_angle) {
-    return vec2(dir.x * cos_angle - dir.y * sin_angle, dir.x * sin_angle + dir.y * cos_angle);
-}
-
 float get_bayer_matrix(vec2 coord) {
     int index = int(mod(coord.x, 4.0)) + int(mod(coord.y, 4.0)) * 4;
     return BAYER[index];
 }
 
 vec4 apply_blend_mode(vec4 glow, vec4 bg_tex, int mode) {
-    // Pre-multiply to mathematically wipe out hidden VRAM compression colors in transparent pixels
+    // Pre-multiply mathematically wipes out hidden VRAM compression colors in transparent pixels
     vec3 bg = bg_tex.rgb * bg_tex.a; 
     
     switch(mode) {
@@ -271,7 +264,7 @@ vec4 apply_blend_mode(vec4 glow, vec4 bg_tex, int mode) {
             vec3 mode4_mix = mix(2.0 * bg * glow.rgb, 1.0 - 2.0 * (1.0 - bg) * (1.0 - glow.rgb), step(0.5, bg));
             return vec4(mix(bg, mode4_mix, glow.a), glow.a);
         }
-        default: return glow; // Add
+        default: return glow; // Case 0 (Add)
     }
 }
 
@@ -297,22 +290,26 @@ vec2 generate_procedural_gabor_waves(vec2 coord, float time) {
 }
 
 void vertex() {
-    v_current_size = glow_size * mix(1.0, mix(min_pulse_scale, max_pulse_scale, (sin(TIME * pulse_speed) + 1.0) * 0.5), float(animate_glow));
-    v_current_inner_size = inner_glow_size * mix(1.0, mix(min_inner_pulse_scale, max_inner_pulse_scale, (sin(TIME * inner_pulse_speed) + 1.0) * 0.5), float(animate_inner_glow));
+    // Ternary optimizations branch out dead math
+    v_current_size = glow_size * (animate_glow ? mix(min_pulse_scale, max_pulse_scale, (sin(TIME * pulse_speed) + 1.0) * 0.5) : 1.0);
+    v_current_inner_size = inner_glow_size * (animate_inner_glow ? mix(min_inner_pulse_scale, max_inner_pulse_scale, (sin(TIME * inner_pulse_speed) + 1.0) * 0.5) : 1.0);
 
     float speed_factor = sync_color_with_pulse_speed ? pulse_speed : color_change_speed;
-    v_active_glow_color = change_color_over_time ? mix(starting_color, ending_color, mix((sin(TIME * speed_factor) + 1.0) * 0.5, abs(fract(TIME * speed_factor * 0.5) * 2.0 - 1.0), float(color_animation_ping_pong))) : glow_color;
+    v_active_glow_color = change_color_over_time ? mix(starting_color, ending_color, color_animation_ping_pong ? abs(fract(TIME * speed_factor * 0.5) * 2.0 - 1.0) : (sin(TIME * speed_factor) + 1.0) * 0.5) : glow_color;
 
     float inner_speed = sync_inner_color_with_pulse ? inner_pulse_speed : inner_color_change_speed;
     v_active_inner_glow_color = change_inner_color_over_time ? mix(starting_inner_color, ending_inner_color, (sin(TIME * inner_speed) + 1.0) * 0.5) : inner_glow_color;
 
-    v_cos_a = cos(radians(static_angle) + (animate_rotation ? TIME * rotation_speed : 0.0));
-    v_sin_a = sin(radians(static_angle) + (animate_rotation ? TIME * rotation_speed : 0.0));
-    v_inner_cos_a = cos(radians(inner_static_angle) + (animate_inner_rotation ? TIME * inner_rotation_speed : 0.0));
-    v_inner_sin_a = sin(radians(inner_static_angle) + (animate_inner_rotation ? TIME * inner_rotation_speed : 0.0));
+    float rot_time = animate_rotation ? TIME * rotation_speed : 0.0;
+    v_cos_a = cos(radians(static_angle) + rot_time);
+    v_sin_a = sin(radians(static_angle) + rot_time);
+
+    float inner_rot_time = animate_inner_rotation ? TIME * inner_rotation_speed : 0.0;
+    v_inner_cos_a = cos(radians(inner_static_angle) + inner_rot_time);
+    v_inner_sin_a = sin(radians(inner_static_angle) + inner_rot_time);
 
     v_dither_anim_offset = dither_animate ? floor(vec2(rand(vec2(floor(TIME * dither_animation_speed), 0.0)), rand(vec2(0.0, floor(TIME * dither_animation_speed)))) * 4.0) : vec2(0.0);
-    v_dissolve_value = animate_dissolve ? mix(dissolve_amount, mix((sin(TIME * dissolve_speed) + 1.0) * 0.5, smoothstep(0.0, 1.0, (sin(TIME * dissolve_speed) + 1.0) * 0.5), float(dissolve_use_ease)), 1.0) : dissolve_amount;
+    v_dissolve_value = animate_dissolve ? mix(dissolve_amount, dissolve_use_ease ? smoothstep(0.0, 1.0, (sin(TIME * dissolve_speed) + 1.0) * 0.5) : (sin(TIME * dissolve_speed) + 1.0) * 0.5, 1.0) : dissolve_amount;
 }
 
 void fragment() {
@@ -322,6 +319,7 @@ void fragment() {
     vec2 continuous_glow_uv = SCREEN_UV;
     
     // --- DISTORTION MATH CALCULATION ---
+    vec2 total_displacement = vec2(0.0);
     if (use_distortion || heat_plasma_caustics || heat_chiseled_ridge || heat_convective_turbulence || heat_digital_glitch) {
         vec2 pixelate_grid = original_texture_size / max(pixelate_size, 1.0);
         vec2 noise_base_uv = mix(UV, floor(UV * pixelate_grid) / pixelate_grid, float(use_pixelate_glow && pixelate_size > 0.0 && !pixelate_heat_fluid_fluid));
@@ -367,20 +365,22 @@ void fragment() {
             glitch_offset_vector.x = slice * glitch_displacement_force;
         }
         
-        float weight = mix(1.0, pow(1.0 - noise_base_uv.y, heat_top_heavy_factor), float(heat_asymmetric_rise));
+        float weight = heat_asymmetric_rise ? pow(max(0.0, 1.0 - noise_base_uv.y), heat_top_heavy_factor) : 1.0;
         vec2 delta_center = UV - 0.5;
-        weight *= mix(1.0, smoothstep(0.25, 0.01, delta_center.x * delta_center.x + delta_center.y * delta_center.y), heat_distance_fade);
+        // Optimized dot product replaces x*x+y*y
+        weight *= mix(1.0, smoothstep(0.25, 0.01, dot(delta_center, delta_center)), heat_distance_fade);
         
         float final_strength = use_distortion ? distortion_strength : 0.02;
         vec2 fluid_offset = noise_offset * final_strength * weight * mix(1.0, convection_wave_amplitude, float(use_convection_fluid));
-        vec2 total_displacement = (fluid_offset + glitch_offset_vector) * screen_pixel_to_uv * original_texture_size;
+        total_displacement = (fluid_offset + glitch_offset_vector) * screen_pixel_to_uv * original_texture_size;
         
         if (use_pixelate_glow && pixelate_heat_fluid_static) {
             total_displacement = floor(total_displacement * pixelate_grid) / pixelate_grid;
         }
-        continuous_glow_uv += total_displacement;
-        if (distort_texture_as_well) tex_uv += total_displacement;
     }
+    
+    continuous_glow_uv += total_displacement;
+    if (distort_texture_as_well) tex_uv += total_displacement;
 
     // --- PIXELATION SNAPPING ---
     vec2 active_fragcoord = continuous_glow_uv / screen_pixel_to_uv;
@@ -422,50 +422,54 @@ void fragment() {
         vec2 norm_ray_dir = normalize(ray_direction);
         vec2 direction = vec2(1.0, 0.0);
         
-        vec2 cached_contour_step = mix(contour_thickness, floor(contour_thickness), float(contour_pixel_snap)) * screen_pixel_to_uv;
+        // Flattened Branch
+        vec2 cached_contour_step = (contour_pixel_snap ? floor(contour_thickness) : contour_thickness) * screen_pixel_to_uv;
         vec2 cached_glow_step = v_current_size * screen_pixel_to_uv;
-        float dynamic_rim_radius = clamp(glow_rim_margin + mix(0.0, sin(TIME * glow_rim_pulse_frequency) * 0.05, float(glow_rim_pulse_frequency > 0.001)), 0.0, 1.0);
+        
+        float dynamic_rim_radius = clamp(glow_rim_margin + (glow_rim_pulse_frequency > 0.001 ? sin(TIME * glow_rim_pulse_frequency) * 0.05 : 0.0), 0.0, 1.0);
         float total_rim_samples = sample_limit * dynamic_rim_radius;
         float inv_glow_softness = 1.0 / (1.0 - glow_softness * 0.9);
         
         float jitter_angle = smooth_poisson_distribution ? rand(active_fragcoord + temporal_offset) * 6.2831853 * glow_jitter_strength : 0.0;
-        float cos_j = cos(jitter_angle);
-        float sin_j = sin(jitter_angle);
+        
+        // Native GPU Matrices replace manual scalar math
+        mat2 rot_j = mat2(vec2(cos(jitter_angle), sin(jitter_angle)), vec2(-sin(jitter_angle), cos(jitter_angle)));
+        mat2 rot_a = mat2(vec2(v_cos_a, v_sin_a), vec2(-v_sin_a, v_cos_a));
         
         float half_gamma = glow_smooth_gamma * 0.5;
         vec2 cached_god_ray_mod = ray_direction * (float(use_god_rays) * (ray_length - 1.0));
         float scaled_eccentricity = glow_rim_eccentricity * 0.1;
         
         for (float i = 0.0; i < sample_limit; i++) {
-            float radius_factor = clamp(pow((i + 0.5) * inv_sample_limit, half_gamma) + dither, 0.0, 1.0);
-            vec2 sampled_dir = direction + cached_god_ray_mod * max(0.0, dot(direction, norm_ray_dir));
+            float normalized_i = (i + 0.5) * inv_sample_limit;
+            // Native Intrinsic Bypass: If gamma is default, use hardware `sqrt` instead of heavy `pow`
+            float radius_factor = clamp((abs(half_gamma - 0.5) < 0.001 ? sqrt(normalized_i) : pow(normalized_i, half_gamma)) + dither, 0.0, 1.0);
             
-            sampled_dir = vec2(sampled_dir.x * cos_j - sampled_dir.y * sin_j, sampled_dir.x * sin_j + sampled_dir.y * cos_j);
-            vec2 rotated_dir = rotate_vector((sampled_dir + rotation_pivot_offset) * glow_direction_falloff, v_cos_a, v_sin_a);
-            vec2 final_sample_uv = glow_uv + (rotated_dir * cached_glow_step * radius_factor);
+            vec2 sampled_dir = direction + cached_god_ray_mod * max(0.0, dot(direction, norm_ray_dir));
+            // Matrix multiplication replaces isolated scalars
+            vec2 rotated_dir = rot_a * ((rot_j * sampled_dir + rotation_pivot_offset) * glow_direction_falloff);
             
             if (use_contour_outline) contour_alpha += texture(screen_texture, glow_uv + (rotated_dir * cached_contour_step)).a;
             
-            float sample_a = texture(screen_texture, final_sample_uv).a;
+            float sample_a = texture(screen_texture, glow_uv + (rotated_dir * cached_glow_step * radius_factor)).a;
             
             float linear_falloff = 1.0 - radius_factor * glow_softness;
-            float falloff = mix(linear_falloff, linear_falloff * (1.0 / (1.0 + radius_factor * radius_factor * 10.0 * glow_softness)), float(use_soft_clip));
+            // Dead-code elimination via branch
+            float falloff = use_soft_clip ? linear_falloff * (1.0 / (1.0 + radius_factor * radius_factor * 10.0 * glow_softness)) : linear_falloff;
             total_alpha += sample_a * falloff;
             
             float adjusted_rim_bound = max(0.0, dynamic_rim_radius + (rotated_dir.y * scaled_eccentricity));
             if (radius_factor < adjusted_rim_bound) {
                 rim_cut_alpha += sample_a * (1.0 - smoothstep(adjusted_rim_bound - glow_rim_feather, adjusted_rim_bound, radius_factor));
             }
-            direction = vec2(direction.x * C_GOLD - direction.y * S_GOLD, direction.x * S_GOLD + direction.y * C_GOLD);
+            direction = ROT_GOLD * direction; // Matrix Mult
         }
         
         total_alpha = min(1.0, (total_alpha * inv_sample_limit) * inv_glow_softness);
         total_alpha = clamp(total_alpha - (rim_cut_alpha / max(1.0, total_rim_samples)), 0.0, 1.0);
         
-        // Smoothing Option: Hermite curve interpolation
-        if (smooth_alpha_curve) {
-            total_alpha = total_alpha * total_alpha * (3.0 - 2.0 * total_alpha); 
-        }
+        // Native S-Curve Intrinsic 
+        if (smooth_alpha_curve) total_alpha = smoothstep(0.0, 1.0, total_alpha); 
         
         if (use_sharp_steps && total_alpha > 0.001) total_alpha = ceil(total_alpha * glow_step_count) / glow_step_count;
         contour_alpha = clamp(contour_alpha, 0.0, 1.0);
@@ -475,70 +479,70 @@ void fragment() {
     // --- INNER GLOW SAMPLING ---
     if (use_inner_glow && col.a > 0.05 && v_current_inner_size > 0.0) {
         float inner_accum = 0.0;
-        vec2 targeted_inner_uv = mix(glow_uv, tex_uv, float(inner_glow_ignore_distortion));
+        vec2 targeted_inner_uv = inner_glow_ignore_distortion ? tex_uv : glow_uv;
         float internal_jitter = smooth_poisson_distribution ? rand(active_fragcoord + temporal_offset + vec2(0.125)) * 0.5 : 0.0;
         
         vec2 inner_dir = vec2(v_inner_cos_a, v_inner_sin_a);
         vec2 inner_step_base = screen_pixel_to_uv * v_current_inner_size * (1.0 + dither + internal_jitter);
         
         for (float i = 0.0; i < 12.0; i++) {
-            vec2 inner_sample_uv = targeted_inner_uv + (inner_dir * inner_step_base);
-            inner_accum += texture(screen_texture, inner_sample_uv).a;
-            inner_dir = vec2(inner_dir.x * C_30 - inner_dir.y * S_30, inner_dir.x * S_30 + inner_dir.y * C_30);
+            inner_accum += texture(screen_texture, targeted_inner_uv + (inner_dir * inner_step_base)).a;
+            inner_dir = ROT_30 * inner_dir; // Matrix Mult
         }
         
-        float calculated_inner_opacity = inner_glow_opacity;
-        if (animate_inner_glow_opacity) calculated_inner_opacity *= mix(min_inner_opacity_scale, max_inner_opacity_scale, (sin(TIME * inner_opacity_pulse_speed) + 1.0) * 0.5);
-        inner_alpha = pow((1.0 - (inner_accum * 0.0833333)), inner_glow_falloff) * calculated_inner_opacity * v_active_inner_glow_color.a;
+        float calculated_inner_opacity = inner_glow_opacity * (animate_inner_glow_opacity ? mix(min_inner_opacity_scale, max_inner_opacity_scale, (sin(TIME * inner_opacity_pulse_speed) + 1.0) * 0.5) : 1.0);
+        float inner_base = max(0.0, 1.0 - (inner_accum * 0.0833333));
+        
+        // Bypass native pow intrinsic if falloff is 1.0
+        inner_alpha = (abs(inner_glow_falloff - 1.0) < 0.001 ? inner_base : pow(inner_base, inner_glow_falloff)) * calculated_inner_opacity * v_active_inner_glow_color.a;
     }
 
     // --- FADE & MASKS ---
-    if (boundary_fade_margin > 0.0) {
-        vec2 fade = smoothstep(vec2(0.0), vec2(boundary_fade_margin), UV) * smoothstep(vec2(0.0), vec2(boundary_fade_margin), 1.0 - UV);
-        total_alpha *= fade.x * fade.y;
-        inner_alpha *= fade.x * fade.y;
+    if (boundary_fade_margin > 0.001) {
+        vec2 fade = smoothstep(0.0, boundary_fade_margin, UV) * smoothstep(0.0, boundary_fade_margin, 1.0 - UV);
+        float combined_fade = fade.x * fade.y;
+        total_alpha *= combined_fade;
+        inner_alpha *= combined_fade;
     }
 
-    float dissolve_tex = texture(dissolve_noise, UV * d_noise_scale).r;
-    float dissolve_mask = mix(1.0, step(v_dissolve_value, dissolve_tex), float(use_dissolve));
-    float pattern_weight = texture(pattern_texture, UV * pattern_scale + (TIME * pattern_pan_speed)).r;
-    
-    if (use_pattern_texture && pattern_fresnel_modulation) {
-        pattern_weight = mix(pattern_weight, pattern_weight * (1.0 - smoothstep(0.0, 0.85, total_alpha)), 0.75);
+    // Dead-Fetch Elimination
+    float dissolve_mask = 1.0;
+    if (use_dissolve) {
+        float dissolve_tex = texture(dissolve_noise, UV * d_noise_scale).r;
+        dissolve_mask = step(v_dissolve_value, dissolve_tex);
     }
     
-    float calculated_glow_opacity = glow_opacity;
-    if (animate_glow_opacity) calculated_glow_opacity *= mix(min_opacity_scale, max_opacity_scale, (sin(TIME * opacity_pulse_speed) + 1.0) * 0.5);
+    // Dead-Fetch Elimination
+    float pattern_weight = 1.0;
+    if (use_pattern_texture) {
+        pattern_weight = texture(pattern_texture, UV * pattern_scale + (TIME * pattern_pan_speed)).r;
+        if (pattern_fresnel_modulation) {
+            pattern_weight = mix(pattern_weight, pattern_weight * (1.0 - smoothstep(0.0, 0.85, total_alpha)), 0.75);
+        }
+    }
+    float final_pattern_mod = use_pattern_texture ? mix(1.0, pattern_weight, pattern_influence) : 1.0;
+    
+    float calculated_glow_opacity = glow_opacity * (animate_glow_opacity ? mix(min_opacity_scale, max_opacity_scale, (sin(TIME * opacity_pulse_speed) + 1.0) * 0.5) : 1.0);
     
     // --- SPATIAL GRADIENT COLOR & OPACITY MAPPING ---
     vec4 base_glow_color = v_active_glow_color;
     float spatial_opacity_multiplier = 1.0;
     
     if (use_gradient_mapping || use_opacity_gradient) {
-        // Map total_alpha to gradient position (1.0 alpha = left, 0.0 alpha = right)
         float grad_pos = clamp(1.0 - total_alpha, 0.0, 1.0);
+        if (abs(gradient_scroll_speed) > 0.001) grad_pos = fract(grad_pos + TIME * gradient_scroll_speed);
         
-        // Avoid fract(1.0) snapping glitch by verifying speed is non-zero
-        if (abs(gradient_scroll_speed) > 0.001) {
-            grad_pos = fract(grad_pos + TIME * gradient_scroll_speed);
-        }
-        
-        if (use_gradient_mapping) {
-            base_glow_color = texture(glow_gradient, vec2(grad_pos, 0.0));
-        }
-        if (use_opacity_gradient) {
-            spatial_opacity_multiplier = texture(opacity_gradient, vec2(grad_pos, 0.0)).r;
-        }
+        if (use_gradient_mapping) base_glow_color = texture(glow_gradient, vec2(grad_pos, 0.0));
+        if (use_opacity_gradient) spatial_opacity_multiplier = texture(opacity_gradient, vec2(grad_pos, 0.0)).r;
     }
     
     vec4 final_glow = base_glow_color;
-    final_glow.a = total_alpha * calculated_glow_opacity * mix(1.0, pattern_weight, pattern_influence) * base_glow_color.a * spatial_opacity_multiplier;
+    final_glow.a = total_alpha * calculated_glow_opacity * final_pattern_mod * base_glow_color.a * spatial_opacity_multiplier;
     final_glow.rgb *= glow_intensity * glow_hdr_threshold;
     
     // --- STYLING (STEPS & PALETTES) ---
     if (use_sharp_steps && use_color_banding_palette) {
-        float sample_coord = clamp(total_alpha, 0.001, 0.999);
-        vec4 palette_color = texture(step_color_banding_palette, vec2(sample_coord, 0.0));
+        vec4 palette_color = texture(step_color_banding_palette, vec2(clamp(total_alpha, 0.001, 0.999), 0.0));
         final_glow.rgb = palette_color.rgb;
         final_glow.a *= palette_color.a;
     }
@@ -559,8 +563,8 @@ void fragment() {
     // --- FINAL RENDER COMPOSITING ---
     if (col.a > 0.05 && !mask_core_texture) {
         if (use_inner_glow) {
-            float pattern_mod = mix(1.0, texture(inner_pattern_texture, UV * inner_pattern_scale + (TIME * inner_pattern_pan_speed)).r, inner_pattern_influence);
-            col.rgb = mix(col.rgb, v_active_inner_glow_color.rgb, inner_alpha * pattern_mod * dissolve_mask);
+            float inner_pattern_mod = use_inner_pattern_texture ? mix(1.0, texture(inner_pattern_texture, UV * inner_pattern_scale + (TIME * inner_pattern_pan_speed)).r, inner_pattern_influence) : 1.0;
+            col.rgb = mix(col.rgb, v_active_inner_glow_color.rgb, inner_alpha * inner_pattern_mod * dissolve_mask);
         }
         COLOR = col;
     } else if (use_contour_outline && contour_alpha > 0.01 && !mask_core_texture) {
@@ -568,9 +572,8 @@ void fragment() {
     } else if (total_alpha > 0.0 && dissolve_mask > 0.0) {
         if (use_ordered_dither) {
             vec2 dither_coord = (FRAGCOORD.xy / dither_scale) + v_dither_anim_offset;
-            float inv_damage_flash_weight = 1.0 / dither_strength;
             float dither_target_weight = mix(total_alpha, dot(final_glow.rgb, vec3(0.299, 0.587, 0.114)) * total_alpha, float(dither_use_luminance));
-            if (((dither_target_weight * inv_damage_flash_weight) + dither_threshold_bias) < get_bayer_matrix(dither_coord)) discard;
+            if (((dither_target_weight / dither_strength) + dither_threshold_bias) < get_bayer_matrix(dither_coord)) discard;
         }
         if (use_distortion && distortion_chromatic_aberration > 0.001) {
             float chrom = distortion_chromatic_aberration * TEXTURE_PIXEL_SIZE.x * total_alpha;

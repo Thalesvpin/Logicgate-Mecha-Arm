@@ -7,7 +7,6 @@ uniform bool invert_colors = false;
 uniform bool invert_before_grading = false;
 
 // --- 2. TONEMAPPING ---
-
 // HUE
 group_uniforms Tonemapping.Hue;
 uniform float hue : hint_range(0.0, 1.0) = 0.0;
@@ -91,7 +90,6 @@ uniform vec2 grad_mix_center = vec2(0.5, 0.5);
 uniform float grad_mix_smoothness : hint_range(0.0, 1.0) = 1.0;
 uniform float grad_mix_scroll_speed : hint_range(-2.0, 2.0) = 0.0;
 uniform bool grad_mix_invert = false;
-
 
 // --- 4. COLOR BLINDNESS ---
 group_uniforms Color_Blindness;
@@ -189,11 +187,11 @@ uniform float lens_dirt_threshold : hint_range(0.0, 1.0) = 0.5;
 
 const vec3 LUM_COEFF = vec3(0.2126, 0.7152, 0.0722);
 
-const float bayer_matrix[16] = float[](
-    0.0/16.0, 8.0/16.0, 2.0/16.0, 10.0/16.0,
-    12.0/16.0, 4.0/16.0, 14.0/16.0, 6.0/16.0,
-    3.0/16.0, 11.0/16.0, 1.0/16.0, 9.0/16.0,
-    15.0/16.0, 7.0/16.0, 13.0/16.0, 5.0/16.0
+const mat4 BAYER_MATRIX = mat4(
+    vec4(0.0, 12.0, 3.0, 15.0) / 16.0,
+    vec4(8.0, 4.0, 11.0, 7.0) / 16.0,
+    vec4(2.0, 14.0, 1.0, 13.0) / 16.0,
+    vec4(10.0, 6.0, 9.0, 5.0) / 16.0
 );
 
 float hash(vec2 seed) {
@@ -216,35 +214,29 @@ vec3 hsv_to_rgb(vec3 c) {
 }
 
 vec3 apply_blend_mode(vec3 base, vec3 blend, int mode) {
-    if (mode == 0) return blend; // Normal
-    if (mode == 1) return base * blend; // Multiply
-    if (mode == 2) return 1.0 - (1.0 - base) * (1.0 - blend); // Screen
-    if (mode == 3) { // Overlay
-        vec3 is_light = step(0.5, base);
-        return mix(2.0 * base * blend, 1.0 - 2.0 * (1.0 - base) * (1.0 - blend), is_light);
+    switch (mode) {
+        case 0: return blend; 
+        case 1: return base * blend; 
+        case 2: return 1.0 - (1.0 - base) * (1.0 - blend); 
+        case 3: return mix(2.0 * base * blend, 1.0 - 2.0 * (1.0 - base) * (1.0 - blend), step(0.5, base));
+        case 4: return base + blend; 
+        case 5: return max(base - blend, vec3(0.0)); 
+        case 6: return abs(base - blend); 
+        case 7: return max(base, blend); 
+        case 8: return min(base, blend); 
+        case 9: return mix(2.0 * base * blend, 1.0 - 2.0 * (1.0 - base) * (1.0 - blend), step(0.5, blend));
+        default: return blend;
     }
-    if (mode == 4) return base + blend; // Add
-    if (mode == 5) return max(base - blend, vec3(0.0)); // Subtract
-    if (mode == 6) return abs(base - blend); // Difference
-    if (mode == 7) return max(base, blend); // Lighten
-    if (mode == 8) return min(base, blend); // Darken
-    if (mode == 9) { // Hard Light
-        vec3 is_light = step(0.5, blend);
-        return mix(2.0 * base * blend, 1.0 - 2.0 * (1.0 - base) * (1.0 - blend), is_light);
-    }
-    return blend;
 }
 
-// Master function for all Spatial Masks: Handles Rotation and X-axis Scrolling natively.
 float get_spatial_mask(sampler2D tex, vec2 uv, float scroll_speed, float rot_degrees, bool invert) {
     vec2 centered_uv = uv - 0.5;
-    
     float rot_rad = radians(rot_degrees);
     vec2 sincos = vec2(sin(rot_rad), cos(rot_rad));
     mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
     
     vec2 transformed_uv = rm * centered_uv + 0.5;
-    transformed_uv.x -= TIME * scroll_speed; // Scrolls cleanly left/right relative to rotation
+    transformed_uv.x -= TIME * scroll_speed; 
     
     float m = texture(tex, fract(transformed_uv)).r;
     return invert ? 1.0 - m : m;
@@ -269,7 +261,6 @@ vec3 apply_gradient_map(vec3 col, vec2 uv) {
     float current_mix = grad_mix;
     if (use_spatial_grad_mix) {
         vec2 centered_uv = uv - grad_mix_center;
-        
         float rot = radians(grad_mix_rotation);
         vec2 sincos = vec2(sin(rot), cos(rot));
         mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
@@ -277,19 +268,17 @@ vec3 apply_gradient_map(vec3 col, vec2 uv) {
         vec2 rot_uv = (rm * centered_uv) * grad_mix_scale + 0.5;
         float grad_coord = 0.0;
         
-        if (spatial_grad_type == 0) grad_coord = rot_uv.x;
-        else if (spatial_grad_type == 1) grad_coord = length(centered_uv * grad_mix_scale);
-        else if (spatial_grad_type == 2) grad_coord = abs(rot_uv.x - 0.5) * 2.0;
+        switch (spatial_grad_type) {
+            case 0: grad_coord = rot_uv.x; break;
+            case 1: grad_coord = length(centered_uv * grad_mix_scale); break;
+            case 2: grad_coord = abs(rot_uv.x - 0.5) * 2.0; break;
+        }
         
-        // Scroll the mask coordinate left/right geometry safely
-        grad_coord -= TIME * grad_mix_scroll_speed;
-        grad_coord = fract(grad_coord);
-        
+        grad_coord = fract(grad_coord - TIME * grad_mix_scroll_speed);
         if (grad_mix_invert) grad_coord = 1.0 - grad_coord;
         grad_coord = smoothstep(0.0, clamp(grad_mix_smoothness, 0.001, 1.0), grad_coord);
         
-        vec2 final_mask_uv = vec2(grad_coord, rot_uv.y);
-        current_mix *= texture(grad_mix_mask, fract(final_mask_uv)).r;
+        current_mix *= texture(grad_mix_mask, fract(vec2(grad_coord, rot_uv.y))).r;
     }
     
     vec3 blended = apply_blend_mode(col, grad_color, grad_blend_mode);
@@ -299,45 +288,39 @@ vec3 apply_gradient_map(vec3 col, vec2 uv) {
 vec3 apply_tonemapping(vec3 col, vec2 uv) {
     if (invert_colors && invert_before_grading) col = 1.0 - col;
     
-    vec3 hsv = rgb_to_hsv(col);
-    
-    // 1. Hue
-    if (hue != 0.0) {
-        float target_hue = fract(hsv.x + hue);
-        float m = hue_spatial_enable ? get_spatial_mask(hue_spatial_mask, uv, hue_spatial_scroll_speed, hue_spatial_rotation, hue_spatial_invert) : 1.0;
-        hsv.x = mix(hsv.x, target_hue, m);
+    if (hue != 0.0 || saturation != 1.0) {
+        vec3 hsv = rgb_to_hsv(col);
+        if (hue != 0.0) {
+            float target_hue = fract(hsv.x + hue);
+            float m = hue_spatial_enable ? get_spatial_mask(hue_spatial_mask, uv, hue_spatial_scroll_speed, hue_spatial_rotation, hue_spatial_invert) : 1.0;
+            hsv.x = mix(hsv.x, target_hue, m);
+        }
+        if (saturation != 1.0) {
+            float target_sat = hsv.y * saturation;
+            float m = saturation_spatial_enable ? get_spatial_mask(saturation_spatial_mask, uv, saturation_spatial_scroll_speed, saturation_spatial_rotation, saturation_spatial_invert) : 1.0;
+            hsv.y = mix(hsv.y, target_sat, m);
+        }
+        col = hsv_to_rgb(hsv);
     }
     
-    // 2. Saturation
-    if (saturation != 1.0) {
-        float target_sat = hsv.y * saturation;
-        float m = saturation_spatial_enable ? get_spatial_mask(saturation_spatial_mask, uv, saturation_spatial_scroll_speed, saturation_spatial_rotation, saturation_spatial_invert) : 1.0;
-        hsv.y = mix(hsv.y, target_sat, m);
-    }
-    col = hsv_to_rgb(hsv);
-    
-    // 3. Brightness
     if (brightness != 1.0) {
         float m = brightness_spatial_enable ? get_spatial_mask(brightness_spatial_mask, uv, brightness_spatial_scroll_speed, brightness_spatial_rotation, brightness_spatial_invert) : 1.0;
         col = mix(col, col * brightness, m);
     }
     
-    // 4. Contrast
     if (contrast != 1.0) {
         vec3 target_col = (col - 0.5) * contrast + 0.5;
         float m = contrast_spatial_enable ? get_spatial_mask(contrast_spatial_mask, uv, contrast_spatial_scroll_speed, contrast_spatial_rotation, contrast_spatial_invert) : 1.0;
         col = mix(col, target_col, m);
     }
     
-    // 5. Exposure
     if (exposure != 0.0) {
         float m = exposure_spatial_enable ? get_spatial_mask(exposure_spatial_mask, uv, exposure_spatial_scroll_speed, exposure_spatial_rotation, exposure_spatial_invert) : 1.0;
         col *= mix(1.0, exp2(exposure), m);
     }
     
-    // 6. Color Temp
     if (color_temp != 0.0) {
-        vec3 temp_col = color_temp > 0.0 ? vec3(1.0, 0.6, 0.2) : vec3(0.2, 0.6, 1.0);
+        vec3 temp_col = mix(vec3(0.2, 0.6, 1.0), vec3(1.0, 0.6, 0.2), step(0.0, color_temp));
         vec3 target_col = mix(col, col * temp_col, abs(color_temp));
         float m = color_temp_spatial_enable ? get_spatial_mask(color_temp_spatial_mask, uv, color_temp_spatial_scroll_speed, color_temp_spatial_rotation, color_temp_spatial_invert) : 1.0;
         col = mix(col, target_col, m);
@@ -354,6 +337,7 @@ vec3 get_blurred_screen(vec2 uv, float mipmap_blur, float blur_mask_val) {
         vec3 col = vec3(0.0);
         float d_angle = radians(dir_blur_angle);
         vec2 d_vec = vec2(cos(d_angle), sin(d_angle)) * d_int;
+        vec2 r_offset = (uv - radial_blur_center) * r_int;
         
         float jitter = 0.0;
         float actual_mip = mipmap_blur;
@@ -363,21 +347,17 @@ vec3 get_blurred_screen(vec2 uv, float mipmap_blur, float blur_mask_val) {
             if (blur_smoothing_mode == 1) actual_mip += 1.5; 
         }
         
+        float inv_samples = 1.0 / float(blur_samples);
         for (int i = 0; i < blur_samples; i++) {
-            vec2 suv = uv;
-            float f_i = (float(i) + jitter) / float(blur_samples);
-            
-            if (r_int > 0.0) suv += (uv - radial_blur_center) * (f_i * r_int);
-            if (d_int > 0.0) suv += d_vec * (f_i - 0.5);
-            
+            float f_i = (float(i) + jitter) * inv_samples;
+            vec2 suv = uv + (r_offset * f_i) + (d_vec * (f_i - 0.5));
             col += textureLod(screen_texture, suv, actual_mip).rgb;
         }
-        return col / float(blur_samples);
+        return col * inv_samples;
     }
     return textureLod(screen_texture, uv, mipmap_blur).rgb;
 }
 
-// Stage 1: The "World" (Can be safely distorted by Chromatic Aberration)
 vec3 get_base_color(vec2 uv, float blur_mask_val, float actual_blur) {
     vec3 col = get_blurred_screen(uv, actual_blur, blur_mask_val);
     if (use_gradient_map && grad_before_tonemapping) col = apply_gradient_map(col, uv);
@@ -386,8 +366,7 @@ vec3 get_base_color(vec2 uv, float blur_mask_val, float actual_blur) {
     return col;
 }
 
-// Stage 2: Camera Overlays (Executes only ONCE per pixel, massively saving performance)
-vec3 apply_overlays(vec3 col, vec2 uv, vec2 screen_pixel_size) {
+vec3 apply_overlays(vec3 col, vec2 uv, vec2 tex_size) {
     if (posterization_steps > 0.0) col = floor(col * posterization_steps) / posterization_steps;
 
     float current_lum = dot(col, LUM_COEFF);
@@ -397,9 +376,7 @@ vec3 apply_overlays(vec3 col, vec2 uv, vec2 screen_pixel_size) {
         vec2 sincos = vec2(sin(rot), cos(rot));
         mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
         
-        vec2 rot_uv = rm * (uv / screen_pixel_size / halftone_size);
-        vec2 grid_uv = fract(rot_uv);
-        
+        vec2 grid_uv = fract(rm * (uv * (tex_size / halftone_size)));
         float dist = length(grid_uv - 0.5); 
         float radius = (1.0 - current_lum) * 0.707; 
         float circle = smoothstep(radius - halftone_smoothness, radius + halftone_smoothness, dist);
@@ -410,10 +387,10 @@ vec3 apply_overlays(vec3 col, vec2 uv, vec2 screen_pixel_size) {
     } 
     
     if (use_dithering) {
-        vec2 dith_pos = (uv / screen_pixel_size) / dither_size;
+        vec2 dith_pos = uv * (tex_size / dither_size);
         int bx = int(dith_pos.x) % 4; 
         int by = int(dith_pos.y) % 4;
-        float threshold = bayer_matrix[bx + by * 4];
+        float threshold = BAYER_MATRIX[bx][by];
         
         vec3 dithered = mix(dither_color_1, dither_color_2, step(threshold, current_lum));
         col = mix(col, dithered, dither_opacity);
@@ -437,25 +414,25 @@ vec3 apply_overlays(vec3 col, vec2 uv, vec2 screen_pixel_size) {
     }
 
     if (use_film_grain && film_grain_intensity > 0.0) {
-        vec2 grain_uv = (uv / screen_pixel_size) / (film_grain_size * 10.0);
+        vec2 grain_uv = uv * (tex_size / (film_grain_size * 10.0));
         float t = floor(TIME * film_grain_speed);
         
         float n_r = hash(grain_uv + vec2(t, t * 0.7));
-        float n_g = hash(grain_uv + vec2(t + 1.5, t * 1.3));
-        float n_b = hash(grain_uv + vec2(t + 2.7, t * 0.4));
+        vec3 grain = vec3(n_r);
         
-        vec3 grain = mix(vec3(n_r), vec3(n_r, n_g, n_b), float(film_grain_colored));
+        if (film_grain_colored) {
+            grain.g = hash(grain_uv + vec2(t + 1.5, t * 1.3));
+            grain.b = hash(grain_uv + vec2(t + 2.7, t * 0.4));
+        }
         col += (grain - 0.5) * film_grain_intensity * 0.4;
     }
 
     if (invert_colors && !invert_before_grading) col = 1.0 - col;
 
-    if (color_blindness_mode == 1) { 
-        col = vec3(dot(col, vec3(0.56667, 0.43333, 0.0)), dot(col, vec3(0.55833, 0.44167, 0.0)), dot(col, vec3(0.0, 0.24167, 0.75833)));
-    } else if (color_blindness_mode == 2) { 
-        col = vec3(dot(col, vec3(0.625, 0.375, 0.0)), dot(col, vec3(0.7, 0.3, 0.0)), dot(col, vec3(0.0, 0.3, 0.7)));
-    } else if (color_blindness_mode == 3) { 
-        col = vec3(dot(col, vec3(0.95, 0.05, 0.0)), dot(col, vec3(0.0, 0.43333, 0.56667)), dot(col, vec3(0.0, 0.475, 0.525)));
+    switch (color_blindness_mode) {
+        case 1: col = vec3(dot(col, vec3(0.56667, 0.43333, 0.0)), dot(col, vec3(0.55833, 0.44167, 0.0)), dot(col, vec3(0.0, 0.24167, 0.75833))); break;
+        case 2: col = vec3(dot(col, vec3(0.625, 0.375, 0.0)), dot(col, vec3(0.7, 0.3, 0.0)), dot(col, vec3(0.0, 0.3, 0.7))); break;
+        case 3: col = vec3(dot(col, vec3(0.95, 0.05, 0.0)), dot(col, vec3(0.0, 0.43333, 0.56667)), dot(col, vec3(0.0, 0.475, 0.525))); break;
     }
 
     return col;
@@ -466,10 +443,13 @@ vec3 apply_overlays(vec3 col, vec2 uv, vec2 screen_pixel_size) {
 // ==========================================
 void fragment() {
     vec2 uv = SCREEN_UV;
+    vec2 tex_size = vec2(textureSize(screen_texture, 0));
+    
     float blur_mask_val = get_spatial_mask(blur_mask, uv, blur_mask_scroll_speed, blur_mask_rotation, blur_mask_invert);
     float actual_blur = use_gaussian_blur ? (gaussian_blur_intensity * blur_mask_val) : 0.0;
-    vec2 screen_pixel_size = 1.0 / vec2(textureSize(screen_texture, 0)); 
-    vec3 col;
+    
+    vec3 base_col = get_base_color(uv, blur_mask_val, actual_blur);
+    vec3 col = base_col;
 
     if (use_chromatic_aberration) {
         float ca_m = get_spatial_mask(ca_mask, uv, ca_mask_scroll_speed, ca_mask_rotation, ca_mask_invert);
@@ -477,26 +457,23 @@ void fragment() {
         float ca_rad = radians(ca_angle);
         vec2 sincos = vec2(sin(ca_rad), cos(ca_rad));
         
-        if (ca_type == 0) ca_offset = vec2(sincos.y, sincos.x) * chromatic_aberration * ca_m;
-        else if (ca_type == 1) ca_offset = (uv - ca_center) * chromatic_aberration * ca_m;
-        else if (ca_type == 2) ca_offset = reflect(uv - ca_center, vec2(sincos.y, sincos.x)) * chromatic_aberration * ca_m;
+        switch (ca_type) {
+            case 0: ca_offset = vec2(sincos.y, sincos.x) * chromatic_aberration * ca_m; break;
+            case 1: ca_offset = (uv - ca_center) * chromatic_aberration * ca_m; break;
+            case 2: ca_offset = reflect(uv - ca_center, vec2(sincos.y, sincos.x)) * chromatic_aberration * ca_m; break;
+        }
+        
+        vec3 c1 = get_base_color(uv + ca_offset, blur_mask_val, actual_blur);
+        vec3 c2 = get_base_color(uv - ca_offset, blur_mask_val, actual_blur);
         
         if (use_5tap_ca) {
-            vec3 c1 = get_base_color(uv + ca_offset, blur_mask_val, actual_blur);
-            vec3 c2 = get_base_color(uv + ca_offset * 0.5, blur_mask_val, actual_blur);
-            vec3 c3 = get_base_color(uv, blur_mask_val, actual_blur);
-            vec3 c4 = get_base_color(uv - ca_offset * 0.5, blur_mask_val, actual_blur);
-            vec3 c5 = get_base_color(uv - ca_offset, blur_mask_val, actual_blur);
-            col = (c1 * ca_color_1) + (c2 * ca_color_inter_1) + (c3 * ca_color_2) + (c4 * ca_color_inter_2) + (c5 * ca_color_3);
+            vec3 c1_half = get_base_color(uv + ca_offset * 0.5, blur_mask_val, actual_blur);
+            vec3 c2_half = get_base_color(uv - ca_offset * 0.5, blur_mask_val, actual_blur);
+            col = (c1 * ca_color_1) + (c1_half * ca_color_inter_1) + (base_col * ca_color_2) + (c2_half * ca_color_inter_2) + (c2 * ca_color_3);
         } else {
-            vec3 c1 = get_base_color(uv + ca_offset, blur_mask_val, actual_blur);
-            vec3 c2 = get_base_color(uv, blur_mask_val, actual_blur);
-            vec3 c3 = get_base_color(uv - ca_offset, blur_mask_val, actual_blur);
-            col = (c1 * ca_color_1) + (c2 * ca_color_2) + (c3 * ca_color_3);
+            col = (c1 * ca_color_1) + (base_col * ca_color_2) + (c2 * ca_color_3);
         }
-    } else {
-        col = get_base_color(uv, blur_mask_val, actual_blur);
     }
 
-    COLOR = vec4(clamp(apply_overlays(col, uv, screen_pixel_size), 0.0, 1.0), 1.0);
+    COLOR = vec4(clamp(apply_overlays(col, uv, tex_size), 0.0, 1.0), 1.0);
 }

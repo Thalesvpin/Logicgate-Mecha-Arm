@@ -11,7 +11,6 @@ uniform vec4 checker_color : source_color = vec4(0.1, 0.1, 0.12, 1.0);
 
 group_uniforms MouseHighlight;
 uniform bool use_mouse_highlight = true;
-// When true, the highlight radius is measured in screen pixels rather than world pixels
 uniform bool absolute_highlight = false;
 uniform bool highlight_main_grid = true;
 uniform bool highlight_subgrid = true;
@@ -44,92 +43,80 @@ group_uniforms Viewport;
 uniform vec2 pan_offset = vec2(0.0);
 uniform float zoom : hint_range(0.1, 10.0) = 1.0;
 
-varying vec2 grid_uv;
-varying vec2 absolute_uv;
-varying vec2 global_pos;
-varying float v_camera_zoom;
+// Precalculated attributes sent from Vertex to Fragment
+varying vec2 v_main_uv;
+varying vec2 v_sub_uv;
+varying vec2 v_global_pos;
 
+varying float v_effective_radius;
 varying float v_main_thresh;
 varying float v_sub_thresh;
 varying float v_main_smooth;
 varying float v_sub_smooth;
+varying float v_main_cross_th;
+varying float v_sub_cross_th;
 
 void vertex() {
-	global_pos = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
+	v_global_pos = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy;
 	
-	grid_uv = ((VERTEX * zoom) + pan_offset) / grid_pixel_size;
+	float camera_zoom = length(CANVAS_MATRIX[0].xy);
 	
-	// Calculate and store camera zoom for both absolute features
-	v_camera_zoom = length(CANVAS_MATRIX[0].xy);
-	absolute_uv = ((VERTEX * v_camera_zoom) + pan_offset) / absolute_subgrid_size;
+	// Offload all linear coordinate scaling to Vertex Shader
+	v_main_uv = ((VERTEX * zoom) + pan_offset) / grid_pixel_size;
 	
-	if (main_grid_style == 0) {
-		v_main_thresh = main_line_thickness;
-	} else if (main_grid_style == 1) {
-		v_main_thresh = main_dot_cross_size;
+	if (absolute_subgrid) {
+		v_sub_uv = ((VERTEX * camera_zoom) + pan_offset) / absolute_subgrid_size;
 	} else {
-		v_main_thresh = 0.0;
+		v_sub_uv = v_main_uv * subgrid_divisions;
 	}
 	
-	if (subgrid_style == 0) {
-		v_sub_thresh = subgrid_line_thickness;
-	} else if (subgrid_style == 1) {
-		v_sub_thresh = subgrid_dot_cross_size;
-	} else {
-		v_sub_thresh = 0.0;
-	}
+	// Offload radius modification math
+	v_effective_radius = absolute_highlight ? (highlight_radius / camera_zoom) : highlight_radius;
+	
+	// Precalculate style thicknesses to prevent pixel branching evaluations
+	v_main_thresh = (main_grid_style == 0) ? main_line_thickness : main_dot_cross_size;
+	v_sub_thresh = (subgrid_style == 0) ? subgrid_line_thickness : subgrid_dot_cross_size;
 	
 	float ms = (main_grid_style == 0) ? line_smoothness : dot_cross_smoothness;
 	float ss = (subgrid_style == 0) ? line_smoothness : dot_cross_smoothness;
 	v_main_smooth = max(0.001, ms);
 	v_sub_smooth = max(0.001, ss);
+	
+	v_main_cross_th = max(1.0, main_dot_cross_size * 0.35);
+	v_sub_cross_th = max(1.0, subgrid_dot_cross_size * 0.35);
 }
 
 void fragment() {
-	vec2 main_fw = fwidth(grid_uv);
-	
-	vec2 active_sub_uv;
-	vec2 sub_fw;
-	
-	if (absolute_subgrid) {
-		active_sub_uv = absolute_uv;
-		sub_fw = fwidth(absolute_uv);
-	} else {
-		active_sub_uv = grid_uv * subgrid_divisions;
-		sub_fw = main_fw * subgrid_divisions;
-	}
+	vec2 main_fw = fwidth(v_main_uv);
+	vec2 sub_fw = fwidth(v_sub_uv);
 	
 	float main_val = 0.0;
 	float sub_val = 0.0;
 	
 	// --- Subgrid Calculations ---
 	if (subgrid_style == 0) { // Lines
-		vec2 sub_grid = abs(fract(active_sub_uv - 0.5) - 0.5) / sub_fw;
+		vec2 sub_grid = abs(fract(v_sub_uv - 0.5) - 0.5) / sub_fw;
 		sub_val = min(sub_grid.x, sub_grid.y);
 	} else if (subgrid_style == 1) { // Dots
-		vec2 sub_pos = (fract(active_sub_uv) - 0.5) / sub_fw;
+		vec2 sub_pos = (fract(v_sub_uv) - 0.5) / sub_fw;
 		sub_val = length(sub_pos);
 	} else { // Crosses
-		vec2 sub_pos = (fract(active_sub_uv) - 0.5) / sub_fw;
+		vec2 sub_pos = (fract(v_sub_uv) - 0.5) / sub_fw;
 		vec2 p = abs(sub_pos);
-		float th = max(1.0, subgrid_dot_cross_size * 0.35);
-		float sz = subgrid_dot_cross_size;
-		sub_val = min(max(p.x - th, p.y - sz), max(p.y - th, p.x - sz));
+		sub_val = min(max(p.x - v_sub_cross_th, p.y - v_sub_thresh), max(p.y - v_sub_cross_th, p.x - v_sub_thresh));
 	}
 	
 	// --- Main Grid Calculations ---
 	if (main_grid_style == 0) { // Lines
-		vec2 main_grid = abs(fract(grid_uv - 0.5) - 0.5) / main_fw;
+		vec2 main_grid = abs(fract(v_main_uv - 0.5) - 0.5) / main_fw;
 		main_val = min(main_grid.x, main_grid.y);
 	} else if (main_grid_style == 1) { // Dots
-		vec2 main_pos = (fract(grid_uv) - 0.5) / main_fw;
+		vec2 main_pos = (fract(v_main_uv) - 0.5) / main_fw;
 		main_val = length(main_pos);
 	} else { // Crosses
-		vec2 main_pos = (fract(grid_uv) - 0.5) / main_fw;
+		vec2 main_pos = (fract(v_main_uv) - 0.5) / main_fw;
 		vec2 p = abs(main_pos);
-		float th = max(1.0, main_dot_cross_size * 0.35);
-		float sz = main_dot_cross_size;
-		main_val = min(max(p.x - th, p.y - sz), max(p.y - th, p.x - sz));
+		main_val = min(max(p.x - v_main_cross_th, p.y - v_main_thresh), max(p.y - v_main_cross_th, p.x - v_main_thresh));
 	}
 	
 	// --- Rendering Masks ---
@@ -139,7 +126,7 @@ void fragment() {
 	// --- Background & Checkerboard ---
 	vec4 final_bg = bg_color;
 	if (use_checkerboard) {
-		vec2 cell_id = floor(grid_uv);
+		vec2 cell_id = floor(v_main_uv);
 		if (mod(cell_id.x + cell_id.y, 2.0) > 0.5) {
 			final_bg = checker_color;
 		}
@@ -151,14 +138,10 @@ void fragment() {
 	
 	// --- Mouse Radial Highlight / Flashlight ---
 	if (use_mouse_highlight) {
-		float mouse_dist = length(global_pos - mouse_global_pos);
+		float mouse_dist = length(v_global_pos - mouse_global_pos);
 		
-		if (absolute_highlight) {
-			mouse_dist *= v_camera_zoom;
-		}
-		
-		if (mouse_dist < highlight_radius) {
-			float gradient_pos = mouse_dist / highlight_radius;
+		if (mouse_dist < v_effective_radius) {
+			float gradient_pos = mouse_dist / v_effective_radius;
 			
 			vec4 highlight_color = texture(highlight_gradient, vec2(gradient_pos, 0.5));
 			vec4 highlight_opacity = texture(highlight_opacity_gradient, vec2(gradient_pos, 0.5));
@@ -168,17 +151,17 @@ void fragment() {
 			
 			if (highlight_main_grid) {
 				current_grid_color.rgb += added_light;
-				current_grid_color.a = clamp(current_grid_color.a + opacity_val, 0.0, 1.0);
+				current_grid_color.a = min(1.0, current_grid_color.a + opacity_val);
 			}
 			
 			if (highlight_subgrid) {
 				current_subgrid_color.rgb += added_light;
-				current_subgrid_color.a = clamp(current_subgrid_color.a + opacity_val, 0.0, 1.0);
+				current_subgrid_color.a = min(1.0, current_subgrid_color.a + opacity_val);
 			}
 			
 			if (highlight_background) {
 				final_bg.rgb += added_light;
-				final_bg.a = clamp(final_bg.a + opacity_val, 0.0, 1.0);
+				final_bg.a = min(1.0, final_bg.a + opacity_val);
 			}
 		}
 	}

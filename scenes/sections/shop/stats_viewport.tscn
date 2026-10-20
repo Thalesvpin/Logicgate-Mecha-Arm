@@ -404,7 +404,7 @@ shader_parameter/grad_mix_scroll_speed = 0.0
 shader_parameter/grad_mix_invert = false
 shader_parameter/color_blindness_mode = 0
 shader_parameter/blur_mask = SubResource("GradientTexture1D_rvil5")
-shader_parameter/blur_mask_scroll_speed = 0.15600010241000017
+shader_parameter/blur_mask_scroll_speed = 0.15600010241000015
 shader_parameter/blur_mask_rotation = 0.0
 shader_parameter/blur_mask_invert = false
 shader_parameter/use_gaussian_blur = false
@@ -475,13 +475,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pv7kd"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_n71oj"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_pv7kd")
+shader_parameter/tex = SubResource("ViewportTexture_n71oj")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/mask_type = 3
