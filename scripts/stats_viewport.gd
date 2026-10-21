@@ -4,7 +4,7 @@ extends PanelContainer
 #@onready var texture_rect_3: TextureRect = $Tabs/Bottom/CanvasGroup/HBoxContainer/TextureRect3
 
 const SELECTED_STATS_TAB = preload("uid://ulhofgmwnknp")
-@onready var page_1: Control = $SubViewportContainer/SubViewport/Page1
+@onready var page_1: PanelContainer = $SubViewportContainer/SubViewport/Page1
 @onready var page_2: Control = $SubViewportContainer/SubViewport/Page2
 @onready var page_3: Control = $SubViewportContainer/SubViewport/Page3
 @onready var top_tab_btn_1: Button = $SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1

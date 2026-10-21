@@ -666,7 +666,7 @@ shader_parameter/sec_mask_pattern = 1
 shader_parameter/sec_mask_scale = 10.0
 shader_parameter/sec_mask_smoothness = 0.1
 shader_parameter/sec_mask_invert = false
-shader_parameter/rect_aspect = 1.205607476635514
+shader_parameter/rect_aspect = 2.600806451612903
 shader_parameter/sec_mask_decouple_aspect = false
 shader_parameter/sec_mask_custom_aspect = 1.0
 shader_parameter/sec_hue_shift = 2.15600010241
@@ -741,69 +741,71 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
 
-[node name="Page1" type="Control" parent="SubViewportContainer/SubViewport" unique_id=1561625618]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 5.0
-offset_top = 5.0
-offset_right = 5.0
-offset_bottom = 5.0
-size_flags_horizontal = 0
+[node name="Page1" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=1443014833]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/Page1" unique_id=1561625618]
+layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="BasicDamageContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=1221763294 instance=ExtResource("1_l3ufi")]
+[node name="BasicDamageContainer" parent="SubViewportContainer/SubViewport/Page1/Control" unique_id=1221763294 instance=ExtResource("1_l3ufi")]
 layout_mode = 0
-offset_left = 106.0
-offset_top = 76.0
-offset_right = 110.0
-offset_bottom = 80.0
+offset_left = -542.0
+offset_top = 51.0
+offset_right = -205.0
+offset_bottom = 119.0
 stat = 11
 title = "Dano Base"
 icon = ExtResource("4_ybi5s")
 
-[node name="CriticDamageMultContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=1743394783 instance=ExtResource("2_b0rs0")]
+[node name="CriticDamageMultContainer" parent="SubViewportContainer/SubViewport/Page1/Control" unique_id=1743394783 instance=ExtResource("2_b0rs0")]
 layout_mode = 0
-offset_left = 40.0
-offset_top = 179.0
-offset_right = 430.0
-offset_bottom = 274.0
+offset_left = -608.0
+offset_top = 154.0
+offset_right = -218.0
+offset_bottom = 249.0
 
-[node name="CriticChanceContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=1421245167 instance=ExtResource("3_s5khm")]
+[node name="CriticChanceContainer" parent="SubViewportContainer/SubViewport/Page1/Control" unique_id=1421245167 instance=ExtResource("3_s5khm")]
 layout_mode = 0
-offset_left = 66.0
-offset_top = 325.0
-offset_right = 420.0
-offset_bottom = 420.0
+offset_left = -582.0
+offset_top = 300.0
+offset_right = -228.0
+offset_bottom = 395.0
 stat = 12
 title = "Chance de Acerto Crítico"
 icon = ExtResource("8_l102y")
 hold_run_duration = 0.35
 
-[node name="MaxHealthContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=109097967 instance=ExtResource("4_k8u8d")]
+[node name="MaxHealthContainer" parent="SubViewportContainer/SubViewport/Page1/Control" unique_id=109097967 instance=ExtResource("4_k8u8d")]
 layout_mode = 0
-offset_left = 850.0
-offset_top = 82.0
-offset_right = 1244.0
-offset_bottom = 150.0
+offset_left = 202.0
+offset_top = 57.0
+offset_right = 596.0
+offset_bottom = 125.0
 title = "Vida Máxima"
 icon = ExtResource("10_nwtl1")
 
-[node name="ShieldAmountContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=1376948172 instance=ExtResource("5_qurlf")]
+[node name="ShieldAmountContainer" parent="SubViewportContainer/SubViewport/Page1/Control" unique_id=1376948172 instance=ExtResource("5_qurlf")]
 layout_mode = 0
-offset_left = 884.0
-offset_top = 169.0
-offset_right = 1258.0
-offset_bottom = 264.0
+offset_left = 236.0
+offset_top = 144.0
+offset_right = 610.0
+offset_bottom = 239.0
 stat = 5
 title = "Quantidade de Escudos"
 icon = ExtResource("12_2ujkr")
 
-[node name="ShieldStrengthContainer" parent="SubViewportContainer/SubViewport/Page1" unique_id=566576391 instance=ExtResource("6_pqe0e")]
+[node name="ShieldStrengthContainer" parent="SubViewportContainer/SubViewport/Page1/Control" unique_id=566576391 instance=ExtResource("6_pqe0e")]
 layout_mode = 0
-offset_left = 819.0
-offset_top = 301.0
-offset_right = 1247.0
-offset_bottom = 402.0
+offset_left = 171.0
+offset_top = 276.0
+offset_right = 599.0
+offset_bottom = 377.0
 
 [node name="Page2" type="Control" parent="SubViewportContainer/SubViewport" unique_id=1794970679]
 visible = false

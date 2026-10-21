@@ -152,21 +152,16 @@ const BH_1 = preload("uid://cdfw1je21a364")
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("test2"):# Y
-		Global.implant_manager.add_tech_mod(TM_6)
-	if event.is_action_pressed("test3"):# U
-		#EventBus.damage_taken.emit(20)
-		#EventBus.enemy_defeated.emit()
-		#EventBus.critical_hit.emit()
-		#print('vida: ', Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
-		#EventBus.self_damage.emit()
-		EventBus.open_shop.emit()
-	if event.is_action_pressed("test4"):# B
+	if event.is_action_pressed("Y"):# Y
+		pass
+	if event.is_action_pressed("U"):# U
+		pass
+	if event.is_action_pressed("B"):# B
 		Global.implant_manager.add_bio_hack(BH_1)
-	if event.is_action_pressed("test"):# T
-		#print('stats_viewport.size: ', stats_viewport.size)
-		#open_shop()
-		#var a = ChargeHeavyAttackEffect.new()
-		#a.apply()
-		#Global.circuit_editor.block_sandbox('player')
+	if event.is_action_pressed("T"):# T
+		Global.implant_manager.add_tech_mod(TM_6)
+	if event.is_action_pressed("S"):
 		EventBus.battle_ended.emit(true)
+	if event.is_action_pressed("L"):
+		v_split.dragging_enabled = !v_split.dragging_enabled
+		top_h_split.dragging_enabled = !top_h_split.dragging_enabled
