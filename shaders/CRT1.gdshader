@@ -5,11 +5,45 @@ uniform sampler2D tex: filter_linear;
 group_uniforms CRT_Geometry;
 uniform float curve : hint_range(0.0, 0.5) = 0.0;
 uniform float aspect : hint_range(0.5, 1.0) = 0.75;
+uniform float bezel_shadow_strength : hint_range(0.0, 1.0) = 0.0;
+uniform float bezel_shadow_width : hint_range(0.0, 0.5) = 0.1;
+
+group_uniforms Glass_Reflection;
+uniform bool use_glare = false;
+uniform float glare_strength : hint_range(0.0, 1.0) = 0.2;
+uniform vec2 glare_position = vec2(0.5, 0.5);
+uniform float glare_rotation : hint_range(-3.14159, 3.14159) = 0.78539; 
+uniform float glare_softness : hint_range(0.01, 2.0) = 0.5;
+uniform float glare_size : hint_range(0.01, 2.0) = 0.2;
+
+uniform bool use_glass_reflection = false;
+uniform sampler2D glass_env_tex : hint_default_black, filter_linear_mipmap;
+uniform float glass_env_strength : hint_range(0.0, 1.0) = 0.5;
+uniform vec2 glass_env_offset = vec2(0.0, 0.0);
+uniform float glass_env_scale : hint_range(0.1, 10.0) = 1.0;
+uniform float glass_blur : hint_range(0.0, 10.0) = 2.0; 
+uniform float glass_curve : hint_range(0.0, 0.5) = 0.0;
+uniform float glass_brightness : hint_range(0.0, 3.0) = 1.0;
+uniform float glass_saturation : hint_range(0.0, 3.0) = 1.0;
+uniform vec4 glass_tint : source_color = vec4(1.0);
+uniform int glass_blend_mode : hint_enum("Add:0", "Screen:1", "Lighten:2") = 1;
+
+group_uniforms Power_State;
+uniform float power_state : hint_range(0.0, 1.0) = 1.0;
+uniform int power_close_axis : hint_enum("Vertical:0", "Horizontal:1") = 0;
+uniform vec4 power_flash_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float power_flash_start : hint_range(0.0, 1.0) = 0.8;
+uniform float power_flash_end : hint_range(0.0, 1.0) = 0.2;
+uniform bool use_hum_bar = false;
+uniform float hum_bar_strength : hint_range(0.0, 0.1) = 0.0;
+uniform float hum_bar_speed : hint_range(0.0, 10.0) = 2.0;
+
+group_uniforms Profiles;
+uniform int crt_profile : hint_enum("Custom:0", "Arcade (Soft/Scanlined):1", "Consumer TV (Blurry/Bleed):2", "PVM (Sharp/Precise):3") = 0;
 
 group_uniforms Mask;
 uniform int mask_type : hint_enum(
-	"Dots:1", "Aperture Grille:2", "Wide Grille:3", "Wide Soft Grille:4", "Slot Mask:5", "Fake Grouped (Luminance):6", "Null:0") = 6;
-
+	"Null:0", "Dots:1", "Aperture Grille:2", "Wide Grille:3", "Wide Soft Grille:4", "Slot Mask:5", "Fake Grouped:6", "Trinitron:7", "LCD Matrix:8", "Staggered Phosphor:9") = 6;
 uniform float mask_scale : hint_range(0.1, 10.0, 0.1) = 1.0;
 uniform float mask_brightness : hint_range(0.0, 1.0) = 1.0;
 uniform bool animate_mask_brightness = false;
@@ -22,6 +56,8 @@ uniform bool use_scanlines = false;
 uniform float scanline_brightness : hint_range(0.5, 1.0) = 1.0;
 uniform float scanline_beam_width_min : hint_range(0.1, 1.0) = 0.25;
 uniform float scanline_beam_width_max : hint_range(0.5, 3.0) = 1.0;
+uniform float scanline_drift_speed : hint_range(-5.0, 5.0) = 0.0;
+uniform float scanline_cutoff : hint_range(0.0, 1.0) = 0.0;
 
 group_uniforms Interlaced_Flicker;
 uniform float interlaced_strength : hint_range(0.0, 1.0) = 0.0;
@@ -32,13 +68,19 @@ uniform float interlaced_anim_amplitude = 1.0;
 uniform float interlaced_fps : hint_range(1.0, 60.0) = 30.0;
 
 group_uniforms Interlaced_Jitter;
+uniform bool use_interlaced_jitter = false;
 uniform float interlaced_jitter_strength : hint_range(0.0, 0.05) = 0.0;
 uniform float interlaced_jitter_speed : hint_range(0.1, 20.0) = 10.0;
+uniform float interlaced_jitter_frequency : hint_range(0.1, 5.0) = 1.5;
+uniform bool interlaced_jitter_random = false;
 
 group_uniforms VHS_Tracking;
+uniform bool use_vhs_tracking = false;
 uniform float vhs_tracking_strength : hint_range(0.0, 1.0) = 0.0;
 uniform float vhs_tracking_height : hint_range(0.01, 0.5) = 0.08;
 uniform float vhs_tracking_speed : hint_range(-10.0, 10.0) = 2.0;
+uniform float vhs_tracking_interval : hint_range(0.0, 10.0) = 2.0;
+uniform float vhs_tracking_noise_scale : hint_range(1.0, 100.0) = 40.0;
 
 group_uniforms Sharpness;
 uniform float sharpness : hint_range(0.5, 1.0) = 0.6666666666666666666666666667;
@@ -46,13 +88,6 @@ uniform bool animate_sharpness = false;
 uniform sampler2D sharpness_curve;
 uniform float sharpness_anim_speed = 1.0;
 uniform float sharpness_anim_amplitude = 1.0;
-
-group_uniforms Color_Offset;
-uniform float color_offset : hint_range(-5, 5) = 0.0;
-uniform bool animate_color_offset = false;
-uniform sampler2D color_offset_curve;
-uniform float color_offset_anim_speed = 1.0;
-uniform float color_offset_anim_amplitude = 1.0;
 
 group_uniforms Wobble;
 uniform float wobble_strength : hint_range(0.0, 5.0) = 0.0;
@@ -122,27 +157,24 @@ group_uniforms Sweep_Stripe.Contrast;
 uniform bool stripe_enable_contrast = false;
 uniform float stripe_contrast : hint_range(0.0, 3.0) = 1.1;
 
-group_uniforms Sweep_Stripe.Chromatic_Aberration;
-uniform bool stripe_enable_chroma = false;
-uniform float stripe_chroma_aberration : hint_range(0.0, 50.0) = 5.0;
-uniform float stripe_chroma_red_weight : hint_range(-5.0, 5.0) = 1.0;
-uniform float stripe_chroma_blue_weight : hint_range(-5.0, 5.0) = 1.0;
-uniform bool stripe_chroma_wave_enabled = false;
-uniform float stripe_chroma_wave_freq : hint_range(0.0, 100.0) = 25.0;
-
 group_uniforms Multipath_Echo;
+uniform bool use_echo = false;
 uniform float echo_strength : hint_range(0.0, 1.0) = 0.0;
 uniform bool animate_echo_strength = false;
 uniform sampler2D echo_strength_curve;
 uniform float echo_strength_anim_speed = 1.0;
+uniform float echo_strength_anim_interval : hint_range(0.0, 10.0) = 0.0;
 uniform float echo_strength_anim_amplitude = 1.0;
+
 uniform float echo_offset : hint_range(-0.05, 0.05) = 0.015;
 uniform bool animate_echo_offset = false;
 uniform sampler2D echo_offset_curve;
 uniform float echo_offset_anim_speed = 1.0;
+uniform float echo_offset_anim_interval : hint_range(0.0, 10.0) = 0.0;
 uniform float echo_offset_anim_amplitude = 1.0;
 
 group_uniforms Dot_Crawl;
+uniform bool use_dot_crawl = false;
 uniform float dot_crawl_strength : hint_range(0.0, 1.0) = 0.0;
 uniform float dot_crawl_speed : hint_range(0.0, 20.0) = 15.0;
 
@@ -157,6 +189,7 @@ uniform float glitch_rate : hint_range(0.0, 1.0) = 0.05;
 uniform float glitch_size : hint_range(0.01, 1.0) = 0.05;
 
 group_uniforms Static_Noise;
+uniform bool use_noise = false;
 uniform float noise_strength : hint_range(0.0, 0.5) = 0.03;
 uniform bool chroma_noise = false;
 uniform bool animate_noise = false;
@@ -167,13 +200,18 @@ uniform float noise_anim_amplitude = 1.0;
 group_uniforms Stylization_FX;
 uniform bool use_gradient_map = false;
 uniform sampler2D gradient_texture : hint_default_white;
-
+uniform bool use_monochrome = false;
+uniform vec4 monochrome_color : source_color = vec4(0.2, 1.0, 0.4, 1.0);
 uniform bool use_color_quantization = false;
 uniform float color_levels : hint_range(2.0, 64.0) = 16.0;
-
 uniform bool use_auto_exposure = false;
 uniform float exposure_threshold : hint_range(0.0, 1.0) = 0.7;
 uniform float exposure_intensity : hint_range(0.0, 2.0) = 0.5;
+
+group_uniforms Motion_Persistence;
+uniform bool use_motion_persistence = false;
+uniform sampler2D previous_frame_tex : hint_default_black;
+uniform float persistence_strength : hint_range(0.0, 0.99) = 0.5;
 
 group_uniforms Runtime_FX;
 uniform sampler2D degauss_curve;
@@ -190,23 +228,26 @@ uniform float degauss_ripple_strength : hint_range(0.0, 0.2) = 0.05;
 
 group_uniforms;
 
-// Compressed Varying Data Registers
 varying flat vec2 v_degauss_wobble;
 varying flat vec4 v_dyn_pack1; 
 varying flat vec3 v_dyn_pack2; 
 varying flat vec4 v_dyn_pack3; 
 varying flat vec4 v_glitch_field; 
-varying flat vec3 v_stripe_calc;
+varying flat vec4 v_stripe_calc;
 varying flat vec4 v_time_pack1; 
 varying flat vec4 v_time_pack2; 
+varying flat int v_crt_profile;
 
-// Global Precomputed Math Constants
+// Hoisted Micro-Optimization Registers
+varying flat vec4 v_warp_power_pack;
+varying flat vec4 v_glare_calc;
+varying flat vec4 v_optim_pack; 
+varying flat vec4 v_glass_env_pack;
+
 const float INV_TAU = 0.15915494309189535;
 const vec3 INV_GAMMA = vec3(0.4166666666666667);
 const float TWO_THIRD_PI = 2.09439510239;
 const vec3 PHASE_OFFSETS = vec3(0.0, 2.09439510239, 4.18879020479); 
-
-// Unrolled Hue Rotation Matrices for Fast Hardware Alignment
 const vec3 HUE_LUMA = vec3(0.299, 0.587, 0.114);
 const vec3 HUE_V1 = vec3(0.701, -0.587, -0.114);
 const vec3 HUE_V2 = vec3(-0.299, 0.413, -0.114);
@@ -215,12 +256,37 @@ const vec3 HUE_U1 = vec3(0.168, 0.330, -0.497);
 const vec3 HUE_U2 = vec3(0.328, -0.335, 0.007);
 const vec3 HUE_U3 = vec3(-1.250, 1.050, 0.200);
 
-void vertex()
-{
-	float _degauss = 0.0;
-	if (degauss_progress < 1.0) {
-		_degauss = textureLod(degauss_curve, vec2(degauss_progress, 0.0), 0.0).r;
+void vertex() {
+	v_crt_profile = crt_profile;
+	
+	v_warp_power_pack.xy = vec2(1.0 / aspect, aspect);
+	v_warp_power_pack.zw = (power_close_axis == 0) ? vec2(1.0 / max(smoothstep(0.5, 1.0, power_state), 0.001), 1.0 / max(smoothstep(0.0, 0.5, power_state), 0.001)) : vec2(1.0 / max(smoothstep(0.0, 0.5, power_state), 0.001), 1.0 / max(smoothstep(0.5, 1.0, power_state), 0.001));
+	v_optim_pack.x = 0.0;
+	if (power_state < 1.0) {
+		float t = clamp((power_flash_start - power_state) / max(0.0001, power_flash_start - power_flash_end), 0.0, 1.0);
+		v_optim_pack.x = t * t * (3.0 - 2.0 * t) * power_flash_color.a;
 	}
+	
+	v_optim_pack.y = -1.0;
+	if (use_vhs_tracking && vhs_tracking_strength > 0.0) {
+		float speed = abs(vhs_tracking_speed);
+		float sweep_time = speed > 0.0 ? 1.0 / speed : 0.0;
+		float total_cycle = sweep_time + max(0.001, vhs_tracking_interval);
+		float local_time = mod(TIME, total_cycle);
+		if (local_time < sweep_time) v_optim_pack.y = local_time * vhs_tracking_speed;
+	}
+	
+	v_optim_pack.z = scanline_brightness;
+	if (crt_profile == 1) v_optim_pack.z = 0.8;
+	else if (crt_profile == 2) v_optim_pack.z = 0.4;
+	
+	v_optim_pack.w = TIME * interlaced_jitter_speed;
+	
+	v_glare_calc = vec4(cos(glare_rotation), sin(glare_rotation), 1.0 - bezel_shadow_width, glare_size + glare_softness);
+	v_glass_env_pack = vec4(1.0 / max(0.001, glass_env_scale), 1.0 / max(0.001, glass_env_scale), 0.5 + glass_env_offset.x, 0.5 + glass_env_offset.y);
+
+	float _degauss = 0.0;
+	if (degauss_progress < 1.0) _degauss = textureLod(degauss_curve, vec2(degauss_progress, 0.0), 0.0).r;
 
 	float _wobble = wobble_strength;
 	if (animate_wobble) _wobble += textureLod(wobble_curve, vec2(fract(TIME * wobble_anim_speed), 0.0), 0.0).r * wobble_anim_amplitude;
@@ -228,12 +294,14 @@ void vertex()
 	_wobble += _degauss * degauss_wobble_strength; 
 	v_degauss_wobble = vec2(_degauss, cos(TIME * TAU * 15.0) * _wobble * 0.0001220703125);
 
-	v_dyn_pack1.x = color_offset;
-	if (animate_color_offset) v_dyn_pack1.x += textureLod(color_offset_curve, vec2(fract(TIME * color_offset_anim_speed), 0.0), 0.0).r * color_offset_anim_amplitude;
-	v_dyn_pack1.x += _degauss * degauss_color_split;
+	v_dyn_pack1.x = 0.0; 
+	if (_degauss > 0.0) v_dyn_pack1.x += _degauss * degauss_color_split;
 
 	v_dyn_pack1.y = sharpness;
 	if (animate_sharpness) v_dyn_pack1.y += textureLod(sharpness_curve, vec2(fract(TIME * sharpness_anim_speed), 0.0), 0.0).r * sharpness_anim_amplitude;
+	if (crt_profile == 1) v_dyn_pack1.y = 0.8;
+	else if (crt_profile == 2) v_dyn_pack1.y = 0.5;
+	else if (crt_profile == 3) v_dyn_pack1.y = 1.0;
 
 	v_dyn_pack1.z = mask_brightness;
 	if (animate_mask_brightness) v_dyn_pack1.z += textureLod(mask_brightness_curve, vec2(fract(TIME * mask_brightness_anim_speed), 0.0), 0.0).r * mask_brightness_anim_amplitude;
@@ -247,14 +315,32 @@ void vertex()
 	v_dyn_pack2.y = glitch_strength;
 	if (animate_glitch) v_dyn_pack2.y += textureLod(glitch_curve, vec2(fract(TIME * glitch_anim_speed), 0.0), 0.0).r * glitch_anim_amplitude;
 
-	v_dyn_pack2.z = noise_strength;
-	if (animate_noise) v_dyn_pack2.z += textureLod(noise_curve, vec2(fract(TIME * noise_anim_speed), 0.0), 0.0).r * noise_anim_amplitude;
+	v_dyn_pack2.z = use_noise ? noise_strength : 0.0;
+	if (animate_noise && use_noise) v_dyn_pack2.z += textureLod(noise_curve, vec2(fract(TIME * noise_anim_speed), 0.0), 0.0).r * noise_anim_amplitude;
 
-	v_dyn_pack3.x = echo_strength;
-	if (animate_echo_strength) v_dyn_pack3.x += textureLod(echo_strength_curve, vec2(fract(TIME * echo_strength_anim_speed), 0.0), 0.0).r * echo_strength_anim_amplitude;
+	v_dyn_pack3.x = use_echo ? echo_strength : 0.0;
+	if (animate_echo_strength && use_echo) {
+		if (echo_strength_anim_interval > 0.0) {
+			float active_time = 1.0 / max(0.001, echo_strength_anim_speed);
+			float total_time = active_time + echo_strength_anim_interval;
+			float local_t = mod(TIME, total_time);
+			if (local_t < active_time) v_dyn_pack3.x += textureLod(echo_strength_curve, vec2(local_t * echo_strength_anim_speed, 0.0), 0.0).r * echo_strength_anim_amplitude;
+		} else {
+			v_dyn_pack3.x += textureLod(echo_strength_curve, vec2(fract(TIME * echo_strength_anim_speed), 0.0), 0.0).r * echo_strength_anim_amplitude;
+		}
+	}
 
 	v_dyn_pack3.y = echo_offset;
-	if (animate_echo_offset) v_dyn_pack3.y += textureLod(echo_offset_curve, vec2(fract(TIME * echo_offset_anim_speed), 0.0), 0.0).r * echo_offset_anim_amplitude;
+	if (animate_echo_offset) {
+		if (echo_offset_anim_interval > 0.0) {
+			float active_time = 1.0 / max(0.001, echo_offset_anim_speed);
+			float total_time = active_time + echo_offset_anim_interval;
+			float local_t = mod(TIME, total_time);
+			if (local_t < active_time) v_dyn_pack3.y += textureLod(echo_offset_curve, vec2(local_t * echo_offset_anim_speed, 0.0), 0.0).r * echo_offset_anim_amplitude;
+		} else {
+			v_dyn_pack3.y += textureLod(echo_offset_curve, vec2(fract(TIME * echo_offset_anim_speed), 0.0), 0.0).r * echo_offset_anim_amplitude;
+		}
+	}
 	
 	v_dyn_pack3.z = TIME * stripe_hue_osc_speed;
 	v_dyn_pack3.w = TIME * stripe_secondary_wave_speed;
@@ -274,32 +360,31 @@ void vertex()
 		v_stripe_calc.x = -margin + fract((TIME * stripe_speed) / stripe_interval + stripe_offset) * (1.0 + (margin * 2.0));
 		v_stripe_calc.y = cos(stripe_angle);
 		v_stripe_calc.z = sin(stripe_angle);
+		v_stripe_calc.w = 1.0 / max(0.0001, stripe_width * 0.5);
 	} else {
-		v_stripe_calc = vec3(0.0);
+		v_stripe_calc = vec4(0.0);
 	}
 }
 
-vec2 warp(vec2 uv)
-{
+vec2 warp(vec2 uv) {
 	uv -= 0.5;
-	uv.x /= aspect;
+	uv.x *= v_warp_power_pack.x;
 	uv /= 1.0 - curve * (dot(uv, uv) - 0.25);
-	uv.x *= aspect;
-	return uv + 0.5;
+	uv.x *= v_warp_power_pack.y;
+	uv += 0.5;
+	if (power_state < 1.0) uv *= v_warp_power_pack.zw;
+	return uv;
 }
 
-vec3 linear_to_srgb(vec3 col)
-{
+vec3 linear_to_srgb(vec3 col) {
 	return mix((pow(col, INV_GAMMA) * 1.055) - 0.055, col * 12.92, lessThan(col, vec3(0.0031318)));
 }
 
-vec3 srgb_to_linear(vec3 col)
-{
+vec3 srgb_to_linear(vec3 col) {
 	return mix(pow((col + 0.055) * 0.947867298578, vec3(2.4)), col * 0.0773993808049, lessThan(col, vec3(0.04045)));
 }
 
-vec3 shift_hue(vec3 color, float shift)
-{
+vec3 shift_hue(vec3 color, float shift) {
 	float c = cos(shift);
 	float s = sin(shift);
 	vec3 col0 = HUE_LUMA + HUE_V1 * c + HUE_U1 * s;
@@ -324,12 +409,9 @@ vec3 sample_row(int ix, int iy, vec3 wa, vec3 wb, vec3 wc, vec3 wd, vec3 we) {
 	       srgb_to_linear(texelFetch(tex, ivec2(ix + 2, iy), 0).rgb) * we;
 }
 
-vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size)
-{
+vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size) {
 	vec2 scaled_uv = uv * tex_size;
 	int ix = int(floor(scaled_uv.x));
-	
-	// Fast Path: Bypasses the 5-tap horizontal blur entirely if sharpness is neutral (1.0) and no chroma shift is active.
 	bool fast = (v_dyn_pack1.y >= 0.999 && v_dyn_pack1.x == 0.0 && local_chroma_offset == vec2(0.0));
 	
 	vec3 weight_a, weight_b, weight_c, weight_d, weight_e;
@@ -337,12 +419,7 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size)
 	
 	if (!fast) {
 		float diff_base = fract(scaled_uv.x) - 0.5; 
-		vec3 diff = vec3(
-			diff_base - (v_dyn_pack1.x + local_chroma_offset.x), 
-			diff_base, 
-			diff_base + (v_dyn_pack1.x + local_chroma_offset.y)
-		);
-
+		vec3 diff = vec3(diff_base - (v_dyn_pack1.x + local_chroma_offset.x), diff_base, diff_base + (v_dyn_pack1.x + local_chroma_offset.y));
 		weight_a = smoothstep(vec3(1.0), vec3(0.0), (diff + 2.0) * v_dyn_pack1.y);
 		weight_b = smoothstep(vec3(1.0), vec3(0.0), (diff + 1.0) * v_dyn_pack1.y);
 		weight_c = smoothstep(vec3(1.0), vec3(0.0), abs(diff) * v_dyn_pack1.y);
@@ -351,58 +428,52 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size)
 		weight_scaler_vec = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e);
 	}
 
-	if (use_scanlines) 
-	{
-		int iy = int(scaled_uv.y + 0.5) - 1;
+	if (use_scanlines) {
+		float scan_drift = fract((scaled_uv.y + 0.5) - TIME * scanline_drift_speed);
+		int iy = int(floor(scaled_uv.y + 0.5)) - 1;
 		int lower_y = iy + 1;
 
-		vec3 upper_col;
-		vec3 lower_col;
-		
+		vec3 raw_upper, raw_lower;
 		if (fast) {
-			upper_col = srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb) * scanline_brightness;
-			lower_col = srgb_to_linear(texelFetch(tex, ivec2(ix, lower_y), 0).rgb) * scanline_brightness;
+			raw_upper = srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb);
+			raw_lower = srgb_to_linear(texelFetch(tex, ivec2(ix, lower_y), 0).rgb);
 		} else {
-			upper_col = sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec * scanline_brightness;
-			lower_col = sample_row(ix, lower_y, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec * scanline_brightness;
+			raw_upper = sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec;
+			raw_lower = sample_row(ix, lower_y, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec;
 		}
+
+		vec3 upper_col = raw_upper * v_optim_pack.z;
+		vec3 lower_col = raw_lower * v_optim_pack.z;
 
 		vec3 upper_thickness = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), upper_col);
 		vec3 lower_thickness = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), lower_col);
 		
 		vec3 inv_upper_thickness = 1.0 / upper_thickness;
 		vec3 inv_lower_thickness = 1.0 / lower_thickness;
-		float sawtooth = (scaled_uv.y + 0.5) - float(iy);
 
-		vec3 upper_line = smoothstep(vec3(1.0), vec3(0.0), vec3(sawtooth) * inv_upper_thickness) * upper_col * inv_upper_thickness;
-		vec3 lower_line = smoothstep(vec3(1.0), vec3(0.0), vec3(1.0 - sawtooth) * inv_lower_thickness) * lower_col * inv_lower_thickness;
+		vec3 upper_line = smoothstep(vec3(1.0), vec3(0.0), vec3(scan_drift) * inv_upper_thickness) * upper_col * inv_upper_thickness;
+		vec3 lower_line = smoothstep(vec3(1.0), vec3(0.0), vec3(1.0 - scan_drift) * inv_lower_thickness) * lower_col * inv_lower_thickness;
 		
 		int field_glitch = int(v_glitch_field.z);
 		upper_line *= 1.0 - float((iy & 1) ^ field_glitch) * v_dyn_pack1.w;
 		lower_line *= 1.0 - float((lower_y & 1) ^ field_glitch) * v_dyn_pack1.w;
 
-		return upper_line + lower_line;
-	} 
-	else 
-	{
-		int iy = int(floor(scaled_uv.y));
-		vec3 color;
-		
-		if (fast) {
-			color = srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb);
-		} else {
-			color = sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec;
+		vec3 final_lines = upper_line + lower_line;
+		if (scanline_cutoff > 0.0) {
+			float luma = dot(raw_upper, vec3(0.333));
+			return mix(raw_upper, final_lines, smoothstep(0.0, scanline_cutoff, luma));
 		}
-		
+		return final_lines;
+	} else {
+		int iy = int(floor(scaled_uv.y));
+		vec3 color = fast ? srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb) : sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec;
 		color *= 1.0 - float((iy & 1) ^ int(v_glitch_field.z)) * v_dyn_pack1.w; 
 		return color;
 	}
 }
 
-vec4 generate_mask(vec2 coords)
-{
-	switch (mask_type)
-	{
+vec4 generate_mask(vec2 coords) {
+	switch (mask_type) {
 		case 1: { 
 			float x_phase = coords.x * TWO_THIRD_PI;
 			vec3 rgb = 0.5 + 0.5 * cos(x_phase - PHASE_OFFSETS);
@@ -424,13 +495,31 @@ vec4 generate_mask(vec2 coords)
 		case 6: { 
 			return vec4(vec3(1.0), (int(coords.x) % 3 == 0) ? 0.6 : 1.0); 
 		}
+		case 7: { 
+			int x = int(coords.x) % 3;
+			if (x == 0) return vec4(1.0, 0.0, 0.0, 0.6);
+			if (x == 1) return vec4(0.0, 1.0, 0.0, 0.6);
+			return vec4(0.0, 0.0, 1.0, 0.6);
+		}
+		case 8: { 
+			vec2 cell = fract(coords * vec2(0.33333, 1.0));
+			vec3 rgb = vec3(step(cell.x, 0.333), step(0.333, cell.x) * step(cell.x, 0.666), step(0.666, cell.x));
+			float gap = step(0.1, cell.y) * step(cell.y, 0.9);
+			return vec4(rgb * gap, 0.5);
+		}
+		case 9: { 
+			int odd_row = int(coords.y) % 2;
+			int x = (int(coords.x) + odd_row) % 3;
+			if (x == 0) return vec4(1.0, 0.0, 0.0, 0.5);
+			if (x == 1) return vec4(0.0, 1.0, 0.0, 0.5);
+			return vec4(0.0, 0.0, 1.0, 0.5);
+		}
 		default:
 			return vec4(0.5);
 	}
 }
 
-vec3 mask(vec3 linear_color, vec2 coords)
-{
+vec3 mask(vec3 linear_color, vec2 coords) {
 	vec4 m = generate_mask(coords);
 	linear_color *= mix(m.w, 1.0, v_dyn_pack1.z);
 
@@ -443,178 +532,191 @@ vec3 mask(vec3 linear_color, vec2 coords)
 	} else {
 		highlights = vec3(0.0); 
 	}
-
 	return primary_col * m.rgb + highlights * (1.0 - m.rgb);
 }
 
-void fragment()
-{
+void fragment() {
 	vec2 tex_size = vec2(textureSize(tex, 0));
 	vec2 tex_pixel_size = 1.0 / tex_size;
 
 	vec2 warped_coords = warp(UV);
-	warped_coords.x += v_degauss_wobble.y;
+	if (warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
+		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
+	} else {
+		warped_coords.x += v_degauss_wobble.y;
 
-	if (interlaced_jitter_strength > 0.0) {
-		float row_id = floor(warped_coords.y * tex_size.y);
-		float jitter_mod = sin(TIME * interlaced_jitter_speed + row_id * 1.5) * interlaced_jitter_strength;
-		warped_coords.x += ((int(row_id) & 1) == 0 ? jitter_mod : -jitter_mod);
-	}
-
-	if (vhs_tracking_strength > 0.0) {
-		float track_band = step(1.0 - vhs_tracking_height, fract(warped_coords.y + TIME * vhs_tracking_speed));
-		if (track_band > 0.0) {
-			float pseudo_rand = fract(sin(floor(warped_coords.y * 40.0) + TIME * 10.0) * 43758.5453);
-			warped_coords.x += (pseudo_rand - 0.5) * vhs_tracking_strength * 0.2;
+		if (use_interlaced_jitter && interlaced_jitter_strength > 0.0) {
+			float row_id = floor(warped_coords.y * tex_size.y);
+			float jitter_mod = sin(v_optim_pack.w + row_id * interlaced_jitter_frequency);
+			if (interlaced_jitter_random) {
+				jitter_mod *= fract(sin(row_id * 12.9898 + TIME) * 43758.5453);
+			}
+			warped_coords.x += ((int(row_id) & 1) == 0 ? jitter_mod : -jitter_mod) * interlaced_jitter_strength;
 		}
-	}
-	
-	if (v_degauss_wobble.x > 0.0) {
-		vec2 center_offset = warped_coords - 0.5;
-		float dist = length(center_offset);
+
+		if (v_optim_pack.y >= 0.0) {
+			float track_band = step(1.0 - vhs_tracking_height, fract(warped_coords.y + v_optim_pack.y));
+			if (track_band > 0.0) {
+				float pseudo_rand = fract(sin(floor(warped_coords.y * vhs_tracking_noise_scale) + TIME * 10.0) * 43758.5453);
+				warped_coords.x += (pseudo_rand - 0.5) * vhs_tracking_strength * 0.2;
+			}
+		}
 		
-		float bulge = sin(dist * 20.0 - v_time_pack1.x) * degauss_bulge_strength * v_degauss_wobble.x;
-		float ripple = sin(dist * 50.0 - v_time_pack1.y) * degauss_ripple_strength * v_degauss_wobble.x;
-		warped_coords += center_offset * (bulge + ripple);
+		if (v_degauss_wobble.x > 0.0) {
+			vec2 center_offset = warped_coords - 0.5;
+			float dist = length(center_offset);
+			float bulge = sin(dist * 20.0 - v_time_pack1.x) * degauss_bulge_strength * v_degauss_wobble.x;
+			float ripple = sin(dist * 50.0 - v_time_pack1.y) * degauss_ripple_strength * v_degauss_wobble.x;
+			warped_coords += center_offset * (bulge + ripple);
+			float tear_dist = warped_coords.y - v_time_pack1.z;
+			warped_coords.x += exp(-50.0 * tear_dist * tear_dist) * sin(warped_coords.y * 100.0) * v_degauss_wobble.x * degauss_tear_strength;
+		}
+
+		if (v_dyn_pack2.y > 0.0) warped_coords.x += step(abs(warped_coords.y - v_glitch_field.x), glitch_size) * v_glitch_field.y;
+		if (vsync_tearing > 0.0) {
+			float tear_dist = warped_coords.y - v_time_pack1.w;
+			warped_coords.x += exp(-100.0 * tear_dist * tear_dist) * sin(warped_coords.y * 150.0) * vsync_tearing;
+		}
+
+		float stripe_factor = 0.0;
+		vec2 local_chroma = vec2(0.0);
 		
-		float tear_dist = warped_coords.y - v_time_pack1.z;
-		warped_coords.x += exp(-50.0 * tear_dist * tear_dist) * sin(warped_coords.y * 100.0) * v_degauss_wobble.x * degauss_tear_strength;
-	}
+		if (use_sweep_stripe) {
+			vec2 centered_uv = warped_coords - 0.5;
+			vec2 rotated_uv = vec2(centered_uv.x * v_stripe_calc.y - centered_uv.y * v_stripe_calc.z, centered_uv.x * v_stripe_calc.z + centered_uv.y * v_stripe_calc.y) + 0.5;
+			float norm_dist = abs(rotated_uv.y - v_stripe_calc.x) * v_stripe_calc.w;
 
-	if (v_dyn_pack2.y > 0.0) {
-		warped_coords.x += step(abs(warped_coords.y - v_glitch_field.x), glitch_size) * v_glitch_field.y;
-	}
-	
-	if (vsync_tearing > 0.0) {
-		float tear_dist = warped_coords.y - v_time_pack1.w;
-		warped_coords.x += exp(-100.0 * tear_dist * tear_dist) * sin(warped_coords.y * 150.0) * vsync_tearing;
-	}
-
-	// --- ADVANCED SWEEP STRIPE CALCULATION ---
-	float stripe_factor = 0.0;
-	vec2 local_chroma = vec2(0.0);
-	vec2 rotated_uv = vec2(0.0);
-	
-	if (use_sweep_stripe) {
-		vec2 centered_uv = warped_coords - 0.5;
-		
-		rotated_uv = vec2(
-			centered_uv.x * v_stripe_calc.y - centered_uv.y * v_stripe_calc.z,
-			centered_uv.x * v_stripe_calc.z + centered_uv.y * v_stripe_calc.y
-		) + 0.5;
-
-		float half_w = stripe_width * 0.5;
-		float norm_dist = abs(rotated_uv.y - v_stripe_calc.x) / half_w;
-
-		if (norm_dist <= 1.0) {
-			if (stripe_profile == 1) { 
-				stripe_factor = exp(-4.0 * norm_dist * norm_dist);
-			} else if (stripe_profile == 2) { 
-				stripe_factor = (1.0 - norm_dist) * (1.0 - norm_dist); 
-			} else { 
-				float norm_smooth = max((rotated_uv.y < v_stripe_calc.x) ? stripe_smoothness_lead : stripe_smoothness_trail, 0.001);
-				float t = clamp((1.0 - norm_dist) / norm_smooth, 0.0, 1.0);
-				
-				if (stripe_profile == 0) {
-					stripe_factor = t * t * (3.0 - 2.0 * t);
-				} else {
-					stripe_factor = (0.5 + 0.5 * cos(norm_dist * PI)) * t;
+			if (norm_dist <= 1.0) {
+				if (stripe_profile == 1) stripe_factor = exp(-4.0 * norm_dist * norm_dist);
+				else if (stripe_profile == 2) stripe_factor = (1.0 - norm_dist) * (1.0 - norm_dist); 
+				else { 
+					float norm_smooth = max((rotated_uv.y < v_stripe_calc.x) ? stripe_smoothness_lead : stripe_smoothness_trail, 0.001);
+					float t = clamp((1.0 - norm_dist) / norm_smooth, 0.0, 1.0);
+					if (stripe_profile == 0) stripe_factor = t * t * (3.0 - 2.0 * t);
+					else stripe_factor = (0.5 + 0.5 * cos(norm_dist * PI)) * t;
 				}
 			}
 		}
 
-		if (stripe_factor > 0.0 && stripe_enable_chroma) {
-			float chroma_mod = stripe_chroma_aberration * stripe_factor;
-			if (stripe_chroma_wave_enabled) {
-				chroma_mod *= (1.0 + sin(rotated_uv.x * stripe_chroma_wave_freq + v_time_pack2.z));
-			}
-			local_chroma = vec2(chroma_mod * stripe_chroma_red_weight, chroma_mod * stripe_chroma_blue_weight);
-		}
-	}
-	// ------------------------------------------------------------------
+		vec3 col = sample_image(warped_coords, local_chroma, tex_size);
 
-	vec3 col = sample_image(warped_coords, local_chroma, tex_size);
-
-	if (use_sweep_stripe && stripe_factor > 0.0) {
-		if (stripe_enable_hue) {
-			float current_hue = stripe_hue_shift;
-			if (stripe_hue_oscillate) {
-				float spatial_coord = ((stripe_hue_osc_axis == 1) ? rotated_uv.x : rotated_uv.y) * stripe_hue_osc_scale;
-				float osc_val = evaluate_wave(stripe_hue_osc_profile, (spatial_coord + stripe_hue_osc_offset) * stripe_hue_osc_freq + v_dyn_pack3.z);
-				current_hue += mix(stripe_hue_osc_min, stripe_hue_osc_max, osc_val) * stripe_hue_osc_intensity;
-			}
-			col = shift_hue(col, current_hue * stripe_factor);
-		}
-		if (stripe_enable_secondary_hue) {
-			float current_secondary_hue = stripe_secondary_hue_shift;
-			float current_mix_factor = stripe_secondary_mix * stripe_factor;
+		if (use_sweep_stripe && stripe_factor > 0.0) {
+			vec2 centered_uv = warped_coords - 0.5;
+			vec2 rotated_uv = vec2(centered_uv.x * v_stripe_calc.y - centered_uv.y * v_stripe_calc.z, centered_uv.x * v_stripe_calc.z + centered_uv.y * v_stripe_calc.y) + 0.5;
 			
-			if (stripe_secondary_wave_enabled) {
-				float spatial_coord = ((stripe_secondary_wave_axis == 0) ? rotated_uv.x : rotated_uv.y) * stripe_secondary_wave_scale;
-				float wave_val = evaluate_wave(stripe_secondary_wave_profile, (spatial_coord + stripe_secondary_wave_offset) * stripe_secondary_wave_freq + v_dyn_pack3.w);
-				current_secondary_hue += mix(stripe_secondary_wave_min, stripe_secondary_wave_max, wave_val) * stripe_secondary_wave_intensity;
+			if (stripe_enable_hue) {
+				float current_hue = stripe_hue_shift;
+				if (stripe_hue_oscillate) {
+					float spatial_coord = ((stripe_hue_osc_axis == 1) ? rotated_uv.x : rotated_uv.y) * stripe_hue_osc_scale;
+					float osc_val = evaluate_wave(stripe_hue_osc_profile, (spatial_coord + stripe_hue_osc_offset) * stripe_hue_osc_freq + v_dyn_pack3.z);
+					current_hue += mix(stripe_hue_osc_min, stripe_hue_osc_max, osc_val) * stripe_hue_osc_intensity;
+				}
+				col = shift_hue(col, current_hue * stripe_factor);
 			}
-			col = mix(col, shift_hue(col, current_secondary_hue * stripe_factor), current_mix_factor);
+			if (stripe_enable_secondary_hue) {
+				float current_secondary_hue = stripe_secondary_hue_shift;
+				float current_mix_factor = stripe_secondary_mix * stripe_factor;
+				if (stripe_secondary_wave_enabled) {
+					float spatial_coord = ((stripe_secondary_wave_axis == 0) ? rotated_uv.x : rotated_uv.y) * stripe_secondary_wave_scale;
+					float wave_val = evaluate_wave(stripe_secondary_wave_profile, (spatial_coord + stripe_secondary_wave_offset) * stripe_secondary_wave_freq + v_dyn_pack3.w);
+					current_secondary_hue += mix(stripe_secondary_wave_min, stripe_secondary_wave_max, wave_val) * stripe_secondary_wave_intensity;
+				}
+				col = mix(col, shift_hue(col, current_secondary_hue * stripe_factor), current_mix_factor);
+			}
+			if (stripe_enable_brightness) col *= 1.0 + stripe_factor * (stripe_brightness - 1.0); 
+			if (stripe_enable_contrast) col = mix(col, clamp((col - 0.5) * stripe_contrast + 0.5, 0.0, 1.0), stripe_factor);
+			if (stripe_enable_saturation) col = mix(vec3(dot(col, HUE_LUMA)), col, 1.0 + stripe_factor * (stripe_saturation - 1.0)); 
 		}
-		if (stripe_enable_brightness) {
-			col *= 1.0 + stripe_factor * (stripe_brightness - 1.0); 
+
+		if (v_degauss_wobble.x > 0.0) {
+			if (degauss_hue_shift_amount > 0.0) col = shift_hue(col, v_degauss_wobble.x * degauss_hue_shift_amount);
+			if (degauss_invert_strength > 0.0) col = mix(col, vec3(1.0) - col, v_degauss_wobble.x * degauss_invert_strength);
 		}
-		if (stripe_enable_contrast) {
-			col = mix(col, clamp((col - 0.5) * stripe_contrast + 0.5, 0.0, 1.0), stripe_factor);
+		if (use_dot_crawl && dot_crawl_strength > 0.0) col += length(col - srgb_to_linear(texture(tex, warped_coords + vec2(tex_pixel_size.x, 0.0)).rgb)) * sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + v_time_pack2.x) * dot_crawl_strength;
+		if (v_dyn_pack3.x > 0.0) col += srgb_to_linear(texture(tex, warped_coords - vec2(v_dyn_pack3.y, 0.0)).rgb) * v_dyn_pack3.x;
+		if (v_dyn_pack2.x > 0.0) col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_coords.y * roll_size - v_time_pack2.y)) * v_dyn_pack2.x;
+
+		if (v_dyn_pack2.z > 0.0) {
+			vec2 noise_coords = FRAGCOORD.xy * v_time_pack2.w;
+			vec3 noise_val;
+			if (chroma_noise) {
+				vec3 noise_dots = vec3(dot(noise_coords, vec2(12.9898, 78.233)), dot(noise_coords, vec2(39.346, 11.135)), dot(noise_coords, vec2(73.156, 52.235)));
+				noise_val = fract(sin(noise_dots + v_glitch_field.w) * 43758.5453);
+			} else {
+				noise_val = vec3(fract(sin(dot(noise_coords, vec2(12.9898, 78.233)) + v_glitch_field.w) * 43758.5453));
+			}
+			col += (noise_val - 0.5) * v_dyn_pack2.z;
 		}
-		if (stripe_enable_saturation) {
-			col = mix(vec3(dot(col, HUE_LUMA)), col, 1.0 + stripe_factor * (stripe_saturation - 1.0)); 
+
+		col = mask(col, FRAGCOORD.xy * v_time_pack2.w);
+
+		if (use_auto_exposure) {
+			float luma = dot(col, HUE_LUMA);
+			col = mix(col, vec3(1.0), smoothstep(exposure_threshold, 1.0, luma) * exposure_intensity);
 		}
-	}
-
-	if (v_degauss_wobble.x > 0.0) {
-		if (degauss_hue_shift_amount > 0.0) col = shift_hue(col, v_degauss_wobble.x * degauss_hue_shift_amount);
-		if (degauss_invert_strength > 0.0) col = mix(col, vec3(1.0) - col, v_degauss_wobble.x * degauss_invert_strength);
-	}
-
-	if (dot_crawl_strength > 0.0) {
-		col += length(col - srgb_to_linear(texture(tex, warped_coords + vec2(tex_pixel_size.x, 0.0)).rgb)) * sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + v_time_pack2.x) * dot_crawl_strength;
-	}
-
-	if (v_dyn_pack3.x > 0.0) {
-		col += srgb_to_linear(texture(tex, warped_coords - vec2(v_dyn_pack3.y, 0.0)).rgb) * v_dyn_pack3.x;
-	}
-
-	if (v_dyn_pack2.x > 0.0) {
-		col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_coords.y * roll_size - v_time_pack2.y)) * v_dyn_pack2.x;
-	}
-
-	if (v_dyn_pack2.z > 0.0) {
-		vec2 noise_coords = FRAGCOORD.xy * v_time_pack2.w;
-		vec3 noise_val;
-		if (chroma_noise) {
-			vec3 noise_dots = vec3(
-				dot(noise_coords, vec2(12.9898, 78.233)),
-				dot(noise_coords, vec2(39.346, 11.135)),
-				dot(noise_coords, vec2(73.156, 52.235))
-			);
-			noise_val = fract(sin(noise_dots + v_glitch_field.w) * 43758.5453);
-		} else {
-			noise_val = vec3(fract(sin(dot(noise_coords, vec2(12.9898, 78.233)) + v_glitch_field.w) * 43758.5453));
+		if (use_color_quantization) col = floor(col * color_levels) / color_levels;
+		if (use_gradient_map) {
+			float luma = dot(col, HUE_LUMA);
+			col = textureLod(gradient_texture, vec2(clamp(luma, 0.0, 1.0), 0.0), 0.0).rgb;
 		}
-		col += (noise_val - 0.5) * v_dyn_pack2.z;
+		if (use_monochrome) {
+			float luma = dot(col, HUE_LUMA);
+			col = monochrome_color.rgb * luma;
+		}
+		if (use_motion_persistence) {
+			vec3 prev_col = srgb_to_linear(texture(previous_frame_tex, warped_coords).rgb);
+			col = mix(col, prev_col, persistence_strength);
+		}
+
+		if (use_hum_bar && hum_bar_strength > 0.0) {
+			float hum = 0.5 + 0.5 * sin(warped_coords.y * 10.0 - TIME * hum_bar_speed);
+			col *= 1.0 - (hum * hum_bar_strength);
+		}
+		if (use_glare && glare_strength > 0.0) {
+			vec2 centered = warped_coords - glare_position;
+			vec2 rot_uv = vec2(centered.x * v_glare_calc.x - centered.y * v_glare_calc.y, centered.x * v_glare_calc.y + centered.y * v_glare_calc.x);
+			float glare = smoothstep(v_glare_calc.w, glare_size, abs(rot_uv.x));
+			col += vec3(glare * glare_strength);
+		}
+		if (use_glass_reflection) {
+			vec2 env_uv = warped_coords - 0.5;
+			if (glass_curve > 0.0) {
+				env_uv.x *= v_warp_power_pack.x;
+				env_uv /= 1.0 - glass_curve * (dot(env_uv, env_uv) - 0.25);
+				env_uv.x *= v_warp_power_pack.y;
+			}
+			env_uv = (env_uv * v_glass_env_pack.xy) + v_glass_env_pack.zw;
+			
+			vec3 env = textureLod(glass_env_tex, env_uv, glass_blur).rgb;
+			env = srgb_to_linear(env); 
+			
+			env *= glass_brightness;
+			if (abs(glass_saturation - 1.0) > 0.001) {
+				env = mix(vec3(dot(env, HUE_LUMA)), env, glass_saturation);
+			}
+			env *= glass_tint.rgb;
+			
+			vec3 blended;
+			if (glass_blend_mode == 0) {
+				blended = col + env;
+			} else if (glass_blend_mode == 1) {
+				blended = 1.0 - (1.0 - col) * (1.0 - env);
+			} else {
+				blended = max(col, env);
+			}
+			
+			col = mix(col, blended, glass_env_strength * glass_tint.a);
+		}
+		if (bezel_shadow_strength > 0.0) {
+			vec2 edge_dist = abs(warped_coords - 0.5) * 2.0;
+			float shadow = smoothstep(v_glare_calc.z, 1.0, max(edge_dist.x, edge_dist.y));
+			col *= 1.0 - (shadow * bezel_shadow_strength);
+		}
+		
+		if (v_optim_pack.x > 0.0) {
+			col = mix(col, power_flash_color.rgb, v_optim_pack.x);
+		}
+
+		COLOR.rgb = linear_to_srgb(col);
 	}
-
-	col = mask(col, FRAGCOORD.xy * v_time_pack2.w);
-
-	if (use_auto_exposure) {
-		float luma = dot(col, HUE_LUMA);
-		col = mix(col, vec3(1.0), smoothstep(exposure_threshold, 1.0, luma) * exposure_intensity);
-	}
-
-	if (use_color_quantization) {
-		col = floor(col * color_levels) / color_levels;
-	}
-
-	if (use_gradient_map) {
-		float luma = dot(col, HUE_LUMA);
-		col = textureLod(gradient_texture, vec2(clamp(luma, 0.0, 1.0), 0.0), 0.0).rgb;
-	}
-
-    COLOR.rgb = linear_to_srgb(col);
 }

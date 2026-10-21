@@ -16,8 +16,6 @@ extends ColorRect
 @export_group("Manual Degauss")
 @export_range(0.1, 5.0) var degauss_duration: float = 1.2
 
-var _degauss_timer: float = -1.0
-
 var vp_a: SubViewport
 var vp_b: SubViewport
 var rect_a: TextureRect
@@ -34,8 +32,6 @@ func _ready() -> void:
 	if material != null:
 		material.resource_local_to_scene = true
 		material.set_shader_parameter("degauss_progress", 1.0)
-
-	_degauss_timer = degauss_duration # Initialize at max so it doesn't trigger on boot
 
 	var shader = Shader.new()
 	shader.code = """
@@ -96,12 +92,25 @@ func _ready() -> void:
 
 	RenderingServer.frame_post_draw.connect(_on_frame_post_draw)
 
-# --- NEW: IN-GAME TRIGGER ---
+# --- INTEGRATED DEGAUSS HELPER ---
+## Call this function from anywhere in your game to trigger the degaussing effect
+func trigger_degauss(duration_seconds: float = degauss_duration) -> void:
+	if material != null:
+		material.set_shader_parameter("degauss_progress", 0.0)
+		var tween = create_tween()
+		tween.set_ease(Tween.EASE_OUT)
+		tween.set_trans(Tween.TRANS_QUART)
+		tween.tween_method(_update_degauss_uniform, 0.0, 1.0, duration_seconds)
+
+func _update_degauss_uniform(val: float) -> void:
+	if material != null:
+		material.set_shader_parameter("degauss_progress", val)
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_E:
-			_degauss_timer = 0.0 # Resetting the timer fires the one-shot animation
-# ----------------------------
+			trigger_degauss()
+# ---------------------------------
 
 func _update_resolution_params() -> void:
 	if not is_inside_tree() or material == null:
@@ -136,19 +145,6 @@ func _on_frame_post_draw() -> void:
 	var delta = get_process_delta_time()
 	if delta <= 0.0:
 		delta = 0.0166
-
-	# --- SCRIPT-DRIVEN ONE-SHOT PROGRESSION ---
-	if _degauss_timer < degauss_duration:
-		_degauss_timer += delta
-		if _degauss_timer >= degauss_duration:
-			_degauss_timer = degauss_duration
-			if material != null:
-				material.set_shader_parameter("degauss_progress", 1.0)
-		else:
-			var progress = _degauss_timer / max(0.001, degauss_duration)
-			if material != null:
-				material.set_shader_parameter("degauss_progress", progress)
-	# ------------------------------------------
 
 	var live_frame = game_viewport.get_texture()
 
