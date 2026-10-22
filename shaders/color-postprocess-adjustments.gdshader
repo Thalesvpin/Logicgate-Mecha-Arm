@@ -252,6 +252,10 @@ const mat4 BAYER_MATRIX = mat4(
     vec4(10.0, 6.0, 9.0, 5.0) / 16.0
 );
 
+const mat3 CB_PROTANOPIA = mat3(vec3(0.56667, 0.55833, 0.0), vec3(0.43333, 0.44167, 0.24167), vec3(0.0, 0.0, 0.75833));
+const mat3 CB_DEUTERANOPIA = mat3(vec3(0.625, 0.7, 0.0), vec3(0.375, 0.3, 0.3), vec3(0.0, 0.0, 0.7));
+const mat3 CB_TRITANOPIA = mat3(vec3(0.95, 0.0, 0.0), vec3(0.05, 0.43333, 0.475), vec3(0.0, 0.56667, 0.525));
+
 float hash(vec2 seed) {
     return fract(sin(dot(seed, vec2(12.9898, 78.233))) * 43758.5453);
 }
@@ -288,20 +292,21 @@ vec3 apply_blend_mode(vec3 base, vec3 blend, int mode) {
 }
 
 float get_spatial_mask(sampler2D tex, vec2 uv, float scroll_speed, float rot_degrees, bool invert, float aspect, bool lock) {
-    vec2 centered_uv = uv - 0.5;
-    if (lock) centered_uv.x *= aspect; 
+    vec2 transformed_uv = uv - 0.5;
+    if (lock) transformed_uv.x *= aspect; 
     
-    float rot_rad = radians(rot_degrees);
-    vec2 sincos = vec2(sin(rot_rad), cos(rot_rad));
-    mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
+    if (rot_degrees != 0.0) {
+        float rot_rad = radians(rot_degrees);
+        vec2 sincos = vec2(sin(rot_rad), cos(rot_rad));
+        mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
+        transformed_uv = rm * transformed_uv;
+    }
     
-    vec2 transformed_uv = rm * centered_uv;
     if (lock) transformed_uv.x /= aspect; 
     
     transformed_uv += 0.5;
     transformed_uv.x -= TIME * scroll_speed; 
     
-    // Optimized: repeat_enable handles wrapping natively on the GPU, removing the need for a fract() calculation.
     float m = texture(tex, transformed_uv).r;
     return invert ? 1.0 - m : m;
 }
@@ -327,11 +332,13 @@ vec3 apply_gradient_map(vec3 col, vec2 uv, float aspect) {
         vec2 centered_uv = uv - grad_mix_center;
         if (lock_spatial_aspect_ratio) centered_uv.x *= aspect;
         
-        float rot = radians(grad_mix_rotation);
-        vec2 sincos = vec2(sin(rot), cos(rot));
-        mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
+        vec2 rot_uv = centered_uv * grad_mix_scale;
+        if (grad_mix_rotation != 0.0) {
+            float rot = radians(grad_mix_rotation);
+            vec2 sincos = vec2(sin(rot), cos(rot));
+            rot_uv = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y)) * rot_uv;
+        }
         
-        vec2 rot_uv = (rm * centered_uv) * grad_mix_scale;
         if (lock_spatial_aspect_ratio) rot_uv.x /= aspect;
         rot_uv += 0.5;
         
@@ -346,7 +353,6 @@ vec3 apply_gradient_map(vec3 col, vec2 uv, float aspect) {
         if (grad_mix_invert) grad_coord = 1.0 - grad_coord;
         grad_coord = smoothstep(0.0, clamp(grad_mix_smoothness, 0.001, 1.0), grad_coord);
         
-        // Optimized: repeat_enable handles the Y-axis native wrapping
         current_mix *= texture(grad_mix_mask, vec2(grad_coord, rot_uv.y)).r;
     }
     
@@ -357,7 +363,6 @@ vec3 apply_gradient_map(vec3 col, vec2 uv, float aspect) {
 vec3 apply_tonemapping(vec3 col, vec2 uv, float aspect) {
     if (invert_colors && invert_before_grading) col = 1.0 - col;
     
-    // 1. Advanced Color Grading
     if (use_levels_and_cdl) {
         col = smoothstep(vec3(black_point), vec3(white_point), col);
         col = pow(max(col * gain + lift, vec3(0.0)), gamma); 
@@ -369,13 +374,11 @@ vec3 apply_tonemapping(vec3 col, vec2 uv, float aspect) {
     
     float lum = dot(col, LUM_COEFF);
 
-    // 2. Dual Tone (Sepia mapping)
     if (use_dual_tone) {
         vec3 dual_mapped = mix(dual_tone_shadows, dual_tone_highlights, lum);
         col = mix(col, dual_mapped, dual_tone_intensity);
     }
     
-    // 3. Hue, Saturation, Sin City
     if (hue != 0.0 || saturation != 1.0 || use_sin_city_isolation) {
         vec3 hsv = rgb_to_hsv(col);
         
@@ -405,12 +408,10 @@ vec3 apply_tonemapping(vec3 col, vec2 uv, float aspect) {
         float max_c = max(max(col.r, col.g), col.b);
         float min_c = min(min(col.r, col.g), col.b);
         float sat_diff = max_c - min_c;
-        float v_amt = vibrance * (1.0 - sat_diff);
-        float current_lum = dot(col, LUM_COEFF); // Dynamically updating lum fixes blending edge-cases
-        col = mix(vec3(current_lum), col, 1.0 + v_amt);
+        float current_lum = dot(col, LUM_COEFF);
+        col = mix(vec3(current_lum), col, 1.0 + (vibrance * (1.0 - sat_diff)));
     }
     
-    // 4. Brightness, Contrast, Exposure, Temp
     if (brightness != 1.0) {
         float m = brightness_spatial_enable ? get_spatial_mask(brightness_spatial_mask, uv, brightness_spatial_scroll_speed, brightness_spatial_rotation, brightness_spatial_invert, aspect, lock_spatial_aspect_ratio) : 1.0;
         col = mix(col, col * brightness, m);
@@ -437,9 +438,8 @@ vec3 apply_tonemapping(vec3 col, vec2 uv, float aspect) {
     return col;
 }
 
-vec3 get_blurred_screen(vec2 uv, float mipmap_blur, float blur_mask_val) {
+vec3 get_blurred_raw_screen(vec2 uv, float mipmap_blur, float blur_mask_val) {
     vec3 out_col = vec3(0.0);
-    
     float r_int = use_radial_blur ? (radial_blur_intensity * blur_mask_val) : 0.0;
     float d_int = use_directional_blur ? (dir_blur_intensity * blur_mask_val) : 0.0;
     
@@ -448,15 +448,10 @@ vec3 get_blurred_screen(vec2 uv, float mipmap_blur, float blur_mask_val) {
         vec2 d_vec = vec2(cos(d_angle), sin(d_angle)) * d_int;
         vec2 r_offset = (uv - radial_blur_center) * r_int;
         
-        float jitter = 0.0;
         float actual_mip = mipmap_blur;
+        float jitter = use_blur_smoothing ? hash(uv) * blur_smoothing_intensity : 0.0;
+        if (use_blur_smoothing && blur_smoothing_mode == 1) actual_mip += 1.5; 
         
-        if (use_blur_smoothing) {
-            jitter = hash(uv) * blur_smoothing_intensity;
-            if (blur_smoothing_mode == 1) actual_mip += 1.5; 
-        }
-        
-        // Optimized: ALU Hoisting pre-calculates the iteration steps outside of the loop
         float inv_samples = 1.0 / float(blur_samples);
         vec2 base_suv = uv - (d_vec * 0.5);
         vec2 step_suv = (r_offset + d_vec) * inv_samples;
@@ -470,7 +465,6 @@ vec3 get_blurred_screen(vec2 uv, float mipmap_blur, float blur_mask_val) {
         out_col = textureLod(screen_texture, uv, mipmap_blur).rgb;
     }
     
-    // Anamorphic Flare Addition
     if (use_anamorphic_flare) {
         vec3 flare_col = vec3(0.0);
         float inv_a = 1.0 / float(anamorphic_samples);
@@ -487,26 +481,20 @@ vec3 get_blurred_screen(vec2 uv, float mipmap_blur, float blur_mask_val) {
     return out_col;
 }
 
-vec3 get_base_color(vec2 uv, float blur_mask_val, float actual_blur, float aspect) {
-    vec3 col = get_blurred_screen(uv, actual_blur, blur_mask_val);
-    if (use_gradient_map && grad_before_tonemapping) col = apply_gradient_map(col, uv, aspect);
-    col = apply_tonemapping(col, uv, aspect);
-    if (use_gradient_map && !grad_before_tonemapping) col = apply_gradient_map(col, uv, aspect);
-    return col;
-}
-
 vec3 apply_overlays(vec3 col, vec2 uv, vec2 tex_size) {
     if (use_color_quantization) col = floor(col * color_quantization_steps) / color_quantization_steps;
 
     float current_lum = dot(col, LUM_COEFF);
 
     if (use_halftone) {
-        float rot = radians(halftone_angle);
-        vec2 sincos = vec2(sin(rot), cos(rot));
-        mat2 rm = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y));
+        vec2 grid_uv = uv * (tex_size / halftone_size);
+        if (halftone_angle != 0.0) {
+            float rot = radians(halftone_angle);
+            vec2 sincos = vec2(sin(rot), cos(rot));
+            grid_uv = mat2(vec2(sincos.y, -sincos.x), vec2(sincos.x, sincos.y)) * grid_uv;
+        }
         
-        vec2 grid_uv = fract(rm * (uv * (tex_size / halftone_size)));
-        float dist = length(grid_uv - 0.5); 
+        float dist = length(fract(grid_uv) - 0.5); 
         float radius = (1.0 - current_lum) * 0.707; 
         float circle = smoothstep(radius - halftone_smoothness, radius + halftone_smoothness, dist);
         
@@ -519,21 +507,15 @@ vec3 apply_overlays(vec3 col, vec2 uv, vec2 tex_size) {
         vec2 dith_pos = uv * (tex_size / dither_size);
         int bx = int(dith_pos.x) % 4; 
         int by = int(dith_pos.y) % 4;
-        float threshold = BAYER_MATRIX[bx][by];
-        
-        vec3 dithered = mix(dither_color_1, dither_color_2, step(threshold, current_lum));
-        col = mix(col, dithered, dither_opacity);
+        col = mix(col, mix(dither_color_1, dither_color_2, step(BAYER_MATRIX[bx][by], current_lum)), dither_opacity);
     }
 
     if (use_vignette) {
         vec2 centered_uv = uv - 0.5;
         float dist_sq = dot(centered_uv, centered_uv) * vignette_scale;
-        
         vec3 vig_color = texture(vignette_gradient, vec2(clamp(dist_sq, 0.0, 1.0), 0.0)).rgb;
         float vig_alpha = texture(vignette_opacity_mask, vec2(clamp(dist_sq, 0.0, 1.0), 0.0)).r * vignette_master_opacity; 
-        
-        vec3 blended = apply_blend_mode(col, vig_color, vignette_blend_mode);
-        col = mix(col, blended, vig_alpha);
+        col = mix(col, apply_blend_mode(col, vig_color, vignette_blend_mode), vig_alpha);
     }
 
     if (use_lens_dirt && lens_dirt_intensity > 0.0) {
@@ -559,9 +541,9 @@ vec3 apply_overlays(vec3 col, vec2 uv, vec2 tex_size) {
     if (invert_colors && !invert_before_grading) col = 1.0 - col;
 
     switch (color_blindness_mode) {
-        case 1: col = vec3(dot(col, vec3(0.56667, 0.43333, 0.0)), dot(col, vec3(0.55833, 0.44167, 0.0)), dot(col, vec3(0.0, 0.24167, 0.75833))); break;
-        case 2: col = vec3(dot(col, vec3(0.625, 0.375, 0.0)), dot(col, vec3(0.7, 0.3, 0.0)), dot(col, vec3(0.0, 0.3, 0.7))); break;
-        case 3: col = vec3(dot(col, vec3(0.95, 0.05, 0.0)), dot(col, vec3(0.0, 0.43333, 0.56667)), dot(col, vec3(0.0, 0.475, 0.525))); break;
+        case 1: col = CB_PROTANOPIA * col; break;
+        case 2: col = CB_DEUTERANOPIA * col; break;
+        case 3: col = CB_TRITANOPIA * col; break;
     }
 
     return col;
@@ -575,7 +557,6 @@ void fragment() {
     vec2 tex_size = vec2(textureSize(screen_texture, 0));
     float aspect = tex_size.x / tex_size.y;
     
-    // UV Manipulation (Pixelation, Snap, Frosted Glass)
     if (use_resolution_downscale) {
         vec2 blocks = tex_size / downscale_factor;
         uv = floor(uv * blocks) / blocks + (0.5 / blocks);
@@ -588,44 +569,55 @@ void fragment() {
         uv += (vec2(n, hash(uv * 100.0 + TIME + 1.0)) - 0.5) * frosted_glass_intensity;
     }
     
-    // Optimized: Only sample the blur mask if blurs are actively rendering or if we are actively debugging masks.
     float blur_mask_val = 1.0;
     bool blurs_active = use_gaussian_blur || use_radial_blur || use_directional_blur;
-    
     if (blurs_active || mask_debug_mode == 1) {
         blur_mask_val = get_spatial_mask(blur_mask, uv, blur_mask_scroll_speed, blur_mask_rotation, blur_mask_invert, aspect, lock_spatial_aspect_ratio);
     }
     
     float actual_blur = use_gaussian_blur ? (gaussian_blur_intensity * blur_mask_val) : 0.0;
-    
-    vec3 base_col = get_base_color(uv, blur_mask_val, actual_blur, aspect);
-    vec3 col = base_col;
+    vec3 base_col = vec3(0.0);
 
     if (use_chromatic_aberration) {
         float ca_m = get_spatial_mask(ca_mask, uv, ca_mask_scroll_speed, ca_mask_rotation, ca_mask_invert, aspect, lock_spatial_aspect_ratio);
         vec2 ca_offset = vec2(0.0);
-        float ca_rad = radians(ca_angle);
-        vec2 sincos = vec2(sin(ca_rad), cos(ca_rad));
         
-        switch (ca_type) {
-            case 0: ca_offset = vec2(sincos.y, sincos.x) * chromatic_aberration * ca_m; break;
-            case 1: ca_offset = (uv - ca_center) * chromatic_aberration * ca_m; break;
-            case 2: ca_offset = reflect(uv - ca_center, vec2(sincos.y, sincos.x)) * chromatic_aberration * ca_m; break;
+        if (ca_angle != 0.0) {
+            float ca_rad = radians(ca_angle);
+            vec2 sincos = vec2(sin(ca_rad), cos(ca_rad));
+            switch (ca_type) {
+                case 0: ca_offset = vec2(sincos.y, sincos.x) * chromatic_aberration * ca_m; break;
+                case 1: ca_offset = (uv - ca_center) * chromatic_aberration * ca_m; break;
+                case 2: ca_offset = reflect(uv - ca_center, vec2(sincos.y, sincos.x)) * chromatic_aberration * ca_m; break;
+            }
+        } else {
+            switch (ca_type) {
+                case 0: ca_offset = vec2(0.0, 1.0) * chromatic_aberration * ca_m; break;
+                case 1: ca_offset = (uv - ca_center) * chromatic_aberration * ca_m; break;
+                case 2: ca_offset = reflect(uv - ca_center, vec2(0.0, 1.0)) * chromatic_aberration * ca_m; break;
+            }
         }
         
-        vec3 c1 = get_base_color(uv + ca_offset, blur_mask_val, actual_blur, aspect);
-        vec3 c2 = get_base_color(uv - ca_offset, blur_mask_val, actual_blur, aspect);
+        vec3 c1 = get_blurred_raw_screen(uv + ca_offset, actual_blur, blur_mask_val);
+        vec3 c2 = get_blurred_raw_screen(uv - ca_offset, actual_blur, blur_mask_val);
+        vec3 c_base = get_blurred_raw_screen(uv, actual_blur, blur_mask_val);
         
         if (use_5tap_ca) {
-            vec3 c1_half = get_base_color(uv + ca_offset * 0.5, blur_mask_val, actual_blur, aspect);
-            vec3 c2_half = get_base_color(uv - ca_offset * 0.5, blur_mask_val, actual_blur, aspect);
-            col = (c1 * ca_color_1) + (c1_half * ca_color_inter_1) + (base_col * ca_color_2) + (c2_half * ca_color_inter_2) + (c2 * ca_color_3);
+            vec3 c1_half = get_blurred_raw_screen(uv + ca_offset * 0.5, actual_blur, blur_mask_val);
+            vec3 c2_half = get_blurred_raw_screen(uv - ca_offset * 0.5, actual_blur, blur_mask_val);
+            base_col = (c1 * ca_color_1) + (c1_half * ca_color_inter_1) + (c_base * ca_color_2) + (c2_half * ca_color_inter_2) + (c2 * ca_color_3);
         } else {
-            col = (c1 * ca_color_1) + (base_col * ca_color_2) + (c2 * ca_color_3);
+            base_col = (c1 * ca_color_1) + (c_base * ca_color_2) + (c2 * ca_color_3);
         }
+    } else {
+        base_col = get_blurred_raw_screen(uv, actual_blur, blur_mask_val);
     }
 
-    col = clamp(apply_overlays(col, uv, tex_size), 0.0, 1.0);
+    if (use_gradient_map && grad_before_tonemapping) base_col = apply_gradient_map(base_col, uv, aspect);
+    base_col = apply_tonemapping(base_col, uv, aspect);
+    if (use_gradient_map && !grad_before_tonemapping) base_col = apply_gradient_map(base_col, uv, aspect);
+
+    vec3 col = clamp(apply_overlays(base_col, uv, tex_size), 0.0, 1.0);
     
     // --- WORKFLOW & DEBUGGING OVERRIDES ---
     if (split_screen_preview && SCREEN_UV.x > split_screen_x) {
@@ -635,7 +627,7 @@ void fragment() {
     if (mask_debug_mode != 0) {
         float m = 0.0;
         switch (mask_debug_mode) {
-            case 1: m = blur_mask_val; break; // Prevents redundant mask re-evaluation
+            case 1: m = blur_mask_val; break; 
             case 2: m = get_spatial_mask(hue_spatial_mask, uv, hue_spatial_scroll_speed, hue_spatial_rotation, hue_spatial_invert, aspect, lock_spatial_aspect_ratio); break;
             case 3: m = get_spatial_mask(saturation_spatial_mask, uv, saturation_spatial_scroll_speed, saturation_spatial_rotation, saturation_spatial_invert, aspect, lock_spatial_aspect_ratio); break;
             case 4: m = get_spatial_mask(brightness_spatial_mask, uv, brightness_spatial_scroll_speed, brightness_spatial_rotation, brightness_spatial_invert, aspect, lock_spatial_aspect_ratio); break;
@@ -650,10 +642,7 @@ void fragment() {
     
     if (show_luminance_heatmap) {
         float final_lum = dot(col, LUM_COEFF);
-        float r = clamp((final_lum - 0.5) * 2.0, 0.0, 1.0);
-        float g = 1.0 - abs(final_lum - 0.5) * 2.0;
-        float b = clamp((0.5 - final_lum) * 2.0, 0.0, 1.0);
-        col = vec3(r, g, b);
+        col = vec3(clamp((final_lum - 0.5) * 2.0, 0.0, 1.0), 1.0 - abs(final_lum - 0.5) * 2.0, clamp((0.5 - final_lum) * 2.0, 0.0, 1.0));
     }
     
     switch (channel_isolation) {
