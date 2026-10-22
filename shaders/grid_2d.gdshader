@@ -74,17 +74,6 @@ uniform float subgrid_rail_offset : hint_range(0.0, 0.5) = 0.0;
 uniform float subgrid_dash_size : hint_range(0.0, 2.0) = 0.0;
 uniform float subgrid_parallax_mult : hint_range(0.0, 2.0) = 1.0; 
 
-group_uniforms MicroGrid;
-uniform bool use_microgrid = false;
-uniform int micro_grid_style : hint_enum("Lines", "Dots", "Crosses", "Brackets") = 0;
-uniform float microgrid_divisions : hint_range(1.0, 10.0) = 5.0;
-uniform float micro_line_thickness : hint_range(0.1, 5.0) = 0.5;
-uniform float micro_dot_cross_size : hint_range(0.5, 10.0) = 1.0;
-uniform float micro_smoothness : hint_range(0.0, 10.0) = 1.0;
-uniform vec4 microgrid_color : source_color = vec4(0.1, 0.1, 0.15, 0.5);
-uniform float micro_opacity : hint_range(0.0, 1.0) = 1.0;
-uniform float micro_parallax_mult : hint_range(0.0, 2.0) = 1.0;
-
 group_uniforms Overlays;
 uniform bool use_checkerboard = false;
 uniform vec4 checker_color : source_color = vec4(0.1, 0.1, 0.12, 1.0);
@@ -109,12 +98,10 @@ varying vec2 v_local_pos;
 varying vec2 v_global_pos;
 varying vec2 v_main_uv;
 varying vec2 v_sub_uv;
-varying vec2 v_micro_uv;
 varying float v_camera_zoom;
 varying float v_effective_radius;
 varying float v_ripple_total_span;
 varying float v_ripple_span_inv;
-varying float v_ripple_wave_mult;
 varying float v_shock_width;
 varying float v_shock_width_inv;
 varying float v_cursor_force;
@@ -122,10 +109,8 @@ varying float v_ripple_force;
 varying vec4 v_c_bg;
 varying vec4 v_c_main;
 varying vec4 v_c_sub;
-varying vec4 v_c_mi;
 varying float v_main_fw_inv;
 varying float v_sub_fw_inv;
-varying float v_micro_fw_inv;
 
 vec3 hue_shift(vec3 color, float shift) {
 	const vec3 k = vec3(0.57735);
@@ -153,18 +138,15 @@ void vertex() {
 	} else {
 		v_sub_uv = v_main_uv * subgrid_divisions + (pan_offset * subgrid_parallax_mult / grid_pixel_size * subgrid_divisions);
 	}
-	v_micro_uv = v_main_uv * (subgrid_divisions * microgrid_divisions) + (pan_offset * micro_parallax_mult / grid_pixel_size * (subgrid_divisions * microgrid_divisions));
 	
 	// Analytic Derivative Replacement
 	float fw_base = max(base_uv_scale.x, base_uv_scale.y);
 	v_main_fw_inv = 1.0 / max(0.0001, fw_base);
 	v_sub_fw_inv = absolute_subgrid ? (1.0 / max(0.0001, v_camera_zoom / absolute_subgrid_size)) : (1.0 / max(0.0001, fw_base * subgrid_divisions));
-	v_micro_fw_inv = 1.0 / max(0.0001, fw_base * (subgrid_divisions * microgrid_divisions));
 	
 	// Precomputed Constants
 	v_ripple_total_span = ripple_thickness + (float(ripple_ring_count - 1) * ripple_ring_spacing);
 	v_ripple_span_inv = 1.0 / max(0.001, v_ripple_total_span);
-	v_ripple_wave_mult = 3.14159 * float(ripple_ring_count) * ripple_frequency;
 	v_shock_width = v_effective_radius * 0.5;
 	v_shock_width_inv = 1.0 / max(0.001, v_shock_width);
 	v_cursor_force = cursor_repulsion / 1000.0;
@@ -174,7 +156,6 @@ void vertex() {
 	v_c_bg = bg_color;
 	v_c_main = grid_color;
 	v_c_sub = subgrid_color;
-	v_c_mi = microgrid_color;
 	
 	if (bg_hue_shift_speed != 0.0) v_c_bg.rgb = hue_shift(v_c_bg.rgb, TIME * bg_hue_shift_speed);
 	if (main_hue_shift_speed != 0.0) v_c_main.rgb = hue_shift(v_c_main.rgb, TIME * main_hue_shift_speed);
@@ -182,16 +163,19 @@ void vertex() {
 	
 	v_c_main.a *= main_opacity;
 	v_c_sub.a *= sub_opacity;
-	v_c_mi.a *= micro_opacity;
 }
 
+// 100% Trig-Free Grid Evaluator
 float get_grid_val(vec2 uv, int style, float fw_inv, float th, float sz, float rail, float dash, bool use_mod, float t_mod) {
 	vec2 p = abs(fract(uv) - 0.5);
 	if (rail > 0.001) p = abs(p - rail);
 	
 	if (use_mod) {
 		vec2 id = floor(uv);
-		float mod_mult = 1.0 + (sin(id.x * 12.9898 + id.y * 78.233) * t_mod);
+		// ALGEBRAIC HASH: Replaces slow sin() with hardware-fast fractions
+		float hash = fract(id.x * 0.1713 + id.y * 0.3719);
+		hash = fract(hash * (hash + 13.14)) * 2.0 - 1.0; 
+		float mod_mult = 1.0 + (hash * t_mod);
 		th *= mod_mult; sz *= mod_mult;
 	}
 	
@@ -215,13 +199,20 @@ float get_grid_val(vec2 uv, int style, float fw_inv, float th, float sz, float r
 	}
 }
 
+// 100% Trig-Free Direction Processor
 vec2 get_mode_direction(vec2 base_dir, float norm_dist, float force) {
 	if (repulsion_mode == 0) return base_dir * force; 
 	if (repulsion_mode == 1) return -base_dir * force; 
 	if (repulsion_mode == 2) return vec2(-base_dir.y, base_dir.x) * (force * repulsion_swirl_angle); 
 	if (repulsion_mode == 3) return base_dir * ((pow(norm_dist, max(0.01, 1.0 - repulsion_pinch_amount)) - norm_dist) * force * 2.0);
 	if (repulsion_mode == 4) return -base_dir * ((norm_dist - pow(norm_dist, max(0.01, 1.0 + repulsion_pinch_amount))) * force * 2.0);
-	if (repulsion_mode == 5) return base_dir * (sin(norm_dist * 3.14159 * repulsion_wave_freq) * force); 
+	
+	if (repulsion_mode == 5) {
+		// Parabolic approximate replacing sin()
+		float f = fract(norm_dist * repulsion_wave_freq);
+		float tri = abs(f * 2.0 - 1.0) * 2.0 - 1.0;
+		return base_dir * (tri * abs(tri) * force); 
+	}
 	
 	vec2 perp = vec2(-base_dir.y, base_dir.x);
 	vec2 spiral = mix(base_dir, perp, clamp(abs(repulsion_swirl_angle) * 0.2, 0.0, 1.0));
@@ -229,7 +220,7 @@ vec2 get_mode_direction(vec2 base_dir, float norm_dist, float force) {
 }
 
 void fragment() {
-	vec4 c_bg = v_c_bg; vec4 c_main = v_c_main; vec4 c_sub = v_c_sub; vec4 c_mi = v_c_mi;
+	vec4 c_bg = v_c_bg; vec4 c_main = v_c_main; vec4 c_sub = v_c_sub;
 	
 	vec2 shared_warp = vec2(0.0);
 	float light_opacity = 0.0;
@@ -250,7 +241,6 @@ void fragment() {
 		}
 	}
 	
-	// FIX: Use a "processed" counter to find all scattered active clicks in the ring buffer safely
 	if (use_click_repulsion && active_click_repulsion_count > 0) {
 		int processed = 0;
 		for (int i = 0; i < MAX_CLICKS; i++) {
@@ -260,23 +250,33 @@ void fragment() {
 			processed++;
 			
 			vec2 diff = v_global_pos - repulsion_click_sources_v4[i].xy;
-			if (abs(diff.x) > c_rad + v_shock_width || abs(diff.y) > c_rad + v_shock_width) continue;
-			
+			float max_bound = c_rad + v_shock_width + repulsion_inner_radius;
 			diff.x *= repulsion_aspect;
-			float dist = max(0.0, length(diff) - repulsion_inner_radius);
+			
+			// CULLING STEP 1: Outer Square Bounds
+			if (abs(diff.x) > max_bound || abs(diff.y) > max_bound) continue;
+			
+			// CULLING STEP 2: Perfect Squared Circular Bounds (Avoids length() on empty pixels)
+			float r_sqr = dot(diff, diff);
+			if (r_sqr > max_bound * max_bound) continue;
+			float min_bound = max(0.0, c_rad - v_shock_width + repulsion_inner_radius);
+			if (r_sqr < min_bound * min_bound) continue;
+			
+			// Only execute hardware inverse-sqrt if exactly ON the ring
+			float inv_dist = inversesqrt(r_sqr);
+			float dist = max(0.0, (r_sqr * inv_dist) - repulsion_inner_radius);
 			float c_diff = abs(dist - c_rad);
 			
 			if (c_diff < v_shock_width) {
 				float norm = 1.0 - (c_diff * v_shock_width_inv);
-				float norm_click = norm * (2.0 - norm); 
+				float norm_click = norm * (2.0 - norm); // Quadratic approximation (No Sin)
 				float force = norm_click * repulsion_click_sources_v4[i].w * v_cursor_force;
-				vec2 base_dir = (dist > 0.001) ? (diff / dist) : vec2(1.0, 0.0);
+				vec2 base_dir = (r_sqr > 0.0001) ? (diff * inv_dist) : vec2(1.0, 0.0);
 				shared_warp += get_mode_direction(base_dir, norm_click, force);
 			}
 		}
 	}
 	
-	// FIX: Use a "processed" counter here as well
 	if (use_ripple && active_ripple_count > 0) {
 		int processed = 0;
 		for (int i = 0; i < MAX_CLICKS; i++) {
@@ -286,18 +286,33 @@ void fragment() {
 			processed++;
 			
 			vec2 diff = v_global_pos - ripple_sources_v4[i].xy;
-			if (abs(diff.x) > r_rad + v_ripple_total_span || abs(diff.y) > r_rad + v_ripple_total_span) continue;
+			float max_bound = r_rad + v_ripple_total_span;
 			
-			float r_dist = length(diff);
+			// CULLING STEP 1: Outer Square Bounds
+			if (abs(diff.x) > max_bound || abs(diff.y) > max_bound) continue;
+			
+			// CULLING STEP 2: Perfect Squared Circular Bounds
+			float r_sqr = dot(diff, diff);
+			if (r_sqr > max_bound * max_bound) continue;
+			float min_bound = max(0.0, r_rad - v_ripple_total_span);
+			if (r_sqr < min_bound * min_bound) continue;
+			
+			// Only execute hardware inverse-sqrt if exactly ON the ring
+			float inv_dist = inversesqrt(r_sqr);
+			float r_dist = r_sqr * inv_dist;
 			float r_diff = abs(r_dist - r_rad);
 			
 			if (r_diff < v_ripple_total_span) {
 				float gp = r_diff * v_ripple_span_inv;
-				float warp_wave = sin(gp * v_ripple_wave_mult);
+				
+				// ALGEBRAIC PARABOLA WAVE: Replaces heavy sin() 
+				float f = fract(gp * ripple_frequency * float(ripple_ring_count));
+				float tri = abs(f * 2.0 - 1.0) * 2.0 - 1.0; 
+				float warp_wave = tri * abs(tri); 
 				float light_wave = abs(warp_wave);
 				
 				if (ripple_grid_distortion > 0.001) {
-					vec2 r_dir = (r_dist > 0.001) ? (diff / r_dist) : vec2(1.0, 0.0);
+					vec2 r_dir = (r_sqr > 0.0001) ? (diff * inv_dist) : vec2(1.0, 0.0);
 					shared_warp += r_dir * (warp_wave * v_ripple_force);
 				}
 				
@@ -317,17 +332,13 @@ void fragment() {
 	
 	vec2 m_uv = v_main_uv + shared_warp;
 	vec2 s_uv = v_sub_uv + shared_warp;
-	vec2 mi_uv = v_micro_uv + shared_warp;
 	
 	float mT = (main_grid_style == 0) ? main_line_thickness : main_dot_cross_size;
 	float sT = (subgrid_style == 0) ? subgrid_line_thickness : subgrid_dot_cross_size;
-	float miT = (micro_grid_style == 0) ? micro_line_thickness : micro_dot_cross_size;
 	float mS = max(0.001, (main_grid_style == 0) ? line_smoothness : dot_cross_smoothness);
 	float sS = max(0.001, (subgrid_style == 0) ? line_smoothness : dot_cross_smoothness);
-	float miS = max(0.001, micro_smoothness);
 	float mCth = max(1.0, main_dot_cross_size * 0.35); 
 	float sCth = max(1.0, subgrid_dot_cross_size * 0.35); 
-	float miCth = max(1.0, micro_dot_cross_size * 0.35);
 	
 	float main_val = get_grid_val(m_uv, main_grid_style, v_main_fw_inv, mCth, mT, main_rail_offset, main_dash_size, use_main_thickness_mod, main_thickness_mod);
 	float main_mask = 1.0 - smoothstep(mT - mS, mT + mS, main_val);
@@ -335,14 +346,8 @@ void fragment() {
 	float sub_val = get_grid_val(s_uv, subgrid_style, v_sub_fw_inv, sCth, sT, subgrid_rail_offset, subgrid_dash_size, false, 0.0);
 	float sub_mask = 1.0 - smoothstep(sT - sS, sT + sS, sub_val);
 	
-	float micro_mask = 0.0;
-	if (use_microgrid) {
-		float mi_val = get_grid_val(mi_uv, micro_grid_style, v_micro_fw_inv, miCth, miT, 0.0, 0.0, false, 0.0);
-		micro_mask = 1.0 - smoothstep(miT - miS, miT + miS, mi_val);
-	}
-	
 	if (hole_punch_radius > 0.001 && cursor_dist < hole_punch_radius) {
-		main_mask = 0.0; sub_mask = 0.0; micro_mask = 0.0;
+		main_mask = 0.0; sub_mask = 0.0;
 	}
 	
 	if (use_mouse_highlight && cursor_dist < v_effective_radius) {
@@ -359,7 +364,6 @@ void fragment() {
 	if (light_opacity > 0.0) {
 		if (highlight_main_grid) { c_main.rgb += added_light; c_main.a = invert_highlight ? max(0.0, c_main.a - light_opacity) : min(1.0, c_main.a + light_opacity); }
 		if (highlight_subgrid) { c_sub.rgb += added_light; c_sub.a = invert_highlight ? max(0.0, c_sub.a - light_opacity) : min(1.0, c_sub.a + light_opacity); }
-		if (use_microgrid) { c_mi.rgb += added_light; c_mi.a = invert_highlight ? max(0.0, c_mi.a - light_opacity) : min(1.0, c_mi.a + light_opacity); }
 		if (highlight_background) { c_bg.rgb += added_light; c_bg.a = invert_highlight ? max(0.0, c_bg.a - light_opacity) : min(1.0, c_bg.a + light_opacity); }
 	}
 	
@@ -371,12 +375,10 @@ void fragment() {
 		}
 	}
 	
-	vec3 current_bg = use_microgrid ? mix(c_bg.rgb, c_mi.rgb, micro_mask * c_mi.a) : c_bg.rgb;
-	vec3 sub_rgb = mix(current_bg, c_sub.rgb, sub_mask * c_sub.a);
+	vec3 sub_rgb = mix(c_bg.rgb, c_sub.rgb, sub_mask * c_sub.a);
 	vec3 final_rgb = mix(sub_rgb, c_main.rgb, main_mask * c_main.a);
 	
 	vec4 final_color = vec4(final_rgb, c_bg.a);
 	if (invert_colors) final_color.rgb = vec3(1.0) - final_color.rgb;
-	
 	COLOR = final_color;
 }
