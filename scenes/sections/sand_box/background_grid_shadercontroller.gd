@@ -19,8 +19,12 @@ const MAX_CLICK_INSTANCES: int = 8
 
 var _viewport: Viewport = null
 var _was_mouse_pressed: bool = false
-var _ripples: Array[Dictionary] = []
-var _click_repulsions: Array[Dictionary] = []
+
+# Zero-Allocation Ring Buffers
+var _ripples := PackedVector4Array()
+var _reps := PackedVector4Array()
+var _rip_idx: int = 0
+var _rep_idx: int = 0
 
 func _apply_theme() -> void:
 	var mat := material as ShaderMaterial
@@ -65,9 +69,15 @@ func _process(delta: float) -> void:
 	var vp := get_viewport()
 	if not vp: return 
 	
+	# Initialize Ring Buffers safely once
+	if _ripples.size() != MAX_CLICK_INSTANCES:
+		_ripples.resize(MAX_CLICK_INSTANCES)
+		_ripples.fill(Vector4(-100000.0, 0.0, 0.0, 0.0))
+		_reps.resize(MAX_CLICK_INSTANCES)
+		_reps.fill(Vector4(-100000.0, 0.0, 0.0, 0.0))
+	
 	var local_mouse := get_local_mouse_position()
 	var sz := size
-	
 	mat.set_shader_parameter("rect_size", sz)
 	
 	var is_inside_rect := local_mouse.x >= 0.0 and local_mouse.x <= sz.x and local_mouse.y >= 0.0 and local_mouse.y <= sz.y
@@ -83,54 +93,49 @@ func _process(delta: float) -> void:
 		
 	var is_pressed := Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	if is_pressed and not _was_mouse_pressed and is_valid:
-		var click_pos = get_global_mouse_position()
+		var c_pos = get_global_mouse_position()
 		
-		_ripples.append({"pos": click_pos, "radius": 0.0})
-		if _ripples.size() > MAX_CLICK_INSTANCES:
-			_ripples.pop_front()
-			
-		_click_repulsions.append({"pos": click_pos, "radius": 0.0})
-		if _click_repulsions.size() > MAX_CLICK_INSTANCES:
-			_click_repulsions.pop_front()
+		# Write to Ring Buffer instantly (No Memory Allocation)
+		_rip_idx = (_rip_idx + 1) % MAX_CLICK_INSTANCES
+		_ripples[_rip_idx] = Vector4(c_pos.x, c_pos.y, 0.01, 1.0)
+		
+		_rep_idx = (_rep_idx + 1) % MAX_CLICK_INSTANCES
+		_reps[_rep_idx] = Vector4(c_pos.x, c_pos.y, 0.01, 1.0)
 
 	_was_mouse_pressed = is_pressed
 	
-	var active_ripple_vectors: Array[Vector4] = []
-	var ripple_decay_rate: float = mat.get_shader_parameter("ripple_decay") if mat.get_shader_parameter("ripple_decay") != null else 1.0
+	var needs_redraw := false
+	var decay_rate: float = mat.get_shader_parameter("ripple_decay") if mat.get_shader_parameter("ripple_decay") != null else 1.0
+	var active_rip_count := 0
+	var active_rep_count := 0
 	
-	var i = _ripples.size() - 1
-	while i >= 0:
-		_ripples[i]["radius"] += ripple_speed * delta
-		if _ripples[i]["radius"] > ripple_max_radius:
-			_ripples.remove_at(i)
-		else:
-			var r = _ripples[i]
-			var precalc_decay = exp(-r["radius"] * (ripple_decay_rate / 1000.0))
-			active_ripple_vectors.append(Vector4(r["pos"].x, r["pos"].y, r["radius"], precalc_decay))
-		i -= 1
-		
-	var active_repulsion_vectors: Array[Vector4] = []
-	i = _click_repulsions.size() - 1
-	while i >= 0:
-		_click_repulsions[i]["radius"] += click_repulsion_speed * delta
-		if _click_repulsions[i]["radius"] > click_repulsion_max_radius:
-			_click_repulsions.remove_at(i)
-		else:
-			var c = _click_repulsions[i]
-			var precalc_decay = exp(-c["radius"] * 0.001)
-			active_repulsion_vectors.append(Vector4(c["pos"].x, c["pos"].y, c["radius"], precalc_decay))
-		i -= 1
-		
-	while active_ripple_vectors.size() < MAX_CLICK_INSTANCES:
-		active_ripple_vectors.append(Vector4(-100000.0, -100000.0, 0.0, 0.0))
-	while active_repulsion_vectors.size() < MAX_CLICK_INSTANCES:
-		active_repulsion_vectors.append(Vector4(-100000.0, -100000.0, 0.0, 0.0))
-		
-	mat.set_shader_parameter("active_ripple_count", _ripples.size())
-	mat.set_shader_parameter("ripple_sources_v4", active_ripple_vectors)
+	# Evaluate Fixed Buffer In-Place
+	for i in MAX_CLICK_INSTANCES:
+		if _ripples[i].z > 0.0:
+			_ripples[i].z += ripple_speed * delta
+			if _ripples[i].z > ripple_max_radius:
+				_ripples[i].z = 0.0
+				_ripples[i].x = -100000.0
+			else:
+				# Precompute decay on CPU
+				_ripples[i].w = exp(-_ripples[i].z * (decay_rate / 1000.0))
+				active_rip_count += 1
+				needs_redraw = true
+				
+		if _reps[i].z > 0.0:
+			_reps[i].z += click_repulsion_speed * delta
+			if _reps[i].z > click_repulsion_max_radius:
+				_reps[i].z = 0.0
+				_reps[i].x = -100000.0
+			else:
+				_reps[i].w = exp(-_reps[i].z * 0.001)
+				active_rep_count += 1
+				needs_redraw = true
+				
+	mat.set_shader_parameter("active_ripple_count", active_rip_count)
+	mat.set_shader_parameter("ripple_sources_v4", _ripples)
+	mat.set_shader_parameter("active_click_repulsion_count", active_rep_count)
+	mat.set_shader_parameter("repulsion_click_sources_v4", _reps)
 	
-	mat.set_shader_parameter("active_click_repulsion_count", _click_repulsions.size())
-	mat.set_shader_parameter("repulsion_click_sources_v4", active_repulsion_vectors)
-	
-	if _ripples.size() > 0 or _click_repulsions.size() > 0:
+	if needs_redraw:
 		queue_redraw()

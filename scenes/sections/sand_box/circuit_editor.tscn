@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://1ufv6vajaxt3"]
+[gd_scene format=4 uid="uid://1ufv6vajaxt3"]
 
 [ext_resource type="Script" uid="uid://bldt2w7nrardq" path="res://scripts/circuit_editor.gd" id="1_ks6h5"]
 [ext_resource type="Script" uid="uid://bqns55ri5mqa5" path="res://scripts/circuit_cam.gd" id="1_n5154"]
@@ -57,8 +57,8 @@ shader_parameter/repulsion_swirl_angle = 2.0
 shader_parameter/repulsion_pinch_amount = -2.0
 shader_parameter/repulsion_wave_freq = 5.0
 shader_parameter/hole_punch_radius = 0.0
-shader_parameter/mouse_global_pos = Vector2(1302.3446, 556.8358)
-shader_parameter/repulsion_click_sources_v4 = Array[Vector4]([Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0)])
+shader_parameter/mouse_global_pos = Vector2(1140.0728, 561.00714)
+shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 570.54047, 0, 0.370289, -100000, 521.4071, 0, 0.37011126, -100000, 517.00714, 0, 0.37041447, -100000, 732.6071, 0, 0.3701853, -100000, 749.4738, 0, 0.36992854, -100000, 570.54047, 0, 0.3704084, -100000, 570.54047, 0, 0.37024075, -100000, 570.54047, 0, 0.37038755)
 shader_parameter/active_click_repulsion_count = 0
 shader_parameter/use_ripple = true
 shader_parameter/ripple_ring_count = 1
@@ -69,8 +69,8 @@ shader_parameter/ripple_decay = 1.0
 shader_parameter/ripple_grid_distortion = 0.0
 shader_parameter/use_ripple_custom_color = true
 shader_parameter/ripple_custom_color = Color(0.3, 1, 0.96500003, 1)
-shader_parameter/ripple_sources_v4 = Array[Vector4]([Vector4(1302.3445, 556.83575, 912.7324, 0.40142584), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0), Vector4(-100000, -100000, 0, 0)])
-shader_parameter/active_ripple_count = 1
+shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 570.54047, 0, 0.30181295, -100000, 521.4071, 0, 0.30187947, -100000, 517.00714, 0, 0.30191296, -100000, 732.6071, 0, 0.3017902, -100000, 749.4738, 0, 0.30189347, -100000, 570.54047, 0, 0.30195558, -100000, 570.54047, 0, 0.30185482, -100000, 570.54047, 0, 0.30197388)
+shader_parameter/active_ripple_count = 0
 shader_parameter/main_grid_style = 0
 shader_parameter/main_line_thickness = 0.5
 shader_parameter/main_dot_cross_size = 4.0
