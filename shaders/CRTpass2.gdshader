@@ -84,9 +84,10 @@ const vec3 HUE_U3 = vec3(-1.250, 1.050, 0.200);
 
 varying flat float v_sec_wobble;
 varying flat vec4 v_sec_stripe_calc;
-varying flat vec4 v_sec_time_data; // x=jitter, y=crawl, z=roll, w=field
-varying flat vec4 v_sec_scales;    // xy=mask_scale, zw=warp_pack (rect_aspect curve constraints)
-varying flat vec2 v_camera_zoom;
+varying flat vec4 v_sec_time_data; 
+varying flat vec4 v_sec_scales;    
+varying flat vec4 v_sec_cam_bc;
+varying flat mat3 v_sec_hue_mat;
 
 void vertex() {
 	if (sec_use_wobble) {
@@ -117,10 +118,24 @@ void vertex() {
 	v_sec_scales.xy = vec2(asp, 1.0) / max(sec_mask_scale, 0.001);
 	v_sec_scales.zw = vec2(rect_aspect, 1.0 / rect_aspect);
 	
-	v_camera_zoom = vec2(length(CANVAS_MATRIX[0].xy), length(CANVAS_MATRIX[1].xy));
+	v_sec_cam_bc.xy = vec2(length(CANVAS_MATRIX[0].xy), length(CANVAS_MATRIX[1].xy));
+	v_sec_cam_bc.z = sec_brightness * sec_contrast;
+	v_sec_cam_bc.w = 0.5 - 0.5 * sec_contrast;
+
+	if (sec_hue_shift > 0.0001) {
+		float c = cos(sec_hue_shift);
+		float s = sin(sec_hue_shift);
+		v_sec_hue_mat = mat3(
+			HUE_LUMA + HUE_V1 * c + HUE_U1 * s,
+			HUE_LUMA + HUE_V2 * c + HUE_U2 * s,
+			HUE_LUMA + HUE_V3 * c + HUE_U3 * s
+		);
+	} else {
+		v_sec_hue_mat = mat3(1.0);
+	}
 }
 
-vec3 shift_hue(vec3 color, float shift) {
+vec3 shift_hue_dynamic(vec3 color, float shift) {
 	float c = cos(shift);
 	float s = sin(shift);
 	vec3 col0 = HUE_LUMA + HUE_V1 * c + HUE_U1 * s;
@@ -140,7 +155,7 @@ vec4 get_secondary_mask(vec2 screen_uv, vec2 screen_dims) {
 		process_uv += 0.5;
 	}
 
-	vec2 scaled = process_uv * (screen_dims / max(v_camera_zoom, vec2(0.0001))) * v_sec_scales.xy;
+	vec2 scaled = process_uv * (screen_dims / max(v_sec_cam_bc.xy, vec2(0.0001))) * v_sec_scales.xy;
 	
 	float val = 0.0;
 	vec3 tint = vec3(1.0);
@@ -190,16 +205,15 @@ vec4 get_secondary_mask(vec2 screen_uv, vec2 screen_dims) {
 
 void fragment() {
 	vec2 screen_uv = SCREEN_UV;
-	vec2 tex_size = vec2(textureSize(SCREEN_TEXTURE, 0));
+	vec2 tex_pixel_size = SCREEN_PIXEL_SIZE;
+	vec2 tex_size = 1.0 / tex_pixel_size;
 	
 	vec4 m_data = get_secondary_mask(screen_uv, tex_size);
-	float mask_val = m_data.a;
 	vec4 base_col = texture(SCREEN_TEXTURE, screen_uv);
 	
-	if (mask_val <= 0.0) {
+	if (m_data.a <= 0.0) {
 		COLOR = base_col;
 	} else {
-		vec2 tex_pixel_size = 1.0 / tex_size;
 		vec2 warped_uv = screen_uv;
 
 		if (sec_use_wobble) warped_uv.x += v_sec_wobble;
@@ -220,10 +234,12 @@ void fragment() {
 			col = texture(SCREEN_TEXTURE, warped_uv).rgb;
 		}
 
-		if (sec_hue_shift > 0.0001) col = shift_hue(col, sec_hue_shift);
+		if (sec_hue_shift > 0.0001) col = clamp(vec3(dot(col, v_sec_hue_mat[0]), dot(col, v_sec_hue_mat[1]), dot(col, v_sec_hue_mat[2])), 0.0, 1.0);
 		if (abs(sec_saturation - 1.0) > 0.001) col = mix(vec3(dot(col, HUE_LUMA)), col, sec_saturation);
-		if (abs(sec_brightness - 1.0) > 0.001) col *= sec_brightness;
-		if (abs(sec_contrast - 1.0) > 0.001) col = clamp((col - 0.5) * sec_contrast + 0.5, 0.0, 1.0); // Optimized clamp
+		
+		if (abs(v_sec_cam_bc.z - 1.0) > 0.001 || abs(v_sec_cam_bc.w) > 0.001) {
+			col = clamp(col * v_sec_cam_bc.z + v_sec_cam_bc.w, 0.0, 1.0);
+		}
 
 		if (sec_use_sweep) {
 			vec2 sec_rot = vec2((warped_uv.x - 0.5) * v_sec_stripe_calc.y - (warped_uv.y - 0.5) * v_sec_stripe_calc.z, (warped_uv.x - 0.5) * v_sec_stripe_calc.z + (warped_uv.y - 0.5) * v_sec_stripe_calc.y) + 0.5;
@@ -231,7 +247,7 @@ void fragment() {
 			if (norm_dist <= 1.0) {
 				float t = clamp((1.0 - norm_dist) / 0.3, 0.0, 1.0);
 				float sec_stripe_factor = t * t * (3.0 - 2.0 * t);
-				col = shift_hue(col, sec_sweep_hue * sec_stripe_factor);
+				col = shift_hue_dynamic(col, sec_sweep_hue * sec_stripe_factor);
 				col *= 1.0 + sec_stripe_factor * (sec_sweep_brightness - 1.0);
 				col = mix(vec3(dot(col, HUE_LUMA)), col, 1.0 + sec_stripe_factor * (sec_sweep_saturation - 1.0));
 			}
@@ -257,6 +273,6 @@ void fragment() {
 		}
 
 		col *= m_data.rgb;
-		COLOR = mix(base_col, vec4(clamp(col, 0.0, 1.0), 1.0), mask_val);
+		COLOR = mix(base_col, vec4(clamp(col, 0.0, 1.0), 1.0), m_data.a);
 	}
 }

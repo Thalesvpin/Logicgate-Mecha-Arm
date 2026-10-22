@@ -520,13 +520,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_0aqx1"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ydu81"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_0aqx1")
+shader_parameter/tex = SubResource("ViewportTexture_ydu81")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -702,7 +702,7 @@ shader_parameter/sec_mask_pattern = 1
 shader_parameter/sec_mask_scale = 100.0
 shader_parameter/sec_mask_smoothness = 0.1
 shader_parameter/sec_mask_invert = false
-shader_parameter/rect_aspect = 0.0
+shader_parameter/rect_aspect = 1.205607476635514
 shader_parameter/sec_mask_decouple_aspect = true
 shader_parameter/sec_mask_custom_aspect = 1.0
 shader_parameter/sec_hue_shift = 2.15600010241

@@ -228,21 +228,24 @@ uniform float degauss_ripple_strength : hint_range(0.0, 0.2) = 0.05;
 
 group_uniforms;
 
+varying flat vec2 v_tex_size;
+varying flat vec2 v_tex_pixel_size;
+
 varying flat vec2 v_degauss_wobble;
+varying flat vec3 v_degauss_pack2;
 varying flat vec4 v_dyn_pack1; 
-varying flat vec3 v_dyn_pack2; 
+varying flat vec4 v_dyn_pack2; 
 varying flat vec4 v_dyn_pack3; 
 varying flat vec4 v_glitch_field; 
 varying flat vec4 v_stripe_calc;
 varying flat vec4 v_time_pack1; 
 varying flat vec4 v_time_pack2; 
-varying flat int v_crt_profile;
 
-// Hoisted Micro-Optimization Registers
 varying flat vec4 v_warp_power_pack;
 varying flat vec4 v_glare_calc;
 varying flat vec4 v_optim_pack; 
 varying flat vec4 v_glass_env_pack;
+varying flat vec4 v_glass_tint_pack;
 
 const float INV_TAU = 0.15915494309189535;
 const vec3 INV_GAMMA = vec3(0.4166666666666667);
@@ -257,11 +260,13 @@ const vec3 HUE_U2 = vec3(0.328, -0.335, 0.007);
 const vec3 HUE_U3 = vec3(-1.250, 1.050, 0.200);
 
 void vertex() {
-	v_crt_profile = crt_profile;
-	
+	v_tex_size = vec2(textureSize(tex, 0));
+	v_tex_pixel_size = 1.0 / max(v_tex_size, vec2(0.0001));
+
 	v_warp_power_pack.xy = vec2(1.0 / aspect, aspect);
 	v_warp_power_pack.zw = (power_close_axis == 0) ? vec2(1.0 / max(smoothstep(0.5, 1.0, power_state), 0.001), 1.0 / max(smoothstep(0.0, 0.5, power_state), 0.001)) : vec2(1.0 / max(smoothstep(0.0, 0.5, power_state), 0.001), 1.0 / max(smoothstep(0.5, 1.0, power_state), 0.001));
 	v_optim_pack.x = 0.0;
+	
 	if (power_state < 1.0) {
 		float t = clamp((power_flash_start - power_state) / max(0.0001, power_flash_start - power_flash_end), 0.0, 1.0);
 		v_optim_pack.x = t * t * (3.0 - 2.0 * t) * power_flash_color.a;
@@ -284,6 +289,7 @@ void vertex() {
 	
 	v_glare_calc = vec4(cos(glare_rotation), sin(glare_rotation), 1.0 - bezel_shadow_width, glare_size + glare_softness);
 	v_glass_env_pack = vec4(1.0 / max(0.001, glass_env_scale), 1.0 / max(0.001, glass_env_scale), 0.5 + glass_env_offset.x, 0.5 + glass_env_offset.y);
+	v_glass_tint_pack = vec4(glass_tint.rgb * glass_brightness, glass_env_strength * glass_tint.a);
 
 	float _degauss = 0.0;
 	if (degauss_progress < 1.0) _degauss = textureLod(degauss_curve, vec2(degauss_progress, 0.0), 0.0).r;
@@ -293,6 +299,12 @@ void vertex() {
 	
 	_wobble += _degauss * degauss_wobble_strength; 
 	v_degauss_wobble = vec2(_degauss, cos(TIME * TAU * 15.0) * _wobble * 0.0001220703125);
+	
+	v_degauss_pack2 = vec3(
+		degauss_bulge_strength * v_degauss_wobble.x,
+		degauss_ripple_strength * v_degauss_wobble.x,
+		degauss_tear_strength * v_degauss_wobble.x
+	);
 
 	v_dyn_pack1.x = 0.0; 
 	if (_degauss > 0.0) v_dyn_pack1.x += _degauss * degauss_color_split;
@@ -371,9 +383,7 @@ vec2 warp(vec2 uv) {
 	uv.x *= v_warp_power_pack.x;
 	uv /= 1.0 - curve * (dot(uv, uv) - 0.25);
 	uv.x *= v_warp_power_pack.y;
-	uv += 0.5;
-	if (power_state < 1.0) uv *= v_warp_power_pack.zw;
-	return uv;
+	return (uv + 0.5) * v_warp_power_pack.zw; // Branchless power state scaling
 }
 
 vec3 linear_to_srgb(vec3 col) {
@@ -409,8 +419,8 @@ vec3 sample_row(int ix, int iy, vec3 wa, vec3 wb, vec3 wc, vec3 wd, vec3 we) {
 	       srgb_to_linear(texelFetch(tex, ivec2(ix + 2, iy), 0).rgb) * we;
 }
 
-vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size) {
-	vec2 scaled_uv = uv * tex_size;
+vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
+	vec2 scaled_uv = uv * v_tex_size;
 	int ix = int(floor(scaled_uv.x));
 	bool fast = (v_dyn_pack1.y >= 0.999 && v_dyn_pack1.x == 0.0 && local_chroma_offset == vec2(0.0));
 	
@@ -472,73 +482,71 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset, vec2 tex_size) {
 	}
 }
 
-vec4 generate_mask(vec2 coords) {
+vec3 mask(vec3 linear_color, vec2 coords) {
+	vec3 m_rgb = vec3(0.5);
+	float m_w = 0.5;
+
 	switch (mask_type) {
-		case 1: { 
-			float x_phase = coords.x * TWO_THIRD_PI;
-			vec3 rgb = 0.5 + 0.5 * cos(x_phase - PHASE_OFFSETS);
-			return vec4(rgb * (0.5 + 0.5 * cos(coords.y * PI)), 0.25);
-		}
-		case 2: { 
-			return vec4(mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 0.0, 1.0), 0.5 + 0.5 * cos(coords.x * PI)), 0.5);
-		}
-		case 3: { 
-			return vec4(clamp(0.5 + 0.8 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS), 0.0, 1.0), 0.25);
-		}
-		case 4: { 
-			return vec4(0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS), 0.3125);
-		}
-		case 5: { 
-			vec3 rgb = 0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS);
-			return vec4(rgb * (0.5 + 0.5 * cos((coords.y + float(int(coords.x * 0.6666666666667) & 1) * 0.5) * TAU)), 0.375);
-		}
-		case 6: { 
-			return vec4(vec3(1.0), (int(coords.x) % 3 == 0) ? 0.6 : 1.0); 
-		}
+		case 1: 
+			m_rgb = 0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS);
+			m_w = 0.25;
+			m_rgb *= (0.5 + 0.5 * cos(coords.y * PI));
+			break;
+		case 2: 
+			m_rgb = mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 0.0, 1.0), 0.5 + 0.5 * cos(coords.x * PI));
+			break;
+		case 3: 
+			m_rgb = clamp(0.5 + 0.8 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS), 0.0, 1.0);
+			m_w = 0.25;
+			break;
+		case 4: 
+			m_rgb = 0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS);
+			m_w = 0.3125;
+			break;
+		case 5: 
+			m_rgb = 0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS);
+			m_w = 0.375;
+			m_rgb *= (0.5 + 0.5 * cos((coords.y + float(int(coords.x * 0.6666666666667) & 1) * 0.5) * TAU));
+			break;
+		case 6: 
+			m_rgb = vec3(1.0);
+			m_w = (int(coords.x) % 3 == 0) ? 0.6 : 1.0; 
+			break;
 		case 7: { 
 			int x = int(coords.x) % 3;
-			if (x == 0) return vec4(1.0, 0.0, 0.0, 0.6);
-			if (x == 1) return vec4(0.0, 1.0, 0.0, 0.6);
-			return vec4(0.0, 0.0, 1.0, 0.6);
+			m_rgb = (x == 0) ? vec3(1.0, 0.0, 0.0) : ((x == 1) ? vec3(0.0, 1.0, 0.0) : vec3(0.0, 0.0, 1.0));
+			m_w = 0.6;
+			break;
 		}
 		case 8: { 
 			vec2 cell = fract(coords * vec2(0.33333, 1.0));
-			vec3 rgb = vec3(step(cell.x, 0.333), step(0.333, cell.x) * step(cell.x, 0.666), step(0.666, cell.x));
-			float gap = step(0.1, cell.y) * step(cell.y, 0.9);
-			return vec4(rgb * gap, 0.5);
+			m_rgb = vec3(step(cell.x, 0.333), step(0.333, cell.x) * step(cell.x, 0.666), step(0.666, cell.x));
+			m_rgb *= step(0.1, cell.y) * step(cell.y, 0.9);
+			break;
 		}
 		case 9: { 
 			int odd_row = int(coords.y) % 2;
 			int x = (int(coords.x) + odd_row) % 3;
-			if (x == 0) return vec4(1.0, 0.0, 0.0, 0.5);
-			if (x == 1) return vec4(0.0, 1.0, 0.0, 0.5);
-			return vec4(0.0, 0.0, 1.0, 0.5);
+			m_rgb = (x == 0) ? vec3(1.0, 0.0, 0.0) : ((x == 1) ? vec3(0.0, 1.0, 0.0) : vec3(0.0, 0.0, 1.0));
+			break;
 		}
-		default:
-			return vec4(0.5);
 	}
-}
 
-vec3 mask(vec3 linear_color, vec2 coords) {
-	vec4 m = generate_mask(coords);
-	linear_color *= mix(m.w, 1.0, v_dyn_pack1.z);
-
-	vec3 target_color = linear_color * (1.0 / m.w);
+	linear_color *= mix(m_w, 1.0, v_dyn_pack1.z);
+	vec3 target_color = linear_color * (1.0 / m_w);
 	vec3 primary_col = clamp(target_color, 0.0, 1.0);
 	vec3 highlights = target_color - primary_col;
 	
-	if (m.w < 0.999) {
-		highlights *= m.w / (1.0 - m.w);
+	if (m_w < 0.999) {
+		highlights *= m_w / (1.0 - m_w);
 	} else {
 		highlights = vec3(0.0); 
 	}
-	return primary_col * m.rgb + highlights * (1.0 - m.rgb);
+	
+	return primary_col * m_rgb + highlights * (1.0 - m_rgb);
 }
 
 void fragment() {
-	vec2 tex_size = vec2(textureSize(tex, 0));
-	vec2 tex_pixel_size = 1.0 / tex_size;
-
 	vec2 warped_coords = warp(UV);
 	if (warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
@@ -546,7 +554,7 @@ void fragment() {
 		warped_coords.x += v_degauss_wobble.y;
 
 		if (use_interlaced_jitter && interlaced_jitter_strength > 0.0) {
-			float row_id = floor(warped_coords.y * tex_size.y);
+			float row_id = floor(warped_coords.y * v_tex_size.y);
 			float jitter_mod = sin(v_optim_pack.w + row_id * interlaced_jitter_frequency);
 			if (interlaced_jitter_random) {
 				jitter_mod *= fract(sin(row_id * 12.9898 + TIME) * 43758.5453);
@@ -565,11 +573,10 @@ void fragment() {
 		if (v_degauss_wobble.x > 0.0) {
 			vec2 center_offset = warped_coords - 0.5;
 			float dist = length(center_offset);
-			float bulge = sin(dist * 20.0 - v_time_pack1.x) * degauss_bulge_strength * v_degauss_wobble.x;
-			float ripple = sin(dist * 50.0 - v_time_pack1.y) * degauss_ripple_strength * v_degauss_wobble.x;
+			float bulge = sin(dist * 20.0 - v_time_pack1.x) * v_degauss_pack2.x;
+			float ripple = sin(dist * 50.0 - v_time_pack1.y) * v_degauss_pack2.y;
 			warped_coords += center_offset * (bulge + ripple);
-			float tear_dist = warped_coords.y - v_time_pack1.z;
-			warped_coords.x += exp(-50.0 * tear_dist * tear_dist) * sin(warped_coords.y * 100.0) * v_degauss_wobble.x * degauss_tear_strength;
+			warped_coords.x += exp(-50.0 * (warped_coords.y - v_time_pack1.z) * (warped_coords.y - v_time_pack1.z)) * sin(warped_coords.y * 100.0) * v_degauss_pack2.z;
 		}
 
 		if (v_dyn_pack2.y > 0.0) warped_coords.x += step(abs(warped_coords.y - v_glitch_field.x), glitch_size) * v_glitch_field.y;
@@ -580,10 +587,11 @@ void fragment() {
 
 		float stripe_factor = 0.0;
 		vec2 local_chroma = vec2(0.0);
+		vec2 rotated_uv = vec2(0.0); 
 		
 		if (use_sweep_stripe) {
 			vec2 centered_uv = warped_coords - 0.5;
-			vec2 rotated_uv = vec2(centered_uv.x * v_stripe_calc.y - centered_uv.y * v_stripe_calc.z, centered_uv.x * v_stripe_calc.z + centered_uv.y * v_stripe_calc.y) + 0.5;
+			rotated_uv = vec2(centered_uv.x * v_stripe_calc.y - centered_uv.y * v_stripe_calc.z, centered_uv.x * v_stripe_calc.z + centered_uv.y * v_stripe_calc.y) + 0.5;
 			float norm_dist = abs(rotated_uv.y - v_stripe_calc.x) * v_stripe_calc.w;
 
 			if (norm_dist <= 1.0) {
@@ -598,12 +606,9 @@ void fragment() {
 			}
 		}
 
-		vec3 col = sample_image(warped_coords, local_chroma, tex_size);
+		vec3 col = sample_image(warped_coords, local_chroma);
 
 		if (use_sweep_stripe && stripe_factor > 0.0) {
-			vec2 centered_uv = warped_coords - 0.5;
-			vec2 rotated_uv = vec2(centered_uv.x * v_stripe_calc.y - centered_uv.y * v_stripe_calc.z, centered_uv.x * v_stripe_calc.z + centered_uv.y * v_stripe_calc.y) + 0.5;
-			
 			if (stripe_enable_hue) {
 				float current_hue = stripe_hue_shift;
 				if (stripe_hue_oscillate) {
@@ -624,7 +629,7 @@ void fragment() {
 				col = mix(col, shift_hue(col, current_secondary_hue * stripe_factor), current_mix_factor);
 			}
 			if (stripe_enable_brightness) col *= 1.0 + stripe_factor * (stripe_brightness - 1.0); 
-			if (stripe_enable_contrast) col = mix(col, clamp((col - 0.5) * stripe_contrast + 0.5, 0.0, 1.0), stripe_factor);
+			if (stripe_enable_contrast) col = clamp((col - 0.5) * mix(1.0, stripe_contrast, stripe_factor) + 0.5, 0.0, 1.0);
 			if (stripe_enable_saturation) col = mix(vec3(dot(col, HUE_LUMA)), col, 1.0 + stripe_factor * (stripe_saturation - 1.0)); 
 		}
 
@@ -632,7 +637,7 @@ void fragment() {
 			if (degauss_hue_shift_amount > 0.0) col = shift_hue(col, v_degauss_wobble.x * degauss_hue_shift_amount);
 			if (degauss_invert_strength > 0.0) col = mix(col, vec3(1.0) - col, v_degauss_wobble.x * degauss_invert_strength);
 		}
-		if (use_dot_crawl && dot_crawl_strength > 0.0) col += length(col - srgb_to_linear(texture(tex, warped_coords + vec2(tex_pixel_size.x, 0.0)).rgb)) * sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + v_time_pack2.x) * dot_crawl_strength;
+		if (use_dot_crawl && dot_crawl_strength > 0.0) col += length(col - srgb_to_linear(texture(tex, warped_coords + vec2(v_tex_pixel_size.x, 0.0)).rgb)) * sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + v_time_pack2.x) * dot_crawl_strength;
 		if (v_dyn_pack3.x > 0.0) col += srgb_to_linear(texture(tex, warped_coords - vec2(v_dyn_pack3.y, 0.0)).rgb) * v_dyn_pack3.x;
 		if (v_dyn_pack2.x > 0.0) col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_coords.y * roll_size - v_time_pack2.y)) * v_dyn_pack2.x;
 
@@ -687,25 +692,19 @@ void fragment() {
 			}
 			env_uv = (env_uv * v_glass_env_pack.xy) + v_glass_env_pack.zw;
 			
-			vec3 env = textureLod(glass_env_tex, env_uv, glass_blur).rgb;
-			env = srgb_to_linear(env); 
+			vec3 env = srgb_to_linear(textureLod(glass_env_tex, env_uv, glass_blur).rgb);
+			env *= v_glass_tint_pack.rgb;
 			
-			env *= glass_brightness;
 			if (abs(glass_saturation - 1.0) > 0.001) {
 				env = mix(vec3(dot(env, HUE_LUMA)), env, glass_saturation);
 			}
-			env *= glass_tint.rgb;
 			
 			vec3 blended;
-			if (glass_blend_mode == 0) {
-				blended = col + env;
-			} else if (glass_blend_mode == 1) {
-				blended = 1.0 - (1.0 - col) * (1.0 - env);
-			} else {
-				blended = max(col, env);
-			}
+			if (glass_blend_mode == 0) blended = col + env;
+			else if (glass_blend_mode == 1) blended = 1.0 - (1.0 - col) * (1.0 - env);
+			else blended = max(col, env);
 			
-			col = mix(col, blended, glass_env_strength * glass_tint.a);
+			col = mix(col, blended, v_glass_tint_pack.a);
 		}
 		if (bezel_shadow_strength > 0.0) {
 			vec2 edge_dist = abs(warped_coords - 0.5) * 2.0;
