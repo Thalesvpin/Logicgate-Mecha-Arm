@@ -75,7 +75,6 @@ uniform float bulb_halo_power : hint_range(1.0, 10.0) = 5.0;
 uniform vec4 bulb_off_color : source_color = vec4(0.25, 0.2, 0.1, 0.8);
 uniform vec4 bulb_on_color : source_color = vec4(1.0, 0.95, 0.8, 1.0);
 
-// 3D Specific Bulb Parameters with Dropdown Enum for Global Light Sync
 uniform bool use_3d_spherical_bulbs = false;
 uniform float bulb_3d_depth : hint_range(0.1, 3.0) = 1.0;
 uniform float bulb_3d_shininess : hint_range(1.0, 128.0) = 32.0;
@@ -91,18 +90,23 @@ group_uniforms Light_Scattering;
 uniform int bevel_light_mode : hint_enum("Standard Subsurface", "Milky Translucent", "Crystal Refractive", "Fiber Optic Edge") = 0;
 uniform float light_scatter : hint_range(0.1, 10.0) = 2.0;               
 uniform float frosted_diffusion : hint_range(0.0, 1.0) = 0.6;            
-
 uniform vec2 bevel_light_tiling = vec2(1.0, 1.0);
-
 uniform float side_illumination_boost : hint_range(0.0, 10.0) = 2.5;  
 uniform float side_rim_leak : hint_range(0.0, 5.0) = 1.0;             
 uniform float side_inner_glow : hint_range(0.0, 5.0) = 1.5;           
-
 uniform float side_glow_intensity : hint_range(0.0, 5.0) = 1.5;
 uniform float side_light_falloff : hint_range(0.1, 5.0) = 1.5;         
 uniform float side_angle_sensitivity : hint_range(0.0, 1.0) = 0.65;    
 uniform float side_color_shift : hint_range(0.0, 1.0) = 0.85;          
 uniform float base_light_retention : hint_range(0.0, 1.0) = 0.15;      
+
+group_uniforms Advanced_Slope_Lighting;
+uniform float slope_light_position : hint_range(0.0, 1.0) = 0.8;    // 0.0 is outer edge, 1.0 is inner cap seam
+uniform float slope_light_width : hint_range(0.01, 1.0) = 0.15;     // Thickness of the band
+uniform float slope_light_smoothness : hint_range(0.001, 1.0) = 0.2; // Softness of the band's edges
+uniform float slope_light_intensity : hint_range(0.0, 10.0) = 3.0;  // Brightness of the band
+uniform float slope_light_corner_fade : hint_range(0.0, 1.0) = 0.5; // How much it fades towards the 4 corners
+uniform vec4 slope_light_tint : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 
 float hash(vec2 p) {
     p = fract(p * vec2(127.1, 311.7));
@@ -243,16 +247,15 @@ void fragment() {
     float total_bulb_span = float(bulb_count - 1) * bulb_spacing * rect_size.x;
     float bulb_start_x = (rect_size.x - total_bulb_span) * 0.5;
 
-    // Resolve 3D bulb light direction source using the dropdown enum options
     vec2 resolved_3d_light_dir = bulb_3d_light_direction;
     if (use_global_light_for_3d_bulb == 1) {
-        resolved_3d_light_dir = light_direction; // Normal
+        resolved_3d_light_dir = light_direction;
     } else if (use_global_light_for_3d_bulb == 2) {
-        resolved_3d_light_dir = vec2(-light_direction.x, light_direction.y); // Inverted X
+        resolved_3d_light_dir = vec2(-light_direction.x, light_direction.y); 
     } else if (use_global_light_for_3d_bulb == 3) {
-        resolved_3d_light_dir = vec2(light_direction.x, -light_direction.y); // Inverted Y
+        resolved_3d_light_dir = vec2(light_direction.x, -light_direction.y); 
     } else if (use_global_light_for_3d_bulb == 4) {
-        resolved_3d_light_dir = -light_direction; // Inverted X and Y
+        resolved_3d_light_dir = -light_direction; 
     }
     vec3 sphere_light_dir = normalize(vec3(-resolved_3d_light_dir, 0.65));
 
@@ -354,23 +357,21 @@ void fragment() {
     float slope_progression = clamp(dist_to_edge / dynamic_bevel_width, 0.0, 1.0);
     float side_bleed = 0.0;
     
+    // Legacy Light Scattering modes
     if (bevel_light_mode == 0) {
         float falloff_curve = pow(slope_progression, side_light_falloff);
         float depth_multiplier = mix(base_light_retention, 1.0, falloff_curve);
         side_bleed = total_side_glow * active_mult * side_glow_intensity * depth_multiplier;
         side_bleed += (side_inner_glow * (1.0 - slope_progression) + side_rim_leak * slope_progression) * active_mult * total_side_glow;
-        
     } else if (bevel_light_mode == 1) {
         float falloff_curve = pow(slope_progression, side_light_falloff * 0.3);
         float depth_multiplier = mix(max(0.4, base_light_retention), 1.0, falloff_curve);
         side_bleed = total_side_glow * active_mult * side_glow_intensity * 1.2 * depth_multiplier;
-        
     } else if (bevel_light_mode == 2) {
         float sharp_glow = pow(total_side_glow + 0.01, 2.0) * 1.5;
         float falloff_curve = pow(slope_progression, side_light_falloff * 0.8);
         float depth_multiplier = mix(base_light_retention * 0.5, 1.0, falloff_curve);
         side_bleed = sharp_glow * active_mult * side_glow_intensity * depth_multiplier;
-        
     } else if (bevel_light_mode == 3) {
         float falloff_curve = pow(slope_progression, side_light_falloff * 2.0);
         float depth_multiplier = mix(base_light_retention * 0.2, 1.0, falloff_curve);
@@ -379,9 +380,27 @@ void fragment() {
     }
     
     side_bleed *= side_illumination_boost * bevel_factor;
+
+    // --- ADVANCED SLOPE LIGHTING INJECTION ---
+    float dist_to_band = abs(slope_progression - slope_light_position);
+    float half_band = slope_light_width * 0.5;
     
-    lit_side_color = mix(lit_side_color, backlight_color.rgb, clamp(side_bleed * side_color_shift, 0.0, 1.0));
-    lit_side_color += backlight_color.rgb * side_bleed;
+    // Create the smooth band
+    float band_mask = 1.0 - smoothstep(max(0.0, half_band - slope_light_smoothness), half_band + slope_light_smoothness, dist_to_band);
+    
+    // Fade at the miters (corners) based on the setting
+    float corner_fade = mix(1.0, 1.0 - miter_blend, slope_light_corner_fade);
+    
+    // Calculate final slope band intensity (multiplied by total_side_glow so it depends on bulb proximity)
+    float slope_band_glow = band_mask * slope_light_intensity * total_side_glow * active_mult * corner_fade * bevel_factor;
+    
+    // Add the band to the side bleed
+    side_bleed += slope_band_glow;
+    
+    vec3 final_glow_color = backlight_color.rgb * slope_light_tint.rgb;
+    
+    lit_side_color = mix(lit_side_color, final_glow_color, clamp(side_bleed * side_color_shift, 0.0, 1.0));
+    lit_side_color += final_glow_color * side_bleed;
 
     vec4 bevel_layer = vec4(lit_side_color, bevel_opacity);
 

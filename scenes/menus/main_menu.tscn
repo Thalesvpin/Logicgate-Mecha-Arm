@@ -13,31 +13,21 @@ point_count = 2
 [sub_resource type="CurveTexture" id="CurveTexture_6bivr"]
 curve = SubResource("Curve_imvie")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_imvie"]
-noise_type = 5
-frequency = 1.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6bivr"]
-noise = SubResource("FastNoiseLite_imvie")
-seamless = true
-in_3d_space = true
-as_normal_map = true
-bump_strength = 5.2
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sgiw0"]
 noise_type = 5
 frequency = 0.2638
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6gw0i"]
 noise = SubResource("FastNoiseLite_sgiw0")
+seamless = true
 in_3d_space = true
 as_normal_map = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eetg5"]
 shader = ExtResource("3_2o76q")
 shader_parameter/rect_size = Vector2(304, 174)
-shader_parameter/bevel_width = 22.734001032365
-shader_parameter/bevel_smoothness = 4.086000194085
+shader_parameter/bevel_width = 19.89200089737
+shader_parameter/bevel_smoothness = 2.890000137275
 shader_parameter/use_independent_colors = false
 shader_parameter/global_color = Color(0.62, 0.403, 0, 1)
 shader_parameter/independent_cap_color = Color(0.12, 0.13, 0.13, 1)
@@ -45,11 +35,11 @@ shader_parameter/independent_bevel_color = Color(0.18, 0.19, 0.19, 1)
 shader_parameter/independent_edge_color = Color(0.08, 0.09, 0.09, 1)
 shader_parameter/edge_color_blend = 0.2
 shader_parameter/cap_transparency = 0.446000021185
-shader_parameter/bevel_opacity = 0.53600002546
+shader_parameter/bevel_opacity = 0.5790000275025
 shader_parameter/tilt_amount = 0.09500005201250006
 shader_parameter/tilt_axis_is_x = false
 shader_parameter/tilt_use_custom_curve = false
-shader_parameter/bevel_sink_amount = 0.0570000027075
+shader_parameter/bevel_sink_amount = 0.0
 shader_parameter/bevel_sink_axis_is_x = false
 shader_parameter/bevel_sink_use_custom_curve = true
 shader_parameter/bevel_sink_custom_curve = SubResource("CurveTexture_6bivr")
@@ -66,21 +56,20 @@ shader_parameter/fresnel_power = 3.2630001074925
 shader_parameter/refraction_distortion = 0.0
 shader_parameter/environment_reflectivity = 0.35
 shader_parameter/light_direction = Vector2(-0.477, -0.357)
-shader_parameter/bevel_highlight = 1.3330000633174999
+shader_parameter/bevel_highlight = 1.3330000633175
 shader_parameter/bevel_shadow = 0.7550000358625
-shader_parameter/edge_darkening = 0.8130000386175
+shader_parameter/edge_darkening = 1.0
 shader_parameter/corner_edge_darkening = 0.0
 shader_parameter/optional_surface_texture = SubResource("NoiseTexture2D_6gw0i")
 shader_parameter/texture_tiling = Vector2(1, 1)
 shader_parameter/normal_map_depth = 1.0
-shader_parameter/texture_influence = 0.35
-shader_parameter/optional_bevel_texture = SubResource("NoiseTexture2D_6bivr")
+shader_parameter/texture_influence = 0.4270000202825
 shader_parameter/bevel_texture_tiling = Vector2(0.304, 0.174)
 shader_parameter/bevel_normal_depth = 1.0
-shader_parameter/bevel_texture_influence = 0.35
-shader_parameter/procedural_grain = 0.15
+shader_parameter/bevel_texture_influence = 1.0
+shader_parameter/procedural_grain = 0.9350000444125
 shader_parameter/backlight_texture_reveal = 0.0
-shader_parameter/is_active = false
+shader_parameter/is_active = true
 shader_parameter/backlight_intensity = 1.54800007353
 shader_parameter/backlight_color = Color(1, 0.68, 0.1, 1)
 shader_parameter/bulb_count = 2
@@ -99,18 +88,24 @@ shader_parameter/bulb_3d_core_size = 0.55400002561648
 shader_parameter/bulb_3d_core_smoothness = 0.93400004366648
 shader_parameter/use_global_light_for_3d_bulb = 4
 shader_parameter/bulb_3d_light_direction = Vector2(0.5, 0.5)
-shader_parameter/bevel_light_mode = 0
+shader_parameter/bevel_light_mode = 1
 shader_parameter/light_scatter = 1.4010000632876198
 shader_parameter/frosted_diffusion = 0.210000009975
 shader_parameter/bevel_light_tiling = Vector2(304, 174)
-shader_parameter/side_illumination_boost = 0.2510000119225
+shader_parameter/side_illumination_boost = 0.2870000136325
 shader_parameter/side_rim_leak = 1.0
 shader_parameter/side_inner_glow = 0.0
-shader_parameter/side_glow_intensity = 1.5
-shader_parameter/side_light_falloff = 1.5
+shader_parameter/side_glow_intensity = 0.0
+shader_parameter/side_light_falloff = 2.23000010266512
 shader_parameter/side_angle_sensitivity = 0.65
-shader_parameter/side_color_shift = 0.85
+shader_parameter/side_color_shift = 1.0
 shader_parameter/base_light_retention = 0.15
+shader_parameter/slope_light_position = 0.570000027075
+shader_parameter/slope_light_width = 0.00999999977648
+shader_parameter/slope_light_smoothness = 0.406000019285
+shader_parameter/slope_light_intensity = 0.3200000152
+shader_parameter/slope_light_corner_fade = 1.0
+shader_parameter/slope_light_tint = Color(1, 0.9166666, 0, 1)
 
 [node name="MainMenu" type="CenterContainer" unique_id=771463273]
 anchors_preset = 15
