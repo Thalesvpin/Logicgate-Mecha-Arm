@@ -103,12 +103,14 @@ shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = false
 shader_parameter/outline_width = 2.0
 shader_parameter/outline_blur = 0.0
+shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_type = 1
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
 shader_parameter/outline_gradient_offset = 0.0
 shader_parameter/outline_repeat_gradient = false
+shader_parameter/use_path_lut = false
 shader_parameter/enable_wobble = false
 shader_parameter/outline_wobble_amplitude = 0.0
 shader_parameter/outline_wobble_frequency = 10.0
@@ -127,6 +129,7 @@ shader_parameter/outline_pulse_min_offset = -0.5
 shader_parameter/outline_pulse_max_offset = 0.5
 shader_parameter/outline_enable_shine = false
 shader_parameter/outline_shine_style = 1
+shader_parameter/outline_shine_half_sweep = false
 shader_parameter/outline_shine_color = Color(1, 1, 1, 1)
 shader_parameter/outline_shine_intensity = 1.0
 shader_parameter/outline_shine_speed = 1.0
@@ -137,6 +140,7 @@ shader_parameter/outline_shine_angle = 45.0
 shader_parameter/outline_shine_reverse = false
 shader_parameter/outline_enable_shine_2 = false
 shader_parameter/outline_shine_2_style = 1
+shader_parameter/outline_shine_2_half_sweep = false
 shader_parameter/outline_shine_2_color = Color(1, 1, 1, 1)
 shader_parameter/outline_shine_2_intensity = 1.0
 shader_parameter/outline_shine_2_speed = 1.0
@@ -189,9 +193,24 @@ curve = SubResource("Curve_yodio")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mjyp6"]
 shader = ExtResource("22_l102y")
 shader_parameter/effect_enabled = true
+shader_parameter/ignore_alpha = true
 shader_parameter/source_color_val = Color(0.20392, 0.95294, 1, 1)
+shader_parameter/use_color_range = false
+shader_parameter/source_color_max = Color(0.27119446, 0.26597038, 0.27107203, 1)
+shader_parameter/invert_match = false
+shader_parameter/match_red = true
+shader_parameter/match_green = true
+shader_parameter/match_blue = true
+shader_parameter/use_hsv_matching = false
+shader_parameter/hue_only_matching = false
+shader_parameter/hsv_tolerance = Vector3(1, 1, 1)
+shader_parameter/use_local_space = false
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
 shader_parameter/gradient_type = 0
+shader_parameter/clamp_gradient = false
+shader_parameter/linear_angle = 0.0
+shader_parameter/radial_center = Vector2(0.5, 0.5)
+shader_parameter/correct_aspect_ratio = false
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_offset = 0.6570000312075
 shader_parameter/animate_offset = true
@@ -571,13 +590,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_8736r"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_cllqp"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_8736r")
+shader_parameter/tex = SubResource("ViewportTexture_cllqp")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -1143,6 +1162,7 @@ environment = SubResource("Environment_eofqg")
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport" unique_id=1891368767]
 
 [node name="Color PostProcess Adjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=1892088844]
+visible = false
 material = SubResource("ShaderMaterial_eetg5")
 anchors_preset = 15
 anchor_right = 1.0
@@ -1152,6 +1172,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="CRT Shader" type="ColorRect" parent="." unique_id=1402205985 node_paths=PackedStringArray("game_viewport")]
+visible = false
 material = SubResource("ShaderMaterial_0vipy")
 layout_mode = 2
 mouse_filter = 2
