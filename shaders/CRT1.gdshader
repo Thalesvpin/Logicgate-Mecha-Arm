@@ -383,7 +383,10 @@ vec2 warp(vec2 uv) {
 	uv.x *= v_warp_power_pack.x;
 	uv /= 1.0 - curve * (dot(uv, uv) - 0.25);
 	uv.x *= v_warp_power_pack.y;
-	return (uv + 0.5) * v_warp_power_pack.zw; // Branchless power state scaling
+	uv += 0.5;
+	
+	// Properly center the power-state collapse/expand animation
+	return (uv - 0.5) * v_warp_power_pack.zw + 0.5;
 }
 
 vec3 linear_to_srgb(vec3 col) {

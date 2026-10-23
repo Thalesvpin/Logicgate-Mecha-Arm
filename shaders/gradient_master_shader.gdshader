@@ -98,9 +98,11 @@ uniform float outline_gradient_offset : hint_range(-2.0, 2.0) = 0.0;
 uniform bool outline_repeat_gradient = false;
 
 group_uniforms Outline_Settings.Wobble_And_Dash;
+uniform bool enable_wobble = false;
 uniform float outline_wobble_amplitude : hint_range(0.0, 50.0) = 0.0; 
 uniform float outline_wobble_frequency : hint_range(0.0, 50.0) = 10.0;
 uniform float outline_wobble_speed : hint_range(-10.0, 10.0) = 1.0;
+uniform bool enable_dash = false;
 uniform int outline_dash_style : hint_enum("Radial", "Follow Shape") = 1;
 uniform int outline_pattern : hint_enum("Solid / Standard Dash", "Circles", "Squares", "Custom Texture") = 0; 
 uniform sampler2D outline_custom_pattern_texture : hint_default_white, filter_linear, repeat_enable; 
@@ -264,7 +266,7 @@ float random(vec2 uv) {
 	return fract(sin(dot(uv.xy, vec2(12.9898,78.233))) * 43758.5453123);
 }
 
-// ADAPTED RAINFIELD210 ARC-LENGTH PATH MAPPING FOR COLORRECT
+// STABLE ARC-LENGTH PATH MAPPING
 float get_path_t(vec2 p, vec2 h, float r) {
 	r = min(r, min(h.x, h.y));
 	vec2 inner = h - vec2(r);
@@ -413,7 +415,7 @@ void fragment() {
 		float out_factor = get_gradient_factor(distorted_uv_cen, v_trig_2.zw, v_inv_scales.w, outline_gradient_type, out_offset, outline_repeat_gradient, outline_gradient_smoothing, outline_color_steps);
 		vec4 out_color = textureLod(outline_gradient_texture, vec2(out_factor, 0.0), 0.0);
 
-		float path_t = (outline_shine_style == 1 || outline_shine_2_style == 1 || outline_dash_style == 1) ? get_path_t(pixel_pos, half_size, r) : 0.0;
+		float path_t = (outline_shine_style == 1 || outline_shine_2_style == 1 || (enable_dash && outline_dash_style == 1)) ? get_path_t(pixel_pos, half_size, r) : 0.0;
 
 		if (outline_enable_shine) {
 			float s1_dist;
@@ -458,19 +460,19 @@ void fragment() {
 		out_color.rgb = v_out_cg_mat * out_color.rgb + v_out_cg_off;
 
 		float out_d = d;
-		if (outline_wobble_amplitude > 0.0) {
+		if (enable_wobble && outline_wobble_amplitude > 0.0) {
 			out_d += sin(atan(pixel_pos.y, pixel_pos.x) * outline_wobble_frequency + TIME * outline_wobble_speed) * outline_wobble_amplitude;
 		}
 
 		float outline_mask = smoothstep(0.0, v_edges.x, out_d);
 		
-		if (outline_dash_count > 0.0) {
-			float dash_t = (outline_dash_style == 1) ? path_t : (atan(pixel_pos.y, pixel_pos.x) / (PI * 2.0));
+		if (enable_dash && outline_dash_count > 0.0) {
+			float dash_t = (outline_dash_style == 1) ? path_t : (atan(pixel_pos.y, pixel_pos.x) / (3.14159265359 * 2.0));
 			float actual_dash_count = (outline_dash_style == 1) ? max(round(outline_dash_count), 1.0) : outline_dash_count;
 			float dash_val = dash_t * actual_dash_count + TIME * outline_dash_speed;
 			
 			if (outline_pattern == 0) {
-				outline_mask *= step(0.5, sin(dash_val * PI * 2.0) * 0.5 + 0.5);
+				outline_mask *= step(0.5, sin(dash_val * 3.14159265359 * 2.0) * 0.5 + 0.5);
 			} else {
 				vec2 pat_uv;
 				float perimeter = 4.0 * (half_size.x + half_size.y);

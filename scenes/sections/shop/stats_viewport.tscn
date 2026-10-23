@@ -38,8 +38,15 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(0.24705882, 0.6, 0.5882353, 1)
 
+[sub_resource type="Curve" id="Curve_kjigr"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5077882, 0.3432836), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_h754m"]
+curve = SubResource("Curve_kjigr")
+
 [sub_resource type="Gradient" id="Gradient_ybi5s"]
-colors = PackedColorArray(0, 0, 0, 1, 7.460266e-07, 0.31304878, 0.3145731, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_e4srk"]
 gradient = SubResource("Gradient_ybi5s")
@@ -49,16 +56,23 @@ shader = ExtResource("3_ybi5s")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_e4srk")
 shader_parameter/gradient_type = 1
 shader_parameter/gradient_rotation_degrees = 0.0
-shader_parameter/gradient_scale = 1.00000004424012
+shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 1.0000000475
 shader_parameter/gradient_offset = 0.0
 shader_parameter/repeat_gradient = false
 shader_parameter/enable_pulsation = true
-shader_parameter/animation_speed = 0.50000002375
-shader_parameter/pulse_min_offset = 0.2320001060200001
-shader_parameter/pulse_max_offset = 0.5870001228824999
+shader_parameter/base_pulse_curve = SubResource("CurveTexture_h754m")
+shader_parameter/animation_speed = 0.0390000018525
+shader_parameter/pulse_spatial_frequency = 0.0
+shader_parameter/pulse_min_offset = 0.0510000974225
+shader_parameter/pulse_max_offset = 0.6330001250674999
 shader_parameter/distortion_strength = 0.0
 shader_parameter/distortion_speed = Vector2(0.1, 0.1)
+shader_parameter/base_color_steps = 0.0
+shader_parameter/base_color_brightness = 0.0
+shader_parameter/base_color_contrast = 1.0
+shader_parameter/base_color_saturation = 1.0
+shader_parameter/base_color_hue_shift_speed = 0.0
 shader_parameter/enable_overlay = false
 shader_parameter/overlay_blend_mode = 0
 shader_parameter/overlay_gradient_type = 2
@@ -69,6 +83,7 @@ shader_parameter/overlay_gradient_offset = 0.0
 shader_parameter/overlay_repeat_gradient = false
 shader_parameter/overlay_enable_pulsation = false
 shader_parameter/overlay_animation_speed = 2.000000095
+shader_parameter/overlay_pulse_spatial_frequency = 0.0
 shader_parameter/overlay_pulse_min_offset = 9.49999998667295e-08
 shader_parameter/overlay_pulse_max_offset = 0.5
 shader_parameter/enable_overlay_opacity = false
@@ -80,9 +95,11 @@ shader_parameter/overlay_opacity_offset = 0.0
 shader_parameter/overlay_opacity_repeat = false
 shader_parameter/overlay_opacity_enable_pulsation = false
 shader_parameter/overlay_opacity_animation_speed = 1.0
+shader_parameter/overlay_opacity_pulse_spatial_frequency = 0.0
 shader_parameter/overlay_opacity_pulse_min_offset = -0.5
 shader_parameter/overlay_opacity_pulse_max_offset = 0.5
-shader_parameter/corner_radius = 0.0
+shader_parameter/corner_radii = Vector4(0, 0, 0, 0)
+shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = false
 shader_parameter/outline_width = 2.0
 shader_parameter/outline_blur = 0.0
@@ -92,11 +109,24 @@ shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
 shader_parameter/outline_gradient_offset = 0.0
 shader_parameter/outline_repeat_gradient = false
+shader_parameter/enable_wobble = false
+shader_parameter/outline_wobble_amplitude = 0.0
+shader_parameter/outline_wobble_frequency = 10.0
+shader_parameter/outline_wobble_speed = 1.0
+shader_parameter/enable_dash = false
+shader_parameter/outline_dash_style = 1
+shader_parameter/outline_pattern = 0
+shader_parameter/outline_dash_count = 0.0
+shader_parameter/outline_dash_speed = 0.0
+shader_parameter/outline_fade_angle = 0.0
+shader_parameter/outline_fade_intensity = 0.0
 shader_parameter/outline_enable_pulsation = false
 shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_spatial_frequency = 0.0
 shader_parameter/outline_pulse_min_offset = -0.5
 shader_parameter/outline_pulse_max_offset = 0.5
 shader_parameter/outline_enable_shine = false
+shader_parameter/outline_shine_style = 1
 shader_parameter/outline_shine_color = Color(1, 1, 1, 1)
 shader_parameter/outline_shine_intensity = 1.0
 shader_parameter/outline_shine_speed = 1.0
@@ -105,6 +135,27 @@ shader_parameter/outline_shine_width = 0.15
 shader_parameter/outline_shine_softness = 0.5
 shader_parameter/outline_shine_angle = 45.0
 shader_parameter/outline_shine_reverse = false
+shader_parameter/outline_enable_shine_2 = false
+shader_parameter/outline_shine_2_style = 1
+shader_parameter/outline_shine_2_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_2_intensity = 1.0
+shader_parameter/outline_shine_2_speed = 1.0
+shader_parameter/outline_shine_2_delay = 2.0
+shader_parameter/outline_shine_2_width = 0.15
+shader_parameter/outline_shine_2_softness = 0.5
+shader_parameter/outline_shine_2_angle = 135.0
+shader_parameter/outline_shine_2_reverse = false
+shader_parameter/outline_color_steps = 0.0
+shader_parameter/outline_color_brightness = 0.0
+shader_parameter/outline_color_contrast = 1.0
+shader_parameter/outline_color_saturation = 1.0
+shader_parameter/outline_color_hue_shift_speed = 0.0
+shader_parameter/scanline_base_only = false
+shader_parameter/scanline_rotation = 0.0
+shader_parameter/scanline_speed = 0.0
+shader_parameter/scanline_density = 0.0
+shader_parameter/scanline_opacity = 0.0
+shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e4srk"]
@@ -520,13 +571,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ydu81"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_bs7fg"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_ydu81")
+shader_parameter/tex = SubResource("ViewportTexture_bs7fg")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -564,7 +615,7 @@ shader_parameter/animate_mask_brightness = false
 shader_parameter/mask_brightness_anim_speed = 1.0
 shader_parameter/mask_brightness_anim_amplitude = 1.0
 shader_parameter/use_scanlines = true
-shader_parameter/scanline_brightness = 0.550000002375
+shader_parameter/scanline_brightness = 0.5
 shader_parameter/scanline_beam_width_min = 0.25
 shader_parameter/scanline_beam_width_max = 3.0
 shader_parameter/scanline_drift_speed = 0.14400024433999992
@@ -599,7 +650,7 @@ shader_parameter/roll_anim_speed = 1.0
 shader_parameter/roll_anim_amplitude = 1.0
 shader_parameter/roll_size = 15.0
 shader_parameter/roll_speed = 2.0
-shader_parameter/use_sweep_stripe = true
+shader_parameter/use_sweep_stripe = false
 shader_parameter/stripe_width = 0.39000001782648
 shader_parameter/stripe_speed = 0.15
 shader_parameter/stripe_interval = 1.00000004424012
