@@ -590,13 +590,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_3po10"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_u3h0b"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_3po10")
+shader_parameter/tex = SubResource("ViewportTexture_u3h0b")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -1166,6 +1166,7 @@ environment = SubResource("Environment_eofqg")
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport" unique_id=1891368767]
 
 [node name="Color PostProcess Adjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=1892088844]
+visible = false
 material = SubResource("ShaderMaterial_eetg5")
 anchors_preset = 15
 anchor_right = 1.0
@@ -1175,6 +1176,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="CRT Shader" type="ColorRect" parent="." unique_id=1402205985 node_paths=PackedStringArray("game_viewport")]
+visible = false
 material = SubResource("ShaderMaterial_0vipy")
 layout_mode = 2
 mouse_filter = 2
