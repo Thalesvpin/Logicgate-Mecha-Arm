@@ -16,6 +16,10 @@ extends ColorRect
 @export_group("Manual Degauss")
 @export_range(0.1, 5.0) var degauss_duration: float = 1.2
 
+@export_group("Power State")
+@export var power_curve: Curve
+@export_range(0.1, 5.0) var power_duration: float = 1.0
+
 var vp_a: SubViewport
 var vp_b: SubViewport
 var rect_a: TextureRect
@@ -28,10 +32,14 @@ var _last_threshold: float = -1.0
 var _last_gradient: GradientTexture1D = null
 var _last_scale: float = -1.0
 
+var is_powered_on: bool = true
+var power_tween: Tween = null
+
 func _ready() -> void:
 	if material != null:
 		material.resource_local_to_scene = true
 		material.set_shader_parameter("degauss_progress", 1.0)
+		material.set_shader_parameter("power_state", 1.0)
 
 	var shader = Shader.new()
 	shader.code = """
@@ -93,7 +101,6 @@ func _ready() -> void:
 	RenderingServer.frame_post_draw.connect(_on_frame_post_draw)
 
 # --- INTEGRATED DEGAUSS HELPER ---
-## Call this function from anywhere in your game to trigger the degaussing effect
 func trigger_degauss(duration_seconds: float = degauss_duration) -> void:
 	if material != null:
 		material.set_shader_parameter("degauss_progress", 0.0)
@@ -106,11 +113,31 @@ func _update_degauss_uniform(val: float) -> void:
 	if material != null:
 		material.set_shader_parameter("degauss_progress", val)
 
+# --- POWER STATE ANIMATION ---
+func toggle_power() -> void:
+	if power_tween and power_tween.is_running():
+		power_tween.kill()
+		
+	is_powered_on = !is_powered_on
+	power_tween = create_tween()
+	
+	# Tween a normalized progress value to sample the curve cleanly
+	power_tween.tween_method(_apply_power_progress.bind(is_powered_on), 0.0, 1.0, power_duration)
+
+func _apply_power_progress(progress: float, turning_on: bool) -> void:
+	if material != null:
+		var val = power_curve.sample(progress) if power_curve != null else progress
+		if not turning_on:
+			val = 1.0 - val
+		material.set_shader_parameter("power_state", val)
+# ---------------------------------
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_E:
 			trigger_degauss()
-# ---------------------------------
+		elif event.keycode == KEY_O:
+			toggle_power()
 
 func _update_resolution_params() -> void:
 	if not is_inside_tree() or material == null:

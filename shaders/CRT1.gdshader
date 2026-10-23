@@ -551,7 +551,9 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 
 void fragment() {
 	vec2 warped_coords = warp(UV);
-	if (warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
+	
+	// Ultra-optimized cutoff: Completely kills the center pixel artifact and skips all calculations when TV is off
+	if (power_state < 0.001 || warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
 	} else {
 		warped_coords.x += v_degauss_wobble.y;
