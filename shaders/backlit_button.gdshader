@@ -174,6 +174,20 @@ uniform float slope_light_intensity : hint_range(0.0, 10.0) = 3.0;
 uniform float slope_light_corner_fade : hint_range(0.0, 1.0) = 0.5;
 uniform vec4 slope_light_tint : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 
+group_uniforms Interactive_Mouse_Lighting;
+uniform bool enable_mouse_light = false; // Managed by script
+uniform vec2 mouse_position = vec2(0.0, 0.0); // Managed by script
+
+uniform vec4 inactive_mouse_light_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float inactive_mouse_light_intensity : hint_range(0.0, 5.0) = 1.0;
+uniform float inactive_mouse_light_range : hint_range(10.0, 1000.0) = 250.0;
+uniform float inactive_mouse_light_height : hint_range(10.0, 500.0) = 50.0;
+
+uniform vec4 active_mouse_light_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float active_mouse_light_intensity : hint_range(0.0, 5.0) = 1.0;
+uniform float active_mouse_light_range : hint_range(10.0, 1000.0) = 250.0;
+uniform float active_mouse_light_height : hint_range(10.0, 500.0) = 50.0;
+
 // --- POST PROCESSING ---
 group_uniforms Post_Processing;
 uniform float global_contrast : hint_range(0.1, 3.0) = 1.0;          
@@ -529,6 +543,25 @@ void fragment() {
     vec4 final_color = mix(cap_final, vec4(lit_side_color, bevel_opacity), bevel_factor);
     
     vec4 glaze_color = vec4(fresnel_color.rgb * fresnel, fresnel * environment_reflectivity) + vec4(vec3(spec), spec * 0.5); 
+    
+    if (enable_mouse_light) {
+        vec4 current_m_color = mix(inactive_mouse_light_color, active_mouse_light_color, is_active ? 1.0 : 0.0);
+        float current_m_intensity = mix(inactive_mouse_light_intensity, active_mouse_light_intensity, is_active ? 1.0 : 0.0);
+        float current_m_range = mix(inactive_mouse_light_range, active_mouse_light_range, is_active ? 1.0 : 0.0);
+        float current_m_height = mix(inactive_mouse_light_height, active_mouse_light_height, is_active ? 1.0 : 0.0);
+
+        vec3 mouse_light_vec = vec3(px - mouse_position, current_m_height);
+        float mouse_dist = length(mouse_light_vec);
+        float mouse_attenuation = smoothstep(current_m_range, 0.0, mouse_dist);
+        vec3 mouse_dir_norm = mouse_light_vec / max(0.001, mouse_dist);
+        
+        float m_diff = max(0.0, dot(normal, mouse_dir_norm));
+        vec3 m_half = normalize(mouse_dir_norm + view_dir);
+        float m_spec = pow(max(0.0, dot(normal, m_half)), shininess) * specular_intensity;
+        
+        vec3 added_mouse_light = (current_m_color.rgb * m_diff + vec3(m_spec)) * mouse_attenuation * current_m_intensity;
+        final_color.rgb += added_mouse_light;
+    }
     
     final_color.rgb += glaze_color.rgb;
     final_color.a = clamp(mix(cap_final.a, bevel_opacity, bevel_factor) + (glaze_color.a * active_smoothness), 0.0, 1.0);

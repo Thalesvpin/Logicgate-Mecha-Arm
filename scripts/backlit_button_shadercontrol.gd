@@ -1,19 +1,30 @@
 @tool
 extends Button
 
+@export var enable_interactive_mouse_light: bool = false:
+	set(value):
+		enable_interactive_mouse_light = value
+		set_process(enable_interactive_mouse_light)
+		if material is ShaderMaterial:
+			material.set_shader_parameter("enable_mouse_light", enable_interactive_mouse_light)
+
 func _ready() -> void:
-	# Safely connect the resized signal in both the editor and running game
 	if not resized.is_connected(_update_shader_size):
 		resized.connect(_update_shader_size)
 	
-	# Initial size push
 	_update_shader_size()
+	set_process(enable_interactive_mouse_light)
+	if material is ShaderMaterial:
+		material.set_shader_parameter("enable_mouse_light", enable_interactive_mouse_light)
+
+func _process(_delta: float) -> void:
+	if material is ShaderMaterial:
+		material.set_shader_parameter("mouse_position", get_local_mouse_position())
 
 func _update_shader_size() -> void:
 	if material is ShaderMaterial:
 		material.set_shader_parameter("rect_size", size)
 
-# Click handling for runtime (only fires when not in-editor)
 func _gui_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint():
 		return
