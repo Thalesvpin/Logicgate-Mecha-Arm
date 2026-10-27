@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c4bbrc2r7q5fe"]
 
 [ext_resource type="Script" uid="uid://w5na80swktph" path="res://scripts/money_panel.gd" id="1_gcuky"]
+[ext_resource type="FontFile" uid="uid://blq7eikhycrm5" path="res://fonts/arial_black.ttf" id="2_1cx1o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ur3c"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
@@ -48,8 +49,8 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/Mask" unique_id=584868345]
-visible = false
 layout_mode = 2
+color = Color(0, 0.047058824, 1, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Mask" unique_id=978009846]
 layout_mode = 2
@@ -58,6 +59,7 @@ theme_override_constants/margin_right = 15
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=1702731708]
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_1cx1o")
 theme_override_font_sizes/normal_font_size = 34
 text = "$5414156"
 fit_content = true
@@ -65,12 +67,3 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="CanvasLayer" type="CanvasLayer" parent="MarginContainer/Mask" unique_id=2049192130]
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/Mask/CanvasLayer" unique_id=1862906878]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
