@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dyahuuxn33ems" path="res://scripts/elemental_panel.gd" id="1_srban"]
 [ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="2_l7h74"]
+[ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="2_ul2j5"]
+[ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="3_gnih8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u22wb"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
@@ -35,6 +37,345 @@ corner_radius_bottom_left = 34
 
 [sub_resource type="LabelSettings" id="LabelSettings_4p1xl"]
 font_color = Color(1, 1, 0, 1)
+
+[sub_resource type="Environment" id="Environment_eofqg"]
+background_mode = 3
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 1.57
+glow_bloom = 0.55
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]
+shader = ExtResource("2_ul2j5")
+shader_parameter/invert_colors = false
+shader_parameter/invert_before_grading = false
+shader_parameter/use_pixel_art_snap = false
+shader_parameter/use_resolution_downscale = false
+shader_parameter/downscale_factor = 4.0
+shader_parameter/use_frosted_glass = false
+shader_parameter/frosted_glass_intensity = 0.01
+shader_parameter/lock_spatial_aspect_ratio = false
+shader_parameter/use_channel_mixer = false
+shader_parameter/channel_mixer_r = Vector3(1, 0, 0)
+shader_parameter/channel_mixer_g = Vector3(0, 1, 0)
+shader_parameter/channel_mixer_b = Vector3(0, 0, 1)
+shader_parameter/use_levels_and_cdl = false
+shader_parameter/black_point = 0.0
+shader_parameter/white_point = 1.0
+shader_parameter/lift = Vector3(0, 0, 0)
+shader_parameter/gamma = Vector3(1, 1, 1)
+shader_parameter/gain = Vector3(1, 1, 1)
+shader_parameter/use_vibrance = false
+shader_parameter/vibrance = 0.0
+shader_parameter/hue = 0.3770000179075
+shader_parameter/hue_spatial_enable = false
+shader_parameter/hue_spatial_scroll_speed = 0.0
+shader_parameter/hue_spatial_rotation = 0.0
+shader_parameter/hue_spatial_invert = false
+shader_parameter/saturation = 1.0
+shader_parameter/saturation_spatial_enable = false
+shader_parameter/saturation_spatial_scroll_speed = 0.0
+shader_parameter/saturation_spatial_rotation = 0.0
+shader_parameter/saturation_spatial_invert = false
+shader_parameter/brightness = 1.0
+shader_parameter/brightness_spatial_enable = false
+shader_parameter/brightness_spatial_scroll_speed = 0.0
+shader_parameter/brightness_spatial_rotation = 0.0
+shader_parameter/brightness_spatial_invert = false
+shader_parameter/contrast = 1.0
+shader_parameter/contrast_spatial_enable = false
+shader_parameter/contrast_spatial_scroll_speed = 0.0
+shader_parameter/contrast_spatial_rotation = 0.0
+shader_parameter/contrast_spatial_invert = false
+shader_parameter/exposure = 0.0
+shader_parameter/exposure_spatial_enable = false
+shader_parameter/exposure_spatial_scroll_speed = 0.0
+shader_parameter/exposure_spatial_rotation = 0.0
+shader_parameter/exposure_spatial_invert = false
+shader_parameter/color_temp = 0.0
+shader_parameter/color_temp_spatial_enable = false
+shader_parameter/color_temp_spatial_scroll_speed = 0.0
+shader_parameter/color_temp_spatial_rotation = 0.0
+shader_parameter/color_temp_spatial_invert = false
+shader_parameter/use_sin_city_isolation = false
+shader_parameter/sin_city_target_hue = 0.0
+shader_parameter/sin_city_tolerance = 0.1
+shader_parameter/use_dual_tone = false
+shader_parameter/dual_tone_shadows = Color(0.1, 0.1, 0.2, 1)
+shader_parameter/dual_tone_highlights = Color(0.9, 0.8, 0.6, 1)
+shader_parameter/dual_tone_intensity = 1.0
+shader_parameter/use_gradient_map = false
+shader_parameter/grad_before_tonemapping = true
+shader_parameter/grad_mix = 1.0
+shader_parameter/grad_blend_mode = 0
+shader_parameter/grad_gamma = 1.0
+shader_parameter/grad_min_lum = 0.0
+shader_parameter/grad_max_lum = 1.0
+shader_parameter/grad_invert = false
+shader_parameter/use_spatial_grad_mix = false
+shader_parameter/spatial_grad_type = 0
+shader_parameter/grad_mix_scale = 1.0
+shader_parameter/grad_mix_rotation = 0.0
+shader_parameter/grad_mix_center = Vector2(0.5, 0.5)
+shader_parameter/grad_mix_smoothness = 1.0
+shader_parameter/grad_mix_scroll_speed = 0.0
+shader_parameter/grad_mix_invert = false
+shader_parameter/color_blindness_mode = 0
+shader_parameter/blur_mask_scroll_speed = 0.0
+shader_parameter/blur_mask_rotation = 0.0
+shader_parameter/blur_mask_invert = false
+shader_parameter/use_gaussian_blur = false
+shader_parameter/gaussian_blur_intensity = 0.0
+shader_parameter/blur_samples = 8
+shader_parameter/use_blur_smoothing = false
+shader_parameter/blur_smoothing_mode = 0
+shader_parameter/blur_smoothing_intensity = 0.5
+shader_parameter/use_radial_blur = false
+shader_parameter/radial_blur_intensity = 0.05
+shader_parameter/radial_blur_center = Vector2(0.5, 0.5)
+shader_parameter/use_directional_blur = false
+shader_parameter/dir_blur_intensity = 0.0
+shader_parameter/dir_blur_angle = 0.0
+shader_parameter/use_anamorphic_flare = false
+shader_parameter/anamorphic_intensity = 1.0
+shader_parameter/anamorphic_threshold = 0.8
+shader_parameter/anamorphic_spread = 0.02
+shader_parameter/anamorphic_color = Color(0.2, 0.5, 1, 1)
+shader_parameter/anamorphic_samples = 16
+shader_parameter/use_chromatic_aberration = false
+shader_parameter/ca_type = 0
+shader_parameter/chromatic_aberration = 0.02
+shader_parameter/ca_angle = 0.0
+shader_parameter/ca_center = Vector2(0.5, 0.5)
+shader_parameter/use_5tap_ca = false
+shader_parameter/ca_color_1 = Color(1, 0, 0, 1)
+shader_parameter/ca_color_inter_1 = Color(1, 0.5, 0, 1)
+shader_parameter/ca_color_2 = Color(0, 1, 0, 1)
+shader_parameter/ca_color_inter_2 = Color(0, 0.5, 1, 1)
+shader_parameter/ca_color_3 = Color(0, 0, 1, 1)
+shader_parameter/ca_mask_scroll_speed = 0.0
+shader_parameter/ca_mask_rotation = 0.0
+shader_parameter/ca_mask_invert = false
+shader_parameter/use_vignette = false
+shader_parameter/vignette_blend_mode = 0
+shader_parameter/vignette_scale = 1.0
+shader_parameter/vignette_master_opacity = 1.0
+shader_parameter/use_color_quantization = false
+shader_parameter/color_quantization_steps = 8.0
+shader_parameter/use_halftone = false
+shader_parameter/halftone_size = 4.0
+shader_parameter/halftone_angle = 45.0
+shader_parameter/halftone_smoothness = 0.1
+shader_parameter/halftone_dot_color = Color(0, 0, 0, 1)
+shader_parameter/halftone_bg_color = Color(1, 1, 1, 1)
+shader_parameter/halftone_opacity = 1.0
+shader_parameter/use_dithering = false
+shader_parameter/dither_size = 1.0
+shader_parameter/dither_color_1 = Color(0, 0, 0, 1)
+shader_parameter/dither_color_2 = Color(1, 1, 1, 1)
+shader_parameter/dither_opacity = 1.0
+shader_parameter/use_film_grain = false
+shader_parameter/film_grain_intensity = 0.0
+shader_parameter/film_grain_size = 1.0
+shader_parameter/film_grain_speed = 24.0
+shader_parameter/film_grain_colored = false
+shader_parameter/use_lens_dirt = false
+shader_parameter/lens_dirt_intensity = 0.0
+shader_parameter/lens_dirt_threshold = 0.5
+shader_parameter/split_screen_preview = false
+shader_parameter/split_screen_x = 0.5
+shader_parameter/mask_debug_mode = 0
+shader_parameter/show_luminance_heatmap = false
+shader_parameter/channel_isolation = 0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tjqua"]
+viewport_path = NodePath("PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cqbp4"]
+resource_local_to_scene = true
+shader = ExtResource("3_gnih8")
+shader_parameter/tex = SubResource("ViewportTexture_tjqua")
+shader_parameter/curve = 0.5
+shader_parameter/aspect = 1.0
+shader_parameter/bezel_shadow_strength = 0.0
+shader_parameter/bezel_shadow_width = 0.1
+shader_parameter/use_glare = false
+shader_parameter/glare_strength = 0.2
+shader_parameter/glare_position = Vector2(0.5, 0.5)
+shader_parameter/glare_rotation = 0.78539
+shader_parameter/glare_softness = 0.5
+shader_parameter/glare_size = 0.2
+shader_parameter/use_glass_reflection = false
+shader_parameter/glass_env_strength = 0.5
+shader_parameter/glass_env_offset = Vector2(0, 0)
+shader_parameter/glass_env_scale = 1.0
+shader_parameter/glass_blur = 2.0
+shader_parameter/glass_curve = 0.0
+shader_parameter/glass_brightness = 1.0
+shader_parameter/glass_saturation = 1.0
+shader_parameter/glass_tint = Color(1, 1, 1, 1)
+shader_parameter/glass_blend_mode = 1
+shader_parameter/power_state = 1.0
+shader_parameter/power_close_axis = 0
+shader_parameter/power_flash_color = Color(1, 1, 1, 1)
+shader_parameter/power_flash_start = 0.8
+shader_parameter/power_flash_end = 0.2
+shader_parameter/use_hum_bar = false
+shader_parameter/hum_bar_strength = 0.0
+shader_parameter/hum_bar_speed = 2.0
+shader_parameter/crt_profile = 0
+shader_parameter/mask_type = 6
+shader_parameter/mask_scale = 1.0
+shader_parameter/mask_brightness = 1.0
+shader_parameter/animate_mask_brightness = false
+shader_parameter/mask_brightness_anim_speed = 1.0
+shader_parameter/mask_brightness_anim_amplitude = 1.0
+shader_parameter/use_scanlines = false
+shader_parameter/scanline_brightness = 1.0
+shader_parameter/scanline_beam_width_min = 0.25
+shader_parameter/scanline_beam_width_max = 1.0
+shader_parameter/scanline_drift_speed = 0.0
+shader_parameter/scanline_cutoff = 0.0
+shader_parameter/interlaced_strength = 0.0
+shader_parameter/animate_interlaced = false
+shader_parameter/interlaced_anim_speed = 1.0
+shader_parameter/interlaced_anim_amplitude = 1.0
+shader_parameter/interlaced_fps = 30.0
+shader_parameter/use_interlaced_jitter = false
+shader_parameter/interlaced_jitter_strength = 0.0
+shader_parameter/interlaced_jitter_speed = 10.0
+shader_parameter/interlaced_jitter_frequency = 1.5
+shader_parameter/interlaced_jitter_random = false
+shader_parameter/use_head_switching = false
+shader_parameter/head_switch_height = 0.08
+shader_parameter/head_switch_strength = 0.03
+shader_parameter/head_switch_curve = 1.5
+shader_parameter/use_edge_wobble = false
+shader_parameter/edge_wobble_strength = 0.005
+shader_parameter/edge_wobble_scale = 10.0
+shader_parameter/edge_wobble_speed = 2.0
+shader_parameter/use_vhs_tracking = false
+shader_parameter/vhs_tracking_strength = 0.0
+shader_parameter/vhs_tracking_height = 0.08
+shader_parameter/vhs_tracking_speed = 2.0
+shader_parameter/vhs_tracking_interval = 2.0
+shader_parameter/vhs_tracking_noise_scale = 40.0
+shader_parameter/sharpness = 0.6666667
+shader_parameter/animate_sharpness = false
+shader_parameter/sharpness_anim_speed = 1.0
+shader_parameter/sharpness_anim_amplitude = 1.0
+shader_parameter/use_yiq_bleed = false
+shader_parameter/yiq_bleed_spread = 1.0
+shader_parameter/yiq_chroma_offset = 0.0
+shader_parameter/use_signal_ringing = false
+shader_parameter/ringing_strength = 0.2
+shader_parameter/ringing_frequency = 20.0
+shader_parameter/ringing_decay = 3.0
+shader_parameter/wobble_strength = 0.0
+shader_parameter/animate_wobble = false
+shader_parameter/wobble_anim_speed = 1.0
+shader_parameter/wobble_anim_amplitude = 1.0
+shader_parameter/roll_strength = 0.03
+shader_parameter/animate_roll = false
+shader_parameter/roll_anim_speed = 1.0
+shader_parameter/roll_anim_amplitude = 1.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_speed = 2.0
+shader_parameter/use_sweep_stripe = false
+shader_parameter/stripe_width = 0.15
+shader_parameter/stripe_speed = 0.15
+shader_parameter/stripe_interval = 3.0
+shader_parameter/stripe_offset = 0.0
+shader_parameter/stripe_angle = 0.0
+shader_parameter/stripe_profile = 0
+shader_parameter/stripe_smoothness_lead = 0.3
+shader_parameter/stripe_smoothness_trail = 0.3
+shader_parameter/stripe_enable_hue = false
+shader_parameter/stripe_hue_shift = 1.57
+shader_parameter/stripe_hue_oscillate = false
+shader_parameter/stripe_hue_osc_profile = 0
+shader_parameter/stripe_hue_osc_axis = 0
+shader_parameter/stripe_hue_osc_min = 0.0
+shader_parameter/stripe_hue_osc_max = 3.14159
+shader_parameter/stripe_hue_osc_scale = 1.0
+shader_parameter/stripe_hue_osc_freq = 10.0
+shader_parameter/stripe_hue_osc_speed = 5.0
+shader_parameter/stripe_hue_osc_intensity = 1.0
+shader_parameter/stripe_hue_osc_offset = 0.0
+shader_parameter/stripe_enable_secondary_hue = false
+shader_parameter/stripe_secondary_hue_shift = 3.14159
+shader_parameter/stripe_secondary_mix = 0.5
+shader_parameter/stripe_secondary_wave_enabled = false
+shader_parameter/stripe_secondary_wave_profile = 0
+shader_parameter/stripe_secondary_wave_axis = 0
+shader_parameter/stripe_secondary_wave_min = 0.0
+shader_parameter/stripe_secondary_wave_max = 3.14159
+shader_parameter/stripe_secondary_wave_scale = 1.0
+shader_parameter/stripe_secondary_wave_freq = 10.0
+shader_parameter/stripe_secondary_wave_speed = 8.0
+shader_parameter/stripe_secondary_wave_intensity = 1.0
+shader_parameter/stripe_secondary_wave_offset = 0.0
+shader_parameter/stripe_enable_saturation = false
+shader_parameter/stripe_saturation = 1.2
+shader_parameter/stripe_enable_brightness = false
+shader_parameter/stripe_brightness = 1.1
+shader_parameter/stripe_enable_contrast = false
+shader_parameter/stripe_contrast = 1.1
+shader_parameter/use_echo = false
+shader_parameter/echo_strength = 0.0
+shader_parameter/animate_echo_strength = false
+shader_parameter/echo_strength_anim_speed = 1.0
+shader_parameter/echo_strength_anim_interval = 0.0
+shader_parameter/echo_strength_anim_amplitude = 1.0
+shader_parameter/echo_offset = 0.015
+shader_parameter/animate_echo_offset = false
+shader_parameter/echo_offset_anim_speed = 1.0
+shader_parameter/echo_offset_anim_interval = 0.0
+shader_parameter/echo_offset_anim_amplitude = 1.0
+shader_parameter/use_dot_crawl = false
+shader_parameter/dot_crawl_strength = 0.0
+shader_parameter/dot_crawl_speed = 15.0
+shader_parameter/dot_crawl_threshold = 0.1
+shader_parameter/glitch_strength = 0.0
+shader_parameter/vsync_tearing = 0.0
+shader_parameter/animate_glitch = false
+shader_parameter/glitch_anim_speed = 1.0
+shader_parameter/glitch_anim_amplitude = 1.0
+shader_parameter/glitch_rate = 0.05
+shader_parameter/glitch_size = 0.05
+shader_parameter/use_tape_dropouts = false
+shader_parameter/dropout_strength = 1.0
+shader_parameter/dropout_rate = 0.02
+shader_parameter/dropout_speed = 20.0
+shader_parameter/dropout_scale = 400.0
+shader_parameter/use_noise = false
+shader_parameter/noise_strength = 0.03
+shader_parameter/chroma_noise = false
+shader_parameter/animate_noise = false
+shader_parameter/noise_anim_speed = 1.0
+shader_parameter/noise_anim_amplitude = 1.0
+shader_parameter/noise_octaves = 3
+shader_parameter/noise_lacunarity = 2.0
+shader_parameter/noise_gain = 0.5
+shader_parameter/noise_base_scale = 1.0
+shader_parameter/use_gradient_map = false
+shader_parameter/use_monochrome = false
+shader_parameter/monochrome_color = Color(0.2, 1, 0.4, 1)
+shader_parameter/use_color_quantization = false
+shader_parameter/color_levels = 16.0
+shader_parameter/use_auto_exposure = false
+shader_parameter/exposure_threshold = 0.7
+shader_parameter/exposure_intensity = 0.5
+shader_parameter/use_motion_persistence = false
+shader_parameter/persistence_strength = 0.5
+shader_parameter/degauss_progress = 1.0
+shader_parameter/degauss_wobble_strength = 250.0
+shader_parameter/degauss_color_split = 4.0
+shader_parameter/degauss_bulge_strength = 0.1
+shader_parameter/degauss_tear_strength = 0.2
+shader_parameter/degauss_hue_shift_amount = 3.14159
+shader_parameter/degauss_invert_strength = 0.3
+shader_parameter/degauss_ripple_strength = 0.05
 
 [node name="ElementalPanel" type="Control" unique_id=936421524]
 custom_minimum_size = Vector2(370, 150)
@@ -78,15 +419,30 @@ clip_children = 1
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_l7h74")
 
-[node name="ContextPanelBG" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask" unique_id=1179563616]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="PanelContainer/Control/PanelContainer2/Mask" unique_id=224996970]
 layout_mode = 2
+stretch = true
 
-[node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/Mask/ContextPanelBG" unique_id=455825662]
+[node name="SubViewport" type="SubViewport" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer" unique_id=1752220368]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(188, 110)
+render_target_update_mode = 4
+
+[node name="ContextPanelBG" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport" unique_id=1179563616]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.97915846, 0.47531188, 6.545782e-06, 1)
+
+[node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG" unique_id=455825662]
 anchors_preset = 0
 offset_right = 108.0
 offset_bottom = 30.0
 
-[node name="Label" type="Label" parent="PanelContainer/Control/PanelContainer2/Mask/ContextPanelBG/Control" unique_id=1757116833]
+[node name="Label" type="Label" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG/Control" unique_id=1757116833]
 custom_maximum_size = Vector2(245.925, -1)
 layout_mode = 0
 offset_left = 16.0
@@ -98,6 +454,23 @@ Elemental: Nostalgia
 Lvl. 3"
 label_settings = SubResource("LabelSettings_4p1xl")
 autowrap_mode = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport" unique_id=247240757]
+environment = SubResource("Environment_eofqg")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport" unique_id=967602522]
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/CanvasLayer" unique_id=701317424]
+material = SubResource("ShaderMaterial_eofqg")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask" unique_id=1721252060]
+material = SubResource("ShaderMaterial_cqbp4")
+layout_mode = 2
 
 [node name="GridContainer" type="GridContainer" parent="PanelContainer/Control" unique_id=954476235]
 layout_mode = 0
