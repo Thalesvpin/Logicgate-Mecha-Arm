@@ -200,6 +200,7 @@ group_uniforms Dot_Crawl;
 uniform bool use_dot_crawl = false;
 uniform float dot_crawl_strength : hint_range(0.0, 1.0) = 0.0;
 uniform float dot_crawl_speed : hint_range(0.0, 20.0) = 15.0;
+uniform float dot_crawl_threshold : hint_range(0.0, 1.0) = 0.1;
 
 group_uniforms Signal_Loss_Glitch;
 uniform float glitch_strength : hint_range(0.0, 1.0) = 0.0;
@@ -766,7 +767,6 @@ void fragment() {
 			vec3 l2 = sample_image(warped_coords - vec2(v_tex_pixel_size.x * 2.0, 0.0), local_chroma);
 			vec3 r2 = sample_image(warped_coords + vec2(v_tex_pixel_size.x * 2.0, 0.0), local_chroma);
 			
-			// Second derivative filter kernel modeling analog bandwidth cutoff and overshoot ringing
 			vec3 ringing_kernel = (col * 2.0 - l1 - r1) - 0.5 * (l2 + r2 - 2.0 * col);
 			col += ringing_kernel * ringing_strength;
 		}
@@ -800,7 +800,21 @@ void fragment() {
 			if (degauss_hue_shift_amount > 0.0) col = shift_hue(col, v_degauss_wobble.x * degauss_hue_shift_amount);
 			if (degauss_invert_strength > 0.0) col = mix(col, vec3(1.0) - col, v_degauss_wobble.x * degauss_invert_strength);
 		}
-		if (use_dot_crawl && dot_crawl_strength > 0.0) col += length(col - srgb_to_linear(texture(tex, warped_coords + vec2(v_tex_pixel_size.x, 0.0)).rgb)) * sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + v_time_pack2.x) * dot_crawl_strength;
+		
+		if (use_dot_crawl && dot_crawl_strength > 0.0) {
+			vec3 col_l = srgb_to_linear(texture(tex, warped_coords - vec2(v_tex_pixel_size.x, 0.0)).rgb);
+			vec3 col_r = srgb_to_linear(texture(tex, warped_coords + vec2(v_tex_pixel_size.x, 0.0)).rgb);
+			
+			float luma_left = dot(col_l, HUE_LUMA);
+			float luma_right = dot(col_r, HUE_LUMA);
+			float edge_intensity = abs(luma_right - luma_left);
+			
+			float edge_mask = smoothstep(dot_crawl_threshold, dot_crawl_threshold + 0.1, edge_intensity);
+			float pattern = sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + v_time_pack2.x);
+			
+			col += pattern * edge_mask * dot_crawl_strength;
+		}
+		
 		if (v_dyn_pack3.x > 0.0) col += srgb_to_linear(texture(tex, warped_coords - vec2(v_dyn_pack3.y, 0.0)).rgb) * v_dyn_pack3.x;
 		if (v_dyn_pack2.x > 0.0) col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_coords.y * roll_size - v_time_pack2.y)) * v_dyn_pack2.x;
 
