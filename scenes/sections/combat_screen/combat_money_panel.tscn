@@ -21,10 +21,6 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
-[sub_resource type="LabelSettings" id="LabelSettings_a7lv4"]
-font_size = 36
-font_color = Color(0.88234085, 0.2573373, 0, 1)
-
 [node name="CombatMoneyPanel" type="PanelContainer" unique_id=2026981835]
 anchors_preset = 1
 anchor_left = 1.0
@@ -45,18 +41,36 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=181458095]
+[node name="Mask" type="PanelContainer" parent="MarginContainer" unique_id=181458095]
+clip_children = 2
+clip_contents = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer" unique_id=978009846]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/Mask" unique_id=584868345]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Mask" unique_id=978009846]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
-[node name="Label" type="Label" parent="MarginContainer/PanelContainer/MarginContainer" unique_id=662917462]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=1702731708]
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 34
 text = "$5414156"
-label_settings = SubResource("LabelSettings_a7lv4")
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="MarginContainer/Mask" unique_id=2049192130]
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/Mask/CanvasLayer" unique_id=1862906878]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

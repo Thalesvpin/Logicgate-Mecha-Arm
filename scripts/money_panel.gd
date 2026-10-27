@@ -1,7 +1,7 @@
 extends PanelContainer
 
 @export var money_tween_duration: float = 0.8
-var label: Label
+var label: RichTextLabel
 
 func _ready() -> void:
 	print('to rodando: ', name)

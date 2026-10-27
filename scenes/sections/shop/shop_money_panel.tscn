@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://b83ioundydby3"]
 
 [ext_resource type="Script" uid="uid://w5na80swktph" path="res://scripts/money_panel.gd" id="1_yvtkr"]
+[ext_resource type="Shader" uid="uid://bp1bhku15or35" path="res://shaders/basic_color_overlay.gdshader" id="2_ryqpf"]
+[ext_resource type="FontFile" uid="uid://blq7eikhycrm5" path="res://fonts/arial_black.ttf" id="2_tff0t"]
+[ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="4_psemm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -69,9 +72,174 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
-[sub_resource type="LabelSettings" id="LabelSettings_yvtkr"]
-font_size = 50
-font_color = Color(0.88234085, 0.2573373, 0, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_psemm"]
+shader = ExtResource("2_ryqpf")
+shader_parameter/gamma = 1.0
+shader_parameter/premultiplied_alpha = false
+shader_parameter/feather_edges = 0.0
+shader_parameter/dither_strength = 0.0
+shader_parameter/use_base_overlay = true
+shader_parameter/blend_mode = 0
+shader_parameter/overlay_color = Color(0, 0.47843137, 1, 1)
+shader_parameter/overlay_opacity = 1.0
+shader_parameter/use_gradient = false
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_angle = 0.0
+shader_parameter/gradient_offset = Vector2(0, 0)
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothstep = 0.0
+shader_parameter/use_pattern = false
+shader_parameter/pattern_blend_mode = 1
+shader_parameter/pattern_opacity = 1.0
+shader_parameter/pattern_scale = Vector2(1, 1)
+shader_parameter/pattern_angle = 0.0
+shader_parameter/pattern_velocity = Vector2(0, 0)
+shader_parameter/pattern_screen_space = false
+shader_parameter/pattern_frames = Vector2i(1, 1)
+shader_parameter/pattern_frame = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]
+shader = ExtResource("4_psemm")
+shader_parameter/invert_colors = false
+shader_parameter/invert_before_grading = false
+shader_parameter/use_pixel_art_snap = false
+shader_parameter/use_resolution_downscale = false
+shader_parameter/downscale_factor = 4.0
+shader_parameter/use_frosted_glass = false
+shader_parameter/frosted_glass_intensity = 0.01
+shader_parameter/lock_spatial_aspect_ratio = false
+shader_parameter/use_channel_mixer = false
+shader_parameter/channel_mixer_r = Vector3(1, 0, 0)
+shader_parameter/channel_mixer_g = Vector3(0, 1, 0)
+shader_parameter/channel_mixer_b = Vector3(0, 0, 1)
+shader_parameter/use_levels_and_cdl = false
+shader_parameter/black_point = 0.0
+shader_parameter/white_point = 1.0
+shader_parameter/lift = Vector3(0, 0, 0)
+shader_parameter/gamma = Vector3(1, 1, 1)
+shader_parameter/gain = Vector3(1, 1, 1)
+shader_parameter/use_vibrance = false
+shader_parameter/vibrance = 0.0
+shader_parameter/hue = 0.0
+shader_parameter/hue_spatial_enable = false
+shader_parameter/hue_spatial_scroll_speed = 0.0
+shader_parameter/hue_spatial_rotation = 0.0
+shader_parameter/hue_spatial_invert = false
+shader_parameter/saturation = 1.0
+shader_parameter/saturation_spatial_enable = false
+shader_parameter/saturation_spatial_scroll_speed = 0.0
+shader_parameter/saturation_spatial_rotation = 0.0
+shader_parameter/saturation_spatial_invert = false
+shader_parameter/brightness = 1.0
+shader_parameter/brightness_spatial_enable = false
+shader_parameter/brightness_spatial_scroll_speed = 0.0
+shader_parameter/brightness_spatial_rotation = 0.0
+shader_parameter/brightness_spatial_invert = false
+shader_parameter/contrast = 1.0
+shader_parameter/contrast_spatial_enable = false
+shader_parameter/contrast_spatial_scroll_speed = 0.0
+shader_parameter/contrast_spatial_rotation = 0.0
+shader_parameter/contrast_spatial_invert = false
+shader_parameter/exposure = 0.0
+shader_parameter/exposure_spatial_enable = false
+shader_parameter/exposure_spatial_scroll_speed = 0.0
+shader_parameter/exposure_spatial_rotation = 0.0
+shader_parameter/exposure_spatial_invert = false
+shader_parameter/color_temp = 0.0
+shader_parameter/color_temp_spatial_enable = false
+shader_parameter/color_temp_spatial_scroll_speed = 0.0
+shader_parameter/color_temp_spatial_rotation = 0.0
+shader_parameter/color_temp_spatial_invert = false
+shader_parameter/use_sin_city_isolation = false
+shader_parameter/sin_city_target_hue = 0.0
+shader_parameter/sin_city_tolerance = 0.1
+shader_parameter/use_dual_tone = false
+shader_parameter/dual_tone_shadows = Color(0.1, 0.1, 0.2, 1)
+shader_parameter/dual_tone_highlights = Color(0.9, 0.8, 0.6, 1)
+shader_parameter/dual_tone_intensity = 1.0
+shader_parameter/use_gradient_map = false
+shader_parameter/grad_before_tonemapping = true
+shader_parameter/grad_mix = 1.0
+shader_parameter/grad_blend_mode = 0
+shader_parameter/grad_gamma = 1.0
+shader_parameter/grad_min_lum = 0.0
+shader_parameter/grad_max_lum = 1.0
+shader_parameter/grad_invert = false
+shader_parameter/use_spatial_grad_mix = false
+shader_parameter/spatial_grad_type = 0
+shader_parameter/grad_mix_scale = 1.0
+shader_parameter/grad_mix_rotation = 0.0
+shader_parameter/grad_mix_center = Vector2(0.5, 0.5)
+shader_parameter/grad_mix_smoothness = 1.0
+shader_parameter/grad_mix_scroll_speed = 0.0
+shader_parameter/grad_mix_invert = false
+shader_parameter/color_blindness_mode = 0
+shader_parameter/blur_mask_scroll_speed = 0.0
+shader_parameter/blur_mask_rotation = 0.0
+shader_parameter/blur_mask_invert = false
+shader_parameter/use_gaussian_blur = false
+shader_parameter/gaussian_blur_intensity = 0.0
+shader_parameter/blur_samples = 8
+shader_parameter/use_blur_smoothing = false
+shader_parameter/blur_smoothing_mode = 0
+shader_parameter/blur_smoothing_intensity = 0.5
+shader_parameter/use_radial_blur = false
+shader_parameter/radial_blur_intensity = 0.05
+shader_parameter/radial_blur_center = Vector2(0.5, 0.5)
+shader_parameter/use_directional_blur = false
+shader_parameter/dir_blur_intensity = 0.0
+shader_parameter/dir_blur_angle = 0.0
+shader_parameter/use_anamorphic_flare = false
+shader_parameter/anamorphic_intensity = 1.0
+shader_parameter/anamorphic_threshold = 0.8
+shader_parameter/anamorphic_spread = 0.02
+shader_parameter/anamorphic_color = Color(0.2, 0.5, 1, 1)
+shader_parameter/anamorphic_samples = 16
+shader_parameter/use_chromatic_aberration = false
+shader_parameter/ca_type = 0
+shader_parameter/chromatic_aberration = 0.02
+shader_parameter/ca_angle = 0.0
+shader_parameter/ca_center = Vector2(0.5, 0.5)
+shader_parameter/use_5tap_ca = false
+shader_parameter/ca_color_1 = Color(1, 0, 0, 1)
+shader_parameter/ca_color_inter_1 = Color(1, 0.5, 0, 1)
+shader_parameter/ca_color_2 = Color(0, 1, 0, 1)
+shader_parameter/ca_color_inter_2 = Color(0, 0.5, 1, 1)
+shader_parameter/ca_color_3 = Color(0, 0, 1, 1)
+shader_parameter/ca_mask_scroll_speed = 0.0
+shader_parameter/ca_mask_rotation = 0.0
+shader_parameter/ca_mask_invert = false
+shader_parameter/use_vignette = false
+shader_parameter/vignette_blend_mode = 0
+shader_parameter/vignette_scale = 1.0
+shader_parameter/vignette_master_opacity = 1.0
+shader_parameter/use_color_quantization = false
+shader_parameter/color_quantization_steps = 8.0
+shader_parameter/use_halftone = false
+shader_parameter/halftone_size = 4.0
+shader_parameter/halftone_angle = 45.0
+shader_parameter/halftone_smoothness = 0.1
+shader_parameter/halftone_dot_color = Color(0, 0, 0, 1)
+shader_parameter/halftone_bg_color = Color(1, 1, 1, 1)
+shader_parameter/halftone_opacity = 1.0
+shader_parameter/use_dithering = false
+shader_parameter/dither_size = 1.0
+shader_parameter/dither_color_1 = Color(0, 0, 0, 1)
+shader_parameter/dither_color_2 = Color(1, 1, 1, 1)
+shader_parameter/dither_opacity = 1.0
+shader_parameter/use_film_grain = false
+shader_parameter/film_grain_intensity = 0.0
+shader_parameter/film_grain_size = 1.0
+shader_parameter/film_grain_speed = 24.0
+shader_parameter/film_grain_colored = false
+shader_parameter/use_lens_dirt = false
+shader_parameter/lens_dirt_intensity = 0.0
+shader_parameter/lens_dirt_threshold = 0.5
+shader_parameter/split_screen_preview = false
+shader_parameter/split_screen_x = 0.5
+shader_parameter/mask_debug_mode = 0
+shader_parameter/show_luminance_heatmap = false
+shader_parameter/channel_isolation = 0
 
 [node name="ShopMoneyPanel" type="PanelContainer" unique_id=313081484]
 custom_minimum_size = Vector2(0, 100)
@@ -128,18 +296,38 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer" unique_id=1265082337]
+[node name="Mask" type="PanelContainer" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer" unique_id=1265082337]
+clip_children = 2
+clip_contents = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_pii3w")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer/PanelContainer" unique_id=444731494]
+[node name="ColorRect" type="ColorRect" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer/Mask" unique_id=1613517732]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer/Mask" unique_id=444731494]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
-[node name="Label" type="Label" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer/PanelContainer/MarginContainer" unique_id=1241414871]
+[node name="Label" type="RichTextLabel" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer/Mask/MarginContainer" unique_id=1924462861]
+material = SubResource("ShaderMaterial_psemm")
+custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2
-text = "$5414156"
-label_settings = SubResource("LabelSettings_yvtkr")
+theme_override_fonts/normal_font = ExtResource("2_tff0t")
+theme_override_font_sizes/normal_font_size = 42
+text = "$5"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer/Mask" unique_id=1385748093]
+
+[node name="ColorRect" type="ColorRect" parent="PanelContainer2/MarginContainer/PanelContainer/MarginContainer/Mask/CanvasLayer" unique_id=1250915385]
+material = SubResource("ShaderMaterial_eofqg")
+offset_left = 200.0
+offset_top = 12.0
+offset_right = 398.225
+offset_bottom = 88.0
