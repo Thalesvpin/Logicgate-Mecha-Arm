@@ -201,6 +201,10 @@ uniform bool animate_noise = false;
 uniform sampler2D noise_curve;
 uniform float noise_anim_speed = 1.0;
 uniform float noise_anim_amplitude = 1.0;
+uniform int noise_octaves : hint_range(1, 5) = 3;
+uniform float noise_lacunarity : hint_range(0.1, 5.0) = 2.0;
+uniform float noise_gain : hint_range(0.1, 1.0) = 0.5;
+uniform float noise_base_scale : hint_range(0.1, 10.0) = 1.0;
 
 group_uniforms Stylization_FX;
 uniform bool use_gradient_map = false;
@@ -397,6 +401,68 @@ vec3 yiq_to_rgb(vec3 yiq) {
         yiq.x - 0.272 * yiq.y - 0.647 * yiq.z,
         yiq.x - 1.106 * yiq.y + 1.703 * yiq.z
     ), 0.0, 1.0);
+}
+
+// 2D to 1D Hash for grayscale noise
+float hash12(vec2 p) {
+	vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+	p3 += dot(p3, p3.yzx + 33.33);
+	return fract((p3.x + p3.y) * p3.z);
+}
+
+// 2D to 3D Hash for chroma noise
+vec3 hash32(vec2 p) {
+	vec3 p3 = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973));
+	p3 += dot(p3, p3.yxz + 33.33);
+	return fract((p3.xxy + p3.yzz) * p3.zyx);
+}
+
+// 2D Value Noise (1 Channel)
+float value_noise_1(vec2 p) {
+	vec2 i = floor(p);
+	vec2 f = fract(p);
+	vec2 u = f * f * (3.0 - 2.0 * f);
+	return mix(mix(hash12(i + vec2(0.0, 0.0)), hash12(i + vec2(1.0, 0.0)), u.x),
+			   mix(hash12(i + vec2(0.0, 1.0)), hash12(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+
+// 2D Value Noise (3 Channels)
+vec3 value_noise_3(vec2 p) {
+	vec2 i = floor(p);
+	vec2 f = fract(p);
+	vec2 u = f * f * (3.0 - 2.0 * f);
+	return mix(mix(hash32(i + vec2(0.0, 0.0)), hash32(i + vec2(1.0, 0.0)), u.x),
+			   mix(hash32(i + vec2(0.0, 1.0)), hash32(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+
+// Fractional Brownian Motion (1 Channel)
+float fbm_1(vec2 p, int octaves, float lacunarity, float gain) {
+	float val = 0.0;
+	float amp = 1.0;
+	float norm = 0.0;
+	for (int i = 0; i < 5; i++) {
+		if (i >= octaves) break;
+		val += amp * value_noise_1(p);
+		norm += amp;
+		p *= lacunarity;
+		amp *= gain;
+	}
+	return val / norm;
+}
+
+// Fractional Brownian Motion (3 Channels)
+vec3 fbm_3(vec2 p, int octaves, float lacunarity, float gain) {
+	vec3 val = vec3(0.0);
+	float amp = 1.0;
+	float norm = 0.0;
+	for (int i = 0; i < 5; i++) {
+		if (i >= octaves) break;
+		val += amp * value_noise_3(p);
+		norm += amp;
+		p *= lacunarity;
+		amp *= gain;
+	}
+	return val / norm;
 }
 
 vec2 warp(vec2 uv) {
@@ -635,9 +701,6 @@ void fragment() {
 		if (use_yiq_bleed) {
 			vec3 center_yiq = rgb_to_yiq(col);
 			
-			// We calculate a mask by comparing the Luma (Y) of the raw un-scanlined image against the current processed Luma.
-			// This tells us exactly how much the scanline/interlace math darkened this specific pixel, allowing us to safely
-			// re-apply that exact darkening amount to the final blurred chroma, perfectly maintaining scanline blackness.
 			vec3 raw_col = srgb_to_linear(texture(tex, warped_coords).rgb);
 			float raw_luma = rgb_to_yiq(raw_col).x;
 			float luma_mask = (raw_luma > 0.001) ? (center_yiq.x / raw_luma) : 0.0;
@@ -645,7 +708,6 @@ void fragment() {
 			float spread = yiq_bleed_spread * v_tex_pixel_size.x;
 			float offset = yiq_chroma_offset * v_tex_pixel_size.x;
 			
-			// 5-tap Gaussian horizontal convolution purely on the I and Q channels, skipping the sharp Y channel entirely
 			vec3 c0 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset - spread * 2.0, 0.0)).rgb));
 			vec3 c1 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset - spread, 0.0)).rgb));
 			vec3 c2 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset, 0.0)).rgb));
@@ -692,13 +754,18 @@ void fragment() {
 		if (v_dyn_pack2.x > 0.0) col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_coords.y * roll_size - v_time_pack2.y)) * v_dyn_pack2.x;
 
 		if (v_dyn_pack2.z > 0.0) {
-			vec2 noise_coords = FRAGCOORD.xy * v_time_pack2.w;
+			vec2 frame_offset = vec2(
+				fract(sin(floor(v_time_pack1.x) * 12.9898) * 43758.5453),
+				fract(sin(floor(v_time_pack1.x) * 78.233) * 43758.5453)
+			) * 1000.0;
+			
+			vec2 noise_coords = (warped_coords * v_tex_size) * (noise_base_scale * 0.05) + frame_offset;
+
 			vec3 noise_val;
 			if (chroma_noise) {
-				vec3 noise_dots = vec3(dot(noise_coords, vec2(12.9898, 78.233)), dot(noise_coords, vec2(39.346, 11.135)), dot(noise_coords, vec2(73.156, 52.235)));
-				noise_val = fract(sin(noise_dots + v_glitch_field.w) * 43758.5453);
+				noise_val = fbm_3(noise_coords, noise_octaves, noise_lacunarity, noise_gain);
 			} else {
-				noise_val = vec3(fract(sin(dot(noise_coords, vec2(12.9898, 78.233)) + v_glitch_field.w) * 43758.5453));
+				noise_val = vec3(fbm_1(noise_coords, noise_octaves, noise_lacunarity, noise_gain));
 			}
 			col += (noise_val - 0.5) * v_dyn_pack2.z;
 		}
