@@ -89,6 +89,11 @@ uniform sampler2D sharpness_curve;
 uniform float sharpness_anim_speed = 1.0;
 uniform float sharpness_anim_amplitude = 1.0;
 
+group_uniforms NTSC_Color_Bleed;
+uniform bool use_yiq_bleed = false;
+uniform float yiq_bleed_spread : hint_range(0.1, 10.0) = 1.0;
+uniform float yiq_chroma_offset : hint_range(-5.0, 5.0) = 0.0;
+
 group_uniforms Wobble;
 uniform float wobble_strength : hint_range(0.0, 5.0) = 0.0;
 uniform bool animate_wobble = false;
@@ -378,6 +383,22 @@ void vertex() {
 	}
 }
 
+vec3 rgb_to_yiq(vec3 rgb) {
+    return vec3(
+        0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b,
+        0.5959 * rgb.r - 0.2746 * rgb.g - 0.3213 * rgb.b,
+        0.2115 * rgb.r - 0.5227 * rgb.g + 0.3112 * rgb.b
+    );
+}
+
+vec3 yiq_to_rgb(vec3 yiq) {
+    return clamp(vec3(
+        yiq.x + 0.956 * yiq.y + 0.619 * yiq.z,
+        yiq.x - 0.272 * yiq.y - 0.647 * yiq.z,
+        yiq.x - 1.106 * yiq.y + 1.703 * yiq.z
+    ), 0.0, 1.0);
+}
+
 vec2 warp(vec2 uv) {
 	uv -= 0.5;
 	uv.x *= v_warp_power_pack.x;
@@ -385,7 +406,6 @@ vec2 warp(vec2 uv) {
 	uv.x *= v_warp_power_pack.y;
 	uv += 0.5;
 	
-	// Properly center the power-state collapse/expand animation
 	return (uv - 0.5) * v_warp_power_pack.zw + 0.5;
 }
 
@@ -552,7 +572,6 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 void fragment() {
 	vec2 warped_coords = warp(UV);
 	
-	// Ultra-optimized cutoff: Completely kills the center pixel artifact and skips all calculations when TV is off
 	if (power_state < 0.001 || warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
 	} else {
@@ -612,6 +631,32 @@ void fragment() {
 		}
 
 		vec3 col = sample_image(warped_coords, local_chroma);
+
+		if (use_yiq_bleed) {
+			vec3 center_yiq = rgb_to_yiq(col);
+			
+			// We calculate a mask by comparing the Luma (Y) of the raw un-scanlined image against the current processed Luma.
+			// This tells us exactly how much the scanline/interlace math darkened this specific pixel, allowing us to safely
+			// re-apply that exact darkening amount to the final blurred chroma, perfectly maintaining scanline blackness.
+			vec3 raw_col = srgb_to_linear(texture(tex, warped_coords).rgb);
+			float raw_luma = rgb_to_yiq(raw_col).x;
+			float luma_mask = (raw_luma > 0.001) ? (center_yiq.x / raw_luma) : 0.0;
+			
+			float spread = yiq_bleed_spread * v_tex_pixel_size.x;
+			float offset = yiq_chroma_offset * v_tex_pixel_size.x;
+			
+			// 5-tap Gaussian horizontal convolution purely on the I and Q channels, skipping the sharp Y channel entirely
+			vec3 c0 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset - spread * 2.0, 0.0)).rgb));
+			vec3 c1 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset - spread, 0.0)).rgb));
+			vec3 c2 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset, 0.0)).rgb));
+			vec3 c3 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset + spread, 0.0)).rgb));
+			vec3 c4 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset + spread * 2.0, 0.0)).rgb));
+
+			float i_blurred = (c0.y + c4.y) * 0.0625 + (c1.y + c3.y) * 0.25 + c2.y * 0.375;
+			float q_blurred = (c0.z + c4.z) * 0.0625 + (c1.z + c3.z) * 0.25 + c2.z * 0.375;
+
+			col = yiq_to_rgb(vec3(center_yiq.x, i_blurred * luma_mask, q_blurred * luma_mask));
+		}
 
 		if (use_sweep_stripe && stripe_factor > 0.0) {
 			if (stripe_enable_hue) {
