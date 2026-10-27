@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	input()
-	if event.is_action_pressed("test"):
+	if event.is_action_pressed("K"):
 		var tween = create_tween().set_parallel(false)
 		tween.set_ease(Tween.EASE_OUT)
 		tween.set_trans(Tween.TRANS_CUBIC)

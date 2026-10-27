@@ -4,7 +4,7 @@ extends CollapsablePanel
 
 var _material: ShaderMaterial
 
-func _ready() -> void:
+func ready() -> void:
 	is_charged = true
 	Global.heavy_attack_panel = self
 	_material = charges_bar.material as ShaderMaterial

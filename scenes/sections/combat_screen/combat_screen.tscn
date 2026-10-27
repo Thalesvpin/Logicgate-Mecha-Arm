@@ -338,6 +338,7 @@ border_blend = true
 
 [node name="CombatScreen" type="PanelContainer" unique_id=982127176]
 clip_contents = true
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
