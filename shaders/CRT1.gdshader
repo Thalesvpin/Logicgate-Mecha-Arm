@@ -74,6 +74,18 @@ uniform float interlaced_jitter_speed : hint_range(0.1, 20.0) = 10.0;
 uniform float interlaced_jitter_frequency : hint_range(0.1, 5.0) = 1.5;
 uniform bool interlaced_jitter_random = false;
 
+group_uniforms VHS_Head_Switching;
+uniform bool use_head_switching = false;
+uniform float head_switch_height : hint_range(0.01, 0.5) = 0.08;
+uniform float head_switch_strength : hint_range(-0.1, 0.1) = 0.03;
+uniform float head_switch_curve : hint_range(1.0, 5.0) = 1.5;
+
+group_uniforms VHS_Edge_Wobble;
+uniform bool use_edge_wobble = false;
+uniform float edge_wobble_strength : hint_range(0.0, 0.1) = 0.005;
+uniform float edge_wobble_scale : hint_range(0.1, 100.0) = 10.0;
+uniform float edge_wobble_speed : hint_range(0.0, 10.0) = 2.0;
+
 group_uniforms VHS_Tracking;
 uniform bool use_vhs_tracking = false;
 uniform float vhs_tracking_strength : hint_range(0.0, 1.0) = 0.0;
@@ -642,6 +654,21 @@ void fragment() {
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
 	} else {
 		warped_coords.x += v_degauss_wobble.y;
+
+		if (use_edge_wobble) {
+			float wobble_noise = value_noise_1(vec2(warped_coords.y * edge_wobble_scale, TIME * edge_wobble_speed));
+			warped_coords.x += (wobble_noise - 0.5) * edge_wobble_strength;
+		}
+
+		if (use_head_switching) {
+			float switch_start = 1.0 - head_switch_height;
+			if (warped_coords.y > switch_start) {
+				float t = (warped_coords.y - switch_start) / max(0.0001, head_switch_height);
+				float curve_power = pow(t, head_switch_curve);
+				float jitter = value_noise_1(vec2(warped_coords.y * 100.0, TIME * 15.0));
+				warped_coords.x += curve_power * head_switch_strength * (0.8 + 0.4 * jitter);
+			}
+		}
 
 		if (use_interlaced_jitter && interlaced_jitter_strength > 0.0) {
 			float row_id = floor(warped_coords.y * v_tex_size.y);
