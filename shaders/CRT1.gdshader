@@ -106,6 +106,12 @@ uniform bool use_yiq_bleed = false;
 uniform float yiq_bleed_spread : hint_range(0.1, 10.0) = 1.0;
 uniform float yiq_chroma_offset : hint_range(-5.0, 5.0) = 0.0;
 
+group_uniforms Analog_Signal_Ringing;
+uniform bool use_signal_ringing = false;
+uniform float ringing_strength : hint_range(0.0, 1.0) = 0.2;
+uniform float ringing_frequency : hint_range(1.0, 50.0) = 20.0;
+uniform float ringing_decay : hint_range(0.1, 10.0) = 3.0;
+
 group_uniforms Wobble;
 uniform float wobble_strength : hint_range(0.0, 5.0) = 0.0;
 uniform bool animate_wobble = false;
@@ -204,6 +210,13 @@ uniform float glitch_anim_speed = 1.0;
 uniform float glitch_anim_amplitude = 1.0;
 uniform float glitch_rate : hint_range(0.0, 1.0) = 0.05;
 uniform float glitch_size : hint_range(0.01, 1.0) = 0.05;
+
+group_uniforms Tape_Dropouts;
+uniform bool use_tape_dropouts = false;
+uniform float dropout_strength : hint_range(0.0, 1.0) = 1.0;
+uniform float dropout_rate : hint_range(0.0, 0.2) = 0.02;
+uniform float dropout_speed : hint_range(0.0, 50.0) = 20.0;
+uniform float dropout_scale : hint_range(1.0, 1000.0) = 400.0;
 
 group_uniforms Static_Noise;
 uniform bool use_noise = false;
@@ -747,6 +760,17 @@ void fragment() {
 			col = yiq_to_rgb(vec3(center_yiq.x, i_blurred * luma_mask, q_blurred * luma_mask));
 		}
 
+		if (use_signal_ringing && ringing_strength > 0.0) {
+			vec3 l1 = sample_image(warped_coords - vec2(v_tex_pixel_size.x, 0.0), local_chroma);
+			vec3 r1 = sample_image(warped_coords + vec2(v_tex_pixel_size.x, 0.0), local_chroma);
+			vec3 l2 = sample_image(warped_coords - vec2(v_tex_pixel_size.x * 2.0, 0.0), local_chroma);
+			vec3 r2 = sample_image(warped_coords + vec2(v_tex_pixel_size.x * 2.0, 0.0), local_chroma);
+			
+			// Second derivative filter kernel modeling analog bandwidth cutoff and overshoot ringing
+			vec3 ringing_kernel = (col * 2.0 - l1 - r1) - 0.5 * (l2 + r2 - 2.0 * col);
+			col += ringing_kernel * ringing_strength;
+		}
+
 		if (use_sweep_stripe && stripe_factor > 0.0) {
 			if (stripe_enable_hue) {
 				float current_hue = stripe_hue_shift;
@@ -795,6 +819,20 @@ void fragment() {
 				noise_val = vec3(fbm_1(noise_coords, noise_octaves, noise_lacunarity, noise_gain));
 			}
 			col += (noise_val - 0.5) * v_dyn_pack2.z;
+		}
+		
+		if (use_tape_dropouts && dropout_rate > 0.0) {
+			vec2 drop_uv = vec2(warped_coords.x * 4.0, warped_coords.y * dropout_scale);
+			drop_uv.y -= TIME * dropout_speed;
+			drop_uv.x += TIME * (dropout_speed * 0.1);
+			
+			float drop_noise = fbm_1(drop_uv, 3, 2.0, 0.5);
+			float drop_mask = smoothstep(1.0 - dropout_rate, 1.0, drop_noise);
+			
+			if (drop_mask > 0.0) {
+				float drop_static = value_noise_1((warped_coords * v_tex_size * 0.1) + vec2(fract(TIME * 13.37) * 100.0, fract(TIME * 7.77) * 100.0));
+				col = mix(col, vec3(drop_static * 1.5), drop_mask * dropout_strength);
+			}
 		}
 
 		col = mask(col, FRAGCOORD.xy * v_time_pack2.w);
