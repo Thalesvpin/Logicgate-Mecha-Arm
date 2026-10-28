@@ -1,0 +1,40 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://cr48eta487inx"
+path="res://.godot/imported/reNix-Regular.woff2-965315c49de3bd67c56c6be1ef13af0a.fontdata"
+
+[deps]
+
+source_file="res://fonts/Analog Digits Font/reNix-Regular.woff2"
+dest_files=["res://.godot/imported/reNix-Regular.woff2-965315c49de3bd67c56c6be1ef13af0a.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=true
+disable_embedded_bitmaps=false
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+modulate_color_glyphs=false
+hinting=3
+subpixel_positioning=4
+keep_rounding_remainders=true
+oversampling=0.0
+Fallbacks=null
+fallbacks=[Object(FontVariation,"resource_local_to_scene":false,"resource_name":"","fallbacks":Array[Font]([]),"base_font":Resource("uid://b8ki4shgeg6xy", "res://fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf"),"variation_opentype":{
+2003072104: 100,
+2003265652: 330
+},"variation_face_index":0,"variation_embolden":0.0,"variation_transform":Transform2D(1.12, 0, 0, 1.12, 0, 0),"opentype_features":{},"spacing_glyph":6,"spacing_space":0,"spacing_top":0,"spacing_bottom":0,"baseline_offset":0.0,"palette_index":0,"palette_custom_colors":PackedColorArray(),"script":null)
+]
+Compress=null
+compress=true
+preload=[]
+language_support={}
+script_support={}
+opentype_features={}
