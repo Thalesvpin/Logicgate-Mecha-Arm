@@ -14,8 +14,8 @@ dest_files=["res://.godot/imported/fluoWrite-Regular.woff2-c90e45d2b02432f045dd6
 
 Rendering=null
 antialiasing=1
-generate_mipmaps=false
-disable_embedded_bitmaps=true
+generate_mipmaps=true
+disable_embedded_bitmaps=false
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48

@@ -14,8 +14,8 @@ dest_files=["res://.godot/imported/nimoType-Regular.woff2-46e15cd79383c5838a4265
 
 Rendering=null
 antialiasing=1
-generate_mipmaps=false
-disable_embedded_bitmaps=true
+generate_mipmaps=true
+disable_embedded_bitmaps=false
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48

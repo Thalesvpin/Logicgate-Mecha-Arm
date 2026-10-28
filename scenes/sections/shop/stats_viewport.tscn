@@ -1148,7 +1148,6 @@ theme = ExtResource("14_yr5m8")
 text = "MELHORIA DE ATRIBUTOS"
 
 [node name="TopTabBtn2" type="Button" parent="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top" unique_id=1341065722]
-visible = false
 layout_mode = 2
 text = "EFEITOS ELEMENTAIS"
 
