@@ -165,3 +165,8 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("L"):
 		v_split.dragging_enabled = !v_split.dragging_enabled
 		top_h_split.dragging_enabled = !top_h_split.dragging_enabled
+	if event.is_action_pressed("M"):
+		var ef = AddMoneyEffect.new()
+		ef.amount = 1000
+		ef.apply()
+	

@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dx218n1ue8ida" path="res://scripts/implant_card.gd" id="2_530ae"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="3_5wyd8"]
 [ext_resource type="Texture2D" uid="uid://b8l68f41218q5" path="res://assets/rarity_placeholder.png" id="4_0ih7b"]
+[ext_resource type="Texture2D" uid="uid://cmge5yrejrvvy" path="res://assets/TCC_icon_rarity_corrupted.png" id="5_5wyd8"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="5_mt2m6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
@@ -138,7 +139,7 @@ stretch_mode = 2
 [node name="CorruptedTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder" unique_id=1461488900]
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("4_0ih7b")
+texture = ExtResource("5_5wyd8")
 stretch_mode = 4
 
 [node name="Spacer" type="Control" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer" unique_id=1216651883]
