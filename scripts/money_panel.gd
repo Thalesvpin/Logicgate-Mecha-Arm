@@ -1,7 +1,7 @@
 extends PanelContainer
 
 @export var money_tween_duration: float = 0.8
-var label: RichTextLabel
+var labels: Array[RichTextLabel]
 
 func _ready() -> void:
 	print('to rodando: ', name)
@@ -9,18 +9,29 @@ func _ready() -> void:
 		Global.combat_money_panel = self
 	if name == 'ShopMoneyPanel':
 		Global.shop_money_panel = self
-	label = find_child('Label', true)
+	labels = [
+		find_child('Label', true),
+		find_child('Label2', true),
+		find_child('Label3', true)
+	]
 	update()
 	EventBus.enemy_defeated.connect(enemy_defeated)
 	pass
 
 func update() -> void:
 	var money = Global.run_stats.player_stats[Stats.List.CURRENT_MONEY]
+	var start_val = 0
+	if not labels.is_empty() and labels[0] and labels[0].text != "":
+		start_val = int(labels[0].text)
+	
 	var tween = create_tween()
 	tween.tween_method(
 		func(v):
-			label.text = '$%05d' % v,
-		int(label.text), money, money_tween_duration
+			var formatted_text = '$%05d' % v
+			for lbl in labels:
+				if lbl:
+					lbl.text = formatted_text,
+		start_val, money, money_tween_duration
 	)
 	#label.text = '$%05d' % Global.run_stats.player_stats[Stats.List.CURRENT_MONEY]
 

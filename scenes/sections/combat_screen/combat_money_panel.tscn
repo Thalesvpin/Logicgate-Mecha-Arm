@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://c4bbrc2r7q5fe"]
 
 [ext_resource type="Script" uid="uid://w5na80swktph" path="res://scripts/money_panel.gd" id="1_gcuky"]
-[ext_resource type="FontFile" uid="uid://blq7eikhycrm5" path="res://fonts/arial_black.ttf" id="2_1cx1o"]
+[ext_resource type="Shader" uid="uid://bp1bhku15or35" path="res://shaders/basic_color_overlay.gdshader" id="2_auvaq"]
+[ext_resource type="FontFile" uid="uid://cr48eta487inx" path="res://fonts/Analog Digits Font/reNix-Regular.woff2" id="3_frepe"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ur3c"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
@@ -21,6 +22,57 @@ corner_radius_top_left = 40
 corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
+
+[sub_resource type="Environment" id="Environment_eofqg"]
+background_mode = 3
+glow_enabled = true
+glow_normalized = true
+glow_intensity = 2.45
+glow_bloom = 0.41
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_klqa6"]
+shader = ExtResource("2_auvaq")
+shader_parameter/gamma = 1.0
+shader_parameter/premultiplied_alpha = false
+shader_parameter/feather_edges = 0.0
+shader_parameter/dither_strength = 0.0
+shader_parameter/use_base_overlay = false
+shader_parameter/blend_mode = 0
+shader_parameter/overlay_color = Color(0, 0.47843137, 1, 1)
+shader_parameter/overlay_opacity = 1.0
+shader_parameter/use_gradient = false
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_angle = 0.0
+shader_parameter/gradient_offset = Vector2(0, 0)
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothstep = 0.0
+shader_parameter/use_pattern = false
+shader_parameter/pattern_blend_mode = 1
+shader_parameter/pattern_opacity = 1.0
+shader_parameter/pattern_scale = Vector2(1, 1)
+shader_parameter/pattern_angle = 0.0
+shader_parameter/pattern_velocity = Vector2(0, 0)
+shader_parameter/pattern_screen_space = false
+shader_parameter/pattern_frames = Vector2i(1, 1)
+shader_parameter/pattern_frame = 0
+
+[sub_resource type="FontVariation" id="FontVariation_2tnpb"]
+base_font = ExtResource("3_frepe")
+opentype_features = {
+1633774708: 3
+}
+
+[sub_resource type="FontVariation" id="FontVariation_q55b4"]
+base_font = ExtResource("3_frepe")
+opentype_features = {
+1633774708: 11
+}
+
+[sub_resource type="FontVariation" id="FontVariation_36kky"]
+base_font = ExtResource("3_frepe")
+opentype_features = {
+1633774708: 4
+}
 
 [node name="CombatMoneyPanel" type="PanelContainer" unique_id=2026981835]
 anchors_preset = 1
@@ -48,6 +100,20 @@ clip_contents = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
+[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer/Mask" unique_id=1793223412]
+visible = false
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/Mask/SubViewportContainer" unique_id=957609742]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(385, 55)
+render_target_update_mode = 0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="MarginContainer/Mask/SubViewportContainer/SubViewport" unique_id=1691887223]
+environment = SubResource("Environment_eofqg")
+
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/Mask" unique_id=584868345]
 layout_mode = 2
 color = Color(0, 0.047058824, 1, 1)
@@ -55,13 +121,47 @@ color = Color(0, 0.047058824, 1, 1)
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Mask" unique_id=978009846]
 layout_mode = 2
 theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 6
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=1702731708]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=432455065]
+material = SubResource("ShaderMaterial_klqa6")
+custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("2_1cx1o")
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_2tnpb")
 theme_override_font_sizes/normal_font_size = 34
-text = "$5414156"
+text = "$01234567890"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=1925065774]
+material = SubResource("ShaderMaterial_klqa6")
+custom_minimum_size = Vector2(168.225, 0)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+theme_override_fonts/normal_font = SubResource("FontVariation_q55b4")
+theme_override_font_sizes/normal_font_size = 34
+text = "$01234567890"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=1712431698]
+material = SubResource("ShaderMaterial_klqa6")
+custom_minimum_size = Vector2(168.225, 0)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_36kky")
+theme_override_font_sizes/normal_font_size = 34
+text = "$01234567890"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
