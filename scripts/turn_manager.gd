@@ -24,6 +24,10 @@ func handle_next_turn(who) -> void:
 		turn_idx += 1
 	EventBus.turn_started.emit(turn_sequence[turn_idx])
 
-func add_to_sequence(alguma_coisa) -> void:
+func add_to_turn_sequence(who) -> void:
 	if turn_sequence.size() < 4:
-		turn_sequence.append(alguma_coisa)
+		turn_sequence.append(who)
+
+func reset_turn_sequence() -> void:
+	turn_sequence = ['player']
+	turn_idx = 0

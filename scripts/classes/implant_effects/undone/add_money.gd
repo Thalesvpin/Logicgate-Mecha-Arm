@@ -17,7 +17,7 @@ func apply(_context = null) -> void:
 			if limit > 0:
 				result = add_to_player_stats(Stats.List.CURRENT_MONEY, amount, Operator.GREATER, limit)
 			else:
-				result = add_to_player_stats(Stats.List.CURRENT_MONEY, amount)
+				result = add_to_player_stats(Stats.List.CURRENT_MONEY, amount, Operator.LESSER, 0)
 		Mode.PERCENT:
 			if limit > 0:
 				result = add_to_player_stats(Stats.List.CURRENT_MONEY, Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] * amount/100, Operator.GREATER, limit)

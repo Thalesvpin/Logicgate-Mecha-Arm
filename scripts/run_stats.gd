@@ -39,19 +39,30 @@ var current_elementals: Array
 #endregion
 
 #region RUN
-var current_firewall: int
-#var current_stake: int
+var current_firewall: int = 1
+var current_battle: int = 1
 var current_run_time: float
-var current_turn: int
+var current_turn: int = 0
 #endregion
 
 func _ready() -> void:
 	Global.run_stats = self
 	set_variables()
+	connect_signals()
 
 func _process(delta: float) -> void:
 	current_run_time += delta
-	telemetry_bar.get_child(0).get_child(2).text = "Tempo da run: %02d:%02d:%02d" % [current_run_time/(60*60), int(current_run_time/60)%60, int(current_run_time)%60]
+
+func connect_signals() -> void:
+	EventBus.battle_ended.connect(next_battle)
+
+func next_battle() -> void:
+	if current_battle < 3:
+		current_battle += 1
+	else:
+		current_battle = 1
+		#current_turn = 0
+		current_firewall += 1
 
 func set_variables() -> void:
 	current_run_time = 0

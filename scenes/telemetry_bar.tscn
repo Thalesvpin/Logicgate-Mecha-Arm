@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b3fg1h6ititrl"]
 
-[ext_resource type="LabelSettings" uid="uid://d4akgm58t2tcb" path="res://ui_elements/ui_telemetry.tres" id="1_ttyke"]
+[ext_resource type="Script" uid="uid://1sihiiax6xox" path="res://scripts/telemetry_bar.gd" id="1_brwlv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qmxhh"]
 bg_color = Color(0.12156863, 0.12156863, 0.12156863, 1)
@@ -10,35 +10,67 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.6784314, 0.7019608, 0.7647059, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_qmxhh"]
-font_size = 20
-font_color = Color(0.92156863, 0.92156863, 0.92156863, 1)
-
 [node name="TelemetryBar" type="PanelContainer" unique_id=2013472650]
 theme_override_styles/panel = SubResource("StyleBoxFlat_qmxhh")
+script = ExtResource("1_brwlv")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1213239184]
 layout_mode = 2
 
-[node name="Label6" type="Label" parent="HBoxContainer" unique_id=1170542467]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer" unique_id=1962471984]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 20
+text = "  _ FIREWALL "
+fit_content = true
+autowrap_mode = 0
+
+[node name="FirewallCounter" type="RichTextLabel" parent="HBoxContainer" unique_id=1714761188]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 20
+text = "1"
+fit_content = true
+autowrap_mode = 0
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="HBoxContainer" unique_id=1750485696]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 20
+text = "- BATALHA "
+fit_content = true
+autowrap_mode = 0
+
+[node name="DificultyLabel" type="RichTextLabel" parent="HBoxContainer" unique_id=928495685]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "  _ FIREWALL 4 - BATALHA DIFÍCIL (15) - Stake 3 ℹ"
-label_settings = SubResource("LabelSettings_qmxhh")
+theme_override_font_sizes/normal_font_size = 20
+text = "FÁCIL (1)"
+fit_content = true
+autowrap_mode = 0
 
-[node name="GameName" type="Label" parent="HBoxContainer" unique_id=592471104]
+[node name="GameNameAndVersion" type="RichTextLabel" parent="HBoxContainer" unique_id=240104452]
 layout_mode = 2
+theme_override_colors/default_color = Color(0.6156863, 0.6156863, 0.6156863, 1)
+theme_override_font_sizes/normal_font_size = 20
 text = "Logicgate Mecha Arm v0.0.2  ● "
-label_settings = ExtResource("1_ttyke")
+fit_content = true
+autowrap_mode = 0
 
-[node name="RunTime" type="Label" parent="HBoxContainer" unique_id=292414987]
+[node name="RunTime" type="RichTextLabel" parent="HBoxContainer" unique_id=2002666118]
 layout_mode = 2
-text = "Tempo da run: 01:15:42"
-label_settings = ExtResource("1_ttyke")
-uppercase = true
+theme_override_colors/default_color = Color(0.6156863, 0.6156863, 0.6156863, 1)
+theme_override_font_sizes/normal_font_size = 20
+fit_content = true
+autowrap_mode = 0
 
-[node name="Label" type="Label" parent="HBoxContainer" unique_id=58400987]
+[node name="Clock" type="RichTextLabel" parent="HBoxContainer" unique_id=481471894]
 layout_mode = 2
-text = " | BATERIA: 69% | hora: 22:48:13 | fps: 120   "
-label_settings = ExtResource("1_ttyke")
-uppercase = true
+theme_override_colors/default_color = Color(0.6156863, 0.6156863, 0.6156863, 1)
+theme_override_font_sizes/normal_font_size = 20
+fit_content = true
+autowrap_mode = 0
+
+[node name="FPS" type="RichTextLabel" parent="HBoxContainer" unique_id=1246144272]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.6156863, 0.6156863, 0.6156863, 1)
+theme_override_font_sizes/normal_font_size = 20
+fit_content = true
+autowrap_mode = 0

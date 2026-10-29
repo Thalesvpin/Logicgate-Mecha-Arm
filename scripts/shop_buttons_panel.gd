@@ -3,11 +3,12 @@ extends PanelContainer
 @onready var info_btn: TextureButton = $Control/InfoBtn
 @onready var next_battle_btn: TextureButton = $Control/NextBattleBtn
 @onready var pause_btn: TextureButton = $Control/PauseBtn
+@onready var combat_screen: PanelContainer = $"."
 
 
 func _on_next_battle_btn_button_up() -> void:
-	#EventBus.bat
-	pass
+	Global.game_board.close_shop()
+	EventBus.battle_started.emit()
 
 func _on_info_btn_button_up() -> void:
 	pass # Replace with function body.

@@ -38,7 +38,7 @@ func randomize_binaries() -> void:
 	circuit_editor.generate_action_list()
 
 func connect_signals() -> void:
-	combat_screen.connect_action_signals(circuit_editor)
+	#combat_screen.connect_action_signals(circuit_editor)
 	EventBus.battle_ended.connect(battle_ended)
 
 func is_last_firewall() -> bool:
@@ -101,21 +101,44 @@ func open_shop() -> void:
 	)
 	
 	tween.set_parallel(false)
-	tween.tween_callback(_open_shop)
-
-##fazer essa parte no shop apos emitir um singal
-func _open_shop():
-	EventBus.open_shop.emit()
-	print('emitiu')
-	#shop.show()
-	#shop.open()
-	stats_viewport.show()
-	stats_viewport.glow()
-	close_battle()
+	tween.tween_callback(
+		func():
+			EventBus.open_shop.emit()
+			stats_viewport.show()
+			stats_viewport.glow()
+			close_battle()
+	)
 
 func close_shop() -> void:
 	shop.hide()
 	stats_viewport.hide()
+	
+	shop.limpar_a_loja_ao_fechar
+	
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_parallel(true)
+	
+	var h_from := float(top_h_split.split_offsets[0])
+	tween.tween_method(
+		func(v: float):
+			top_h_split.split_offsets = [roundi(v), -roundi(v)],
+		h_from, last_top_h_split_offsets, shop_tween_speed
+	)
+	var v_from := float(v_split.split_offsets[0])
+	tween.tween_method(
+		func(v: float):
+			v_split.split_offsets = [roundi(v)],
+		v_from, last_v_split_offsets, shop_tween_speed
+	)
+	
+	tween.set_parallel(false)
+	tween.tween_callback(
+		func():
+			EventBus.close_shop.emit()
+			stats_viewport.hide()
+			open_battle()
+	)
 
 func open_battle() -> void:
 	v_split.dragging_enabled = false
@@ -126,11 +149,12 @@ func open_battle() -> void:
 	top_h_split.split_offsets = last_top_h_split_offsets
 
 #func _open_battle() -> void:
+	print('abriu a battle')
+	bot_h_split.show()
 	combat_screen.show()
 	gates_selector.show()
 	circuit_editor.show()
 	execution_panel.show()
-	close_shop()
 	v_split.dragging_enabled = true
 	top_h_split.dragging_enabled = true
 
@@ -167,6 +191,10 @@ func _input(event: InputEvent) -> void:
 		top_h_split.dragging_enabled = !top_h_split.dragging_enabled
 	if event.is_action_pressed("M"):
 		var ef = AddMoneyEffect.new()
-		ef.amount = 1000
+		ef.amount = 10000
+		ef.apply()
+	if event.is_action_pressed("N"):
+		var ef = AddMoneyEffect.new()
+		ef.amount = -10000
 		ef.apply()
 	

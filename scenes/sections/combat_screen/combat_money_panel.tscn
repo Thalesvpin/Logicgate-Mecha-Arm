@@ -23,13 +23,6 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
-[sub_resource type="Environment" id="Environment_eofqg"]
-background_mode = 3
-glow_enabled = true
-glow_normalized = true
-glow_intensity = 2.45
-glow_bloom = 0.41
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_klqa6"]
 shader = ExtResource("2_auvaq")
 shader_parameter/gamma = 1.0
@@ -100,35 +93,43 @@ clip_contents = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer/Mask" unique_id=1793223412]
-visible = false
+[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer/Mask" unique_id=761471438]
 layout_mode = 2
-stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="MarginContainer/Mask/SubViewportContainer" unique_id=957609742]
-own_world_3d = true
-handle_input_locally = false
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/Mask/SubViewportContainer" unique_id=169733066]
 size = Vector2i(385, 55)
-render_target_update_mode = 0
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="MarginContainer/Mask/SubViewportContainer/SubViewport" unique_id=1691887223]
-environment = SubResource("Environment_eofqg")
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/Mask" unique_id=584868345]
-layout_mode = 2
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/Mask/SubViewportContainer/SubViewport" unique_id=584868345]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0.047058824, 1, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Mask" unique_id=978009846]
-layout_mode = 2
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Mask/SubViewportContainer/SubViewport" unique_id=978009846]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.5
+offset_top = -27.5
+offset_right = 192.5
+offset_bottom = 27.5
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 6
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=432455065]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/Mask/SubViewportContainer/SubViewport/MarginContainer" unique_id=432455065]
 material = SubResource("ShaderMaterial_klqa6")
 custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_2tnpb")
 theme_override_font_sizes/normal_font_size = 34
@@ -139,10 +140,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=1925065774]
+[node name="Label2" type="RichTextLabel" parent="MarginContainer/Mask/SubViewportContainer/SubViewport/MarginContainer" unique_id=1925065774]
 material = SubResource("ShaderMaterial_klqa6")
 custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 1
 theme_override_fonts/normal_font = SubResource("FontVariation_q55b4")
@@ -154,10 +157,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label3" type="RichTextLabel" parent="MarginContainer/Mask/MarginContainer" unique_id=1712431698]
+[node name="Label3" type="RichTextLabel" parent="MarginContainer/Mask/SubViewportContainer/SubViewport/MarginContainer" unique_id=1712431698]
 material = SubResource("ShaderMaterial_klqa6")
 custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_36kky")
 theme_override_font_sizes/normal_font_size = 34

@@ -55,6 +55,7 @@ custom_minimum_size = Vector2(0, 85)
 custom_maximum_size = Vector2(-1, 85)
 layout_mode = 2
 size_flags_vertical = 8
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7046")
 
 [node name="PanelContainer2" type="PanelContainer" parent="." unique_id=1886899282]
@@ -62,10 +63,12 @@ custom_minimum_size = Vector2(215, 0)
 custom_maximum_size = Vector2(215, -1)
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
 [node name="Control" type="Control" parent="." unique_id=1516906721]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="InfoBtn" type="TextureButton" parent="Control" unique_id=1206417515]
 layout_mode = 0
