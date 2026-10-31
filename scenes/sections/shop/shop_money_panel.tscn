@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://bp1bhku15or35" path="res://shaders/basic_color_overlay.gdshader" id="2_ryqpf"]
 [ext_resource type="FontFile" uid="uid://cr48eta487inx" path="res://fonts/Analog Digits Font/reNix-Regular.woff2" id="3_ryqpf"]
 [ext_resource type="Shader" uid="uid://bjv5yrra406uv" path="res://shaders/fakeglowbloom.gdshader" id="4_psemm"]
+[ext_resource type="Script" uid="uid://bn5l4rkkpyke8" path="res://scripts/fakeglowbloomshader-mouseinteraction.gd" id="5_u3k32"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -147,6 +148,15 @@ shader = ExtResource("4_psemm")
 shader_parameter/bloom_spread = 0.1
 shader_parameter/bloom_intensity = 7.365
 shader_parameter/bloom_tint = Color(1, 1, 1, 1)
+shader_parameter/enable_flicker = false
+shader_parameter/flicker_speed = 15.0
+shader_parameter/flicker_threshold = 0.8
+shader_parameter/flicker_drop = 0.85
+shader_parameter/enable_mouse = true
+shader_parameter/mouse_global_pos = Vector2(194.73206, 104.108154)
+shader_parameter/mouse_radius = 34.7610011761475
+shader_parameter/mouse_boost = 10.0
+shader_parameter/mouse_smoothness = 1.0
 shader_parameter/background_dimming = 0.0
 shader_parameter/enable_pulsation = false
 shader_parameter/pulse_speed = 3.0
@@ -156,7 +166,6 @@ shader_parameter/corner_radii = Vector4(1000, 1000, 1000, 1000)
 shader_parameter/use_beveled_corners = false
 shader_parameter/enable_edge_fade = true
 shader_parameter/fade_start_distance = 9.538000453055
-shader_parameter/fade_smoothness = 1.0
 
 [node name="ShopMoneyPanel" type="PanelContainer" unique_id=313081484]
 custom_minimum_size = Vector2(0, 100)
@@ -290,9 +299,10 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ColorRect2" type="ColorRect" parent="PanelContainer2/MarginContainerPanel/PanelContainer/MarginContainerMask/Mask" unique_id=1579024555]
+[node name="FakeGlowBloom Shader" type="ColorRect" parent="PanelContainer2/MarginContainerPanel/PanelContainer/MarginContainerMask/Mask" unique_id=1579024555]
 z_index = 1
 material = SubResource("ShaderMaterial_mjyp6")
 layout_mode = 2
 offset_transform_scale = Vector2(0.995, 1)
 mouse_filter = 2
+script = ExtResource("5_u3k32")
