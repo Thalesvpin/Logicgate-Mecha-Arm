@@ -1,50 +1,61 @@
 shader_type canvas_item;
 
-// --- Core Bloom Settings ---
+group_uniforms Core_Bloom;
 uniform sampler2D t0 : hint_screen_texture, filter_linear, repeat_disable;
 uniform float bloom_spread = 1.0;
 uniform float bloom_intensity = 2.0;
 uniform vec4 bloom_tint : source_color = vec4(1.0, 1.0, 1.0, 1.0); 
 
-// --- Flicker / Glitch Settings ---
-uniform bool enable_flicker = false;
-uniform float flicker_speed : hint_range(0.1, 50.0) = 15.0; 
-uniform float flicker_threshold : hint_range(0.0, 1.0) = 0.8; 
-uniform float flicker_drop : hint_range(0.0, 1.0) = 0.85; 
-
-// --- Mouse Interaction Settings ---
-uniform bool enable_mouse = false;
-uniform vec2 mouse_global_pos = vec2(-10000.0, -10000.0); // Now uses global coordinates
-uniform float mouse_radius : hint_range(10.0, 1000.0) = 150.0; 
-uniform float mouse_boost : hint_range(0.0, 10.0) = 3.0; 
-uniform float mouse_smoothness : hint_range(0.0, 1.0) = 0.5; 
-
-// --- Background Compositing ---
+group_uniforms Background_Compositing;
 uniform float background_dimming : hint_range(0.0, 1.0) = 1.0; 
 
-// --- Pulsation Settings ---
+group_uniforms Mouse_Interaction;
+uniform bool enable_mouse = false;
+uniform vec2 mouse_global_pos = vec2(-10000.0, -10000.0); 
+uniform float mouse_radius : hint_range(10.0, 1000.0) = 150.0; 
+uniform float mouse_smoothness : hint_range(0.0, 1.0) = 0.5; 
+
+group_uniforms Mouse_Interaction.Intensity_And_Color;
+uniform float mouse_boost : hint_range(0.0, 50.0) = 3.0; // Greatly increased upper limit
+uniform float mouse_hue_shift : hint_range(-3.14159, 3.14159) = 0.0; // Rotates the color wheel (Radians)
+uniform float mouse_saturation : hint_range(0.0, 5.0) = 1.0; // 0.0 = Grayscale, 1.0 = Normal, 2.0+ = Hyper vibrant
+uniform vec4 mouse_tint_override : source_color = vec4(1.0, 1.0, 1.0, 1.0); // An alternate color to blend into
+uniform float mouse_tint_mix : hint_range(0.0, 1.0) = 0.0; // How strongly the override color takes over on hover
+
+group_uniforms FX_And_Animation.Pulsation;
 uniform bool enable_pulsation = false;
 uniform float pulse_speed : hint_range(0.0, 10.0) = 3.0;
 uniform float pulse_min_intensity : hint_range(0.0, 10.0) = 0.5;
 uniform float pulse_max_intensity : hint_range(0.0, 10.0) = 2.0;
 
-// --- Independent Corners & Geometry ---
+group_uniforms FX_And_Animation.Glitch;
+uniform bool enable_flicker = false;
+uniform float flicker_speed : hint_range(0.1, 50.0) = 15.0; 
+uniform float flicker_threshold : hint_range(0.0, 1.0) = 0.8; 
+uniform float flicker_drop : hint_range(0.0, 1.0) = 0.85; 
+
+group_uniforms Geometry_And_Masking;
 uniform vec4 corner_radii = vec4(0.0); 
 uniform bool use_beveled_corners = false; 
 
-// --- Edge Fade Settings ---
+group_uniforms Geometry_And_Masking.Edge_Fade;
 uniform bool enable_edge_fade = false;
 uniform float fade_start_distance : hint_range(0.0, 500.0) = 50.0;
 
 varying vec2 local_pos;
-varying vec2 v_global_pos; // Stores the calculated global position
+varying vec2 v_global_pos; 
 varying float v_pulse_mult; 
 varying float v_flicker_mult;
 
+// Mathematical Hue Shift Function[cite: 3]
+vec3 hue_shift(vec3 color, float shift) {
+    const vec3 k = vec3(0.57735);
+    float cosAngle = cos(shift);
+    return vec3(color * cosAngle + cross(k, color) * sin(shift) + k * dot(k, color) * (1.0 - cosAngle));
+}
+
 void vertex() {
     local_pos = VERTEX;
-    
-    // Converts the local vertex into Global Canvas Space to perfectly match the mouse script
     v_global_pos = (MODEL_MATRIX * vec4(VERTEX, 0.0, 1.0)).xy; 
     
     v_pulse_mult = 1.0;
@@ -119,11 +130,11 @@ void fragment() {
     sum += texture(t0, SCREEN_UV + texel_step * vec2(-1.732,   1.0));
 
     float local_intensity = bloom_intensity;
+    float mouse_factor = 0.0;
+    
     if (enable_mouse) {
-        // We now calculate the distance using the perfect global space alignment
         float dist_to_mouse = length(v_global_pos - mouse_global_pos);
-        
-        float mouse_factor = 1.0 - smoothstep(mouse_radius * (1.0 - mouse_smoothness), mouse_radius, dist_to_mouse);
+        mouse_factor = 1.0 - smoothstep(mouse_radius * (1.0 - mouse_smoothness), mouse_radius, dist_to_mouse);
         local_intensity += (mouse_boost * mouse_factor);
     }
 
@@ -132,6 +143,24 @@ void fragment() {
     bloom_added *= v_pulse_mult; 
     bloom_added *= v_flicker_mult; 
     bloom_added *= bloom_tint;
+    
+    // Dynamic Mouse Color Injection
+    if (enable_mouse && mouse_factor > 0.0) {
+        // 1. Tint Override Blend
+        bloom_added.rgb = mix(bloom_added.rgb, bloom_added.rgb * mouse_tint_override.rgb, mouse_tint_mix * mouse_factor);
+        
+        // 2. Hue Shifting
+        if (mouse_hue_shift != 0.0) {
+            bloom_added.rgb = hue_shift(bloom_added.rgb, mouse_hue_shift * mouse_factor);
+        }
+        
+        // 3. Saturation Modification
+        if (mouse_saturation != 1.0) {
+            vec3 gray = vec3(dot(bloom_added.rgb, vec3(0.299, 0.587, 0.114)));
+            float current_sat = mix(1.0, mouse_saturation, mouse_factor);
+            bloom_added.rgb = mix(gray, bloom_added.rgb, current_sat);
+        }
+    }
     
     if (enable_edge_fade && fade_start_distance > 0.0) {
         float dist_to_edge = -d; 
