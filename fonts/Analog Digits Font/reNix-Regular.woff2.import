@@ -30,7 +30,7 @@ Fallbacks=null
 fallbacks=[Object(FontVariation,"resource_local_to_scene":false,"resource_name":"","fallbacks":Array[Font]([]),"base_font":Resource("uid://b8ki4shgeg6xy", "res://fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf"),"variation_opentype":{
 2003072104: 100,
 2003265652: 330
-},"variation_face_index":0,"variation_embolden":0.0,"variation_transform":Transform2D(1.12, 0, 0, 1.12, 0, 0),"opentype_features":{},"spacing_glyph":6,"spacing_space":0,"spacing_top":0,"spacing_bottom":0,"baseline_offset":0.0,"palette_index":0,"palette_custom_colors":PackedColorArray(),"script":null)
+},"variation_face_index":0,"variation_embolden":-0.14,"variation_transform":Transform2D(1.12, 0, 0, 1.12, 0, 0),"opentype_features":{},"spacing_glyph":6,"spacing_space":0,"spacing_top":0,"spacing_bottom":0,"baseline_offset":-0.01,"palette_index":0,"palette_custom_colors":PackedColorArray(),"script":null)
 ]
 Compress=null
 compress=true
