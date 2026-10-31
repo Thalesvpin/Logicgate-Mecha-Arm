@@ -80,51 +80,31 @@ offset_transform_position = Vector2(-10, 0)
 theme_override_styles/panel = SubResource("StyleBoxFlat_8ur3c")
 script = ExtResource("1_gcuky")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=233133369]
+[node name="MarginContainerMask" type="MarginContainer" parent="." unique_id=233133369]
 layout_mode = 2
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="Mask" type="PanelContainer" parent="MarginContainer" unique_id=181458095]
+[node name="Mask" type="PanelContainer" parent="MarginContainerMask" unique_id=181458095]
 clip_children = 2
 clip_contents = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="MarginContainer/Mask" unique_id=761471438]
+[node name="ColorRect" type="ColorRect" parent="MarginContainerMask/Mask" unique_id=584868345]
 layout_mode = 2
-
-[node name="SubViewport" type="SubViewport" parent="MarginContainer/Mask/SubViewportContainer" unique_id=169733066]
-size = Vector2i(385, 55)
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/Mask/SubViewportContainer/SubViewport" unique_id=584868345]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 color = Color(0, 0.047058824, 1, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Mask/SubViewportContainer/SubViewport" unique_id=978009846]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -192.5
-offset_top = -27.5
-offset_right = 192.5
-offset_bottom = 27.5
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainerMask/Mask" unique_id=978009846]
+layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 6
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/Mask/SubViewportContainer/SubViewport/MarginContainer" unique_id=432455065]
+[node name="Label" type="RichTextLabel" parent="MarginContainerMask/Mask/MarginContainer" unique_id=432455065]
 material = SubResource("ShaderMaterial_klqa6")
 custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2
@@ -140,7 +120,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="RichTextLabel" parent="MarginContainer/Mask/SubViewportContainer/SubViewport/MarginContainer" unique_id=1925065774]
+[node name="Label2" type="RichTextLabel" parent="MarginContainerMask/Mask/MarginContainer" unique_id=1925065774]
 material = SubResource("ShaderMaterial_klqa6")
 custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2
@@ -157,7 +137,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label3" type="RichTextLabel" parent="MarginContainer/Mask/SubViewportContainer/SubViewport/MarginContainer" unique_id=1712431698]
+[node name="Label3" type="RichTextLabel" parent="MarginContainerMask/Mask/MarginContainer" unique_id=1712431698]
 material = SubResource("ShaderMaterial_klqa6")
 custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2

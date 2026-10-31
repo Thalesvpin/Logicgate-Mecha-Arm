@@ -2,7 +2,6 @@ extends PanelContainer
 
 @export var money_tween_duration: float = 0.8
 var labels: Array[RichTextLabel]
-var subviewport: SubViewport
 
 func _ready() -> void:
 	print('to rodando: ', name)
@@ -15,7 +14,7 @@ func _ready() -> void:
 		find_child('Label2', true),
 		find_child('Label3', true)
 	]
-	subviewport = find_child('SubViewport', true)
+	find_child('MarginContainer', true)
 	labels[0].resized.connect(update_viewport_size)
 	update()
 	EventBus.enemy_defeated.connect(enemy_defeated)
@@ -48,6 +47,6 @@ func enemy_defeated(enemy) -> void:
 	#update()
 
 func update_viewport_size() -> void:
-	var margin_container = subviewport.find_child('MarginContainer', true)
+	var margin_container = find_child('MarginContainer', true)
 	var _size = Vector2(margin_container.get_combined_minimum_size().x, margin_container.get_parent().size.y)
-	subviewport.size = _size
+	
