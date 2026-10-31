@@ -1,7 +1,8 @@
 shader_type canvas_item;
 
 // --- Core Bloom Settings ---
-uniform sampler2D t0 : hint_screen_texture;
+// Added 'filter_linear, repeat_disable' to explicitly enable hardware bilinear filtering
+uniform sampler2D t0 : hint_screen_texture, filter_linear, repeat_disable;
 uniform float bloom_spread = 1.0;
 uniform float bloom_intensity = 2.0;
 uniform vec4 bloom_tint : source_color = vec4(1.0, 1.0, 1.0, 1.0); 
@@ -38,7 +39,7 @@ void fragment() {
     
     vec2 local_grad_y = vec2(dFdx(local_pos.y), dFdy(local_pos.y));
     vec2 uv_grad_y = vec2(dFdx(UV.y), dFdy(UV.y));
-    float rect_height = length(local_grad_y) / max(length(uv_grad_y), 0.0001); // Restored missing calculation
+    float rect_height = length(local_grad_y) / max(length(uv_grad_y), 0.0001);
     
     vec2 dynamic_rect_size = vec2(rect_width, rect_height);
 
@@ -67,30 +68,24 @@ void fragment() {
         discard;
     }
 
-    // 4. Bloom Logic
+    // 4. OPTIMIZED Bloom Logic
     float scaled_bloom = bloom_spread * screen_scale;
-
-    ivec2 size = textureSize(t0, 0);
-    float uv_x = SCREEN_UV.x * float(size.x);
-    float uv_y = SCREEN_UV.y * float(size.y);
+    
+    // Convert to normalized screen space natively (avoids casting to ints and floats repeatedly)
+    // Multiplied by 2.0 to span the exact same physical area as the old 9x9 grid
+    vec2 texel_step = SCREEN_PIXEL_SIZE * scaled_bloom * 2.0; 
 
     vec4 sum = vec4(0.0);
-    for (int n = 0; n < 9; ++n) {
-        uv_y = (SCREEN_UV.y * float(size.y)) + float(scaled_bloom * float(n - 4));
-        vec4 h_sum = vec4(0.0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x) - int(4.0 * scaled_bloom), int(uv_y)), 0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x) - int(3.0 * scaled_bloom), int(uv_y)), 0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x) - int(2.0 * scaled_bloom), int(uv_y)), 0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x) - int(scaled_bloom), int(uv_y)), 0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x), int(uv_y)), 0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x) + int(scaled_bloom), int(uv_y)), 0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x) + int(2.0 * scaled_bloom), int(uv_y)), 0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x) + int(3.0 * scaled_bloom), int(uv_y)), 0);
-        h_sum += texelFetch(t0, ivec2(int(uv_x) + int(4.0 * scaled_bloom), int(uv_y)), 0);
-        sum += h_sum / 9.0;
+    
+    // 5x5 Sparse Sample Loop (25 texture lookups instead of 81)
+    for (float x = -2.0; x <= 2.0; x += 1.0) {
+        for (float y = -2.0; y <= 2.0; y += 1.0) {
+            // Using texture() with hardware linear filtering blends the gaps between taps automatically
+            sum += texture(t0, SCREEN_UV + vec2(x, y) * texel_step);
+        }
     }
 
-    vec4 bloom_added = (sum / 9.0) * bloom_intensity;
+    vec4 bloom_added = (sum / 25.0) * bloom_intensity;
 
     // 5. Customization Passes
     if (enable_pulsation) {

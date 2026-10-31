@@ -144,7 +144,7 @@ opentype_features = {
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mjyp6"]
 shader = ExtResource("4_psemm")
-shader_parameter/bloom_spread = 0.17
+shader_parameter/bloom_spread = 0.1
 shader_parameter/bloom_intensity = 7.365
 shader_parameter/bloom_tint = Color(1, 1, 1, 1)
 shader_parameter/background_dimming = 0.0
