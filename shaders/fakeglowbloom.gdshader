@@ -1,7 +1,6 @@
 shader_type canvas_item;
 
 // --- Core Bloom Settings ---
-// Added 'filter_linear, repeat_disable' to explicitly enable hardware bilinear filtering
 uniform sampler2D t0 : hint_screen_texture, filter_linear, repeat_disable;
 uniform float bloom_spread = 1.0;
 uniform float bloom_intensity = 2.0;
@@ -25,10 +24,19 @@ uniform bool enable_edge_fade = false;
 uniform float fade_start_distance : hint_range(0.0, 500.0) = 50.0;
 uniform float fade_smoothness : hint_range(0.1, 10.0) = 1.0;
 
+// Varyings to transfer data from the vertex shader to the fragment shader
 varying vec2 local_pos;
+varying float v_pulse_mult; // Holds the pre-calculated pulsation math
 
 void vertex() {
     local_pos = VERTEX;
+    
+    // OPTIMIZATION: Pulsation is calculated once per object here, instead of millions of times per frame in fragment()
+    v_pulse_mult = 1.0;
+    if (enable_pulsation) {
+        float pulse = (sin(TIME * pulse_speed) * 0.5) + 0.5;
+        v_pulse_mult = mix(pulse_min_intensity, pulse_max_intensity, pulse);
+    }
 }
 
 void fragment() {
@@ -68,32 +76,33 @@ void fragment() {
         discard;
     }
 
-    // 4. OPTIMIZED Bloom Logic
+    // 4. MAXIMUM OPTIMIZATION: 13-Tap Circular Pattern
     float scaled_bloom = bloom_spread * screen_scale;
-    
-    // Convert to normalized screen space natively (avoids casting to ints and floats repeatedly)
-    // Multiplied by 2.0 to span the exact same physical area as the old 9x9 grid
     vec2 texel_step = SCREEN_PIXEL_SIZE * scaled_bloom * 2.0; 
-
-    vec4 sum = vec4(0.0);
     
-    // 5x5 Sparse Sample Loop (25 texture lookups instead of 81)
-    for (float x = -2.0; x <= 2.0; x += 1.0) {
-        for (float y = -2.0; y <= 2.0; y += 1.0) {
-            // Using texture() with hardware linear filtering blends the gaps between taps automatically
-            sum += texture(t0, SCREEN_UV + vec2(x, y) * texel_step);
-        }
-    }
+    // Center tap
+    vec4 sum = texture(t0, SCREEN_UV); 
+    
+    // Inner Ring (Hexagonal, Radius 1.0)
+    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.0,     1.0));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.866,   0.5));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.866,  -0.5));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.0,    -1.0));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2(-0.866,  -0.5));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2(-0.866,   0.5));
+    
+    // Outer Ring (Hexagonal, Radius 2.0)
+    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.0,     2.0));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2( 1.732,   1.0));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2( 1.732,  -1.0));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.0,    -2.0));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2(-1.732,  -1.0));
+    sum += texture(t0, SCREEN_UV + texel_step * vec2(-1.732,   1.0));
 
-    vec4 bloom_added = (sum / 25.0) * bloom_intensity;
+    vec4 bloom_added = (sum / 13.0) * bloom_intensity;
 
     // 5. Customization Passes
-    if (enable_pulsation) {
-        float pulse = (sin(TIME * pulse_speed) * 0.5) + 0.5; 
-        float current_intensity = mix(pulse_min_intensity, pulse_max_intensity, pulse);
-        bloom_added *= current_intensity;
-    }
-
+    bloom_added *= v_pulse_mult; // Apply pre-calculated vertex math
     bloom_added *= bloom_tint;
     
     // 6. Edge Fade Logic 
