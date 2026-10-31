@@ -11,6 +11,7 @@ func _ready() -> void:
 		Global.shop_money_panel = self
 	labels = [
 		find_child('Label', true),
+		find_child('Label2b', true),
 		find_child('Label2', true),
 		find_child('Label3', true)
 	]
