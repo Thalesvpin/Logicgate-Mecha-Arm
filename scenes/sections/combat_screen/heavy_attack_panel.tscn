@@ -3,8 +3,9 @@
 [ext_resource type="Script" uid="uid://c8ndbsgmqhhqf" path="res://scripts/heavy_attack_panel.gd" id="1_angqt"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="2_5yha0"]
 [ext_resource type="Shader" uid="uid://dulb1o24l1kpl" path="res://shaders/progress_bar.gdshader" id="2_l0mrq"]
-[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="3_5yha0"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="3_gcc1c"]
+[ext_resource type="Texture2D" uid="uid://jy5i2y21iohv" path="res://assets/TCC_icon_heavyattack.png" id="5_5yha0"]
+[ext_resource type="Shader" uid="uid://bp1bhku15or35" path="res://shaders/basic_color_overlay.gdshader" id="5_gcc1c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
@@ -445,6 +446,32 @@ shader_parameter/slant_amount = 0.0
 shader_parameter/scale = 0.0
 shader_parameter/slant_clip_margin = 0.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5yha0"]
+shader = ExtResource("5_gcc1c")
+shader_parameter/gamma = 1.0
+shader_parameter/premultiplied_alpha = false
+shader_parameter/feather_edges = 0.0
+shader_parameter/dither_strength = 0.0
+shader_parameter/use_base_overlay = true
+shader_parameter/blend_mode = 0
+shader_parameter/overlay_color = Color(0, 1, 0.6166668, 1)
+shader_parameter/overlay_opacity = 1.0
+shader_parameter/use_gradient = false
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_angle = 0.0
+shader_parameter/gradient_offset = Vector2(0, 0)
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothstep = 0.0
+shader_parameter/use_pattern = false
+shader_parameter/pattern_blend_mode = 1
+shader_parameter/pattern_opacity = 1.0
+shader_parameter/pattern_scale = Vector2(1, 1)
+shader_parameter/pattern_angle = 0.0
+shader_parameter/pattern_velocity = Vector2(0, 0)
+shader_parameter/pattern_screen_space = false
+shader_parameter/pattern_frames = Vector2i(1, 1)
+shader_parameter/pattern_frame = 0
+
 [node name="HeavyAttackPanel" type="Control" unique_id=1918303625]
 custom_minimum_size = Vector2(370, 150)
 custom_maximum_size = Vector2(370, 150)
@@ -494,7 +521,9 @@ stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer" unique_id=735094224]
 own_world_3d = true
+handle_input_locally = false
 size = Vector2i(188, 110)
+render_target_update_mode = 4
 
 [node name="ContextPanelBG" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport" unique_id=357493249]
 anchors_preset = 15
@@ -560,10 +589,20 @@ offset_right = 130.0
 offset_bottom = 173.0
 rotation = -1.5707964
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/Control" unique_id=1261505371]
+[node name="ColorRect" type="ColorRect" parent="PanelContainer/Control" unique_id=1472390147]
 layout_mode = 0
-offset_left = 84.0
+offset_left = 81.0
 offset_top = 41.0
-offset_right = 140.0
+offset_right = 137.0
 offset_bottom = 97.0
-texture = ExtResource("3_5yha0")
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/Control" unique_id=501591465]
+material = SubResource("ShaderMaterial_5yha0")
+layout_mode = 0
+offset_left = 81.0
+offset_top = 41.0
+offset_right = 137.0
+offset_bottom = 97.0
+texture = ExtResource("5_5yha0")
+expand_mode = 1

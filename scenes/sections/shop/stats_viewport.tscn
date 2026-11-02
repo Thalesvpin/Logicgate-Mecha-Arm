@@ -596,13 +596,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_mjyp6"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_24lyc"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_mjyp6")
+shader_parameter/tex = SubResource("ViewportTexture_24lyc")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -1108,7 +1108,7 @@ uppercase = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "dano
-prórpio"
+próprio"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -1148,6 +1148,7 @@ theme = ExtResource("14_yr5m8")
 text = "MELHORIA DE ATRIBUTOS"
 
 [node name="TopTabBtn2" type="Button" parent="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top" unique_id=1341065722]
+visible = false
 layout_mode = 2
 text = "EFEITOS ELEMENTAIS"
 
