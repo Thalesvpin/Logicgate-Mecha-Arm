@@ -53,6 +53,12 @@ glow_normalized = true
 glow_intensity = 1.83
 glow_bloom = 0.7
 
+[sub_resource type="Gradient" id="Gradient_gcc1c"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 1, 0.35000014, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gcc1c"]
+gradient = SubResource("Gradient_gcc1c")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]
 shader = ExtResource("2_5yha0")
 shader_parameter/invert_colors = false
@@ -80,7 +86,7 @@ shader_parameter/hue_spatial_enable = false
 shader_parameter/hue_spatial_scroll_speed = 0.0
 shader_parameter/hue_spatial_rotation = 0.0
 shader_parameter/hue_spatial_invert = false
-shader_parameter/saturation = 1.0
+shader_parameter/saturation = 1.0830000514425
 shader_parameter/saturation_spatial_enable = false
 shader_parameter/saturation_spatial_scroll_speed = 0.0
 shader_parameter/saturation_spatial_rotation = 0.0
@@ -165,7 +171,8 @@ shader_parameter/ca_mask_scroll_speed = 0.0
 shader_parameter/ca_mask_rotation = 0.0
 shader_parameter/ca_mask_invert = false
 shader_parameter/use_vignette = false
-shader_parameter/vignette_blend_mode = 0
+shader_parameter/vignette_gradient = SubResource("GradientTexture1D_gcc1c")
+shader_parameter/vignette_blend_mode = 2
 shader_parameter/vignette_scale = 1.0
 shader_parameter/vignette_master_opacity = 1.0
 shader_parameter/use_color_quantization = false
@@ -196,13 +203,13 @@ shader_parameter/mask_debug_mode = 0
 shader_parameter/show_luminance_heatmap = false
 shader_parameter/channel_isolation = 0
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_mjyp6"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ul2j5"]
 viewport_path = NodePath("PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cqbp4"]
 resource_local_to_scene = true
 shader = ExtResource("3_gcc1c")
-shader_parameter/tex = SubResource("ViewportTexture_mjyp6")
+shader_parameter/tex = SubResource("ViewportTexture_ul2j5")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -568,7 +575,7 @@ environment = SubResource("Environment_eofqg")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport" unique_id=125058150]
 
-[node name="ColorRect" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/CanvasLayer" unique_id=532786328]
+[node name="ColorPostProcess Adjustments" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/CanvasLayer" unique_id=532786328]
 material = SubResource("ShaderMaterial_eofqg")
 anchors_preset = 15
 anchor_right = 1.0
