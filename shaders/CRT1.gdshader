@@ -53,6 +53,7 @@ uniform float mask_brightness_anim_amplitude = 1.0;
 
 group_uniforms Scanlines;
 uniform bool use_scanlines = false;
+uniform float scanline_count : hint_range(50.0, 2160.0) = 240.0;
 uniform float scanline_brightness : hint_range(0.5, 1.0) = 1.0;
 uniform float scanline_beam_width_min : hint_range(0.1, 1.0) = 0.25;
 uniform float scanline_beam_width_max : hint_range(0.5, 3.0) = 1.0;
@@ -553,10 +554,15 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		weight_scaler_vec = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e);
 	}
 
+    // Decoupling vertical rendering from physical texture resolution for strict monitor consistency
+	float abstract_y = uv.y * scanline_count;
+
 	if (use_scanlines) {
-		float scan_drift = fract((scaled_uv.y + 0.5) - TIME * scanline_drift_speed);
-		int iy = int(floor(scaled_uv.y + 0.5)) - 1;
-		int lower_y = iy + 1;
+		float scan_drift = fract((abstract_y + 0.5) - TIME * scanline_drift_speed);
+		float current_scanline = floor(abstract_y + 0.5) - 1.0;
+		
+		int iy = int(floor(((current_scanline + 0.5) / scanline_count) * v_tex_size.y));
+		int lower_y = int(floor(((current_scanline + 1.5) / scanline_count) * v_tex_size.y));
 
 		vec3 raw_upper, raw_lower;
 		if (fast) {
@@ -580,8 +586,8 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		vec3 lower_line = smoothstep(vec3(1.0), vec3(0.0), vec3(1.0 - scan_drift) * inv_lower_thickness) * lower_col * inv_lower_thickness;
 		
 		int field_glitch = int(v_glitch_field.z);
-		upper_line *= 1.0 - float((iy & 1) ^ field_glitch) * v_dyn_pack1.w;
-		lower_line *= 1.0 - float((lower_y & 1) ^ field_glitch) * v_dyn_pack1.w;
+		upper_line *= 1.0 - float((int(current_scanline) & 1) ^ field_glitch) * v_dyn_pack1.w;
+		lower_line *= 1.0 - float((int(current_scanline + 1.0) & 1) ^ field_glitch) * v_dyn_pack1.w;
 
 		vec3 final_lines = upper_line + lower_line;
 		if (scanline_cutoff > 0.0) {
@@ -592,7 +598,9 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 	} else {
 		int iy = int(floor(scaled_uv.y));
 		vec3 color = fast ? srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb) : sample_row(ix, iy, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec;
-		color *= 1.0 - float((iy & 1) ^ int(v_glitch_field.z)) * v_dyn_pack1.w; 
+		
+		int abstract_iy = int(floor(abstract_y));
+		color *= 1.0 - float((abstract_iy & 1) ^ int(v_glitch_field.z)) * v_dyn_pack1.w; 
 		return color;
 	}
 }
@@ -685,7 +693,7 @@ void fragment() {
 		}
 
 		if (use_interlaced_jitter && interlaced_jitter_strength > 0.0) {
-			float row_id = floor(warped_coords.y * v_tex_size.y);
+			float row_id = floor(warped_coords.y * scanline_count);
 			float jitter_mod = sin(v_optim_pack.w + row_id * interlaced_jitter_frequency);
 			if (interlaced_jitter_random) {
 				jitter_mod *= fract(sin(row_id * 12.9898 + TIME) * 43758.5453);
