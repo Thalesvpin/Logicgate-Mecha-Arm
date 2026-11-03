@@ -89,7 +89,7 @@ shader_parameter/contrast_spatial_enable = false
 shader_parameter/contrast_spatial_scroll_speed = 0.0
 shader_parameter/contrast_spatial_rotation = 0.0
 shader_parameter/contrast_spatial_invert = false
-shader_parameter/exposure = 0.0
+shader_parameter/exposure = 0.2350001061625
 shader_parameter/exposure_spatial_enable = false
 shader_parameter/exposure_spatial_scroll_speed = 0.0
 shader_parameter/exposure_spatial_rotation = 0.0
@@ -190,13 +190,13 @@ shader_parameter/mask_debug_mode = 0
 shader_parameter/show_luminance_heatmap = false
 shader_parameter/channel_isolation = 0
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_kbhfa"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_bv6uq"]
 viewport_path = NodePath("PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ul2j5"]
 resource_local_to_scene = true
 shader = ExtResource("3_gnih8")
-shader_parameter/tex = SubResource("ViewportTexture_kbhfa")
+shader_parameter/tex = SubResource("ViewportTexture_bv6uq")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -267,11 +267,11 @@ shader_parameter/sharpness = 1.0
 shader_parameter/animate_sharpness = false
 shader_parameter/sharpness_anim_speed = 1.0
 shader_parameter/sharpness_anim_amplitude = 1.0
-shader_parameter/use_yiq_bleed = false
+shader_parameter/use_yiq_bleed = true
 shader_parameter/yiq_bleed_spread = 2.26500010432762
-shader_parameter/yiq_chroma_offset = -3.017999905855
-shader_parameter/use_signal_ringing = false
-shader_parameter/ringing_strength = 0.0330000015675
+shader_parameter/yiq_chroma_offset = 1.3190003001525001
+shader_parameter/use_signal_ringing = true
+shader_parameter/ringing_strength = 0.2
 shader_parameter/ringing_frequency = 20.0
 shader_parameter/ringing_decay = 3.0
 shader_parameter/wobble_strength = 0.0
@@ -438,7 +438,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0.09789304, 0.033154253, 0, 1)
 
 [node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG" unique_id=455825662]
 anchors_preset = 0
