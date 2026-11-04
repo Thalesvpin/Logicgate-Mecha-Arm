@@ -2,7 +2,7 @@ extends Node
 
 var turn_sequence: Array = ['player']
 var turn_idx: int = 0
-var is_shop_open: bool = true
+var is_shop_open: bool = false
 
 func _ready() -> void:
 	Global.turn_manager = self

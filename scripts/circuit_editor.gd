@@ -18,6 +18,7 @@ var all_gate_inputs: Array
 var all_gate_outputs: Array
 var hovered_pin: Area2D
 var block_up = false
+
 var action_list: Dictionary[CombatActions.List, int]={
 	CombatActions.List.ATTACK: 0,
 	CombatActions.List.HEAVY_ATTACK: 0,
@@ -88,3 +89,6 @@ func lock_sandbox() -> void:
 
 func unlock_sandbox() -> void:
 	block_input.hide()
+
+func lock_zoom(value: bool) -> void:
+	circuit_camera.lock_zoom = value

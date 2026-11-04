@@ -126,8 +126,9 @@ func toggle_power() -> void:
 
 func _apply_power_progress(progress: float, turning_on: bool) -> void:
 	if material != null:
-		var val = power_curve.sample(progress) if power_curve != null else progress
+		var val = progress
 		if not turning_on:
+			print('u')
 			val = 1.0 - val
 		material.set_shader_parameter("power_state", val)
 # ---------------------------------

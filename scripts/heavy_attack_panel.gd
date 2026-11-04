@@ -1,6 +1,7 @@
 extends CollapsablePanel
 
 @onready var charges_bar: ColorRect = $PanelContainer/Control/ChargesBar
+@onready var crt_1: ColorRect = $PanelContainer/Control/PanelContainer2/Mask/CRT1
 
 var _material: ShaderMaterial
 
@@ -8,6 +9,8 @@ func ready() -> void:
 	is_charged = true
 	Global.heavy_attack_panel = self
 	_material = charges_bar.material as ShaderMaterial
+	shader = crt_1.material as ShaderMaterial
+	shader.set_shader_parameter('power_state', 0)
 
 func fill_charges() -> void:
 	_material.set_shader_parameter("pour_fill_amount", 1)
@@ -31,3 +34,9 @@ func add_charges() -> void:
 
 func deplete_charges() -> void:
 	_material.set_shader_parameter("pour_fill_amount", 0.0)
+
+func turn_on() -> void:
+	if turn_on_delay > 0:
+		await get_tree().create_timer(turn_on_delay).timeout
+	var tween = create_tween()
+	tween.tween_property(shader, 'shader_parameter/power_state', 1.0, turn_on_speed)

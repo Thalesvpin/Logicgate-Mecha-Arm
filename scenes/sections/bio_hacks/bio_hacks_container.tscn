@@ -223,6 +223,7 @@ shader_parameter/animate_mask_brightness = false
 shader_parameter/mask_brightness_anim_speed = 1.0
 shader_parameter/mask_brightness_anim_amplitude = 1.0
 shader_parameter/use_scanlines = false
+shader_parameter/scanline_count = 240.0
 shader_parameter/scanline_brightness = 1.0
 shader_parameter/scanline_beam_width_min = 0.25
 shader_parameter/scanline_beam_width_max = 1.0
@@ -377,7 +378,7 @@ shader_parameter/sec_mask_pattern = 0
 shader_parameter/sec_mask_scale = 20.0
 shader_parameter/sec_mask_smoothness = 0.1
 shader_parameter/sec_mask_invert = false
-shader_parameter/rect_aspect = 1.7850467289719627
+shader_parameter/rect_aspect = 0.0
 shader_parameter/sec_mask_decouple_aspect = true
 shader_parameter/sec_mask_custom_aspect = 1.0
 shader_parameter/sec_hue_shift = 0.0
@@ -442,6 +443,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1943549317]
 layout_mode = 2
@@ -452,6 +454,7 @@ theme_override_constants/margin_bottom = 8
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer" unique_id=1594259129]
 layout_mode = 2
+mouse_filter = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer" unique_id=646430230]
 layout_mode = 2
@@ -460,6 +463,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=729233739]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0j75a")
 
 [node name="TitleBar" type="HBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=743033342]
@@ -490,6 +494,7 @@ uppercase = true
 [node name="ScrollContainer" type="ScrollContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer" unique_id=215364426]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 0
 theme_override_constants/scrollbar_h_separation = 4
 horizontal_scroll_mode = 3
 
@@ -497,6 +502,7 @@ horizontal_scroll_mode = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=1205731249]
 environment = SubResource("Environment_mjyp6")

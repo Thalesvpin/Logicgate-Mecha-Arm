@@ -423,6 +423,10 @@ offset_bottom = 150.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 script = ExtResource("1_srban")
+turn_on_speed = null
+turn_on_delay = null
+duration = null
+charged_offset = null
 elemental_offset = 155
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1093596042]

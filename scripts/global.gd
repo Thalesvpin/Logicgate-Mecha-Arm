@@ -99,6 +99,18 @@ var implant_options = [
 		'id': 'idx_2'
 	},
 ]
+var shop_implant_options = [
+	{
+		'texture': INFO,
+		'title': 'Ajuda',
+		'id': 'idx_0'
+	},
+	{
+		'texture': CANCEL,
+		'title': 'Cancelar',
+		'id': 'idx_2'
+	},
+]
 var rarity_textures: Dictionary[Rarity, Texture2D] = {
 	Rarity.COMMON: RARITY_PLACEHOLDER,
 	Rarity.RARE: RARITY_PLACEHOLDER,

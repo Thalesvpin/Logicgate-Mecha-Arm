@@ -451,6 +451,8 @@ size_flags_vertical = 8
 [node name="ElementalPanel" parent="SubViewportContainer/SubViewport/PanelContainer/LeftBottomPanels" unique_id=337277702 instance=ExtResource("5_lobgv")]
 layout_mode = 2
 size_flags_horizontal = 0
+duration = 0.8
+charged_offset = 125
 
 [node name="Border" type="PanelContainer" parent="." unique_id=542381246]
 layout_mode = 2

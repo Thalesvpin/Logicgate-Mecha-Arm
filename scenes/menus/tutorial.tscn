@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://ebj85qn4ud0i"]
+
+[ext_resource type="Script" uid="uid://cqkipje5k1rgh" path="res://scripts/tutorial.gd" id="1_4tqpx"]
+[ext_resource type="PackedScene" uid="uid://1ufv6vajaxt3" path="res://scenes/sections/sand_box/circuit_editor.tscn" id="1_afvru"]
+[ext_resource type="PackedScene" uid="uid://drl4m0lil85ek" path="res://scenes/sections/inventory/gates_selector.tscn" id="2_nf42y"]
+
+[node name="Tutorial" type="Control" unique_id=165978210]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4tqpx")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=696886295]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GatesSelector" parent="HSplitContainer" unique_id=1904067160 instance=ExtResource("2_nf42y")]
+layout_mode = 2
+
+[node name="CircuitEditor" parent="HSplitContainer" unique_id=1639356317 instance=ExtResource("1_afvru")]
+layout_mode = 2
+size_flags_stretch_ratio = 7.0

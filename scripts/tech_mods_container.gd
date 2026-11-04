@@ -18,6 +18,7 @@ func add_implant(resource: Implant):
 	implant.resource = resource
 	implants_holder.add_child(implant)
 	implant.load_resource()
+	implant.is_owned = true
 	#EventBus.tech_mod_added.emit(resource)
 	update_counter()
 

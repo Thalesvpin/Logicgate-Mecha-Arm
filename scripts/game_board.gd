@@ -176,13 +176,15 @@ const BH_1 = preload("uid://cdfw1je21a364")
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("Y"):# Y
+	if event.is_action_pressed("Y"):
 		pass
-	if event.is_action_pressed("U"):# U
-		pass
-	if event.is_action_pressed("B"):# B
+	if event.is_action_pressed("H"):
+		var ef = ChargeHeavyAttackEffect.new()
+		ef.amount = 1
+		ef.apply()
+	if event.is_action_pressed("B"):
 		Global.implant_manager.add_bio_hack(BH_1)
-	if event.is_action_pressed("T"):# T
+	if event.is_action_pressed("T"):
 		Global.implant_manager.add_tech_mod(TM_6)
 	if event.is_action_pressed("S"):
 		EventBus.battle_ended.emit(true)

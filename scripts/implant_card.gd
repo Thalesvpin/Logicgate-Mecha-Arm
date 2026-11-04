@@ -38,6 +38,7 @@ var is_corrupted: bool
 var is_consumable: bool = false
 var uses_amount: int
 
+var is_owned: bool = false
 var is_loaded: bool = false
 
 func _ready() -> void:
@@ -105,7 +106,10 @@ func set_template(template: int):
 
 func open_radial_menu() -> void:
 	var radial_menu = RADIAL_MENU.instantiate()
-	radial_menu.set_items(Global.implant_options)
+	if is_owned:
+		radial_menu.set_items(Global.implant_options)
+	else:
+		radial_menu.set_items(Global.shop_implant_options)
 	radial_menu.set_center_ring_text(Gates.Type.keys()[type])
 	radial_menu.item_selected.connect(handle_radial_menu_selection)
 	get_tree().current_scene.add_child(radial_menu)
@@ -155,8 +159,7 @@ func _on_activator_btn_button_up() -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT && event.pressed:
-			if !Global.turn_manager.is_shop_open:
-				open_radial_menu()
+			open_radial_menu()
 
 func _on_confirm_btn_button_up() -> void:
 	sell()
