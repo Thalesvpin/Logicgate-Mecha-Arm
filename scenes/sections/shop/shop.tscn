@@ -59,7 +59,7 @@ grow_vertical = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=828424720]
 layout_mode = 2
 
-[node name="ShopLeftMods" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer" unique_id=817944177 instance=ExtResource("1_emyvy")]
+[node name="ShopTechModsContainer" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer" unique_id=817944177 instance=ExtResource("1_emyvy")]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -82,7 +82,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="ShopRightMods" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer" unique_id=1030358402 instance=ExtResource("2_yfiyx")]
+[node name="ShopBioHacksContainer" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer" unique_id=1030358402 instance=ExtResource("2_yfiyx")]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4

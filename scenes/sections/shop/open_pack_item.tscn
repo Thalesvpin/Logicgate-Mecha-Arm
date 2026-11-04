@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://w1qq1p4375fn" path="res://scenes/sections/implant_card.tscn" id="1_jsoma"]
 [ext_resource type="Script" uid="uid://cv1p07g4o3uvd" path="res://scripts/open_pack_item.gd" id="1_lhu5f"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_lhu5f"]
+[ext_resource type="Texture2D" uid="uid://3dcqftonh2pd" path="res://assets/info.png" id="4_0tatm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0, 0, 0, 0)
@@ -62,10 +63,13 @@ theme_override_constants/separation = 10
 [node name="ImplantCard" parent="MarginContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("1_jsoma")]
 layout_mode = 2
 
-[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=164201110]
+[node name="ChooseBtn" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=164201110]
 custom_minimum_size = Vector2(324.9, 0)
 custom_maximum_size = Vector2(168.855, -1)
 layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("2_lhu5f")
+texture_hover = ExtResource("4_0tatm")
 stretch_mode = 0
+
+[connection signal="button_up" from="MarginContainer/VBoxContainer/ChooseBtn" to="." method="_on_choose_btn_button_up"]
