@@ -75,6 +75,19 @@ uniform float interlaced_jitter_speed : hint_range(0.1, 20.0) = 10.0;
 uniform float interlaced_jitter_frequency : hint_range(0.1, 5.0) = 1.5;
 uniform bool interlaced_jitter_random = false;
 
+group_uniforms V_Blanking_Roll;
+uniform bool use_v_blanking = false;
+uniform float v_blanking_speed : hint_range(0.0, 5.0) = 1.0;
+uniform float v_blanking_bar_size : hint_range(0.0, 0.5) = 0.1;
+uniform float v_blanking_tearing : hint_range(0.0, 1.0) = 0.2;
+
+group_uniforms Tape_Crease;
+uniform bool use_tape_crease = false;
+uniform float crease_speed : hint_range(0.0, 10.0) = 1.0;
+uniform float crease_interval : hint_range(0.0, 20.0) = 3.0;
+uniform float crease_width : hint_range(0.01, 0.2) = 0.04;
+uniform float crease_noise_strength : hint_range(0.0, 2.0) = 1.0;
+
 group_uniforms VHS_Head_Switching;
 uniform bool use_head_switching = false;
 uniform float head_switch_height : hint_range(0.01, 0.5) = 0.08;
@@ -109,6 +122,10 @@ uniform float yiq_chroma_offset : hint_range(-5.0, 5.0) = 0.0;
 uniform bool use_vertical_chroma_smear = false;
 uniform float chroma_smear_strength : hint_range(0.0, 1.0) = 1.0;
 uniform float chroma_smear_scanlines : hint_range(0.1, 5.0) = 1.0;
+
+group_uniforms YC_Delay;
+uniform bool use_yc_delay = false;
+uniform float yc_delay_amount : hint_range(0.0, 50.0) = 10.0;
 
 group_uniforms VHS_Chroma_Noise;
 uniform bool use_tape_noise = false;
@@ -703,6 +720,35 @@ void fragment() {
 	} else {
 		warped_coords.x += v_degauss_wobble.y;
 
+		float in_v_blank = 0.0;
+		if (use_v_blanking) {
+			float roll_t = TIME * v_blanking_speed;
+			float v_bar_y = fract(warped_coords.y - roll_t);
+			if (v_bar_y < v_blanking_bar_size) {
+				in_v_blank = 1.0;
+			} else {
+				float tear_dist = v_bar_y - v_blanking_bar_size;
+				warped_coords.x += exp(-20.0 * tear_dist) * sin(tear_dist * 50.0) * v_blanking_tearing;
+			}
+		}
+
+		float crease_factor = 0.0;
+		if (use_tape_crease) {
+			float travel_distance = 1.0 + (crease_width * 2.0);
+			float active_time = travel_distance / max(0.001, crease_speed);
+			float total_time = active_time + crease_interval;
+			float local_t = mod(TIME, total_time);
+			if (local_t < active_time) {
+				float c_pos = -crease_width + (local_t * crease_speed);
+				float dist = abs(warped_coords.y - c_pos);
+				crease_factor = smoothstep(crease_width, crease_width * 0.2, dist);
+				if (crease_factor > 0.0) {
+					float crease_noise = value_noise_1(vec2(warped_coords.y * 100.0, TIME * 20.0));
+					warped_coords.x += (crease_noise - 0.5) * crease_factor * crease_noise_strength * 0.1;
+				}
+			}
+		}
+
 		if (use_edge_wobble) {
 			float wobble_noise = value_noise_1(vec2(warped_coords.y * edge_wobble_scale, TIME * edge_wobble_speed));
 			warped_coords.x += (wobble_noise - 0.5) * edge_wobble_strength;
@@ -772,12 +818,23 @@ void fragment() {
 		}
 
 		vec3 col = sample_image(warped_coords, local_chroma);
+		
+		if (in_v_blank > 0.0) {
+			col = vec3(0.0);
+		}
 
-		bool need_yiq = use_yiq_bleed || use_vertical_chroma_smear || use_tape_noise || use_color_killer;
+		bool need_yiq = use_yiq_bleed || use_vertical_chroma_smear || use_tape_noise || use_color_killer || use_yc_delay || use_tape_crease;
 		if (need_yiq) {
 			vec3 center_yiq = rgb_to_yiq(col);
 			float final_i = center_yiq.y;
 			float final_q = center_yiq.z;
+
+			if (use_yc_delay) {
+				vec3 delayed_col = sample_image(warped_coords - vec2(yc_delay_amount * v_tex_pixel_size.x, 0.0), local_chroma);
+				vec3 delayed_yiq = rgb_to_yiq(delayed_col);
+				final_i = delayed_yiq.y;
+				final_q = delayed_yiq.z;
+			}
 			
 			if (use_yiq_bleed) {
 				vec3 raw_col = srgb_to_linear(texture(tex, warped_coords).rgb);
@@ -817,6 +874,17 @@ void fragment() {
 				float killer_mult = smoothstep(color_killer_threshold - 0.05, color_killer_threshold + 0.05, killer_noise);
 				final_i *= killer_mult;
 				final_q *= killer_mult;
+			}
+
+			if (use_tape_crease && crease_factor > 0.0) {
+				vec3 c_noise = fbm_3(warped_coords * 10.0 + vec2(TIME * 10.0, 0.0), 3, 2.0, 0.5);
+				final_i += (c_noise.x - 0.5) * crease_factor * crease_noise_strength;
+				final_q += (c_noise.y - 0.5) * crease_factor * crease_noise_strength;
+				
+				float crease_killer = fbm_1(vec2(warped_coords.y * 10.0, TIME * 15.0), 2, 2.0, 0.5);
+				float kill_mult = smoothstep(0.4, 0.6, crease_killer + (1.0 - crease_factor));
+				final_i *= kill_mult;
+				final_q *= kill_mult;
 			}
 
 			col = yiq_to_rgb(vec3(center_yiq.x, final_i, final_q));
