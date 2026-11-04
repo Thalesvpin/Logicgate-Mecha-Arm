@@ -352,13 +352,16 @@ void vertex() {
 		v_optim_pack.x = t * t * (3.0 - 2.0 * t) * power_flash_color.a;
 	}
 	
-	v_optim_pack.y = -1.0;
-	if (use_vhs_tracking && vhs_tracking_strength > 0.0) {
-		float speed = abs(vhs_tracking_speed);
-		float sweep_time = speed > 0.0 ? 1.0 / speed : 0.0;
+	v_optim_pack.y = -1000.0; 
+	if (use_vhs_tracking && abs(vhs_tracking_speed) > 0.001) {
+		float travel_dist = 1.0 + vhs_tracking_height;
+		float abs_speed = abs(vhs_tracking_speed);
+		float sweep_time = travel_dist / abs_speed;
 		float total_cycle = sweep_time + max(0.001, vhs_tracking_interval);
 		float local_time = mod(TIME, total_cycle);
-		if (local_time < sweep_time) v_optim_pack.y = local_time * vhs_tracking_speed;
+		if (local_time < sweep_time) {
+			v_optim_pack.y = (vhs_tracking_speed > 0.0) ? (-vhs_tracking_height + local_time * abs_speed) : (1.0 - local_time * abs_speed);
+		}
 	}
 	
 	v_optim_pack.z = scanline_brightness;
@@ -773,8 +776,8 @@ void fragment() {
 			warped_coords.x += ((int(row_id) & 1) == 0 ? jitter_mod : -jitter_mod) * interlaced_jitter_strength;
 		}
 
-		if (v_optim_pack.y >= 0.0) {
-			float track_band = step(1.0 - vhs_tracking_height, fract(warped_coords.y + v_optim_pack.y));
+		if (v_optim_pack.y > -999.0) {
+			float track_band = step(v_optim_pack.y, warped_coords.y) * step(warped_coords.y, v_optim_pack.y + vhs_tracking_height);
 			if (track_band > 0.0) {
 				float pseudo_rand = fract(sin(floor(warped_coords.y * vhs_tracking_noise_scale) + TIME * 10.0) * 43758.5453);
 				warped_coords.x += (pseudo_rand - 0.5) * vhs_tracking_strength * 0.2;
