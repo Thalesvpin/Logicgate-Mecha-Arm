@@ -601,9 +601,7 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		weight_scaler_vec = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e);
 	}
 
-	// Calculate aspect-ratio corrected scanline density
-	float effective_scanlines = scanline_count * (v_tex_size.y / max(v_tex_size.x * aspect, 0.0001));
-	float abstract_y = uv.y * effective_scanlines;
+	float abstract_y = uv.y * scanline_count;
 
 	if (use_scanlines) {
 		float shifted_y = abstract_y - TIME * scanline_drift_speed;
@@ -615,11 +613,14 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		float dist1 = abs(shifted_y - y_center1); 
 		float dist2 = abs(shifted_y - y_center2); 
 		
+		// Use physical screen derivative to measure exactly how many pixels the scanline occupies
+		float fw = max(fwidth(shifted_y), 0.001);
+		
 		float tex_y1 = y_center1 + TIME * scanline_drift_speed;
 		float tex_y2 = y_center2 + TIME * scanline_drift_speed;
 		
-		int iy1 = clamp(int(floor((tex_y1 / effective_scanlines) * v_tex_size.y)), 0, int(v_tex_size.y) - 1);
-		int iy2 = clamp(int(floor((tex_y2 / effective_scanlines) * v_tex_size.y)), 0, int(v_tex_size.y) - 1);
+		int iy1 = clamp(int(floor((tex_y1 / scanline_count) * v_tex_size.y)), 0, int(v_tex_size.y) - 1);
+		int iy2 = clamp(int(floor((tex_y2 / scanline_count) * v_tex_size.y)), 0, int(v_tex_size.y) - 1);
 
 		vec3 raw1, raw2;
 		if (fast) {
@@ -636,8 +637,10 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		vec3 thick1 = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), col1);
 		vec3 thick2 = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), col2);
 		
-		vec3 profile1 = smoothstep(thick1 * 0.75, thick1 * 0.1, vec3(dist1)) * col1;
-		vec3 profile2 = smoothstep(thick2 * 0.75, thick2 * 0.1, vec3(dist2)) * col2;
+		// Perfectly blur the beam over the fractional physical pixel boundaries
+		float blur = fw * 1.25; 
+		vec3 profile1 = smoothstep(thick1 * 0.5 + blur, thick1 * 0.5 - blur, vec3(dist1)) * col1;
+		vec3 profile2 = smoothstep(thick2 * 0.5 + blur, thick2 * 0.5 - blur, vec3(dist2)) * col2;
 		
 		int field_glitch = int(v_glitch_field.z);
 		profile1 *= 1.0 - float((int(y_center1) & 1) ^ field_glitch) * v_dyn_pack1.w;
@@ -725,7 +728,6 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 
 void fragment() {
 	vec2 warped_coords = warp(UV);
-	float effective_scanlines = scanline_count * (v_tex_size.y / max(v_tex_size.x * aspect, 0.0001));
 	
 	if (power_state < 0.001 || warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
@@ -777,7 +779,7 @@ void fragment() {
 		}
 
 		if (use_interlaced_jitter && interlaced_jitter_strength > 0.0) {
-			float row_id = floor(warped_coords.y * effective_scanlines);
+			float row_id = floor(warped_coords.y * scanline_count);
 			float jitter_mod = sin(v_optim_pack.w + row_id * interlaced_jitter_frequency);
 			if (interlaced_jitter_random) {
 				jitter_mod *= fract(sin(row_id * 12.9898 + TIME) * 43758.5453);
@@ -924,7 +926,7 @@ void fragment() {
 				float moire_mask = smoothstep(cross_color_threshold, cross_color_threshold + 0.2, hf_signal);
 				
 				if (moire_mask > 0.0) {
-					float moire_phase = warped_coords.x * (effective_scanlines * aspect) * 3.14159 + warped_coords.y * effective_scanlines * 1.57079 - TIME * 15.0;
+					float moire_phase = warped_coords.x * (scanline_count * aspect) * 3.14159 + warped_coords.y * scanline_count * 1.57079 - TIME * 15.0;
 					vec3 yiq = rgb_to_yiq(col);
 					yiq.y += sin(moire_phase) * moire_mask * cross_color_strength * 0.5;
 					yiq.z += cos(moire_phase) * moire_mask * cross_color_strength * 0.5;
@@ -941,7 +943,7 @@ void fragment() {
 				
 				float zipper_mask = smoothstep(0.05, 0.2, chroma_diff) * (1.0 - smoothstep(0.0, 0.1, luma_diff));
 				if (zipper_mask > 0.0) {
-					float zipper_phase = warped_coords.y * effective_scanlines * 3.14159 - TIME * 15.0;
+					float zipper_phase = warped_coords.y * scanline_count * 3.14159 - TIME * 15.0;
 					vec3 center_yiq = rgb_to_yiq(col);
 					center_yiq.x += sin(zipper_phase) * zipper_mask * cross_luminance_strength * 0.5;
 					col = yiq_to_rgb(center_yiq);
