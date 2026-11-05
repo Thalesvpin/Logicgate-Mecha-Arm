@@ -35,6 +35,7 @@ offset_right = 65.0
 offset_bottom = 65.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_1k65l")
 and_icon = ExtResource("2_7jh40")
 or_icon = ExtResource("3_31bf4")

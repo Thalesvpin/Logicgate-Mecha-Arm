@@ -12,6 +12,7 @@ extends PanelContainer
 @onready var shield_regen: Control = $Control/ShieldRegen
 @onready var attack_container: Control = $Control/Attack
 @onready var self_damage_container: Control = $Control/SelfDamage
+@onready var actions_panel_sandbox: PanelContainer = $Control/ActionsPanelSandbox
 
 var execution_sequence: Array
 var all_gate_inputs: Array
@@ -46,10 +47,12 @@ func generate_action_list() -> void:
 		print(str(action)+' - '+str(list[aux]))
 		aux += 1
 	
-	attack_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.ATTACK])
-	shield_regen.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.REPAIR_SHIELD])
-	self_damage_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.SELF_DAMAGE])
-	heal_container.get_child(1).text = '%04d' % Global.dec_to_bin(action_list[CombatActions.List.HEAL])
+	actions_panel_sandbox.set_attack(Global.dec_to_bin(action_list[CombatActions.List.ATTACK]))
+	actions_panel_sandbox.set_shield_regen(Global.dec_to_bin(action_list[CombatActions.List.REPAIR_SHIELD]))
+	actions_panel_sandbox.set_self_damage(Global.dec_to_bin(action_list[CombatActions.List.SELF_DAMAGE]))
+	actions_panel_sandbox.set_heal(Global.dec_to_bin(action_list[CombatActions.List.HEAL]))
+	actions_panel_sandbox.set_heavy_attack(Global.dec_to_bin(action_list[CombatActions.List.HEAVY_ATTACK]))
+	actions_panel_sandbox.set_charge_heavy_attack(Global.dec_to_bin(action_list[CombatActions.List.CHARGE_HEAVY_ATTACK]))
 
 func compare_output(output: int) -> void:
 	for action in action_list:

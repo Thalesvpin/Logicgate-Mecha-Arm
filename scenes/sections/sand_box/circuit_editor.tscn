@@ -10,6 +10,7 @@
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="8_kaha7"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="8_psau8"]
 [ext_resource type="Texture2D" uid="uid://yiixgalslpim" path="res://assets/ENFERMEIRA.png" id="8_rsy7x"]
+[ext_resource type="PackedScene" uid="uid://chjmp8lbsyviq" path="res://scenes/sections/sand_box/actions_panel_sandbox.tscn" id="11_pvlru"]
 
 [sub_resource type="Gradient" id="Gradient_psau8"]
 offsets = PackedFloat32Array(0, 0.328125, 1)
@@ -57,8 +58,8 @@ shader_parameter/repulsion_swirl_angle = 2.0
 shader_parameter/repulsion_pinch_amount = -2.0
 shader_parameter/repulsion_wave_freq = 5.0
 shader_parameter/hole_punch_radius = 0.0
-shader_parameter/mouse_global_pos = Vector2(651.5556, 639.83984)
-shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
+shader_parameter/mouse_global_pos = Vector2(764.0676, 418.44144)
+shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 41.169556, 0, 0.37281382, -100000, 77.610596, 0, 0.37281382, -100000, 75.46704, 0, 0.37176546, -100000, 75.46704, 0, 0.36919853, -100000, 75.46704, 0, 0.3722494, -100000, 75.46704, 0, 0.3722696, -100000, 75.46704, 0, 0.37261218, -100000, 787.1388, 0, 0.37257108)
 shader_parameter/active_click_repulsion_count = 0
 shader_parameter/use_ripple = true
 shader_parameter/ripple_ring_count = 1
@@ -69,7 +70,7 @@ shader_parameter/ripple_decay = 1.0
 shader_parameter/ripple_grid_distortion = 0.0
 shader_parameter/use_ripple_custom_color = true
 shader_parameter/ripple_custom_color = Color(0.3, 1, 0.96500003, 1)
-shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
+shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 41.169556, 0, 0.30280182, -100000, 77.610596, 0, 0.30280182, -100000, 75.46704, 0, 0.3025877, -100000, 75.46704, 0, 0.30361035, -100000, 75.46704, 0, 0.30243498, -100000, 75.46704, 0, 0.30244812, -100000, 75.46704, 0, 0.30257574, -100000, 787.1388, 0, 0.30264407)
 shader_parameter/active_ripple_count = 0
 shader_parameter/main_grid_style = 0
 shader_parameter/main_line_thickness = 0.5
@@ -317,6 +318,15 @@ shader_parameter/interlaced_jitter_strength = 0.0
 shader_parameter/interlaced_jitter_speed = 10.0
 shader_parameter/interlaced_jitter_frequency = 1.5
 shader_parameter/interlaced_jitter_random = false
+shader_parameter/use_v_blanking = false
+shader_parameter/v_blanking_speed = 1.0
+shader_parameter/v_blanking_bar_size = 0.1
+shader_parameter/v_blanking_tearing = 0.2
+shader_parameter/use_tape_crease = false
+shader_parameter/crease_speed = 1.0
+shader_parameter/crease_interval = 3.0
+shader_parameter/crease_width = 0.04
+shader_parameter/crease_noise_strength = 1.0
 shader_parameter/use_head_switching = false
 shader_parameter/head_switch_height = 0.08
 shader_parameter/head_switch_strength = 0.03
@@ -338,6 +348,25 @@ shader_parameter/sharpness_anim_amplitude = 1.0
 shader_parameter/use_yiq_bleed = false
 shader_parameter/yiq_bleed_spread = 1.0
 shader_parameter/yiq_chroma_offset = 0.0
+shader_parameter/use_vertical_chroma_smear = false
+shader_parameter/chroma_smear_strength = 1.0
+shader_parameter/chroma_smear_scanlines = 1.0
+shader_parameter/use_yc_delay = false
+shader_parameter/yc_delay_amount = 10.0
+shader_parameter/use_tape_noise = false
+shader_parameter/tape_noise_strength = 0.2
+shader_parameter/tape_noise_scale = 2.0
+shader_parameter/tape_noise_speed = 5.0
+shader_parameter/use_color_killer = false
+shader_parameter/color_killer_threshold = 0.3
+shader_parameter/use_cross_color = false
+shader_parameter/cross_color_strength = 0.5
+shader_parameter/cross_color_threshold = 0.1
+shader_parameter/use_cross_luminance = false
+shader_parameter/cross_luminance_strength = 0.5
+shader_parameter/use_dpg = false
+shader_parameter/phase_shift = 0.0
+shader_parameter/gain_multiplier = 0.0
 shader_parameter/use_signal_ringing = false
 shader_parameter/ringing_strength = 0.2
 shader_parameter/ringing_frequency = 20.0
@@ -603,93 +632,12 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Attack" type="Control" parent="Control" unique_id=1125852690]
-anchors_preset = 0
-offset_left = 488.0
-offset_top = 12.0
-offset_right = 2408.0
-offset_bottom = 1092.0
-mouse_filter = 2
-
-[node name="Label" type="Label" parent="Control/Attack" unique_id=38606537]
+[node name="ActionsPanelSandbox" parent="Control" unique_id=801856859 instance=ExtResource("11_pvlru")]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "Ataque"
-
-[node name="Label2" type="Label" parent="Control/Attack" unique_id=3152845]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 21.0
-offset_right = 48.0
-offset_bottom = 44.0
-text = "1111"
-
-[node name="Heal" type="Control" parent="Control" unique_id=1783483027]
-anchors_preset = 0
-offset_left = 591.0
+offset_left = 301.0
 offset_top = 13.0
-offset_right = 2511.0
-offset_bottom = 1093.0
-mouse_filter = 2
-
-[node name="Label" type="Label" parent="Control/Heal" unique_id=1480961838]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "Cura"
-
-[node name="Label2" type="Label" parent="Control/Heal" unique_id=6152281]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 21.0
-offset_right = 48.0
-offset_bottom = 44.0
-text = "1111"
-
-[node name="ShieldRegen" type="Control" parent="Control" unique_id=2097592777]
-anchors_preset = 0
-offset_left = 667.0
-offset_top = 13.0
-offset_right = 2587.0
-offset_bottom = 1093.0
-mouse_filter = 2
-
-[node name="Label" type="Label" parent="Control/ShieldRegen" unique_id=376081284]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "Regen Escudo"
-
-[node name="Label2" type="Label" parent="Control/ShieldRegen" unique_id=1927303794]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 21.0
-offset_right = 72.0
-offset_bottom = 44.0
-text = "1111"
-
-[node name="SelfDamage" type="Control" parent="Control" unique_id=308548882]
-anchors_preset = 0
-offset_left = 804.0
-offset_top = 12.0
-offset_right = 2724.0
-offset_bottom = 1092.0
-mouse_filter = 2
-
-[node name="Label" type="Label" parent="Control/SelfDamage" unique_id=838713022]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "Dano próprio"
-
-[node name="Label2" type="Label" parent="Control/SelfDamage" unique_id=158288340]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 21.0
-offset_right = 72.0
-offset_bottom = 44.0
-text = "1111"
+offset_right = 1046.0
+offset_bottom = 103.0
 
 [connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
 [connection signal="mouse_entered" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]

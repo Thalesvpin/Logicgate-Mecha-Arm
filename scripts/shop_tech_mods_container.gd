@@ -9,9 +9,11 @@ const TM_2 = preload("uid://cmcqwoq53i712")
 var implants: Array[Implant]
 
 func _ready() -> void:
-	pass
+	EventBus.open_shop.connect(refresh)
+	EventBus.close_shop.connect(clear)
 
 func refresh() -> void:
+	implants = []
 	randomize_implants()
 	add_implants()
 
@@ -22,7 +24,12 @@ func randomize_implants() -> void:
 	var implant2 = get_random_implant(implant1)
 	implants.append(implant1)
 	implants.append(implant2)
-	
+
+func clear() -> void:
+	for child in implants_holder.get_children():
+		if child.name == "Spacer":
+			continue
+		child.queue_free()
 
 func get_random_implant(last = null) -> Implant:
 	var list: Array[Implant]

@@ -243,6 +243,15 @@ shader_parameter/interlaced_jitter_strength = 0.0
 shader_parameter/interlaced_jitter_speed = 10.0
 shader_parameter/interlaced_jitter_frequency = 1.5
 shader_parameter/interlaced_jitter_random = false
+shader_parameter/use_v_blanking = false
+shader_parameter/v_blanking_speed = 1.0
+shader_parameter/v_blanking_bar_size = 0.1
+shader_parameter/v_blanking_tearing = 0.2
+shader_parameter/use_tape_crease = false
+shader_parameter/crease_speed = 1.0
+shader_parameter/crease_interval = 3.0
+shader_parameter/crease_width = 0.04
+shader_parameter/crease_noise_strength = 1.0
 shader_parameter/use_head_switching = false
 shader_parameter/head_switch_height = 0.08
 shader_parameter/head_switch_strength = 0.03
@@ -264,6 +273,25 @@ shader_parameter/sharpness_anim_amplitude = 1.0
 shader_parameter/use_yiq_bleed = false
 shader_parameter/yiq_bleed_spread = 1.0
 shader_parameter/yiq_chroma_offset = 0.0
+shader_parameter/use_vertical_chroma_smear = false
+shader_parameter/chroma_smear_strength = 1.0
+shader_parameter/chroma_smear_scanlines = 1.0
+shader_parameter/use_yc_delay = false
+shader_parameter/yc_delay_amount = 10.0
+shader_parameter/use_tape_noise = false
+shader_parameter/tape_noise_strength = 0.2
+shader_parameter/tape_noise_scale = 2.0
+shader_parameter/tape_noise_speed = 5.0
+shader_parameter/use_color_killer = false
+shader_parameter/color_killer_threshold = 0.3
+shader_parameter/use_cross_color = false
+shader_parameter/cross_color_strength = 0.5
+shader_parameter/cross_color_threshold = 0.1
+shader_parameter/use_cross_luminance = false
+shader_parameter/cross_luminance_strength = 0.5
+shader_parameter/use_dpg = false
+shader_parameter/phase_shift = 0.0
+shader_parameter/gain_multiplier = 0.0
 shader_parameter/use_signal_ringing = false
 shader_parameter/ringing_strength = 0.2
 shader_parameter/ringing_frequency = 20.0
@@ -458,6 +486,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1835518545]
 layout_mode = 2
@@ -476,6 +505,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="PanelContainer" type="PanelContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=782194901]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_abqy0")
 
 [node name="TitleBar" type="HBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=655766455]
@@ -546,6 +576,7 @@ type = 6
 [node name="SellOverlay" type="Control" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=2024746708]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer/SellOverlay" unique_id=1346230491]
 layout_mode = 0
@@ -584,12 +615,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="CRT Shader" type="ColorRect" parent="." unique_id=1511101606]
 material = SubResource("ShaderMaterial_mjyp6")
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=1987508057]
 copy_mode = 2
@@ -598,5 +629,5 @@ copy_mode = 2
 visible = false
 material = SubResource("ShaderMaterial_eetg5")
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 script = ExtResource("7_1wme1")

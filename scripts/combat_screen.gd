@@ -174,6 +174,7 @@ func add_enemies() -> void:
 	left_enemy_container.add_child(left_enemy_status_bar)
 	right_enemy_container.add_child(right_enemy_status_bar)
 	center_enemy_container.add_child(center_enemy_status_bar)
+
 	left_enemy_container.add_child(enemy_l)
 	right_enemy_container.add_child(enemy_r)
 	center_enemy_container.add_child(enemy_c)

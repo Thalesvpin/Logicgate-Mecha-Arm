@@ -23,6 +23,7 @@ var choices_left
 
 func _ready() -> void:
 	EventBus.pack_item_chosen.connect(pack_item_chosen)
+	EventBus.open_shop.connect(refresh)
 	for child in get_child(0).get_children():
 		fade_list2.append(child)
 		if child is Pack:
@@ -72,11 +73,8 @@ func open_pack(pack: PanelContainer) -> void:
 		packs.hide()
 		pack.hide()
 		pack.modulate.a = 1
-		print('offset_pos: ', pack.offset_transform_position)
-		pack.offset_transform_position = Vector2.ZERO
+		pack.offset_transform_position = Vector2(0, 13)
 		pack.offset_transform_scale = Vector2(1, 1)
-		print('offset_pos 2: ', pack.offset_transform_position)
-		print('isso ta rodando?')
 	)
 	
 	for i in pack.items_amount:
@@ -100,7 +98,7 @@ func reset_open_pack() -> void:
 
 func show_packs() -> void:
 	packs.show()
-	reset_packs()
+	reset_packs_visual()
 	for pack in chosen_packs:
 		pack.hide()
 		match pack:
@@ -113,17 +111,25 @@ func show_packs() -> void:
 			pack_card_2:
 				spacer_2.show()
 
-func reset_packs() -> void:
+func reset_packs_visual() -> void:
 	pack_card.show()
 	pack_card_small.show()
 	pack_card_small_2.show()
 	pack_card_2.show()
 	reroll_card.show()
 	
+	pack_card.modulate.a = 1.0
+	pack_card_small.modulate.a = 1.0
+	pack_card_small_2.modulate.a = 1.0
+	pack_card_2.modulate.a = 1.0
+	reroll_card.modulate.a = 1.0
+	
 	spacer.hide()
 	spacer_small.hide()
 	spacer_small_2.hide()
 	spacer_2.hide()
-	
+
+func reset_packs() -> void:
+	reset_packs_visual()
 	chosen_pack = null
 	chosen_packs = []

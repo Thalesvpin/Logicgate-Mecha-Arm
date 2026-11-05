@@ -7,9 +7,11 @@ const SHOP_BIO_HACK_ITEM = preload("uid://biquah0t1pge8")
 var implants: Array[Implant]
 
 func _ready() -> void:
-	pass
+	EventBus.open_shop.connect(refresh)
+	EventBus.close_shop.connect(clear)
 
 func refresh() -> void:
+	implants = []
 	randomize_implants()
 	add_implants()
 
@@ -18,7 +20,12 @@ func randomize_implants() -> void:
 	var implant2 = get_random_implant(implant1)
 	implants.append(implant1)
 	implants.append(implant2)
-	
+
+func clear() -> void:
+	for child in implants_holder.get_children():
+		if child.name == "Spacer":
+			continue
+		child.queue_free()
 
 func get_random_implant(last = null) -> Implant:
 	var list: Array[Implant]
@@ -26,7 +33,6 @@ func get_random_implant(last = null) -> Implant:
 	var result
 	
 	chance = Global.random.next() % 100
-	var chance1 = chance
 	if chance < 40:
 		list = Global.bh_commom
 		if list == []:

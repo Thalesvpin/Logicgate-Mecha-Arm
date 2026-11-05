@@ -14,7 +14,7 @@ func _ready() -> void:
 	sub_viewport_container.custom_minimum_size = margin_container.get_combined_minimum_size()
 
 func _gui_input(event: InputEvent) -> void:
-	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
+	if event is InputEventMouseButton && event.button_index == MOUSE_BUTTON_RIGHT && event.is_released():
 		var radial_menu = RADIAL_MENU.instantiate()
 		radial_menu.set_items(Global.inventory_options)
 		radial_menu.item_selected.connect(handle_radial_menu_selection)

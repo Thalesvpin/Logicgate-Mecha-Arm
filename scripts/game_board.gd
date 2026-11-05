@@ -113,8 +113,6 @@ func close_shop() -> void:
 	shop.hide()
 	stats_viewport.hide()
 	
-	shop.limpar_a_loja_ao_fechar
-	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_parallel(true)

@@ -158,7 +158,7 @@ func _on_activator_btn_button_up() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT && event.pressed:
+		if event.button_index == MOUSE_BUTTON_RIGHT && event.is_released():
 			open_radial_menu()
 
 func _on_confirm_btn_button_up() -> void:

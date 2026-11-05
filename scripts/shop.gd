@@ -17,9 +17,9 @@ func connect_signals() -> void:
 
 func open() -> void:
 	show()
-	shop_mid_section.refresh()
-	shop_tech_mods_container.refresh()
-	shop_bio_hacks_container.refresh()
+	#shop_mid_section.refresh()
+	#shop_tech_mods_container.refresh()
+	#shop_bio_hacks_container.refresh()
 
 func close() -> void:
 	hide()

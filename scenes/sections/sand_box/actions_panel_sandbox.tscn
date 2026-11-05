@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://chjmp8lbsyviq"]
+
+[ext_resource type="Script" uid="uid://632vr4clmnwh" path="res://scripts/actions_panel_sandbox.gd" id="1_qui53"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
+
+[node name="ActionsPanelSandbox" type="PanelContainer" unique_id=801856859]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
+script = ExtResource("1_qui53")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=973630980]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=45604566]
+layout_mode = 2
+theme_override_constants/separation = 34
+
+[node name="Attack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=787469999]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Attack" unique_id=1648784174]
+layout_mode = 2
+text = "Ataque"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/Attack" unique_id=14534212]
+layout_mode = 2
+text = "1111"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Heal" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1035517307]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Heal" unique_id=1632156331]
+layout_mode = 2
+text = "Cura"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/Heal" unique_id=940124567]
+layout_mode = 2
+text = "1111"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShieldRegen" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=955659063]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=2112245393]
+layout_mode = 2
+text = "Regen Escudo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=429961555]
+layout_mode = 2
+text = "1111"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelfDamage" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1312376360]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1708250135]
+layout_mode = 2
+text = "Dano próprio"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1224268419]
+layout_mode = 2
+text = "1111"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChargeHeavyAttack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1259425124]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=1867948516]
+layout_mode = 2
+text = "Carregar
+Ataque Pesado"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=290642077]
+layout_mode = 2
+text = "1111"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HeavyAttack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=321796593]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1521951274]
+layout_mode = 2
+text = "Ataque Pesado"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1490631013]
+layout_mode = 2
+text = "1111"
+horizontal_alignment = 1
+vertical_alignment = 1

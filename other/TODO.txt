@@ -1,5 +1,4 @@
 -PRA FICAR JOGAVEL
-	-configurar btn de sair da loja
 	-reroll
 	-pacotes
 
@@ -11,7 +10,7 @@ THALES:
 nomes e icones dos implantes
 -LOJA
 criar scipt generico pra usar o color remap no stats viewport
-quando fechar a loja, limpar ela
+terminar de ajustar os packs
 -SHADER
 -COMBATE
 barras de stats psicar branco ao reduzir
@@ -19,6 +18,8 @@ dmg numbers na tela
 bloquear implantes fora do turno
 bloquear inputs e outputs vazios
 -SCRIPT
+montar lista de implantes corrompidos no global
+	usar essa lista em pack_card.gd
 
 ===================
 checar se vai rodar is_met() antes ou dps de aplicar o dano
@@ -26,6 +27,10 @@ checar se vai rodar is_met() antes ou dps de aplicar o dano
 
 dano do ataque = dano base * mult de ataque
 ============================
+centralizar os inimigos verticalmente
+
+
+
 
 
 
