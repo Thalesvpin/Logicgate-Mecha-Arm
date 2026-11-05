@@ -80,19 +80,9 @@ opentype_features = {
 1633774708: 3
 }
 
-[sub_resource type="FontVariation" id="FontVariation_psemm"]
-base_font = ExtResource("3_ryqpf")
-opentype_features = {
-1633774708: 11
-}
-
-[sub_resource type="RichTextEffect" id="RichTextEffect_gtatl"]
+[sub_resource type="RichTextEffect" id="RichTextEffect_a7lv4"]
 script = ExtResource("4_vl3im")
-speed = 38.0
-min_brightness = 0.85
-big_flicker_frequency = 0.7
-big_flicker_min_brightness = 0.4
-enable_cooldown = true
+enable_big_flicker = false
 metadata/_custom_type_script = "uid://5yavbo6e28p0"
 
 [sub_resource type="FontVariation" id="FontVariation_u3k32"]
@@ -101,6 +91,27 @@ opentype_features = {
 1633774708: 4
 }
 
+[sub_resource type="RichTextEffect" id="RichTextEffect_gtatl"]
+script = ExtResource("4_vl3im")
+enable_big_flicker = false
+metadata/_custom_type_script = "uid://5yavbo6e28p0"
+
+[sub_resource type="FontVariation" id="FontVariation_psemm"]
+base_font = ExtResource("3_ryqpf")
+opentype_features = {
+1633774708: 11
+}
+
+[sub_resource type="RichTextEffect" id="RichTextEffect_1y1uj"]
+script = ExtResource("4_vl3im")
+speed = 38.0
+min_brightness = 0.85
+big_flicker_chance = 0.1
+big_flicker_frequency = 0.7
+big_flicker_min_brightness = 0.2
+enable_cooldown = true
+metadata/_custom_type_script = "uid://5yavbo6e28p0"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mjyp6"]
 shader = ExtResource("4_psemm")
 shader_parameter/bloom_spread = 0.1
@@ -108,7 +119,7 @@ shader_parameter/bloom_intensity = 7.365
 shader_parameter/bloom_tint = Color(1, 1, 1, 1)
 shader_parameter/background_dimming = 1.0
 shader_parameter/enable_mouse = true
-shader_parameter/mouse_global_pos = Vector2(731.556, -279.54456)
+shader_parameter/mouse_global_pos = Vector2(-101.92062, -24.535797)
 shader_parameter/mouse_radius = 50.0000019
 shader_parameter/mouse_smoothness = 1.0
 shader_parameter/mouse_boost = 10.000000475
@@ -203,19 +214,40 @@ theme_override_constants/margin_left = 15
 theme_override_constants/margin_right = 15
 
 [node name="Label" type="RichTextLabel" parent="PanelContainer2/MarginContainerPanel/PanelContainer/MarginContainerMask/Mask/MarginContainer" unique_id=1924462861]
+process_priority = 100
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/default_color = Color(0.25882354, 0.007843138, 0, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_ryqpf")
 theme_override_font_sizes/normal_font_size = 42
-text = "$01234567890"
+bbcode_enabled = true
+text = "[nixie]$01234567890[/nixie]"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_a7lv4")]
+script = ExtResource("5_bt82b")
 
-[node name="Label2" type="RichTextLabel" parent="PanelContainer2/MarginContainerPanel/PanelContainer/MarginContainerMask/Mask/MarginContainer" unique_id=152825003]
+[node name="Label2" type="RichTextLabel" parent="PanelContainer2/MarginContainerPanel/PanelContainer/MarginContainerMask/Mask/MarginContainer" unique_id=1734316681]
+process_priority = 100
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/default_color = Color(0.25882354, 0.007843138, 0, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_u3k32")
+theme_override_font_sizes/normal_font_size = 42
+bbcode_enabled = true
+text = "[nixie]$01234567890[/nixie]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+custom_effects = [SubResource("RichTextEffect_gtatl")]
+script = ExtResource("5_bt82b")
+
+[node name="Label3" type="RichTextLabel" parent="PanelContainer2/MarginContainerPanel/PanelContainer/MarginContainerMask/Mask/MarginContainer" unique_id=152825003]
 process_priority = 100
 custom_minimum_size = Vector2(168.225, 0)
 layout_mode = 2
@@ -232,22 +264,8 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
-custom_effects = [SubResource("RichTextEffect_gtatl")]
+custom_effects = [SubResource("RichTextEffect_1y1uj")]
 script = ExtResource("5_bt82b")
-
-[node name="Label3" type="RichTextLabel" parent="PanelContainer2/MarginContainerPanel/PanelContainer/MarginContainerMask/Mask/MarginContainer" unique_id=1734316681]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/default_color = Color(0.25882354, 0.007843138, 0, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_u3k32")
-theme_override_font_sizes/normal_font_size = 42
-text = "$01234567890"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="FakeGlowBloom Shader" type="ColorRect" parent="PanelContainer2/MarginContainerPanel/PanelContainer/MarginContainerMask/Mask" unique_id=1579024555]
 z_index = 1
