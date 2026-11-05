@@ -7,12 +7,6 @@ extends ColorRect
 @export_range(0.0, 1.0) var ghost_threshold: float = 0.0
 @export var ghost_gradient: GradientTexture1D
 
-@export_group("CRT Mask Settings")
-@export_range(0.1, 5.0) var mask_scale_multiplier: float = 1.0:
-	set(val):
-		mask_scale_multiplier = val
-		_update_resolution_params() 
-
 @export_group("Manual Degauss")
 @export_range(0.1, 5.0) var degauss_duration: float = 1.2
 
@@ -30,7 +24,6 @@ var accum_mat: ShaderMaterial
 var _last_decay: float = -1.0
 var _last_threshold: float = -1.0
 var _last_gradient: GradientTexture1D = null
-var _last_scale: float = -1.0
 
 var is_powered_on: bool = true
 var power_tween: Tween = null
@@ -121,14 +114,12 @@ func toggle_power() -> void:
 	is_powered_on = !is_powered_on
 	power_tween = create_tween()
 	
-	# Tween a normalized progress value to sample the curve cleanly
 	power_tween.tween_method(_apply_power_progress.bind(is_powered_on), 0.0, 1.0, power_duration)
 
 func _apply_power_progress(progress: float, turning_on: bool) -> void:
 	if material != null:
 		var val = progress
 		if not turning_on:
-			print('u')
 			val = 1.0 - val
 		material.set_shader_parameter("power_state", val)
 # ---------------------------------
@@ -148,13 +139,8 @@ func _update_resolution_params() -> void:
 	if screen_size.x <= 0.0 or screen_size.y <= 0.0:
 		return
 		
-	var base_auto_scale = max(1.0, round(screen_size.y / 1080.0 * 10.0) / 10.0)
-	var final_scale = base_auto_scale * mask_scale_multiplier
-
-	if _last_scale != final_scale:
-		material.set_shader_parameter("mask_scale", final_scale)
-		_last_scale = final_scale
-
+	# The mask scaling is now handled entirely inside the shader. 
+	# We only update the aspect ratio here to maintain correct CRT glass curvature.
 	var current_aspect = screen_size.y / screen_size.x
 	material.set_shader_parameter("aspect", current_aspect)
 
