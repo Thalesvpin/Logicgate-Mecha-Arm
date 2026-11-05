@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://tdm62mawpb5d" path="res://assets/skeleton.png" id="1_87g8f"]
 [ext_resource type="Shader" uid="uid://d03k1q5p363w6" path="res://shaders/outline.gdshader" id="3_18xkl"]
 [ext_resource type="Shader" uid="uid://dh3mmqwwbao10" path="res://shaders/ultimate_outerglow.gdshader" id="3_ct5v2"]
+[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="6_lclxg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_18xkl"]
 shader = ExtResource("1_6e57c")
@@ -152,17 +153,17 @@ shader_parameter/glow_opacity = 1.0
 shader_parameter/glow_softness = 0.5
 shader_parameter/glow_smooth_gamma = 1.0
 shader_parameter/glow_blend_mode = 0
-shader_parameter/use_gradient_mapping = false
-shader_parameter/gradient_scroll_speed = 0.0
 shader_parameter/mask_core_texture = false
 shader_parameter/boundary_fade_margin = 0.05
 shader_parameter/use_soft_clip = false
 shader_parameter/glow_hdr_threshold = 1.0
 shader_parameter/glow_direction_falloff = Vector2(1, 1)
-shader_parameter/glow_rim_margin = 0.0
-shader_parameter/glow_rim_feather = 0.05
-shader_parameter/glow_rim_eccentricity = 0.0
-shader_parameter/glow_rim_pulse_frequency = 0.0
+shader_parameter/temporal_glow_jitter = false
+shader_parameter/glow_jitter_strength = 1.0
+shader_parameter/smooth_alpha_curve = false
+shader_parameter/use_gradient_mapping = false
+shader_parameter/use_opacity_gradient = false
+shader_parameter/gradient_scroll_speed = 0.0
 shader_parameter/use_sharp_steps = false
 shader_parameter/glow_step_count = 3.0
 shader_parameter/use_color_banding_palette = false
@@ -200,6 +201,10 @@ shader_parameter/pattern_fresnel_modulation = false
 shader_parameter/use_god_rays = false
 shader_parameter/ray_direction = Vector2(0.5, -0.5)
 shader_parameter/ray_length = 2.0
+shader_parameter/glow_rim_margin = 0.0
+shader_parameter/glow_rim_feather = 0.05
+shader_parameter/glow_rim_eccentricity = 0.0
+shader_parameter/glow_rim_pulse_frequency = 0.0
 shader_parameter/use_inner_glow = false
 shader_parameter/inner_glow_color = Color(1, 1, 1, 1)
 shader_parameter/inner_glow_size = 5.0
@@ -226,8 +231,15 @@ shader_parameter/use_inner_pattern_texture = false
 shader_parameter/inner_pattern_scale = Vector2(1, 1)
 shader_parameter/inner_pattern_pan_speed = Vector2(0.1, 0)
 shader_parameter/inner_pattern_influence = 0.5
-shader_parameter/use_hue_shift_mapping = false
-shader_parameter/hue_shift_intensity = 0.3
+shader_parameter/use_dissolve = false
+shader_parameter/dissolve_amount = 0.0
+shader_parameter/d_noise_scale = Vector2(1, 1)
+shader_parameter/mask_dissolve = false
+shader_parameter/animate_dissolve = false
+shader_parameter/dissolve_speed = 2.0
+shader_parameter/dissolve_use_ease = false
+shader_parameter/enable_dithering = true
+shader_parameter/dither_strength_noise = 0.03
 shader_parameter/use_ordered_dither = false
 shader_parameter/dither_strength = 0.5
 shader_parameter/dither_scale = 1.0
@@ -238,16 +250,6 @@ shader_parameter/dither_threshold_bias = 0.0
 shader_parameter/dither_color_bleeding = 0.0
 shader_parameter/dither_animation_speed = 12.0
 shader_parameter/dither_noise_bleeding_tint = Color(1, 0, 0, 1)
-shader_parameter/use_dissolve = false
-shader_parameter/dissolve_amount = 0.0
-shader_parameter/d_noise_scale = Vector2(1, 1)
-shader_parameter/mask_dissolve = false
-shader_parameter/animate_dissolve = false
-shader_parameter/dissolve_speed = 2.0
-shader_parameter/dissolve_use_ease = false
-shader_parameter/refraction_dispersion = 0.0
-shader_parameter/enable_dithering = true
-shader_parameter/dither_strength_noise = 0.03
 shader_parameter/use_pixelate_glow = false
 shader_parameter/pixelate_size = 4.0
 shader_parameter/pixelate_heat_fluid_fluid = false
@@ -257,17 +259,17 @@ shader_parameter/distortion_noise = SubResource("NoiseTexture2D_a7lv4")
 shader_parameter/distortion_strength = 0.10000000149012
 shader_parameter/distortion_speed = Vector2(0.3, 0.3)
 shader_parameter/distort_texture_as_well = false
+shader_parameter/distortion_chromatic_aberration = 0.0
+shader_parameter/distortion_multi_frequency = false
 shader_parameter/heat_asymmetric_rise = true
 shader_parameter/heat_top_heavy_factor = 2.5
+shader_parameter/heat_wind_shear = 0.0
+shader_parameter/heat_distance_fade = 0.0
 shader_parameter/use_convection_fluid = false
 shader_parameter/convection_vortex_twist = 1.0
 shader_parameter/convection_bubble_frequency = 2.0
 shader_parameter/convection_speed = 1.0
 shader_parameter/convection_wave_amplitude = 1.0
-shader_parameter/distortion_chromatic_aberration = 0.0
-shader_parameter/heat_wind_shear = 0.0
-shader_parameter/heat_distance_fade = 0.0
-shader_parameter/distortion_multi_frequency = false
 shader_parameter/procedural_noise_scale = Vector2(10, 10)
 shader_parameter/procedural_noise_speed = 2.0
 shader_parameter/procedural_noise_direction = Vector2(0, -1)
@@ -326,7 +328,7 @@ offset_transform_enabled = true
 tooltip_text = "aaaaaaaaaaaaaaaaaaa"
 texture = ExtResource("1_87g8f")
 
-[node name="TurnIndicator" type="RichTextLabel" parent="." unique_id=591423771]
+[node name="TurnIndicator" type="TextureRect" parent="." unique_id=2041767468]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -338,11 +340,7 @@ offset_top = -40.0
 offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/normal_font_size = 43
-text = "🔻"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
+texture = ExtResource("6_lclxg")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

@@ -2,7 +2,7 @@ extends Control
 
 #@onready var texture_rect: TextureRect = $TextureRect
 @onready var texture_rect: TextureRect = $CanvasGroup/TextureRect
-@onready var turn_indicator: RichTextLabel = $TurnIndicator
+@onready var turn_indicator: TextureRect = $TurnIndicator
 
 @export var config: EnemyConfig
 var max_heatlh: int

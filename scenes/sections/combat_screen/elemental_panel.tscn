@@ -434,11 +434,9 @@ offset_bottom = 150.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 script = ExtResource("1_srban")
-duration = null
-charged_offset = null
+charged_offset = 155
 elemental_offset = 155
-turn_on_speed = null
-turn_on_delay = null
+turn_on_delay = 0.0
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1093596042]
 custom_minimum_size = Vector2(370, 150)
