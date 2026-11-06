@@ -141,28 +141,43 @@ noise_type = 2
 noise = SubResource("FastNoiseLite_gtatl")
 seamless = true
 
+[sub_resource type="Gradient" id="Gradient_lclxg"]
+offsets = PackedFloat32Array(0, 0.34551495, 0.6810631)
+colors = PackedColorArray(1, 0.7666667, 0, 1, 1, 0.43333334, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_lclxg")
+
+[sub_resource type="Gradient" id="Gradient_sl4bm"]
+colors = PackedColorArray(1, 1, 1, 1, 0.65012825, 0.6501283, 0.65012825, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cpafw"]
+gradient = SubResource("Gradient_sl4bm")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lclxg"]
 shader = ExtResource("3_ct5v2")
 shader_parameter/original_texture_size = Vector2(3000, 3000)
-shader_parameter/smooth_poisson_distribution = false
-shader_parameter/max_sampling_limit = 0
+shader_parameter/smooth_poisson_distribution = true
+shader_parameter/max_sampling_limit = 1
 shader_parameter/glow_color = Color(0, 1, 1, 1)
 shader_parameter/glow_size = 20.0
 shader_parameter/glow_intensity = 1.0
-shader_parameter/glow_opacity = 1.0
+shader_parameter/glow_opacity = 0.862000040945
 shader_parameter/glow_softness = 0.5
 shader_parameter/glow_smooth_gamma = 1.0
 shader_parameter/glow_blend_mode = 0
 shader_parameter/mask_core_texture = false
-shader_parameter/boundary_fade_margin = 0.05
+shader_parameter/boundary_fade_margin = 0.2090000099275
 shader_parameter/use_soft_clip = false
 shader_parameter/glow_hdr_threshold = 1.0
 shader_parameter/glow_direction_falloff = Vector2(1, 1)
 shader_parameter/temporal_glow_jitter = false
 shader_parameter/glow_jitter_strength = 1.0
 shader_parameter/smooth_alpha_curve = false
-shader_parameter/use_gradient_mapping = false
-shader_parameter/use_opacity_gradient = false
+shader_parameter/use_gradient_mapping = true
+shader_parameter/glow_gradient = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/use_opacity_gradient = true
+shader_parameter/opacity_gradient = SubResource("GradientTexture1D_cpafw")
 shader_parameter/gradient_scroll_speed = 0.0
 shader_parameter/use_sharp_steps = false
 shader_parameter/glow_step_count = 3.0
@@ -185,9 +200,9 @@ shader_parameter/ending_color = Color(0, 0, 1, 1)
 shader_parameter/sync_color_with_pulse_speed = true
 shader_parameter/color_change_speed = 2.0
 shader_parameter/color_animation_ping_pong = false
-shader_parameter/animate_glow_opacity = false
+shader_parameter/animate_glow_opacity = true
 shader_parameter/opacity_pulse_speed = 2.0
-shader_parameter/min_opacity_scale = 0.2
+shader_parameter/min_opacity_scale = 0.7650000363375
 shader_parameter/max_opacity_scale = 1.0
 shader_parameter/static_angle = 0.0
 shader_parameter/animate_rotation = false
@@ -205,12 +220,12 @@ shader_parameter/glow_rim_margin = 0.0
 shader_parameter/glow_rim_feather = 0.05
 shader_parameter/glow_rim_eccentricity = 0.0
 shader_parameter/glow_rim_pulse_frequency = 0.0
-shader_parameter/use_inner_glow = false
-shader_parameter/inner_glow_color = Color(1, 1, 1, 1)
-shader_parameter/inner_glow_size = 5.0
-shader_parameter/inner_glow_opacity = 0.5
+shader_parameter/use_inner_glow = true
+shader_parameter/inner_glow_color = Color(0, 0, 0, 1)
+shader_parameter/inner_glow_size = 14.4870006881325
+shader_parameter/inner_glow_opacity = 0.290000013775
 shader_parameter/inner_glow_falloff = 1.0
-shader_parameter/inner_glow_ignore_distortion = false
+shader_parameter/inner_glow_ignore_distortion = true
 shader_parameter/animate_inner_glow = false
 shader_parameter/inner_pulse_speed = 2.0
 shader_parameter/min_inner_pulse_scale = 0.5
@@ -262,7 +277,7 @@ shader_parameter/distort_texture_as_well = false
 shader_parameter/distortion_chromatic_aberration = 0.0
 shader_parameter/distortion_multi_frequency = false
 shader_parameter/heat_asymmetric_rise = true
-shader_parameter/heat_top_heavy_factor = 2.5
+shader_parameter/heat_top_heavy_factor = 4.000000142499999
 shader_parameter/heat_wind_shear = 0.0
 shader_parameter/heat_distance_fade = 0.0
 shader_parameter/use_convection_fluid = false
@@ -282,8 +297,8 @@ shader_parameter/heat_chiseled_ridge = false
 shader_parameter/ridge_frequency_scale = 3.0
 shader_parameter/ridge_sharpness_steps = 4.0
 shader_parameter/heat_convective_turbulence = false
-shader_parameter/turbulence_blend_ratio = 0.4
-shader_parameter/turbulence_scroll_speed = Vector2(-0.1, 0.1)
+shader_parameter/turbulence_blend_ratio = 0.20400000969
+shader_parameter/turbulence_scroll_speed = Vector2(-0.215, -0.255)
 shader_parameter/heat_digital_glitch = false
 shader_parameter/glitch_frequency_lanes = 30.0
 shader_parameter/glitch_update_speed = 8.0

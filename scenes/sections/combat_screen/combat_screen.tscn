@@ -8,10 +8,18 @@
 [ext_resource type="PackedScene" uid="uid://c4bbrc2r7q5fe" path="res://scenes/sections/combat_screen/combat_money_panel.tscn" id="4_nwxw2"]
 [ext_resource type="PackedScene" uid="uid://umiblb5s8sum" path="res://scenes/sections/combat_screen/elemental_panel.tscn" id="5_lobgv"]
 [ext_resource type="PackedScene" uid="uid://d3en6qadq15b" path="res://scenes/sections/combat_screen/enemy_name_bar.tscn" id="6_rn7nk"]
+[ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="9_niart"]
+[ext_resource type="Shader" uid="uid://b1shl38yeyuo" path="res://shaders/dynamic_crosshairs.gdshader" id="9_se3ji"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Environment" id="Environment_mjyp6"]
+background_mode = 3
+glow_enabled = true
+glow_strength = 1.55
+glow_bloom = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -336,6 +344,32 @@ border_width_bottom = 200
 border_color = Color(0.7294118, 0, 0, 0)
 border_blend = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7lv4"]
+shader = ExtResource("9_se3ji")
+shader_parameter/circle_radius = 0.282000013395
+shader_parameter/circle_thickness = 0.06400000304
+shader_parameter/circle_gap_size = 0.2150000102125
+shader_parameter/circle_color_main = Color(1, 0.7490196, 0, 0.5882353)
+shader_parameter/circle_color_outline = Color(0, 0, 0, 0.5882353)
+shader_parameter/circle_outline_width = 0.010000000475
+shader_parameter/circle_outline_flat = true
+shader_parameter/circle_rotation_speed = 0.1030004798925006
+shader_parameter/circle_base_angle = 0.0
+shader_parameter/dot_radius = 0.01600000076
+shader_parameter/dot_color = Color(1, 0.75, 0, 0.5882353)
+shader_parameter/dot_outline_width = 0.106000005035
+shader_parameter/dot_outline_color = Color(0, 0, 0, 0.5882353)
+shader_parameter/dot_outline_flat = true
+shader_parameter/cross_bar_width = 0.090000004275
+shader_parameter/cross_thickness = 0.0150000007125
+shader_parameter/cross_gap_size = 0.08800000418
+shader_parameter/cross_color_main = Color(1, 0.75, 0, 0.5882353)
+shader_parameter/cross_color_outline = Color(0, 0, 0, 0.5882353)
+shader_parameter/cross_outline_width = 0.0110000005225
+shader_parameter/cross_outline_flat = true
+shader_parameter/cross_rotation_speed = -0.20499953473749952
+shader_parameter/cross_base_angle = 0.0
+
 [node name="CombatScreen" type="PanelContainer" unique_id=982127176]
 clip_contents = true
 anchors_preset = 15
@@ -346,6 +380,15 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_lvmae")
+
+[node name="SubViewportContainer2" type="SubViewportContainer" parent="." unique_id=1976268048]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer2" unique_id=1930583407]
+own_world_3d = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer2/SubViewport" unique_id=1393624379]
+environment = SubResource("Environment_mjyp6")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=205987503]
 layout_mode = 2
@@ -467,3 +510,16 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 visible = false
 layout_mode = 2
 mouse_filter = 2
+
+[node name="(Experimental) Crosshairs" type="TextureRect" parent="." unique_id=824228978]
+visible = false
+material = SubResource("ShaderMaterial_a7lv4")
+custom_minimum_size = Vector2(350, 350)
+custom_maximum_size = Vector2(350, 350)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("9_niart")
+expand_mode = 4
+stretch_mode = 5
