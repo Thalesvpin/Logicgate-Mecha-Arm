@@ -24,6 +24,7 @@ var choices_left
 func _ready() -> void:
 	EventBus.pack_item_chosen.connect(pack_item_chosen)
 	EventBus.open_shop.connect(refresh)
+	EventBus.reroll_shop.connect(reroll)
 	for child in get_child(0).get_children():
 		fade_list2.append(child)
 		if child is Pack:
@@ -85,6 +86,7 @@ func open_pack(pack: PanelContainer) -> void:
 func close_pack() -> void:
 	open_pack_holder.hide()
 	Global.shop.show_implants()
+	reset_open_pack()
 
 func pack_item_chosen() -> void:
 	choices_left -= 1
@@ -133,3 +135,7 @@ func reset_packs() -> void:
 	reset_packs_visual()
 	chosen_pack = null
 	chosen_packs = []
+
+func reroll() -> void:
+	reset_packs()
+	refresh()
