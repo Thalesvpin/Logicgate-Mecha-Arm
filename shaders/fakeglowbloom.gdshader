@@ -3,10 +3,17 @@ shader_type canvas_item;
 group_uniforms Core_Bloom;
 uniform sampler2D t0 : hint_screen_texture, filter_linear, repeat_disable;
 uniform float bloom_spread = 1.0;
+uniform float anamorphic_ratio : hint_range(0.1, 10.0) = 1.0; // 1.0 = square bloom, >1.0 = horizontal stretch, <1.0 = vertical stretch
 uniform float bloom_intensity = 2.0;
 uniform vec4 bloom_tint : source_color = vec4(1.0, 1.0, 1.0, 1.0); 
 
+group_uniforms Core_Bloom.Threshold;
+uniform bool enable_threshold = false;
+uniform float luminance_threshold : hint_range(0.0, 2.0) = 1.0;
+uniform float soft_knee : hint_range(0.01, 1.0) = 0.5;
+
 group_uniforms Background_Compositing;
+uniform int blend_mode : hint_enum("Additive", "Screen") = 0;
 uniform float background_dimming : hint_range(0.0, 1.0) = 1.0; 
 
 group_uniforms Mouse_Interaction;
@@ -16,11 +23,11 @@ uniform float mouse_radius : hint_range(10.0, 1000.0) = 150.0;
 uniform float mouse_smoothness : hint_range(0.0, 1.0) = 0.5; 
 
 group_uniforms Mouse_Interaction.Intensity_And_Color;
-uniform float mouse_boost : hint_range(0.0, 50.0) = 3.0; // Greatly increased upper limit
-uniform float mouse_hue_shift : hint_range(-3.14159, 3.14159) = 0.0; // Rotates the color wheel (Radians)
-uniform float mouse_saturation : hint_range(0.0, 5.0) = 1.0; // 0.0 = Grayscale, 1.0 = Normal, 2.0+ = Hyper vibrant
-uniform vec4 mouse_tint_override : source_color = vec4(1.0, 1.0, 1.0, 1.0); // An alternate color to blend into
-uniform float mouse_tint_mix : hint_range(0.0, 1.0) = 0.0; // How strongly the override color takes over on hover
+uniform float mouse_boost : hint_range(0.0, 50.0) = 3.0; 
+uniform float mouse_hue_shift : hint_range(-3.14159, 3.14159) = 0.0; 
+uniform float mouse_saturation : hint_range(0.0, 5.0) = 1.0; 
+uniform vec4 mouse_tint_override : source_color = vec4(1.0, 1.0, 1.0, 1.0); 
+uniform float mouse_tint_mix : hint_range(0.0, 1.0) = 0.0; 
 
 group_uniforms FX_And_Animation.Pulsation;
 uniform bool enable_pulsation = false;
@@ -47,11 +54,20 @@ varying vec2 v_global_pos;
 varying float v_pulse_mult; 
 varying float v_flicker_mult;
 
-// Mathematical Hue Shift Function[cite: 3]
+// Mathematical Hue Shift 
 vec3 hue_shift(vec3 color, float shift) {
     const vec3 k = vec3(0.57735);
     float cosAngle = cos(shift);
     return vec3(color * cosAngle + cross(k, color) * sin(shift) + k * dot(k, color) * (1.0 - cosAngle));
+}
+
+// Optimized Pre-Blur Luminance Thresholding
+vec3 apply_threshold(vec3 color, float threshold, float knee) {
+    float brightness = max(color.r, max(color.g, color.b));
+    float soft = clamp(brightness - threshold + knee, 0.0, 2.0 * knee);
+    soft = (soft * soft) / (4.0 * knee + 0.00001);
+    float mult = max(soft, brightness - threshold) / max(brightness, 0.00001);
+    return color * mult;
 }
 
 void vertex() {
@@ -110,24 +126,25 @@ void fragment() {
         discard;
     }
 
-    float scaled_bloom = bloom_spread * screen_scale;
-    vec2 texel_step = SCREEN_PIXEL_SIZE * scaled_bloom * 2.0; 
+    // Anamorphic Spread Evaluation
+    vec2 spread_vector = vec2(bloom_spread * anamorphic_ratio, bloom_spread / anamorphic_ratio);
+    vec2 texel_step = SCREEN_PIXEL_SIZE * spread_vector * screen_scale * 2.0; 
     
-    vec4 sum = texture(t0, SCREEN_UV); 
-    
-    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.0,     1.0));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.866,   0.5));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.866,  -0.5));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.0,    -1.0));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2(-0.866,  -0.5));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2(-0.866,   0.5));
-    
-    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.0,     2.0));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2( 1.732,   1.0));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2( 1.732,  -1.0));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2( 0.0,    -2.0));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2(-1.732,  -1.0));
-    sum += texture(t0, SCREEN_UV + texel_step * vec2(-1.732,   1.0));
+    // Constant Array of 13 Circular Taps (Hardware-unrolled)
+    const vec2 TAPS[13] = vec2[](
+        vec2(0.0, 0.0),
+        vec2(0.0, 1.0), vec2(0.866, 0.5), vec2(0.866, -0.5), vec2(0.0, -1.0), vec2(-0.866, -0.5), vec2(-0.866, 0.5),
+        vec2(0.0, 2.0), vec2(1.732, 1.0), vec2(1.732, -1.0), vec2(0.0, -2.0), vec2(-1.732, -1.0), vec2(-1.732, 1.0)
+    );
+
+    vec4 sum = vec4(0.0);
+    for (int i = 0; i < 13; i++) {
+        vec4 sample = texture(t0, SCREEN_UV + texel_step * TAPS[i]);
+        if (enable_threshold) {
+            sample.rgb = apply_threshold(sample.rgb, luminance_threshold, soft_knee);
+        }
+        sum += sample;
+    }
 
     float local_intensity = bloom_intensity;
     float mouse_factor = 0.0;
@@ -146,15 +163,12 @@ void fragment() {
     
     // Dynamic Mouse Color Injection
     if (enable_mouse && mouse_factor > 0.0) {
-        // 1. Tint Override Blend
         bloom_added.rgb = mix(bloom_added.rgb, bloom_added.rgb * mouse_tint_override.rgb, mouse_tint_mix * mouse_factor);
         
-        // 2. Hue Shifting
         if (mouse_hue_shift != 0.0) {
             bloom_added.rgb = hue_shift(bloom_added.rgb, mouse_hue_shift * mouse_factor);
         }
         
-        // 3. Saturation Modification
         if (mouse_saturation != 1.0) {
             vec3 gray = vec3(dot(bloom_added.rgb, vec3(0.299, 0.587, 0.114)));
             float current_sat = mix(1.0, mouse_saturation, mouse_factor);
@@ -171,7 +185,14 @@ void fragment() {
     vec4 bg_color = texture(t0, SCREEN_UV);
     bg_color.rgb *= background_dimming; 
 
-    vec4 final_color = bg_color + bloom_added;
+    // Final Compositing & Blend Mode Evaluation
+    vec4 final_color;
+    if (blend_mode == 0) { // Additive
+        final_color.rgb = bg_color.rgb + bloom_added.rgb;
+    } else { // Screen Blend
+        final_color.rgb = 1.0 - (1.0 - bg_color.rgb) * (1.0 - bloom_added.rgb);
+    }
+    final_color.a = alpha;
     
-    COLOR = vec4(final_color.rgb, alpha);
+    COLOR = final_color;
 }

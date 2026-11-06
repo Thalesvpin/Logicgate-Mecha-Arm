@@ -114,11 +114,16 @@ metadata/_custom_type_script = "uid://5yavbo6e28p0"
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mjyp6"]
 shader = ExtResource("4_psemm")
 shader_parameter/bloom_spread = 0.1
+shader_parameter/anamorphic_ratio = 1.0
 shader_parameter/bloom_intensity = 7.365
 shader_parameter/bloom_tint = Color(1, 1, 1, 1)
+shader_parameter/enable_threshold = false
+shader_parameter/luminance_threshold = 1.0
+shader_parameter/soft_knee = 0.5
+shader_parameter/blend_mode = 0
 shader_parameter/background_dimming = 1.0
 shader_parameter/enable_mouse = true
-shader_parameter/mouse_global_pos = Vector2(636.35565, -216.03989)
+shader_parameter/mouse_global_pos = Vector2(653.4319, -234.07018)
 shader_parameter/mouse_radius = 50.0000019
 shader_parameter/mouse_smoothness = 1.0
 shader_parameter/mouse_boost = 10.000000475
