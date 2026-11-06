@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://bwee0efqucus8" path="res://scripts/backlit_button_shadercontrol.gd" id="4_6bivr"]
 
 [sub_resource type="Gradient" id="Gradient_6bivr"]
+offsets = PackedFloat32Array(0, 0.20689656, 0.78056425, 1)
+colors = PackedColorArray(1, 0.68333334, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.68235296, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_mjyp6"]
 gradient = SubResource("Gradient_6bivr")
@@ -17,6 +19,19 @@ point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_6bivr"]
 curve = SubResource("Curve_imvie")
+
+[sub_resource type="Gradient" id="Gradient_imvie"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0.51666665, 0, 0.78431374, 1, 0.6333333, 0, 0.78431374, 1, 0.5414239, 0, 0.78431374)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ng0o5"]
+gradient = SubResource("Gradient_imvie")
+
+[sub_resource type="Gradient" id="Gradient_8r73w"]
+colors = PackedColorArray(1, 0.81666666, 0, 0.78431374, 1, 0.51666665, 0, 0.78431374)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_8r73w")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sgiw0"]
 noise_type = 5
@@ -43,20 +58,22 @@ shader_parameter/housing_occlusion = 1.0
 shader_parameter/housing_occlusion_distance = 0.3
 shader_parameter/inner_seam_ao = 0.0
 shader_parameter/global_color = Color(0.62, 0.403, 0, 1)
-shader_parameter/unlit_albedo_tint = 0.0
+shader_parameter/unlit_albedo_tint = 0.750000035625
 shader_parameter/edge_color_blend = 0.2
-shader_parameter/cap_transparency = 0.446000021185
-shader_parameter/bevel_opacity = 0.5790000275025
+shader_parameter/cap_transparency = 0.27200001292
+shader_parameter/bevel_opacity = 0.47200002242
 shader_parameter/override_inactive_cap = false
-shader_parameter/inactive_cap_blend = 0
-shader_parameter/inactive_cap_grad_dir = 0
+shader_parameter/inactive_cap_blend = 1
+shader_parameter/inactive_cap_grad_dir = 2
+shader_parameter/inactive_cap_gradient = SubResource("GradientTexture1D_a7lv4")
 shader_parameter/override_inactive_bevel = false
-shader_parameter/inactive_bevel_blend = 0
-shader_parameter/inactive_bevel_grad_dir = 0
+shader_parameter/inactive_bevel_blend = 1
+shader_parameter/inactive_bevel_grad_dir = 2
+shader_parameter/inactive_bevel_gradient = SubResource("GradientTexture1D_ng0o5")
 shader_parameter/override_inactive_edge = false
 shader_parameter/inactive_edge_blend = 0
 shader_parameter/inactive_edge_grad_dir = 0
-shader_parameter/override_active_cap = false
+shader_parameter/override_active_cap = true
 shader_parameter/active_cap_blend = 2
 shader_parameter/active_cap_grad_dir = 0
 shader_parameter/active_cap_gradient = SubResource("GradientTexture1D_mjyp6")
@@ -80,18 +97,18 @@ shader_parameter/split_on_x_axis = true
 shader_parameter/split_width = 0.02600000053648
 shader_parameter/split_smoothness = 0.1190000056525
 shader_parameter/split_depth = 0.1530000072675
-shader_parameter/smoothness = 0.2050000097375
+shader_parameter/smoothness = 1.0
 shader_parameter/bevel_smoothness_override = -1.0
-shader_parameter/specular_intensity = 1.214000057665
+shader_parameter/specular_intensity = 1.2
 shader_parameter/fresnel_power = 3.2630001074925
 shader_parameter/fresnel_color = Color(1, 1, 1, 1)
-shader_parameter/refraction_distortion = 0.0
-shader_parameter/environment_reflectivity = 0.35
+shader_parameter/refraction_distortion = 35.0
+shader_parameter/environment_reflectivity = 0.0
 shader_parameter/manual_specular_offset = Vector2(0, 0)
 shader_parameter/anisotropic_stretch = 0.0
 shader_parameter/enable_dual_lobe_clearcoat = false
 shader_parameter/clearcoat_intensity = 1.0
-shader_parameter/clearcoat_shininess = 250.0
+shader_parameter/clearcoat_shininess = 500.0
 shader_parameter/edge_catching_glint = 0.0
 shader_parameter/light_direction = Vector2(-0.477, -0.357)
 shader_parameter/bevel_highlight = 1.3330000633175
@@ -154,7 +171,7 @@ shader_parameter/slope_light_intensity = 0.7030000333925
 shader_parameter/slope_light_corner_fade = 1.0
 shader_parameter/slope_light_tint = Color(1, 0.9166666, 0, 1)
 shader_parameter/enable_mouse_light = true
-shader_parameter/mouse_position = Vector2(489.09918, 744.84296)
+shader_parameter/mouse_position = Vector2(669.41296, -363.72745)
 shader_parameter/inactive_mouse_light_color = Color(1, 0.85, 0, 1)
 shader_parameter/inactive_mouse_light_intensity = 0.13200000627
 shader_parameter/inactive_mouse_light_range = 350.00001615
