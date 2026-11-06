@@ -11,9 +11,11 @@ var implants: Array[Implant]
 func _ready() -> void:
 	EventBus.open_shop.connect(refresh)
 	EventBus.close_shop.connect(clear)
+	EventBus.reroll_shop.connect(refresh)
 
 func refresh() -> void:
 	implants = []
+	clear()
 	randomize_implants()
 	add_implants()
 

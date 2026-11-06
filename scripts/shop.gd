@@ -24,12 +24,6 @@ func open() -> void:
 func close() -> void:
 	hide()
 
-func clean() -> void:
-	pass
-
-func reroll() -> void:
-	pass
-
 func hide_implants() -> void:
 	var tween = create_tween().set_parallel()
 	tween.set_ease(Tween.EASE_OUT)

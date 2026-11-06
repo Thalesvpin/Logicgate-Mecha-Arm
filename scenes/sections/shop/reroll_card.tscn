@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://b0o5ypysd23q0"]
 
+[ext_resource type="Script" uid="uid://bmfeyay8onxrk" path="res://scripts/reroll.gd" id="1_f6yic"]
 [ext_resource type="Texture2D" uid="uid://bj62b4fw5kt8w" path="res://assets/TCC_icon_shop_reroll.png" id="1_kfjrl"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_f6yic"]
 
@@ -98,6 +99,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+script = ExtResource("1_f6yic")
+price_list = Array[int]([200, 400, 600, 1000, 0, 0, 0, 0])
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1075946474]
 material = SubResource("ShaderMaterial_f6yic")
@@ -143,3 +146,5 @@ layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("2_f6yic")
 stretch_mode = 0
+
+[connection signal="button_up" from="MarginContainer/VBoxContainer/TextureButton" to="." method="_on_texture_button_button_up"]

@@ -37,6 +37,7 @@ signal stat_changed(stat: Stats.List, new_value)
 signal open_shop
 signal close_shop
 signal pack_item_chosen
+signal reroll_shop
 #endregion
 
 var signals_list: Dictionary[Trigger.Type, Variant] = {
@@ -62,5 +63,5 @@ var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.GATE_REMOVED_FROM_SANDBOX: gate_removed_from_sandbox,
 	Trigger.Type.PLAYER_DEFEATED: player_defeated,
 	Trigger.Type.PACK_ITEM_CHOSEN: pack_item_chosen,
-	
+	Trigger.Type.REROLL_SHOP: reroll_shop,
 }
