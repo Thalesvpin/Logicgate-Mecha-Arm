@@ -88,6 +88,13 @@ uniform float v_blanking_speed : hint_range(0.0, 5.0) = 1.0;
 uniform float v_blanking_bar_size : hint_range(0.0, 0.5) = 0.1;
 uniform float v_blanking_tearing : hint_range(0.0, 1.0) = 0.2;
 
+group_uniforms H_Sync_Loss;
+uniform bool use_h_sync_loss = false;
+uniform float h_sync_strength : hint_range(0.0, 1.0) = 0.15;
+uniform float h_sync_frequency : hint_range(0.1, 10.0) = 3.0;
+uniform float h_sync_speed : hint_range(0.0, 10.0) = 2.0;
+uniform float h_sync_threshold : hint_range(0.0, 1.0) = 0.8;
+
 group_uniforms Tape_Crease;
 uniform bool use_tape_crease = false;
 uniform float crease_speed : hint_range(0.0, 10.0) = 1.0;
@@ -121,6 +128,11 @@ uniform bool animate_sharpness = false;
 uniform sampler2D sharpness_curve;
 uniform float sharpness_anim_speed = 1.0;
 uniform float sharpness_anim_amplitude = 1.0;
+
+group_uniforms IRE_Pedestal_Clipping;
+uniform bool use_analog_clipping = false;
+uniform float analog_pedestal : hint_range(-0.5, 0.5) = 0.0;
+uniform float analog_gain : hint_range(0.0, 5.0) = 1.0;
 
 group_uniforms NTSC_Color_Bleed;
 uniform bool use_yiq_bleed = false;
@@ -157,6 +169,11 @@ group_uniforms Differential_Phase_Gain;
 uniform bool use_dpg = false;
 uniform float phase_shift : hint_range(-3.14159, 3.14159) = 0.0;
 uniform float gain_multiplier : hint_range(0.0, 5.0) = 0.0;
+
+group_uniforms Color_Burst_Phase_Drift;
+uniform bool use_phase_drift = false;
+uniform float phase_drift_strength : hint_range(0.0, 1.0) = 0.1;
+uniform float phase_drift_speed : hint_range(0.0, 20.0) = 5.0;
 
 group_uniforms Analog_Signal_Ringing;
 uniform bool use_signal_ringing = false;
@@ -315,11 +332,12 @@ uniform float degauss_ripple_strength : hint_range(0.0, 0.2) = 0.05;
 
 group_uniforms;
 
-varying flat vec2 v_tex_size;
-varying flat vec2 v_tex_pixel_size;
+// --- OPTIMIZED VARYING COMPRESSION ---
+// Instead of 16 loose varyings which risks crashing older GPUs, these are densely packed.
+varying flat vec4 v_tex_data;     // .xy = size, .zw = pixel_size
+varying flat vec4 v_degauss_data; // .x = wobble.x, .y = wobble.y, .z = bulge, .w = ripple
+varying flat vec4 v_extra_data;   // .x = tear, .y = eff_scanlines, .z = phase_time, .w = hsync_time
 
-varying flat vec2 v_degauss_wobble;
-varying flat vec3 v_degauss_pack2;
 varying flat vec4 v_dyn_pack1; 
 varying flat vec4 v_dyn_pack2; 
 varying flat vec4 v_dyn_pack3; 
@@ -327,7 +345,6 @@ varying flat vec4 v_glitch_field;
 varying flat vec4 v_stripe_calc;
 varying flat vec4 v_time_pack1; 
 varying flat vec4 v_time_pack2; 
-
 varying flat vec4 v_warp_power_pack;
 varying flat vec4 v_glare_calc;
 varying flat vec4 v_optim_pack; 
@@ -346,9 +363,27 @@ const vec3 HUE_U1 = vec3(0.168, 0.330, -0.497);
 const vec3 HUE_U2 = vec3(0.328, -0.335, 0.007);
 const vec3 HUE_U3 = vec3(-1.250, 1.050, 0.200);
 
+const mat3 RGB_TO_YIQ = mat3(
+	vec3(0.299, 0.5959, 0.2115),
+	vec3(0.587, -0.2746, -0.5227),
+	vec3(0.114, -0.3213, 0.3112)
+);
+
+const mat3 YIQ_TO_RGB = mat3(
+	vec3(1.0, 1.0, 1.0),
+	vec3(0.956, -0.272, -1.106),
+	vec3(0.619, -0.647, 1.703)
+);
+
 void vertex() {
-	v_tex_size = vec2(textureSize(tex, 0));
-	v_tex_pixel_size = 1.0 / max(v_tex_size, vec2(0.0001));
+	vec2 base_tex_size = vec2(textureSize(tex, 0));
+	v_tex_data.xy = base_tex_size;
+	v_tex_data.zw = 1.0 / max(base_tex_size, vec2(0.0001));
+
+	// HOISTED: Pre-calculate complex operations once per frame instead of per-pixel
+	v_extra_data.y = scanline_count * (base_tex_size.y / max(base_tex_size.x * aspect, 0.0001));
+	v_extra_data.z = TIME * phase_drift_speed;
+	v_extra_data.w = TIME * h_sync_speed;
 
 	v_warp_power_pack.xy = vec2(1.0 / aspect, aspect);
 	v_warp_power_pack.zw = (power_close_axis == 0) ? vec2(1.0 / max(smoothstep(0.5, 1.0, power_state), 0.001), 1.0 / max(smoothstep(0.0, 0.5, power_state), 0.001)) : vec2(1.0 / max(smoothstep(0.0, 0.5, power_state), 0.001), 1.0 / max(smoothstep(0.5, 1.0, power_state), 0.001));
@@ -388,13 +423,12 @@ void vertex() {
 	if (animate_wobble) _wobble += textureLod(wobble_curve, vec2(fract(TIME * wobble_anim_speed), 0.0), 0.0).r * wobble_anim_amplitude;
 	
 	_wobble += _degauss * degauss_wobble_strength; 
-	v_degauss_wobble = vec2(_degauss, cos(TIME * TAU * 15.0) * _wobble * 0.0001220703125);
 	
-	v_degauss_pack2 = vec3(
-		degauss_bulge_strength * v_degauss_wobble.x,
-		degauss_ripple_strength * v_degauss_wobble.x,
-		degauss_tear_strength * v_degauss_wobble.x
-	);
+	v_degauss_data.x = _degauss;
+	v_degauss_data.y = cos(TIME * TAU * 15.0) * _wobble * 0.0001220703125;
+	v_degauss_data.z = degauss_bulge_strength * v_degauss_data.x;
+	v_degauss_data.w = degauss_ripple_strength * v_degauss_data.x;
+	v_extra_data.x = degauss_tear_strength * v_degauss_data.x;
 
 	v_dyn_pack1.x = 0.0; 
 	if (_degauss > 0.0) v_dyn_pack1.x += _degauss * degauss_color_split;
@@ -469,36 +503,25 @@ void vertex() {
 }
 
 vec3 rgb_to_yiq(vec3 rgb) {
-    return vec3(
-        0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b,
-        0.5959 * rgb.r - 0.2746 * rgb.g - 0.3213 * rgb.b,
-        0.2115 * rgb.r - 0.5227 * rgb.g + 0.3112 * rgb.b
-    );
+    return RGB_TO_YIQ * rgb;
 }
 
 vec3 yiq_to_rgb(vec3 yiq) {
-    return clamp(vec3(
-        yiq.x + 0.956 * yiq.y + 0.619 * yiq.z,
-        yiq.x - 0.272 * yiq.y - 0.647 * yiq.z,
-        yiq.x - 1.106 * yiq.y + 1.703 * yiq.z
-    ), 0.0, 1.0);
+    return clamp(YIQ_TO_RGB * yiq, 0.0, 1.0);
 }
 
-// 2D to 1D Hash for grayscale noise
 float hash12(vec2 p) {
 	vec3 p3 = fract(vec3(p.xyx) * 0.1031);
 	p3 += dot(p3, p3.yzx + 33.33);
 	return fract((p3.x + p3.y) * p3.z);
 }
 
-// 2D to 3D Hash for chroma noise
 vec3 hash32(vec2 p) {
 	vec3 p3 = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973));
 	p3 += dot(p3, p3.yxz + 33.33);
 	return fract((p3.xxy + p3.yzz) * p3.zyx);
 }
 
-// 2D Value Noise (1 Channel)
 float value_noise_1(vec2 p) {
 	vec2 i = floor(p);
 	vec2 f = fract(p);
@@ -507,7 +530,6 @@ float value_noise_1(vec2 p) {
 			   mix(hash12(i + vec2(0.0, 1.0)), hash12(i + vec2(1.0, 1.0)), u.x), u.y);
 }
 
-// 2D Value Noise (3 Channels)
 vec3 value_noise_3(vec2 p) {
 	vec2 i = floor(p);
 	vec2 f = fract(p);
@@ -516,7 +538,6 @@ vec3 value_noise_3(vec2 p) {
 			   mix(hash32(i + vec2(0.0, 1.0)), hash32(i + vec2(1.0, 1.0)), u.x), u.y);
 }
 
-// Fractional Brownian Motion (1 Channel)
 float fbm_1(vec2 p, int octaves, float lacunarity, float gain) {
 	float val = 0.0;
 	float amp = 1.0;
@@ -531,7 +552,6 @@ float fbm_1(vec2 p, int octaves, float lacunarity, float gain) {
 	return val / norm;
 }
 
-// Fractional Brownian Motion (3 Channels)
 vec3 fbm_3(vec2 p, int octaves, float lacunarity, float gain) {
 	vec3 val = vec3(0.0);
 	float amp = 1.0;
@@ -590,7 +610,7 @@ vec3 sample_row(int ix, int iy, vec3 wa, vec3 wb, vec3 wc, vec3 wd, vec3 we) {
 }
 
 vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
-	vec2 scaled_uv = uv * v_tex_size;
+	vec2 scaled_uv = uv * v_tex_data.xy;
 	int ix = int(floor(scaled_uv.x));
 	bool fast = (v_dyn_pack1.y >= 0.999 && v_dyn_pack1.x == 0.0 && local_chroma_offset == vec2(0.0));
 	
@@ -608,8 +628,7 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		weight_scaler_vec = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e);
 	}
 
-	float effective_scanlines = scanline_count * (v_tex_size.y / max(v_tex_size.x * aspect, 0.0001));
-	float abstract_y = uv.y * effective_scanlines;
+	float abstract_y = uv.y * v_extra_data.y;
 
 	if (use_scanlines) {
 		float shifted_y = abstract_y - TIME * scanline_drift_speed;
@@ -624,10 +643,10 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		float fw = max(fwidth(shifted_y), 0.001);
 
 		if (use_decoupled_scanlines) {
-			float sample_res = decoupled_use_native_res ? v_tex_size.y : decoupled_vertical_res;
+			float sample_res = decoupled_use_native_res ? v_tex_data.y : decoupled_vertical_res;
 			float abstract_sample_y = uv.y * sample_res;
-			float tex_y = (floor(abstract_sample_y) + 0.5) / sample_res * v_tex_size.y;
-			int iy = clamp(int(floor(tex_y)), 0, int(v_tex_size.y) - 1);
+			float tex_y = (floor(abstract_sample_y) + 0.5) / sample_res * v_tex_data.y;
+			int iy = clamp(int(floor(tex_y)), 0, int(v_tex_data.y) - 1);
 			
 			vec3 raw_color;
 			if (fast) {
@@ -659,8 +678,8 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		float tex_y1 = y_center1 + TIME * scanline_drift_speed;
 		float tex_y2 = y_center2 + TIME * scanline_drift_speed;
 		
-		int iy1 = clamp(int(floor((tex_y1 / effective_scanlines) * v_tex_size.y)), 0, int(v_tex_size.y) - 1);
-		int iy2 = clamp(int(floor((tex_y2 / effective_scanlines) * v_tex_size.y)), 0, int(v_tex_size.y) - 1);
+		int iy1 = clamp(int(floor((tex_y1 / v_extra_data.y) * v_tex_data.y)), 0, int(v_tex_data.y) - 1);
+		int iy2 = clamp(int(floor((tex_y2 / v_extra_data.y) * v_tex_data.y)), 0, int(v_tex_data.y) - 1);
 
 		vec3 raw1, raw2;
 		if (fast) {
@@ -705,9 +724,12 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 	vec3 m_rgb = vec3(0.5);
 	float m_w = 0.5;
 
+	// HOISTED: math calculated once instead of per-branch
+	float cx = coords.x * TWO_THIRD_PI;
+
 	switch (mask_type) {
 		case 1: 
-			m_rgb = 0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS);
+			m_rgb = 0.5 + 0.5 * cos(cx - PHASE_OFFSETS);
 			m_w = 0.25;
 			m_rgb *= (0.5 + 0.5 * cos(coords.y * PI));
 			break;
@@ -715,36 +737,36 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 			m_rgb = mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 0.0, 1.0), 0.5 + 0.5 * cos(coords.x * PI));
 			break;
 		case 3: 
-			m_rgb = clamp(0.5 + 0.8 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS), 0.0, 1.0);
+			m_rgb = clamp(0.5 + 0.8 * cos(cx - PHASE_OFFSETS), 0.0, 1.0);
 			m_w = 0.25;
 			break;
 		case 4: 
-			m_rgb = 0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS);
+			m_rgb = 0.5 + 0.5 * cos(cx - PHASE_OFFSETS);
 			m_w = 0.3125;
 			break;
 		case 5: 
-			m_rgb = 0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS);
+			m_rgb = 0.5 + 0.5 * cos(cx - PHASE_OFFSETS);
 			m_w = 0.375;
-			m_rgb *= (0.5 + 0.5 * cos((coords.y + (0.5 - 0.5 * cos(coords.x * TWO_THIRD_PI)) * 0.5) * TAU));
+			m_rgb *= (0.5 + 0.5 * cos((coords.y + (0.5 - 0.5 * cos(cx)) * 0.5) * TAU));
 			break;
 		case 6: 
 			m_rgb = vec3(1.0);
-			m_w = mix(1.0, 0.6, clamp(0.5 + 1.5 * cos(coords.x * TWO_THIRD_PI), 0.0, 1.0)); 
+			m_w = mix(1.0, 0.6, clamp(0.5 + 1.5 * cos(cx), 0.0, 1.0)); 
 			break;
 		case 7: { 
-			m_rgb = clamp(0.5 + 1.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS), 0.0, 1.0);
+			m_rgb = clamp(0.5 + 1.5 * cos(cx - PHASE_OFFSETS), 0.0, 1.0);
 			m_w = 0.6;
 			break;
 		}
 		case 8: { 
-			m_rgb = clamp(0.5 + 1.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS), 0.0, 1.0);
+			m_rgb = clamp(0.5 + 1.5 * cos(cx - PHASE_OFFSETS), 0.0, 1.0);
 			m_rgb *= clamp(0.5 + 1.5 * cos(coords.y * TAU), 0.0, 1.0);
 			m_w = 0.6;
 			break;
 		}
 		case 9: { 
 			float shift = (0.5 - 0.5 * cos(coords.y * PI)) * TWO_THIRD_PI;
-			m_rgb = clamp(0.5 + 1.5 * cos(coords.x * TWO_THIRD_PI + shift - PHASE_OFFSETS), 0.0, 1.0);
+			m_rgb = clamp(0.5 + 1.5 * cos(cx + shift - PHASE_OFFSETS), 0.0, 1.0);
 			m_w = 0.6;
 			break;
 		}
@@ -771,15 +793,12 @@ void fragment() {
 	vec2 quad_pixels = vec2(1.0 / fw_x, 1.0 / fw_y);
 
 	vec2 warped_coords = warp(UV);
-	float effective_scanlines = scanline_count * (v_tex_size.y / max(v_tex_size.x * aspect, 0.0001));
-	
-	// Create an aspect-corrected coordinate space specifically to keep procedural noise grain perfectly circular/square
 	vec2 aspect_coords = vec2(warped_coords.x * quad_aspect, warped_coords.y);
 	
 	if (power_state < 0.001 || warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
 	} else {
-		warped_coords.x += v_degauss_wobble.y;
+		warped_coords.x += v_degauss_data.y;
 
 		float in_v_blank = 0.0;
 		if (use_v_blanking) {
@@ -804,7 +823,6 @@ void fragment() {
 				float dist = abs(warped_coords.y - c_pos);
 				crease_factor = smoothstep(crease_width, crease_width * 0.2, dist);
 				if (crease_factor > 0.0) {
-					// Use aspect_coords so the crease jitter keeps a constant detail level
 					float crease_noise = value_noise_1(vec2(aspect_coords.y * 100.0, TIME * 20.0));
 					warped_coords.x += (crease_noise - 0.5) * crease_factor * crease_noise_strength * 0.1;
 				}
@@ -827,12 +845,21 @@ void fragment() {
 		}
 
 		if (use_interlaced_jitter && interlaced_jitter_strength > 0.0) {
-			float row_id = floor(warped_coords.y * effective_scanlines);
+			float row_id = floor(warped_coords.y * v_extra_data.y);
 			float jitter_mod = sin(v_optim_pack.w + row_id * interlaced_jitter_frequency);
 			if (interlaced_jitter_random) {
 				jitter_mod *= fract(sin(row_id * 12.9898 + TIME) * 43758.5453);
 			}
 			warped_coords.x += ((int(row_id) & 1) == 0 ? jitter_mod : -jitter_mod) * interlaced_jitter_strength;
+		}
+		
+		if (use_h_sync_loss && h_sync_strength > 0.0) {
+			float h_sync_noise = value_noise_1(vec2(v_extra_data.w, 0.0));
+			float h_sync_mask = smoothstep(h_sync_threshold, h_sync_threshold + 0.1, h_sync_noise);
+			if (h_sync_mask > 0.0) {
+				float skew = fract(warped_coords.y * h_sync_frequency + TIME * 5.0) - 0.5;
+				warped_coords.x += skew * h_sync_strength * h_sync_mask;
+			}
 		}
 
 		if (v_optim_pack.y > -999.0) {
@@ -843,13 +870,13 @@ void fragment() {
 			}
 		}
 		
-		if (v_degauss_wobble.x > 0.0) {
+		if (v_degauss_data.x > 0.0) {
 			vec2 center_offset = warped_coords - 0.5;
 			float dist = length(center_offset);
-			float bulge = sin(dist * 20.0 - v_time_pack1.x) * v_degauss_pack2.x;
-			float ripple = sin(dist * 50.0 - v_time_pack1.y) * v_degauss_pack2.y;
+			float bulge = sin(dist * 20.0 - v_time_pack1.x) * v_degauss_data.z;
+			float ripple = sin(dist * 50.0 - v_time_pack1.y) * v_degauss_data.w;
 			warped_coords += center_offset * (bulge + ripple);
-			warped_coords.x += exp(-50.0 * (warped_coords.y - v_time_pack1.z) * (warped_coords.y - v_time_pack1.z)) * sin(warped_coords.y * 100.0) * v_degauss_pack2.z;
+			warped_coords.x += exp(-50.0 * (warped_coords.y - v_time_pack1.z) * (warped_coords.y - v_time_pack1.z)) * sin(warped_coords.y * 100.0) * v_extra_data.x;
 		}
 
 		if (v_dyn_pack2.y > 0.0) warped_coords.x += step(abs(warped_coords.y - v_glitch_field.x), glitch_size) * v_glitch_field.y;
@@ -864,7 +891,8 @@ void fragment() {
 		
 		if (use_sweep_stripe) {
 			vec2 centered_uv = warped_coords - 0.5;
-			rotated_uv = vec2(centered_uv.x * v_stripe_calc.y - centered_uv.y * v_stripe_calc.z, centered_uv.x * v_stripe_calc.z + centered_uv.y * v_stripe_calc.y) + 0.5;
+			mat2 stripe_rot = mat2(vec2(v_stripe_calc.y, v_stripe_calc.z), vec2(-v_stripe_calc.z, v_stripe_calc.y));
+			rotated_uv = (stripe_rot * centered_uv) + 0.5;
 			float norm_dist = abs(rotated_uv.y - v_stripe_calc.x) * v_stripe_calc.w;
 
 			if (norm_dist <= 1.0) {
@@ -884,6 +912,10 @@ void fragment() {
 		if (in_v_blank > 0.0) {
 			col = vec3(0.0);
 		}
+		
+		if (use_analog_clipping) {
+			col = clamp((col + analog_pedestal) * analog_gain, 0.0, 1.0);
+		}
 
 		bool need_yiq = use_yiq_bleed || use_vertical_chroma_smear || use_tape_noise || use_color_killer || use_yc_delay || use_tape_crease;
 		if (need_yiq) {
@@ -892,41 +924,44 @@ void fragment() {
 			float final_q = center_yiq.z;
 
 			if (use_yc_delay) {
-				vec3 delayed_col = sample_image(warped_coords - vec2(yc_delay_amount * v_tex_pixel_size.x, 0.0), local_chroma);
+				vec3 delayed_col = sample_image(warped_coords - vec2(yc_delay_amount * v_tex_data.z, 0.0), local_chroma);
 				vec3 delayed_yiq = rgb_to_yiq(delayed_col);
 				final_i = delayed_yiq.y;
 				final_q = delayed_yiq.z;
 			}
 			
 			if (use_yiq_bleed) {
-				vec3 raw_col = srgb_to_linear(texture(tex, warped_coords).rgb);
+				vec3 raw_col = srgb_to_linear(textureLod(tex, warped_coords, 0.0).rgb);
 				float raw_luma = rgb_to_yiq(raw_col).x;
 				float luma_mask = (raw_luma > 0.001) ? (center_yiq.x / raw_luma) : 0.0;
 				
-				float spread = yiq_bleed_spread * v_tex_pixel_size.x;
-				float offset = yiq_chroma_offset * v_tex_pixel_size.x;
+				float spread = yiq_bleed_spread * v_tex_data.z;
+				float offset = yiq_chroma_offset * v_tex_data.z;
 				
-				vec3 c0 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset - spread * 2.0, 0.0)).rgb));
-				vec3 c1 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset - spread, 0.0)).rgb));
-				vec3 c2 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset, 0.0)).rgb));
-				vec3 c3 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset + spread, 0.0)).rgb));
-				vec3 c4 = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(offset + spread * 2.0, 0.0)).rgb));
+				// OPTIMIZED: Weighted RGB sum calculated before YIQ conversion, saving 4x matrix multiplications per pixel.
+				vec3 rgb0 = srgb_to_linear(textureLod(tex, warped_coords + vec2(offset - spread * 2.0, 0.0), 0.0).rgb);
+				vec3 rgb1 = srgb_to_linear(textureLod(tex, warped_coords + vec2(offset - spread, 0.0), 0.0).rgb);
+				vec3 rgb2 = srgb_to_linear(textureLod(tex, warped_coords + vec2(offset, 0.0), 0.0).rgb);
+				vec3 rgb3 = srgb_to_linear(textureLod(tex, warped_coords + vec2(offset + spread, 0.0), 0.0).rgb);
+				vec3 rgb4 = srgb_to_linear(textureLod(tex, warped_coords + vec2(offset + spread * 2.0, 0.0), 0.0).rgb);
 
-				final_i = ((c0.y + c4.y) * 0.0625 + (c1.y + c3.y) * 0.25 + c2.y * 0.375) * luma_mask;
-				final_q = ((c0.z + c4.z) * 0.0625 + (c1.z + c3.z) * 0.25 + c2.z * 0.375) * luma_mask;
+				vec3 blurred_rgb = (rgb0 + rgb4) * 0.0625 + (rgb1 + rgb3) * 0.25 + rgb2 * 0.375;
+				vec3 blurred_yiq = rgb_to_yiq(blurred_rgb);
+
+				final_i = blurred_yiq.y * luma_mask;
+				final_q = blurred_yiq.z * luma_mask;
 			}
 			
 			if (use_vertical_chroma_smear && chroma_smear_strength > 0.0) {
-				float v_offset = v_tex_pixel_size.y * chroma_smear_scanlines;
-				vec3 up_yiq = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords - vec2(0.0, v_offset)).rgb));
-				vec3 down_yiq = rgb_to_yiq(srgb_to_linear(texture(tex, warped_coords + vec2(0.0, v_offset)).rgb));
+				float v_offset = v_tex_data.w * chroma_smear_scanlines;
+				vec3 up_yiq = rgb_to_yiq(srgb_to_linear(textureLod(tex, warped_coords - vec2(0.0, v_offset), 0.0).rgb));
+				vec3 down_yiq = rgb_to_yiq(srgb_to_linear(textureLod(tex, warped_coords + vec2(0.0, v_offset), 0.0).rgb));
 				
 				final_i = mix(final_i, (up_yiq.y + down_yiq.y + final_i) * 0.3333333, chroma_smear_strength);
 				final_q = mix(final_q, (up_yiq.z + down_yiq.z + final_q) * 0.3333333, chroma_smear_strength);
 			}
 
 			if (use_tape_noise && tape_noise_strength > 0.0) {
-				// Tape Noise grain remains isotropic (circular) rather than stretching
 				vec3 t_noise = fbm_3(aspect_coords * tape_noise_scale + vec2(TIME * tape_noise_speed, -TIME * tape_noise_speed * 0.5), 2, 2.0, 0.5);
 				final_i += (t_noise.x - 0.5) * tape_noise_strength;
 				final_q += (t_noise.y - 0.5) * tape_noise_strength;
@@ -955,12 +990,12 @@ void fragment() {
 
 		bool need_l1_r1 = use_signal_ringing || use_dot_crawl || use_cross_color || use_cross_luminance;
 		if (need_l1_r1) {
-			vec3 l1 = sample_image(warped_coords - vec2(v_tex_pixel_size.x, 0.0), local_chroma);
-			vec3 r1 = sample_image(warped_coords + vec2(v_tex_pixel_size.x, 0.0), local_chroma);
+			vec3 l1 = sample_image(warped_coords - vec2(v_tex_data.z, 0.0), local_chroma);
+			vec3 r1 = sample_image(warped_coords + vec2(v_tex_data.z, 0.0), local_chroma);
 			
 			if (use_signal_ringing && ringing_strength > 0.0) {
-				vec3 l2 = sample_image(warped_coords - vec2(v_tex_pixel_size.x * 2.0, 0.0), local_chroma);
-				vec3 r2 = sample_image(warped_coords + vec2(v_tex_pixel_size.x * 2.0, 0.0), local_chroma);
+				vec3 l2 = sample_image(warped_coords - vec2(v_tex_data.z * 2.0, 0.0), local_chroma);
+				vec3 r2 = sample_image(warped_coords + vec2(v_tex_data.z * 2.0, 0.0), local_chroma);
 				
 				vec3 ringing_kernel = (col * 2.0 - l1 - r1) - 0.5 * (l2 + r2 - 2.0 * col);
 				col += ringing_kernel * ringing_strength;
@@ -975,7 +1010,7 @@ void fragment() {
 				float moire_mask = smoothstep(cross_color_threshold, cross_color_threshold + 0.2, hf_signal);
 				
 				if (moire_mask > 0.0) {
-					float moire_phase = warped_coords.x * (effective_scanlines * aspect) * 3.14159 + warped_coords.y * effective_scanlines * 1.57079 - TIME * 15.0;
+					float moire_phase = warped_coords.x * (v_extra_data.y * aspect) * 3.14159 + warped_coords.y * v_extra_data.y * 1.57079 - TIME * 15.0;
 					vec3 yiq = rgb_to_yiq(col);
 					yiq.y += sin(moire_phase) * moire_mask * cross_color_strength * 0.5;
 					yiq.z += cos(moire_phase) * moire_mask * cross_color_strength * 0.5;
@@ -992,7 +1027,7 @@ void fragment() {
 				
 				float zipper_mask = smoothstep(0.05, 0.2, chroma_diff) * (1.0 - smoothstep(0.0, 0.1, luma_diff));
 				if (zipper_mask > 0.0) {
-					float zipper_phase = warped_coords.y * effective_scanlines * 3.14159 - TIME * 15.0;
+					float zipper_phase = warped_coords.y * v_extra_data.y * 3.14159 - TIME * 15.0;
 					vec3 center_yiq = rgb_to_yiq(col);
 					center_yiq.x += sin(zipper_phase) * zipper_mask * cross_luminance_strength * 0.5;
 					col = yiq_to_rgb(center_yiq);
@@ -1018,6 +1053,13 @@ void fragment() {
 				float sat_mult = 1.0 + (luma - 0.5) * gain_multiplier;
 				col = mix(vec3(luma), col, max(0.0, sat_mult));
 			}
+		}
+		
+		if (use_phase_drift && phase_drift_strength > 0.0) {
+			float line_idx = floor(warped_coords.y * v_extra_data.y);
+			float drift = sin(v_extra_data.z) * phase_drift_strength;
+			float phase_mod = ((int(line_idx) & 1) == 0) ? drift : -drift;
+			col = shift_hue(col, phase_mod);
 		}
 
 		if (use_sweep_stripe && stripe_factor > 0.0) {
@@ -1045,12 +1087,12 @@ void fragment() {
 			if (stripe_enable_saturation) col = mix(vec3(dot(col, HUE_LUMA)), col, 1.0 + stripe_factor * (stripe_saturation - 1.0)); 
 		}
 
-		if (v_degauss_wobble.x > 0.0) {
-			if (degauss_hue_shift_amount > 0.0) col = shift_hue(col, v_degauss_wobble.x * degauss_hue_shift_amount);
-			if (degauss_invert_strength > 0.0) col = mix(col, vec3(1.0) - col, v_degauss_wobble.x * degauss_invert_strength);
+		if (v_degauss_data.x > 0.0) {
+			if (degauss_hue_shift_amount > 0.0) col = shift_hue(col, v_degauss_data.x * degauss_hue_shift_amount);
+			if (degauss_invert_strength > 0.0) col = mix(col, vec3(1.0) - col, v_degauss_data.x * degauss_invert_strength);
 		}
 		
-		if (v_dyn_pack3.x > 0.0) col += srgb_to_linear(texture(tex, warped_coords - vec2(v_dyn_pack3.y, 0.0)).rgb) * v_dyn_pack3.x;
+		if (v_dyn_pack3.x > 0.0) col += srgb_to_linear(textureLod(tex, warped_coords - vec2(v_dyn_pack3.y, 0.0), 0.0).rgb) * v_dyn_pack3.x;
 		if (v_dyn_pack2.x > 0.0) col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_coords.y * roll_size - v_time_pack2.y)) * v_dyn_pack2.x;
 
 		if (v_dyn_pack2.z > 0.0) {
@@ -1071,7 +1113,6 @@ void fragment() {
 		}
 		
 		if (use_tape_dropouts && dropout_rate > 0.0) {
-			// Tape Dropout streaks are locked to aspect ratio
 			vec2 drop_uv = vec2(aspect_coords.x * 4.0, aspect_coords.y * dropout_scale);
 			drop_uv.y -= TIME * dropout_speed;
 			drop_uv.x += TIME * (dropout_speed * 0.1);
@@ -1080,7 +1121,6 @@ void fragment() {
 			float drop_mask = smoothstep(1.0 - dropout_rate, 1.0, drop_noise);
 			
 			if (drop_mask > 0.0) {
-				// The static INSIDE the dropout is now locked strictly to physical screen pixels
 				float drop_static = value_noise_1((warped_coords * quad_pixels * 0.1) + vec2(fract(TIME * 13.37) * 100.0, fract(TIME * 7.77) * 100.0));
 				col = mix(col, vec3(drop_static * 1.5), drop_mask * dropout_strength);
 			}
@@ -1104,7 +1144,7 @@ void fragment() {
 			col = monochrome_color.rgb * luma;
 		}
 		if (use_motion_persistence) {
-			vec3 prev_col = srgb_to_linear(texture(previous_frame_tex, warped_coords).rgb);
+			vec3 prev_col = srgb_to_linear(textureLod(previous_frame_tex, warped_coords, 0.0).rgb);
 			col = mix(col, prev_col, persistence_strength);
 		}
 
@@ -1114,7 +1154,8 @@ void fragment() {
 		}
 		if (use_glare && glare_strength > 0.0) {
 			vec2 centered = warped_coords - glare_position;
-			vec2 rot_uv = vec2(centered.x * v_glare_calc.x - centered.y * v_glare_calc.y, centered.x * v_glare_calc.y + centered.y * v_glare_calc.x);
+			mat2 rot_mat = mat2(vec2(v_glare_calc.x, v_glare_calc.y), vec2(-v_glare_calc.y, v_glare_calc.x));
+			vec2 rot_uv = rot_mat * centered;
 			float glare = smoothstep(v_glare_calc.w, glare_size, abs(rot_uv.x));
 			col += vec3(glare * glare_strength);
 		}
