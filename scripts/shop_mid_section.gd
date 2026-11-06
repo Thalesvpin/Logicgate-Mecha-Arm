@@ -137,5 +137,5 @@ func reset_packs() -> void:
 	chosen_packs = []
 
 func reroll() -> void:
-	reset_packs()
 	refresh()
+	#randomizar packs

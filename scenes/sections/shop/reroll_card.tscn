@@ -100,7 +100,6 @@ grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_f6yic")
-price_list = Array[int]([200, 400, 600, 1000, 0, 0, 0, 0])
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1075946474]
 material = SubResource("ShaderMaterial_f6yic")

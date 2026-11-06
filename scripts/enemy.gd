@@ -120,6 +120,7 @@ func link_to_status_bar() -> void:
 			status_bar = child
 
 func turn_start(who):
+	print(who, '   -    ', config._name)
 	if typeof(who) == typeof(Object) && who == self:
 		turn_indicator.show()
 		await get_tree().create_timer(turn_start_delay).timeout
