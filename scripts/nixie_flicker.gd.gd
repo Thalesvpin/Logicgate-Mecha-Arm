@@ -36,7 +36,7 @@ func _process_custom_fx(char_fx: CharFXTransform) -> bool:
 	# Safe type check guarantees a valid Color struct
 	var target_col: Color = dim_target_color if dim_target_color is Color else Color.BLACK
 
-	# Global engine uptime in seconds so timer NEVER resets when text/money changes
+	# Global engine uptime so timer NEVER resets
 	var global_time: float = float(Time.get_ticks_msec()) / 1000.0
 
 	# 1. Base Constant Subtle Flicker Calculation
@@ -49,22 +49,32 @@ func _process_custom_fx(char_fx: CharFXTransform) -> bool:
 	if enable_big_flicker and big_flicker_chance > 0.0:
 		var can_flicker = true
 		
-		# Optional Cooldown Check
+		# The global slot index increments based on frequency
+		var global_slot = int(global_time * big_flicker_frequency)
+		
+		# Slot-based Cooldown logic (Flawlessly prevents mid-flicker cutoffs)
 		if enable_cooldown:
-			var active_duration = float(max_flicker_bursts) / max(big_flicker_frequency, 0.001)
-			var cycle_time = active_duration + cooldown_duration
-			var current_cycle_time = fmod(global_time, cycle_time)
+			var slot_duration = 1.0 / max(big_flicker_frequency, 0.001)
+			var cooldown_slots = max(1, int(round(cooldown_duration / slot_duration)))
+			var cycle_slots = max_flicker_bursts + cooldown_slots
+			var current_slot_in_cycle = global_slot % cycle_slots
 			
-			if current_cycle_time > active_duration:
+			# If the current slot falls into the cooldown phase, block flickering
+			if current_slot_in_cycle >= max_flicker_bursts:
 				can_flicker = false
 		
 		if can_flicker:
-			var time_slot = int(global_time * big_flicker_frequency)
-			var roll = fmod(abs(sin(float(char_fx.relative_index) * 12.9898 + float(time_slot) * 78.233) * 43758.5453), 1.0)
+			# Deterministic per-character roll based on the current global slot
+			var roll = fmod(abs(sin(float(char_fx.relative_index) * 12.9898 + float(global_slot) * 78.233) * 43758.5453), 1.0)
 			
 			if roll < big_flicker_chance:
+				# Progress within the current slot window (0.0 to 1.0)
 				var window_progress = fmod(global_time * big_flicker_frequency, 1.0)
+				
+				# Smooth arc envelope
 				var drop_envelope = sin(window_progress * PI)
+				
+				# Fast electrical stuttering noise during the drop
 				var stutter = (sin(global_time * 50.0 + float(char_fx.relative_index) * 7.0) + 1.0) / 2.0
 				var dip_depth = lerp(big_flicker_min_brightness, min_brightness, stutter * 0.4)
 				
