@@ -725,28 +725,27 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 		case 5: 
 			m_rgb = 0.5 + 0.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS);
 			m_w = 0.375;
-			m_rgb *= (0.5 + 0.5 * cos((coords.y + float(int(coords.x * 0.6666666666667) & 1) * 0.5) * TAU));
+			m_rgb *= (0.5 + 0.5 * cos((coords.y + (0.5 - 0.5 * cos(coords.x * TWO_THIRD_PI)) * 0.5) * TAU));
 			break;
 		case 6: 
 			m_rgb = vec3(1.0);
-			m_w = (int(coords.x) % 3 == 0) ? 0.6 : 1.0; 
+			m_w = mix(1.0, 0.6, clamp(0.5 + 1.5 * cos(coords.x * TWO_THIRD_PI), 0.0, 1.0)); 
 			break;
 		case 7: { 
-			int x = int(coords.x) % 3;
-			m_rgb = (x == 0) ? vec3(1.0, 0.0, 0.0) : ((x == 1) ? vec3(0.0, 1.0, 0.0) : vec3(0.0, 0.0, 1.0));
+			m_rgb = clamp(0.5 + 1.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS), 0.0, 1.0);
 			m_w = 0.6;
 			break;
 		}
 		case 8: { 
-			vec2 cell = fract(coords * vec2(0.33333, 1.0));
-			m_rgb = vec3(step(cell.x, 0.333), step(0.333, cell.x) * step(cell.x, 0.666), step(0.666, cell.x));
-			m_rgb *= step(0.1, cell.y) * step(cell.y, 0.9);
+			m_rgb = clamp(0.5 + 1.5 * cos(coords.x * TWO_THIRD_PI - PHASE_OFFSETS), 0.0, 1.0);
+			m_rgb *= clamp(0.5 + 1.5 * cos(coords.y * TAU), 0.0, 1.0);
+			m_w = 0.6;
 			break;
 		}
 		case 9: { 
-			int odd_row = int(coords.y) % 2;
-			int x = (int(coords.x) + odd_row) % 3;
-			m_rgb = (x == 0) ? vec3(1.0, 0.0, 0.0) : ((x == 1) ? vec3(0.0, 1.0, 0.0) : vec3(0.0, 0.0, 1.0));
+			float shift = (0.5 - 0.5 * cos(coords.y * PI)) * TWO_THIRD_PI;
+			m_rgb = clamp(0.5 + 1.5 * cos(coords.x * TWO_THIRD_PI + shift - PHASE_OFFSETS), 0.0, 1.0);
+			m_w = 0.6;
 			break;
 		}
 	}
@@ -766,8 +765,16 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 }
 
 void fragment() {
+	float fw_x = max(fwidth(UV.x), 0.0001);
+	float fw_y = max(fwidth(UV.y), 0.0001);
+	float quad_aspect = fw_y / fw_x;
+	vec2 quad_pixels = vec2(1.0 / fw_x, 1.0 / fw_y);
+
 	vec2 warped_coords = warp(UV);
 	float effective_scanlines = scanline_count * (v_tex_size.y / max(v_tex_size.x * aspect, 0.0001));
+	
+	// Create an aspect-corrected coordinate space specifically to keep procedural noise grain perfectly circular/square
+	vec2 aspect_coords = vec2(warped_coords.x * quad_aspect, warped_coords.y);
 	
 	if (power_state < 0.001 || warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
@@ -797,14 +804,15 @@ void fragment() {
 				float dist = abs(warped_coords.y - c_pos);
 				crease_factor = smoothstep(crease_width, crease_width * 0.2, dist);
 				if (crease_factor > 0.0) {
-					float crease_noise = value_noise_1(vec2(warped_coords.y * 100.0, TIME * 20.0));
+					// Use aspect_coords so the crease jitter keeps a constant detail level
+					float crease_noise = value_noise_1(vec2(aspect_coords.y * 100.0, TIME * 20.0));
 					warped_coords.x += (crease_noise - 0.5) * crease_factor * crease_noise_strength * 0.1;
 				}
 			}
 		}
 
 		if (use_edge_wobble) {
-			float wobble_noise = value_noise_1(vec2(warped_coords.y * edge_wobble_scale, TIME * edge_wobble_speed));
+			float wobble_noise = value_noise_1(vec2(aspect_coords.y * edge_wobble_scale, TIME * edge_wobble_speed));
 			warped_coords.x += (wobble_noise - 0.5) * edge_wobble_strength;
 		}
 
@@ -813,7 +821,7 @@ void fragment() {
 			if (warped_coords.y > switch_start) {
 				float t = (warped_coords.y - switch_start) / max(0.0001, head_switch_height);
 				float curve_power = pow(t, head_switch_curve);
-				float jitter = value_noise_1(vec2(warped_coords.y * 100.0, TIME * 15.0));
+				float jitter = value_noise_1(vec2(aspect_coords.y * 100.0, TIME * 15.0));
 				warped_coords.x += curve_power * head_switch_strength * (0.8 + 0.4 * jitter);
 			}
 		}
@@ -830,7 +838,7 @@ void fragment() {
 		if (v_optim_pack.y > -999.0) {
 			float track_band = step(v_optim_pack.y, warped_coords.y) * step(warped_coords.y, v_optim_pack.y + vhs_tracking_height);
 			if (track_band > 0.0) {
-				float pseudo_rand = fract(sin(floor(warped_coords.y * vhs_tracking_noise_scale) + TIME * 10.0) * 43758.5453);
+				float pseudo_rand = fract(sin(floor(aspect_coords.y * vhs_tracking_noise_scale) + TIME * 10.0) * 43758.5453);
 				warped_coords.x += (pseudo_rand - 0.5) * vhs_tracking_strength * 0.2;
 			}
 		}
@@ -918,24 +926,25 @@ void fragment() {
 			}
 
 			if (use_tape_noise && tape_noise_strength > 0.0) {
-				vec3 t_noise = fbm_3(warped_coords * tape_noise_scale + vec2(TIME * tape_noise_speed, -TIME * tape_noise_speed * 0.5), 2, 2.0, 0.5);
+				// Tape Noise grain remains isotropic (circular) rather than stretching
+				vec3 t_noise = fbm_3(aspect_coords * tape_noise_scale + vec2(TIME * tape_noise_speed, -TIME * tape_noise_speed * 0.5), 2, 2.0, 0.5);
 				final_i += (t_noise.x - 0.5) * tape_noise_strength;
 				final_q += (t_noise.y - 0.5) * tape_noise_strength;
 			}
 
 			if (use_color_killer) {
-				float killer_noise = fbm_1(vec2(warped_coords.y * 5.0, TIME * 10.0), 2, 2.0, 0.5);
+				float killer_noise = fbm_1(vec2(aspect_coords.y * 5.0, TIME * 10.0), 2, 2.0, 0.5);
 				float killer_mult = smoothstep(color_killer_threshold - 0.05, color_killer_threshold + 0.05, killer_noise);
 				final_i *= killer_mult;
 				final_q *= killer_mult;
 			}
 
 			if (use_tape_crease && crease_factor > 0.0) {
-				vec3 c_noise = fbm_3(warped_coords * 10.0 + vec2(TIME * 10.0, 0.0), 3, 2.0, 0.5);
+				vec3 c_noise = fbm_3(aspect_coords * 10.0 + vec2(TIME * 10.0, 0.0), 3, 2.0, 0.5);
 				final_i += (c_noise.x - 0.5) * crease_factor * crease_noise_strength;
 				final_q += (c_noise.y - 0.5) * crease_factor * crease_noise_strength;
 				
-				float crease_killer = fbm_1(vec2(warped_coords.y * 10.0, TIME * 15.0), 2, 2.0, 0.5);
+				float crease_killer = fbm_1(vec2(aspect_coords.y * 10.0, TIME * 15.0), 2, 2.0, 0.5);
 				float kill_mult = smoothstep(0.4, 0.6, crease_killer + (1.0 - crease_factor));
 				final_i *= kill_mult;
 				final_q *= kill_mult;
@@ -996,7 +1005,8 @@ void fragment() {
 				float edge_intensity = abs(luma_right - luma_left);
 				
 				float edge_mask = smoothstep(dot_crawl_threshold, dot_crawl_threshold + 0.1, edge_intensity);
-				float pattern = sin(FRAGCOORD.x * PI) * sin(FRAGCOORD.y * PI + v_time_pack2.x);
+				vec2 dot_crawl_coords = warped_coords * quad_pixels;
+				float pattern = sin(dot_crawl_coords.x * PI) * sin(dot_crawl_coords.y * PI + v_time_pack2.x);
 				col += pattern * edge_mask * dot_crawl_strength;
 			}
 		}
@@ -1049,7 +1059,7 @@ void fragment() {
 				fract(sin(floor(v_time_pack1.x) * 78.233) * 43758.5453)
 			) * 1000.0;
 			
-			vec2 noise_coords = (warped_coords * v_tex_size) * (noise_base_scale * 0.05) + frame_offset;
+			vec2 noise_coords = (warped_coords * quad_pixels) * (noise_base_scale * 0.05) + frame_offset;
 
 			vec3 noise_val;
 			if (chroma_noise) {
@@ -1061,7 +1071,8 @@ void fragment() {
 		}
 		
 		if (use_tape_dropouts && dropout_rate > 0.0) {
-			vec2 drop_uv = vec2(warped_coords.x * 4.0, warped_coords.y * dropout_scale);
+			// Tape Dropout streaks are locked to aspect ratio
+			vec2 drop_uv = vec2(aspect_coords.x * 4.0, aspect_coords.y * dropout_scale);
 			drop_uv.y -= TIME * dropout_speed;
 			drop_uv.x += TIME * (dropout_speed * 0.1);
 			
@@ -1069,12 +1080,15 @@ void fragment() {
 			float drop_mask = smoothstep(1.0 - dropout_rate, 1.0, drop_noise);
 			
 			if (drop_mask > 0.0) {
-				float drop_static = value_noise_1((warped_coords * v_tex_size * 0.1) + vec2(fract(TIME * 13.37) * 100.0, fract(TIME * 7.77) * 100.0));
+				// The static INSIDE the dropout is now locked strictly to physical screen pixels
+				float drop_static = value_noise_1((warped_coords * quad_pixels * 0.1) + vec2(fract(TIME * 13.37) * 100.0, fract(TIME * 7.77) * 100.0));
 				col = mix(col, vec3(drop_static * 1.5), drop_mask * dropout_strength);
 			}
 		}
 
-		col = mask(col, FRAGCOORD.xy * v_time_pack2.w);
+		vec2 mask_coords = warped_coords * quad_pixels;
+		mask_coords *= v_time_pack2.w; 
+		col = mask(col, mask_coords);
 
 		if (use_auto_exposure) {
 			float luma = dot(col, HUE_LUMA);
