@@ -135,6 +135,11 @@ uniform float carbon_fiber_scale : hint_range(1.0, 100.0) = 20.0;
 
 group_uniforms Surface_Stamping;
 uniform bool enable_stamping = false;
+uniform int stamp_mapping_mode : hint_enum("Stretch", "Keep Aspect") = 0;
+uniform vec2 stamp_scale = vec2(1.0, 1.0);
+uniform vec2 stamp_offset = vec2(0.0, 0.0);
+uniform float stamp_rotation : hint_range(-180.0, 180.0) = 0.0;
+uniform bool stamp_repeat = false;
 uniform float stamp_depth : hint_range(-5.0, 5.0) = 1.0;
 uniform sampler2D stamp_texture : hint_default_black;
 
@@ -392,12 +397,24 @@ void fragment() {
     vec3 normal = base_normal;
 
     if (enable_stamping) {
-        float s0 = texture(stamp_texture, UV).r;
-        float sx = texture(stamp_texture, UV + vec2(0.01, 0.0)).r;
-        float sy = texture(stamp_texture, UV + vec2(0.0, 0.01)).r;
-        vec3 st_norm = vec3((s0-sx)*10.0, (s0-sy)*10.0, 1.0 / max(0.01, abs(stamp_depth)));
-        if (stamp_depth < 0.0) st_norm.xy *= -1.0;
-        normal = normalize(normal + st_norm * (1.0 - bevel_factor));
+        vec2 st_uv = (stamp_mapping_mode == 1) ? ((px - rect_size * 0.5) * inv_min_dim + 0.5) : UV;
+        st_uv -= 0.5; // Offset to center for rotation/scale
+        
+        float r_rad = stamp_rotation * 0.01745329251; // Convert to radians
+        float cr = cos(r_rad);
+        float sr = sin(r_rad);
+        st_uv = vec2(st_uv.x * cr - st_uv.y * sr, st_uv.x * sr + st_uv.y * cr);
+        
+        st_uv = (st_uv / max(vec2(0.001), stamp_scale)) + 0.5 - stamp_offset;
+        
+        if (stamp_repeat || (st_uv.x >= 0.0 && st_uv.x <= 1.0 && st_uv.y >= 0.0 && st_uv.y <= 1.0)) {
+            float s0 = texture(stamp_texture, st_uv).r;
+            float sx = texture(stamp_texture, st_uv + vec2(0.01, 0.0)).r;
+            float sy = texture(stamp_texture, st_uv + vec2(0.0, 0.01)).r;
+            vec3 st_norm = vec3((s0 - sx) * 10.0, (s0 - sy) * 10.0, 1.0 / max(0.01, abs(stamp_depth)));
+            if (stamp_depth < 0.0) st_norm.xy *= -1.0;
+            normal = normalize(normal + st_norm * (1.0 - bevel_factor));
+        }
     }
 
     vec3 cap_tex_normal = vec3(0.0, 0.0, 1.0);
