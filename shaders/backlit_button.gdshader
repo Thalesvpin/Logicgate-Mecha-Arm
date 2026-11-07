@@ -6,6 +6,7 @@ uniform vec2 rect_size = vec2(200.0, 100.0);
 uniform float bevel_width_x : hint_range(1.0, 100.0) = 16.0;
 uniform float bevel_smoothness : hint_range(0.0, 50.0) = 6.0;   
 uniform float outer_corner_radius : hint_range(0.0, 100.0) = 0.0; 
+uniform vec4 independent_corner_radii = vec4(0.0, 0.0, 0.0, 0.0); // TL, TR, BR, BL
 
 group_uniforms Advanced_Geometry_And_Housing;
 uniform bool enable_asymmetrical_bevels = false;                  
@@ -95,6 +96,7 @@ uniform float clearcoat_intensity : hint_range(0.0, 5.0) = 1.0;
 uniform float clearcoat_shininess : hint_range(10.0, 500.0) = 250.0;
 uniform float edge_catching_glint : hint_range(0.0, 5.0) = 0.0;      
 
+// --- MULTIPOINT LIGHTING ---
 group_uniforms Lighting_And_Shadows;
 uniform vec2 light_direction = vec2(-0.707, -0.707);            
 uniform float bevel_highlight : hint_range(0.0, 2.0) = 0.8;
@@ -102,6 +104,16 @@ uniform float bevel_shadow : hint_range(0.0, 2.0) = 0.6;
 uniform float edge_darkening : hint_range(0.0, 1.0) = 0.0; 
 uniform float corner_edge_darkening : hint_range(0.0, 1.0) = 0.3; 
 
+group_uniforms Multipoint_Lighting;
+uniform bool enable_multipoint_lighting = false;
+uniform vec3 fill_light_dir = vec3(0.8, -0.2, 0.5);
+uniform vec4 fill_light_color : source_color = vec4(0.1, 0.2, 0.4, 1.0);
+uniform float fill_intensity : hint_range(0.0, 2.0) = 0.5;
+uniform vec3 rim_light_dir = vec3(0.0, 1.0, 0.2);
+uniform vec4 rim_light_color : source_color = vec4(1.0, 1.0, 0.8, 1.0);
+uniform float rim_intensity : hint_range(0.0, 5.0) = 1.0;
+
+// --- TEXTURES & STAMPING ---
 group_uniforms Texture_And_Imperfections;
 uniform bool use_optional_surface_texture = false;
 uniform sampler2D optional_surface_texture : hint_normal, filter_linear_mipmap; 
@@ -118,14 +130,31 @@ uniform float bevel_texture_influence : hint_range(0.0, 1.0) = 0.35;
 uniform float procedural_grain : hint_range(0.0, 1.0) = 0.15;     
 uniform float backlight_texture_reveal : hint_range(0.0, 2.0) = 0.0; 
 
+uniform float carbon_fiber_intensity : hint_range(0.0, 1.0) = 0.0;
+uniform float carbon_fiber_scale : hint_range(1.0, 100.0) = 20.0;
+
+group_uniforms Surface_Stamping;
+uniform bool enable_stamping = false;
+uniform float stamp_depth : hint_range(-5.0, 5.0) = 1.0;
+uniform sampler2D stamp_texture : hint_default_black;
+
 // --- INTERNAL LIGHTING ---
 group_uniforms Backlight_State;
 uniform bool is_active = false; 
 uniform float backlight_intensity : hint_range(0.0, 5.0) = 2.5;
 uniform vec4 backlight_color : source_color = vec4(1.0, 0.68, 0.1, 1.0); 
+uniform float ignition_stutter_intensity : hint_range(0.0, 1.0) = 0.0;
+
+group_uniforms Voltage_Flicker;
+uniform bool enable_voltage_flicker = false;
+uniform bool voltage_flicker_smooth = false;
+uniform float voltage_flicker_intensity : hint_range(0.0, 1.0) = 0.0;
+uniform float voltage_flicker_speed : hint_range(0.1, 60.0) = 20.0;
 
 group_uniforms Internal_Bulbs;
+uniform int bulb_layout : hint_enum("Row", "Grid", "Ring") = 0;
 uniform int bulb_count : hint_range(1, 10) = 2;
+uniform int filament_shape : hint_enum("Sphere", "Square SMD", "Tube", "Ring", "Cross", "Diamond") = 0;
 uniform float bulb_size : hint_range(0.01, 0.5) = 0.12;
 uniform vec2 filament_stretch = vec2(1.0, 1.0);                      
 uniform bool is_led_profile = false;                                 
@@ -133,6 +162,10 @@ uniform float bulb_spacing : hint_range(0.0, 1.0) = 0.3;
 uniform float bulb_halo_power : hint_range(1.0, 10.0) = 5.0;         
 uniform vec4 bulb_off_color : source_color = vec4(0.25, 0.2, 0.1, 0.8);
 uniform vec4 bulb_on_color : source_color = vec4(1.0, 0.95, 0.8, 1.0);
+uniform bool use_blackbody_colors = false;
+
+uniform vec2 internal_baffle_grid = vec2(0.0, 0.0);
+uniform bool baffle_cap_only = true;
 
 uniform bool use_3d_spherical_bulbs = false;
 uniform float bulb_3d_depth : hint_range(0.1, 3.0) = 1.0;
@@ -175,18 +208,19 @@ uniform float slope_light_corner_fade : hint_range(0.0, 1.0) = 0.5;
 uniform vec4 slope_light_tint : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 
 group_uniforms Interactive_Mouse_Lighting;
-uniform bool enable_mouse_light = false; // Managed by script
-uniform vec2 mouse_position = vec2(0.0, 0.0); // Managed by script
-
+uniform bool enable_mouse_light = false; 
+uniform vec2 mouse_position = vec2(0.0, 0.0); 
 uniform vec4 inactive_mouse_light_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float inactive_mouse_light_intensity : hint_range(0.0, 5.0) = 1.0;
 uniform float inactive_mouse_light_range : hint_range(10.0, 1000.0) = 250.0;
 uniform float inactive_mouse_light_height : hint_range(10.0, 500.0) = 50.0;
-
 uniform vec4 active_mouse_light_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float active_mouse_light_intensity : hint_range(0.0, 5.0) = 1.0;
 uniform float active_mouse_light_range : hint_range(10.0, 1000.0) = 250.0;
 uniform float active_mouse_light_height : hint_range(10.0, 500.0) = 50.0;
+
+group_uniforms Experimental_Features;
+uniform float heat_distortion_intensity : hint_range(0.0, 1.0) = 0.0;
 
 // --- POST PROCESSING ---
 group_uniforms Post_Processing;
@@ -214,17 +248,26 @@ vec2 get_grad_coord(vec2 uv, int dir) {
     return vec2(uv.x, 0.5);
 }
 
-float get_corner_radius_mask(vec2 px, vec2 size, float radius) {
-    if (radius <= 0.0) return 1.0;
+float get_corner_radius_mask(vec2 px, vec2 size, float base_r, vec4 custom_r) {
     vec2 half_size = size * 0.5;
-    vec2 d = abs(px - half_size) - (half_size - vec2(radius));
+    float rx = (px.x < half_size.x) ? 
+               ((px.y < half_size.y) ? custom_r.x : custom_r.w) : 
+               ((px.y < half_size.y) ? custom_r.y : custom_r.z);
+    float final_r = max(base_r, rx);
+    if (final_r <= 0.0) return 1.0;
+    vec2 d = abs(px - half_size) - (half_size - vec2(final_r));
     float dist = length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0);
-    return 1.0 - smoothstep(radius - 1.0, radius + 1.0, dist);
+    return 1.0 - smoothstep(final_r - 1.0, final_r + 1.0, dist);
 }
 
 void fragment() {
     vec2 px = UV * rect_size;
-    float alpha_mask = get_corner_radius_mask(px, rect_size, outer_corner_radius);
+    
+    if (heat_distortion_intensity > 0.0 && is_active) {
+        px += vec2(hash(UV + TIME*0.1), hash(UV + vec2(0.5) + TIME*0.1)) * heat_distortion_intensity * 15.0;
+    }
+
+    float alpha_mask = get_corner_radius_mask(px, rect_size, outer_corner_radius, independent_corner_radii);
     if (alpha_mask <= 0.0 && light_bleed_overflow == 0.0) discard;
 
     float min_dim = min(rect_size.x, rect_size.y); 
@@ -348,6 +391,15 @@ void fragment() {
     base_normal.z -= abs(sin(raw_curve_axis * 1.5707)) * abs(face_curvature_amount) * 0.3 * (1.0 - bevel_factor);
     vec3 normal = base_normal;
 
+    if (enable_stamping) {
+        float s0 = texture(stamp_texture, UV).r;
+        float sx = texture(stamp_texture, UV + vec2(0.01, 0.0)).r;
+        float sy = texture(stamp_texture, UV + vec2(0.0, 0.01)).r;
+        vec3 st_norm = vec3((s0-sx)*10.0, (s0-sy)*10.0, 1.0 / max(0.01, abs(stamp_depth)));
+        if (stamp_depth < 0.0) st_norm.xy *= -1.0;
+        normal = normalize(normal + st_norm * (1.0 - bevel_factor));
+    }
+
     vec3 cap_tex_normal = vec3(0.0, 0.0, 1.0);
     if (use_optional_surface_texture) {
         cap_tex_normal = texture(optional_surface_texture, UV * texture_tiling).rgb * 2.0 - 1.0;
@@ -374,6 +426,12 @@ void fragment() {
     vec3 detail_normal = mix(vec3(0.0, 0.0, 1.0), active_tex_normal, active_influence);
     detail_normal = mix(detail_normal, grain_normal, procedural_grain * (1.0 - smoothness));
     
+    if (carbon_fiber_intensity > 0.0) {
+        vec2 cf_uv = px * carbon_fiber_scale * 0.01;
+        float pattern = step(0.5, fract(cf_uv.x)) == step(0.5, fract(cf_uv.y)) ? 1.0 : -1.0;
+        detail_normal.xy += pattern * carbon_fiber_intensity * (1.0 - bevel_factor);
+    }
+
     normal = normalize(normal + detail_normal * 0.15);
 
     float active_smoothness = smoothness;
@@ -384,8 +442,16 @@ void fragment() {
     vec3 light_3d = normalize(vec3(-light_direction, 0.65)); 
     vec3 view_dir = vec3(0.0, 0.0, 1.0);                     
     
-    float diff_shade = dot(normal, light_3d);
-    float ambient_shade = clamp(1.0 + diff_shade * (bevel_highlight - bevel_shadow), 0.15, 2.0);
+    float diff_shade = max(0.0, dot(normal, light_3d));
+    vec3 ambient_diffuse = vec3(clamp(1.0 + diff_shade * (bevel_highlight - bevel_shadow), 0.15, 2.0));
+    
+    if (enable_multipoint_lighting) {
+        float f_diff = max(0.0, dot(normal, normalize(fill_light_dir)));
+        ambient_diffuse += f_diff * fill_light_color.rgb * fill_intensity;
+        
+        float r_diff = pow(max(0.0, 1.0 - dot(normal, view_dir)), 4.0) * max(0.0, dot(normal, normalize(rim_light_dir)));
+        ambient_diffuse += r_diff * rim_light_color.rgb * rim_intensity;
+    }
 
     vec3 spec_half_vector = normalize(light_3d + view_dir + vec3(manual_specular_offset, 0.0));
     if (anisotropic_stretch > 0.0) {
@@ -418,34 +484,92 @@ void fragment() {
     float bulb_mask = 0.0;
     vec4 bulb_vis = vec4(0.0);
 
-    float total_bulb_span = float(bulb_count - 1) * bulb_spacing * rect_size.x;
-    float bulb_start_x = (rect_size.x - total_bulb_span) * 0.5;
-
     vec2 resolved_3d_light_dir = bulb_3d_light_direction;
     if (use_global_light_for_3d_bulb == 1) resolved_3d_light_dir = light_direction;
     else if (use_global_light_for_3d_bulb == 2) resolved_3d_light_dir = vec2(-light_direction.x, light_direction.y); 
     else if (use_global_light_for_3d_bulb == 3) resolved_3d_light_dir = vec2(light_direction.x, -light_direction.y); 
     else if (use_global_light_for_3d_bulb == 4) resolved_3d_light_dir = -light_direction; 
-    
     vec3 sphere_light_dir = normalize(vec3(-resolved_3d_light_dir, 0.65));
 
+    float flicker_mod = 1.0;
+    if (enable_voltage_flicker && is_active) {
+        float noise_flicker = 0.0;
+        if (voltage_flicker_smooth) {
+            noise_flicker = (sin(TIME * voltage_flicker_speed) + sin(TIME * voltage_flicker_speed * 0.73) + sin(TIME * voltage_flicker_speed * 1.37)) * 0.333;
+            noise_flicker = noise_flicker * 0.5 + 0.5; 
+        } else {
+            noise_flicker = hash(vec2(floor(TIME * voltage_flicker_speed), 0.0)); 
+        }
+        flicker_mod -= voltage_flicker_intensity * noise_flicker;
+    }
+    
+    if (ignition_stutter_intensity > 0.0 && is_active) {
+        float startup_noise = smoothstep(0.2, 0.8, hash(vec2(TIME * 15.0, 1.0)));
+        flicker_mod *= mix(1.0, startup_noise, ignition_stutter_intensity);
+    }
+    
+    float active_mult = (is_active ? backlight_intensity : 0.0) * flicker_mod;
+
     vec4 current_core_col = mix(bulb_off_color, bulb_on_color, is_active ? 1.0 : 0.0);
-    current_core_col.rgb += vec3(is_active ? 3.0 : 0.4); 
     vec4 current_base_b_col = mix(bulb_off_color, bulb_on_color, is_active ? 1.0 : 0.0);
+    
+    if (use_blackbody_colors && is_active) {
+        vec3 bb_col = mix(vec3(1.0, 0.1, 0.0), bulb_on_color.rgb, clamp(active_mult, 0.0, 1.0));
+        current_core_col.rgb = bb_col;
+        current_base_b_col.rgb = bb_col;
+    }
+    
+    current_core_col.rgb += vec3(is_active ? 3.0 : 0.4); 
+    current_core_col.rgb *= flicker_mod;
+    current_base_b_col.rgb *= flicker_mod;
+
     float glass_opacity = clamp(1.0 - bulb_3d_transparency, 0.0, 1.0);
     float active_spec_mult = is_active ? 2.5 : 0.3;
     float active_rim_mult = is_active ? 2.0 : 0.3;
     float bulb_radius_px = bulb_size * min_dim;
     float core_radius = bulb_radius_px * bulb_3d_core_size;
     float core_edge_softness = max(0.001, bulb_3d_core_smoothness);
-
-    for(int i = 0; i < bulb_count; i++) {
-        float x_pos = (bulb_count > 1) ? bulb_start_x + float(i) * bulb_spacing * rect_size.x : rect_size.x * 0.5;
-        vec2 bulb_px = vec2(x_pos, rect_size.y * 0.5);
+    
+    int internal_bulb_max = min(bulb_count, 10);
+    
+    for(int i = 0; i < 10; i++) {
+        if (i >= internal_bulb_max) break;
+        
+        vec2 bulb_px = rect_size * 0.5;
+        if (bulb_layout == 0) {
+            float total_bulb_span = float(internal_bulb_max - 1) * bulb_spacing * rect_size.x;
+            float bulb_start_x = (rect_size.x - total_bulb_span) * 0.5;
+            bulb_px.x = (internal_bulb_max > 1) ? bulb_start_x + float(i) * bulb_spacing * rect_size.x : rect_size.x * 0.5;
+        } else if (bulb_layout == 1) {
+            int cols = int(ceil(sqrt(float(internal_bulb_max))));
+            int rows = int(ceil(float(internal_bulb_max) / float(cols)));
+            vec2 span = vec2(float(cols - 1), float(rows - 1)) * bulb_spacing * min_dim;
+            vec2 start = (rect_size - span) * 0.5;
+            bulb_px = start + vec2(float(i % cols), float(i / cols)) * bulb_spacing * min_dim;
+        } else if (bulb_layout == 2) {
+            float angle = (float(i) / float(internal_bulb_max)) * 6.28318;
+            bulb_px += vec2(cos(angle), sin(angle)) * bulb_spacing * min_dim;
+        }
         
         vec2 bulb_diff = (refracted_px - bulb_px) / max(vec2(0.001), filament_stretch);
         
         float d_bulb_px = length(bulb_diff);
+        if (filament_shape == 1) { 
+            d_bulb_px = max(abs(bulb_diff.x), abs(bulb_diff.y));
+        } else if (filament_shape == 2) { 
+            vec2 dir = vec2(1.0, 0.0); 
+            float h = clamp(dot(bulb_diff, dir) / dot(dir, dir), -bulb_radius_px, bulb_radius_px);
+            d_bulb_px = length(bulb_diff - dir * h);
+        } else if (filament_shape == 3) {
+            d_bulb_px = abs(length(bulb_diff) - bulb_radius_px * 0.5);
+        } else if (filament_shape == 4) {
+            float hx = clamp(bulb_diff.x, -bulb_radius_px, bulb_radius_px);
+            float hy = clamp(bulb_diff.y, -bulb_radius_px, bulb_radius_px);
+            d_bulb_px = min(length(bulb_diff - vec2(hx, 0.0)), length(bulb_diff - vec2(0.0, hy)));
+        } else if (filament_shape == 5) {
+            d_bulb_px = (abs(bulb_diff.x) + abs(bulb_diff.y)) * 0.7071;
+        }
+        
         float d_norm = d_bulb_px / min_dim; 
 
         float glow_falloff = is_led_profile ? (1.0 / (1.0 + d_norm * light_scatter * bulb_halo_power * 5.0)) : exp(-d_norm * light_scatter * bulb_halo_power);
@@ -457,7 +581,7 @@ void fragment() {
         float side_base_falloff = is_led_profile ? (1.0 / (1.0 + d_norm * light_scatter * 5.0)) : (1.0 / (1.0 + d_norm * light_scatter * 1.5));
         total_side_glow += side_base_falloff * mix(0.4, 1.0, internal_angle * side_angle_sensitivity);
 
-        if (use_3d_spherical_bulbs) {
+        if (use_3d_spherical_bulbs && filament_shape == 0) {
             if (d_bulb_px <= bulb_radius_px) {
                 float core_mask = 1.0 - smoothstep(1.0 - core_edge_softness, 1.0, d_bulb_px / core_radius);
                 float sphere_dist = clamp((d_bulb_px / bulb_radius_px) / bulb_3d_depth, 0.0, 1.0);
@@ -482,13 +606,23 @@ void fragment() {
             }
         }
     }
+    
+    if (internal_baffle_grid.x > 0.0 || internal_baffle_grid.y > 0.0) {
+        vec2 grid = fract(refracted_px * 0.1 * internal_baffle_grid);
+        if ((internal_baffle_grid.x > 0.0 && grid.x < 0.1) || (internal_baffle_grid.y > 0.0 && grid.y < 0.1)) {
+            float b_mask = baffle_cap_only ? (1.0 - bevel_factor) : 1.0;
+            bulb_mask *= (1.0 - b_mask);
+            bulb_vis *= (1.0 - b_mask);
+            total_cap_glow *= mix(1.0, 0.2, b_mask);
+            total_side_glow *= mix(1.0, 0.5, b_mask);
+        }
+    }
 
     vec3 effective_backlight_color = backlight_color.rgb;
     if (enable_dual_layer_hue) {
         effective_backlight_color = mix(secondary_subsurface_hue.rgb, backlight_color.rgb, clamp(total_side_glow, 0.0, 1.0));
     }
 
-    float active_mult = is_active ? backlight_intensity : 0.0;
     float edge_glow_boost = smoothstep(0.0, 2.0, raw_slope_progression);
     float cap_glow = (total_cap_glow * (1.0 - frosted_diffusion) + edge_glow_boost * frosted_diffusion) * active_mult * seam_darken;
     cap_glow *= mix(1.0, clamp(detail_normal.z, 0.0, 1.0), backlight_texture_reveal);
@@ -504,7 +638,7 @@ void fragment() {
     float housing_darkening = pow(smoothstep(0.0, housing_occlusion_distance, slope_progression), housing_occlusion);
     float pooling_shadow = mix(1.0, 1.0 - corner_factor, corner_pooling_shadow);
     
-    vec3 lit_side_color = base_bevel_rgb * ambient_shade * mix(1.0, 1.0 - edge_darkening, 1.0 - bevel_factor) * mix(1.0, 1.0 - corner_edge_darkening, corner_factor);
+    vec3 lit_side_color = base_bevel_rgb * ambient_diffuse * mix(1.0, 1.0 - edge_darkening, 1.0 - bevel_factor) * mix(1.0, 1.0 - corner_edge_darkening, corner_factor);
     lit_side_color *= housing_darkening * pooling_shadow;
     
     if (inner_seam_ao > 0.0) {
