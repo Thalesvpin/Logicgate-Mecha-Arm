@@ -86,8 +86,11 @@ func trace_line(point):
 	if point.type.to_lower() == "input":
 		_line.set_point_b(point)
 	
+	
 	if point.owner is Area2D:
 		point.owner.connected_wires.append(_line)
+	elif point.owner is Control && point.owner.get_parent().owner is Area2D:
+		point.owner.get_parent().owner.connected_wires.append(_line)
 	else:
 		point.connected_wires.append(_line)
 	

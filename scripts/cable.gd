@@ -55,7 +55,7 @@ func handle_drag() -> void:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			point_c.position = get_global_mouse_position()
 		else:
-			if (Global.circuit_editor.hovered_pin == null) || \
+			if Global.circuit_editor.hovered_pin == null || \
 					(point_a != point_c && Global.circuit_editor.hovered_pin.type.to_lower() == "output") || \
 					(point_b != point_c && Global.circuit_editor.hovered_pin.type.to_lower() == "input") || \
 					(point_a != point_c && Global.circuit_editor.hovered_pin.owner == point_a.owner) || \
@@ -65,15 +65,18 @@ func handle_drag() -> void:
 				return
 			
 			var point
-			if (point_a == point_c):
+			if point_a == point_c:
 				set_point_a(Global.circuit_editor.hovered_pin)
 				point = point_a
-			if (point_b == point_c):
+			if point_b == point_c:
 				set_point_b(Global.circuit_editor.hovered_pin)
 				point = point_b
 			
+			print(point.name,'  -  ', point, '  -  ', point.owner)
 			if point.owner is Area2D:
 				point.owner.connected_wires.append(self)
+			elif point.owner is Control && point.owner.get_parent().owner is Area2D:
+				point.owner.get_parent().owner.connected_wires.append(self)
 			else:
 				point.connected_wires.append(self)
 	
@@ -150,11 +153,11 @@ func dragged_point_position(connector: Node2D):
 func _update_curve() -> void:
 	var p0: Vector2
 	var p3: Vector2
-	if DragManager.dragging && (DragManager.original_node == point_a.owner || DragManager.original_node == point_b.owner):
+	if DragManager.dragging && (DragManager.original_node == point_a.owner || DragManager.original_node == point_b.owner || DragManager.original_node == point_b.owner.get_parent().owner):
 		if DragManager.original_node == point_a.owner:
 			p0 = dragged_point_position(point_a)
 			p3 = to_local(point_b.global_position)
-		if DragManager.original_node == point_b.owner:
+		if DragManager.original_node == point_b.owner || DragManager.original_node == point_b.owner.get_parent().owner:
 			p0 = to_local(point_a.global_position)
 			p3 = dragged_point_position(point_b)
 	else:
@@ -179,6 +182,8 @@ func self_delete():
 		point_b.connected_gate = null
 		if point_b.owner is Area2D:
 			point_b.owner.connected_wires.erase(self)
+		elif point_b.owner is Control && point_b.owner.get_parent().owner is Area2D:
+			point_b.owner.get_parent().owner.connected_wires.erase(self)
 		else:
 			point_b.connected_wires.erase(self)
 	

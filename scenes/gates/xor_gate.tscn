@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_po5il"]
 [ext_resource type="Texture2D" uid="uid://b6ilyfnr1wne1" path="res://assets/xor_gate.png" id="2_po5il"]
-[ext_resource type="Script" uid="uid://dtalsdrf6cd7n" path="res://scripts/input.gd" id="3_gahe2"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="4_5r8jk"]
 [ext_resource type="Script" uid="uid://c6ivqjlx2f15x" path="res://scripts/output.gd" id="5_tqnka"]
 
@@ -35,34 +34,6 @@ offset_bottom = 64.0
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="VBoxContainer" unique_id=1142989406]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="InputA" type="Area2D" parent="VBoxContainer/Control" unique_id=82682060]
-script = ExtResource("3_gahe2")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/Control/InputA" unique_id=1843317954]
-shape = SubResource("CircleShape2D_eofqg")
-
-[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/Control/InputA" unique_id=1897595869]
-scale = Vector2(0.007, 0.007)
-texture = ExtResource("4_5r8jk")
-
-[node name="Control2" type="Control" parent="VBoxContainer" unique_id=276230969]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="InputB" type="Area2D" parent="VBoxContainer/Control2" unique_id=1310367215]
-script = ExtResource("3_gahe2")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/Control2/InputB" unique_id=602493820]
-shape = SubResource("CircleShape2D_eofqg")
-
-[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/Control2/InputB" unique_id=1307875859]
-scale = Vector2(0.007, 0.007)
-texture = ExtResource("4_5r8jk")
-
 [node name="Output" type="Area2D" parent="." unique_id=1664330507]
 position = Vector2(73, 0)
 script = ExtResource("5_tqnka")
@@ -75,9 +46,5 @@ scale = Vector2(0.0066406247, 0.0066406247)
 texture = ExtResource("4_5r8jk")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="mouse_entered" from="VBoxContainer/Control/InputA" to="VBoxContainer/Control/InputA" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="VBoxContainer/Control/InputA" to="VBoxContainer/Control/InputA" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="VBoxContainer/Control2/InputB" to="VBoxContainer/Control2/InputB" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="VBoxContainer/Control2/InputB" to="VBoxContainer/Control2/InputB" method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="Output" to="Output" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Output" to="Output" method="_on_mouse_exited"]

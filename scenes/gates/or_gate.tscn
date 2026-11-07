@@ -2,14 +2,11 @@
 
 [ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_mhkjh"]
 [ext_resource type="Texture2D" uid="uid://bubep8qo1qyu1" path="res://assets/or-gate-md.png" id="1_o1n8t"]
-[ext_resource type="Script" uid="uid://dtalsdrf6cd7n" path="res://scripts/input.gd" id="3_06rm6"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="4_oajpa"]
 [ext_resource type="Script" uid="uid://c6ivqjlx2f15x" path="res://scripts/output.gd" id="5_n7umk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p14ax"]
 size = Vector2(128, 128)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_ay2cv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mls3i"]
 
@@ -36,34 +33,6 @@ offset_bottom = 64.0
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="VBoxContainer" unique_id=1841559492]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="InputA" type="Area2D" parent="VBoxContainer/Control" unique_id=2061924834]
-script = ExtResource("3_06rm6")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/Control/InputA" unique_id=1735085652]
-shape = SubResource("CircleShape2D_ay2cv")
-
-[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/Control/InputA" unique_id=444758568]
-scale = Vector2(0.007, 0.007)
-texture = ExtResource("4_oajpa")
-
-[node name="Control2" type="Control" parent="VBoxContainer" unique_id=2066697976]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="InputB" type="Area2D" parent="VBoxContainer/Control2" unique_id=1518728174]
-script = ExtResource("3_06rm6")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/Control2/InputB" unique_id=698543647]
-shape = SubResource("CircleShape2D_ay2cv")
-
-[node name="Sprite2D" type="Sprite2D" parent="VBoxContainer/Control2/InputB" unique_id=1496022021]
-scale = Vector2(0.007, 0.007)
-texture = ExtResource("4_oajpa")
-
 [node name="Output" type="Area2D" parent="." unique_id=1750759368]
 position = Vector2(73, 0)
 script = ExtResource("5_n7umk")
@@ -77,9 +46,5 @@ texture = ExtResource("4_oajpa")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_entered" from="VBoxContainer/Control/InputA" to="VBoxContainer/Control/InputA" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="VBoxContainer/Control/InputA" to="VBoxContainer/Control/InputA" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="VBoxContainer/Control2/InputB" to="VBoxContainer/Control2/InputB" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="VBoxContainer/Control2/InputB" to="VBoxContainer/Control2/InputB" method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="Output" to="Output" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Output" to="Output" method="_on_mouse_exited"]

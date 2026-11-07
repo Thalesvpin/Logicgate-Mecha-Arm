@@ -8,6 +8,8 @@ const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 ##Not ideal, but circuit_gate can only be created as a Sandbox's grandchild
 @onready var sandbox: Node2D = $"./../.."
 @onready var sprite: Sprite2D = $Sprite2D
+const INPUT_TERMINAL = preload("uid://dp56i4t15i1de")
+@export var input_terminals: int = 4
 
 ##Stores the last dropped position inside sandbox
 var last_position: Vector2
@@ -23,7 +25,7 @@ var cursor_offset: Vector2
 var original_scale: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	map_pins()
+	add_terminals()
 	EventBus.gate_added_to_sandbox.emit(type)
 
 func _process(delta):
@@ -94,13 +96,24 @@ func draw_rank(node: Node2D) -> int:
 	var sibling_idx := parent.get_children().find(node) if parent else 0
 	return node.z_index * 100000 + sibling_idx
 
-func map_pins():
-	for child in v_box_container.get_children():
-		if child.name == "Spacing":
-			continue
-		connectors.append(child.get_child(0))
+func add_terminals() -> void:
+	var terminal
+	for i in range(input_terminals):
+		terminal = INPUT_TERMINAL.instantiate()
+		v_box_container.add_child(terminal)
+		connectors.append(terminal.get_child(0))
+		if type == Gates.Type.NOT:
+			break
 	input_nodes = connectors.duplicate()
 	connectors.append(output)
+
+#func map_terminals():
+	#for child in v_box_container.get_children():
+		#if child.name == "Spacing":
+			#continue
+		#connectors.append(child.get_child(0))
+	#input_nodes = connectors.duplicate()
+	#connectors.append(output)
 
 func get_bit_from_execution_sequence(execution_number: int, bit_idx: int) -> bool:
 	var bin = Global.dec_to_bin(execution_number)
