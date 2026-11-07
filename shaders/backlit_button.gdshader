@@ -227,12 +227,20 @@ group_uniforms Post_Processing;
 uniform float global_contrast : hint_range(0.1, 3.0) = 1.0;          
 uniform float light_bleed_overflow : hint_range(0.0, 1.0) = 0.0;     
 
-// --- FUNCTIONS ---
+// --- FAST GPU HASH FUNCTIONS ---
 float hash(vec2 p) {
-    p = fract(p * vec2(127.1, 311.7));
-    return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+    vec3 p3  = fract(vec3(p.xyx) * 0.1031);
+    p3 += dot(p3, p3.yzx + 33.33);
+    return fract((p3.x + p3.y) * p3.z);
 }
 
+vec2 hash2(vec2 p) {
+    vec3 p3 = fract(vec3(p.xyx) * vec3(0.1031, 0.1030, 0.0973));
+    p3 += dot(p3, p3.yzx + 33.33);
+    return fract((p3.xx + p3.yz) * p3.zy);
+}
+
+// --- UTILITY FUNCTIONS ---
 vec4 apply_blend(vec4 base, vec4 blend, int mode) {
     if (mode == 0) return blend;                                          
     if (mode == 1) return mix(base, blend, blend.a);                      
@@ -244,44 +252,39 @@ vec4 apply_blend(vec4 base, vec4 blend, int mode) {
 vec2 get_grad_coord(vec2 uv, int dir) {
     if (dir == 1) return vec2(uv.y, 0.5);
     if (dir == 2) return vec2((uv.x + uv.y) * 0.5, 0.5);
-    if (dir == 3) return vec2(distance(uv, vec2(0.5)) * 1.414, 0.5);
+    if (dir == 3) return vec2(distance(uv, vec2(0.5)) * 1.41421, 0.5);
     return vec2(uv.x, 0.5);
 }
 
 float get_corner_radius_mask(vec2 px, vec2 size, float base_r, vec4 custom_r) {
     vec2 half_size = size * 0.5;
-    float rx = (px.x < half_size.x) ? 
-               ((px.y < half_size.y) ? custom_r.x : custom_r.w) : 
-               ((px.y < half_size.y) ? custom_r.y : custom_r.z);
+    bool is_left = px.x < half_size.x;
+    bool is_top = px.y < half_size.y;
+    float rx = is_left ? (is_top ? custom_r.x : custom_r.w) : (is_top ? custom_r.y : custom_r.z);
     float final_r = max(base_r, rx);
     if (final_r <= 0.0) return 1.0;
     vec2 d = abs(px - half_size) - (half_size - vec2(final_r));
-    float dist = length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0);
-    return 1.0 - smoothstep(final_r - 1.0, final_r + 1.0, dist);
+    return 1.0 - smoothstep(final_r - 1.0, final_r + 1.0, length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0));
 }
 
 void fragment() {
     vec2 px = UV * rect_size;
     
     if (heat_distortion_intensity > 0.0 && is_active) {
-        px += vec2(hash(UV + TIME*0.1), hash(UV + vec2(0.5) + TIME*0.1)) * heat_distortion_intensity * 15.0;
+        px += (hash2(UV + TIME * 0.1) * 2.0 - 1.0) * heat_distortion_intensity * 15.0;
     }
 
     float alpha_mask = get_corner_radius_mask(px, rect_size, outer_corner_radius, independent_corner_radii);
     if (alpha_mask <= 0.0 && light_bleed_overflow == 0.0) discard;
 
     float min_dim = min(rect_size.x, rect_size.y); 
-    float d_left = px.x;
-    float d_right = rect_size.x - px.x;
-    float d_top = px.y;
-    float d_bottom = rect_size.y - px.y;
-    
-    float min_x = min(d_left, d_right);
-    float min_y = min(d_top, d_bottom);
+    float inv_min_dim = 1.0 / min_dim;
+    float min_x = min(px.x, rect_size.x - px.x);
+    float min_y = min(px.y, rect_size.y - px.y);
     float dist_to_edge = min(min_x, min_y);
     
-    float miter_progress_x = min_x / max(0.001, bevel_width_x);
-    float miter_progress_y = min_y / max(0.001, enable_asymmetrical_bevels ? bevel_width_y : bevel_width_x);
+    float miter_progress_x = min_x * (1.0 / max(0.001, bevel_width_x));
+    float miter_progress_y = min_y * (1.0 / max(0.001, enable_asymmetrical_bevels ? bevel_width_y : bevel_width_x));
     bool is_x_bevel = miter_progress_x < miter_progress_y;
 
     vec2 centered_uv = UV * 2.0 - 1.0;
@@ -308,7 +311,7 @@ void fragment() {
     float safe_smoothness = min(bevel_smoothness, dynamic_bevel_width * 0.99);
     float bevel_factor = 1.0 - smoothstep(dynamic_bevel_width - safe_smoothness, dynamic_bevel_width + safe_smoothness, current_dist);
 
-    float raw_slope_progression = current_dist / max(0.001, dynamic_bevel_width);
+    float raw_slope_progression = current_dist * (1.0 / max(0.001, dynamic_bevel_width));
     float slope_progression = pow(clamp(raw_slope_progression, 0.0, 1.0), bevel_profile_curve);
 
     vec4 final_cap_color = global_color;
@@ -323,26 +326,22 @@ void fragment() {
         if (override_inactive_cap) final_cap_color = apply_blend(global_color, texture(inactive_cap_gradient, get_grad_coord(UV, inactive_cap_grad_dir)), inactive_cap_blend);
         if (override_inactive_bevel) final_bevel_color = apply_blend(global_color, texture(inactive_bevel_gradient, get_grad_coord(UV, inactive_bevel_grad_dir)), inactive_bevel_blend);
         if (override_inactive_edge) final_edge_color = apply_blend(global_color, texture(inactive_edge_gradient, get_grad_coord(UV, inactive_edge_grad_dir)), inactive_edge_blend);
-    }
-    
-    if (!is_active) {
+        
         final_cap_color.rgb = mix(final_cap_color.rgb, final_cap_color.rgb * unlit_albedo_tint, 0.5);
         final_bevel_color.rgb = mix(final_bevel_color.rgb, final_bevel_color.rgb * unlit_albedo_tint, 0.5);
     }
 
-    float raw_curve_axis = face_curvature_axis_is_x ? centered_uv.x : centered_uv.y;
-
     vec2 primary_dir;
     vec2 bev_uv;
     if (is_x_bevel) {
-        primary_dir = d_left < d_right ? vec2(1.0, 0.0) : vec2(-1.0, 0.0);
-        bev_uv = vec2(slope_progression, px.y / min_dim);
+        primary_dir = px.x < (rect_size.x * 0.5) ? vec2(1.0, 0.0) : vec2(-1.0, 0.0);
+        bev_uv = vec2(slope_progression, px.y * inv_min_dim);
     } else {
-        primary_dir = d_top < d_bottom ? vec2(0.0, 1.0) : vec2(0.0, -1.0);
-        bev_uv = vec2(px.x / min_dim, slope_progression);
+        primary_dir = px.y < (rect_size.y * 0.5) ? vec2(0.0, 1.0) : vec2(0.0, -1.0);
+        bev_uv = vec2(px.x * inv_min_dim, slope_progression);
     }
     
-    vec2 diag_dir = normalize(vec2(d_left < d_right ? 1.0 : -1.0, d_top < d_bottom ? 1.0 : -1.0));
+    vec2 diag_dir = vec2(px.x < (rect_size.x * 0.5) ? 0.707106 : -0.707106, px.y < (rect_size.y * 0.5) ? 0.707106 : -0.707106);
     float actual_corner_dist = enable_asymmetrical_bevels ? abs(miter_progress_x - miter_progress_y) * dynamic_bevel_width : abs(min_x - min_y);
     float miter_blend = 1.0 - smoothstep(0.0, max(1.0, safe_smoothness), actual_corner_dist);
     vec2 bevel_dir = normalize(mix(primary_dir, diag_dir, miter_blend));
@@ -384,11 +383,12 @@ void fragment() {
         }
     }
 
-    float curve_val = sin(raw_curve_axis * 1.5707) * face_curvature_amount * (1.0 - bevel_factor);
+    float raw_curve_axis = face_curvature_axis_is_x ? centered_uv.x : centered_uv.y;
+    float curve_val = sin(raw_curve_axis * 1.57079) * face_curvature_amount * (1.0 - bevel_factor);
     if (face_curvature_axis_is_x) base_normal.x += curve_val;
     else base_normal.y += curve_val;
     
-    base_normal.z -= abs(sin(raw_curve_axis * 1.5707)) * abs(face_curvature_amount) * 0.3 * (1.0 - bevel_factor);
+    base_normal.z -= abs(sin(raw_curve_axis * 1.57079)) * abs(face_curvature_amount) * 0.3 * (1.0 - bevel_factor);
     vec3 normal = base_normal;
 
     if (enable_stamping) {
@@ -420,8 +420,8 @@ void fragment() {
     vec3 active_tex_normal = mix(cap_tex_normal, bev_tex_normal, bevel_factor);
     float active_influence = mix(texture_influence, bevel_texture_influence, bevel_factor);
     
-    float grn = hash(floor(px * 1.5)) * 2.0 - 1.0;
-    vec3 grain_normal = normalize(vec3(grn, hash(floor(px * 1.5 + 24.0)) * 2.0 - 1.0, 50.0));
+    vec2 grn2 = hash2(floor(px * 1.5)) * 2.0 - 1.0;
+    vec3 grain_normal = normalize(vec3(grn2, 50.0));
     
     vec3 detail_normal = mix(vec3(0.0, 0.0, 1.0), active_tex_normal, active_influence);
     detail_normal = mix(detail_normal, grain_normal, procedural_grain * (1.0 - smoothness));
@@ -434,26 +434,21 @@ void fragment() {
 
     normal = normalize(normal + detail_normal * 0.15);
 
-    float active_smoothness = smoothness;
-    if (bevel_smoothness_override >= 0.0) {
-        active_smoothness = mix(smoothness, bevel_smoothness_override, bevel_factor);
-    }
+    float active_smoothness = mix(smoothness, bevel_smoothness_override, bevel_factor * step(0.0, bevel_smoothness_override));
 
     vec3 light_3d = normalize(vec3(-light_direction, 0.65)); 
-    vec3 view_dir = vec3(0.0, 0.0, 1.0);                     
     
     float diff_shade = max(0.0, dot(normal, light_3d));
     vec3 ambient_diffuse = vec3(clamp(1.0 + diff_shade * (bevel_highlight - bevel_shadow), 0.15, 2.0));
     
     if (enable_multipoint_lighting) {
-        float f_diff = max(0.0, dot(normal, normalize(fill_light_dir)));
-        ambient_diffuse += f_diff * fill_light_color.rgb * fill_intensity;
-        
-        float r_diff = pow(max(0.0, 1.0 - dot(normal, view_dir)), 4.0) * max(0.0, dot(normal, normalize(rim_light_dir)));
-        ambient_diffuse += r_diff * rim_light_color.rgb * rim_intensity;
+        vec3 norm_fill = normalize(fill_light_dir);
+        vec3 norm_rim = normalize(rim_light_dir);
+        ambient_diffuse += max(0.0, dot(normal, norm_fill)) * fill_light_color.rgb * fill_intensity;
+        ambient_diffuse += pow(max(0.0, 1.0 - normal.z), 4.0) * max(0.0, dot(normal, norm_rim)) * rim_light_color.rgb * rim_intensity;
     }
 
-    vec3 spec_half_vector = normalize(light_3d + view_dir + vec3(manual_specular_offset, 0.0));
+    vec3 spec_half_vector = normalize(light_3d + vec3(manual_specular_offset, 1.0));
     if (anisotropic_stretch > 0.0) {
         spec_half_vector.x *= 1.0 + (anisotropic_stretch * (1.0 - abs(normal.x)));
         spec_half_vector.y *= 1.0 + (anisotropic_stretch * (1.0 - abs(normal.y)));
@@ -467,15 +462,14 @@ void fragment() {
     float spec = pow(spec_factor, shininess) * specular_intensity * glint_mult;
     
     if (enable_dual_lobe_clearcoat) {
-        float clearcoat = pow(spec_factor, clearcoat_shininess) * clearcoat_intensity * glint_mult;
-        spec += clearcoat;
+        spec += pow(spec_factor, clearcoat_shininess) * clearcoat_intensity * glint_mult;
     }
 
-    float fresnel = pow(1.0 - max(0.0, dot(normal, view_dir)), fresnel_power);
+    float fresnel = pow(max(0.0, 1.0 - normal.z), fresnel_power);
     
     vec2 refract_offset = normal.xy * bevel_factor * refraction_distortion;
     if (cloudy_refraction_noise > 0.0) {
-        refract_offset += vec2(hash(px), hash(px + 10.0)) * cloudy_refraction_noise * 10.0;
+        refract_offset += (hash2(px) * 2.0 - 1.0) * cloudy_refraction_noise * 10.0;
     }
     vec2 refracted_px = px - refract_offset;
 
@@ -493,13 +487,9 @@ void fragment() {
 
     float flicker_mod = 1.0;
     if (enable_voltage_flicker && is_active) {
-        float noise_flicker = 0.0;
-        if (voltage_flicker_smooth) {
-            noise_flicker = (sin(TIME * voltage_flicker_speed) + sin(TIME * voltage_flicker_speed * 0.73) + sin(TIME * voltage_flicker_speed * 1.37)) * 0.333;
-            noise_flicker = noise_flicker * 0.5 + 0.5; 
-        } else {
-            noise_flicker = hash(vec2(floor(TIME * voltage_flicker_speed), 0.0)); 
-        }
+        float noise_flicker = voltage_flicker_smooth ? 
+            ((sin(TIME * voltage_flicker_speed) + sin(TIME * voltage_flicker_speed * 0.73) + sin(TIME * voltage_flicker_speed * 1.37)) * 0.166 + 0.5) : 
+            hash(vec2(floor(TIME * voltage_flicker_speed), 0.0));
         flicker_mod -= voltage_flicker_intensity * noise_flicker;
     }
     
@@ -510,19 +500,19 @@ void fragment() {
     
     float active_mult = (is_active ? backlight_intensity : 0.0) * flicker_mod;
 
-    vec4 current_core_col = mix(bulb_off_color, bulb_on_color, is_active ? 1.0 : 0.0);
-    vec4 current_base_b_col = mix(bulb_off_color, bulb_on_color, is_active ? 1.0 : 0.0);
-    
+    vec4 base_b_col = is_active ? bulb_on_color : bulb_off_color;
     if (use_blackbody_colors && is_active) {
-        vec3 bb_col = mix(vec3(1.0, 0.1, 0.0), bulb_on_color.rgb, clamp(active_mult, 0.0, 1.0));
-        current_core_col.rgb = bb_col;
-        current_base_b_col.rgb = bb_col;
+        base_b_col.rgb = mix(vec3(1.0, 0.1, 0.0), bulb_on_color.rgb, clamp(active_mult, 0.0, 1.0));
     }
     
-    current_core_col.rgb += vec3(is_active ? 3.0 : 0.4); 
-    current_core_col.rgb *= flicker_mod;
-    current_base_b_col.rgb *= flicker_mod;
+    vec4 core_b_col = base_b_col;
+    core_b_col.rgb += vec3(is_active ? 3.0 : 0.4);
+    
+    core_b_col.rgb *= flicker_mod;
+    base_b_col.rgb *= flicker_mod;
 
+    // --- Loop-Invariant Bulb Math ---
+    int internal_bulb_max = min(bulb_count, 10);
     float glass_opacity = clamp(1.0 - bulb_3d_transparency, 0.0, 1.0);
     float active_spec_mult = is_active ? 2.5 : 0.3;
     float active_rim_mult = is_active ? 2.0 : 0.3;
@@ -530,55 +520,69 @@ void fragment() {
     float core_radius = bulb_radius_px * bulb_3d_core_size;
     float core_edge_softness = max(0.001, bulb_3d_core_smoothness);
     
-    int internal_bulb_max = min(bulb_count, 10);
+    float scatter_power = light_scatter * bulb_halo_power;
+    float led_halo_scatter = scatter_power * 5.0;
+    float led_side_scatter = light_scatter * 5.0;
+    float norm_side_scatter = light_scatter * 1.5;
+    
+    vec3 sphere_half_vec = normalize(sphere_light_dir + vec3(0.0, 0.0, 1.0));
+    vec2 inv_filament_stretch = 1.0 / max(vec2(0.001), filament_stretch);
+
+    float bulb_start_x = 0.0;
+    vec2 grid_start = vec2(0.0);
+    int grid_cols = 1;
+    float angle_step = 0.0;
+    float bulb_spacing_px = bulb_spacing * min_dim;
+
+    if (bulb_layout == 0) {
+        bulb_start_x = (rect_size.x - float(internal_bulb_max - 1) * bulb_spacing * rect_size.x) * 0.5;
+    } else if (bulb_layout == 1) {
+        grid_cols = int(ceil(sqrt(float(internal_bulb_max))));
+        int rows = int(ceil(float(internal_bulb_max) / float(grid_cols)));
+        grid_start = (rect_size - vec2(float(grid_cols - 1), float(rows - 1)) * bulb_spacing_px) * 0.5;
+    } else if (bulb_layout == 2) {
+        angle_step = 6.283185 / float(internal_bulb_max);
+    }
     
     for(int i = 0; i < 10; i++) {
         if (i >= internal_bulb_max) break;
         
         vec2 bulb_px = rect_size * 0.5;
         if (bulb_layout == 0) {
-            float total_bulb_span = float(internal_bulb_max - 1) * bulb_spacing * rect_size.x;
-            float bulb_start_x = (rect_size.x - total_bulb_span) * 0.5;
             bulb_px.x = (internal_bulb_max > 1) ? bulb_start_x + float(i) * bulb_spacing * rect_size.x : rect_size.x * 0.5;
         } else if (bulb_layout == 1) {
-            int cols = int(ceil(sqrt(float(internal_bulb_max))));
-            int rows = int(ceil(float(internal_bulb_max) / float(cols)));
-            vec2 span = vec2(float(cols - 1), float(rows - 1)) * bulb_spacing * min_dim;
-            vec2 start = (rect_size - span) * 0.5;
-            bulb_px = start + vec2(float(i % cols), float(i / cols)) * bulb_spacing * min_dim;
+            bulb_px = grid_start + vec2(float(i % grid_cols), float(i / grid_cols)) * bulb_spacing_px;
         } else if (bulb_layout == 2) {
-            float angle = (float(i) / float(internal_bulb_max)) * 6.28318;
-            bulb_px += vec2(cos(angle), sin(angle)) * bulb_spacing * min_dim;
+            float angle = float(i) * angle_step;
+            bulb_px += vec2(cos(angle), sin(angle)) * bulb_spacing_px;
         }
         
-        vec2 bulb_diff = (refracted_px - bulb_px) / max(vec2(0.001), filament_stretch);
-        
+        vec2 bulb_diff = (refracted_px - bulb_px) * inv_filament_stretch;
         float d_bulb_px = length(bulb_diff);
+        
         if (filament_shape == 1) { 
             d_bulb_px = max(abs(bulb_diff.x), abs(bulb_diff.y));
         } else if (filament_shape == 2) { 
-            vec2 dir = vec2(1.0, 0.0); 
-            float h = clamp(dot(bulb_diff, dir) / dot(dir, dir), -bulb_radius_px, bulb_radius_px);
-            d_bulb_px = length(bulb_diff - dir * h);
+            d_bulb_px = length(bulb_diff - vec2(clamp(bulb_diff.x, -bulb_radius_px, bulb_radius_px), 0.0));
         } else if (filament_shape == 3) {
-            d_bulb_px = abs(length(bulb_diff) - bulb_radius_px * 0.5);
+            d_bulb_px = abs(d_bulb_px - bulb_radius_px * 0.5);
         } else if (filament_shape == 4) {
             float hx = clamp(bulb_diff.x, -bulb_radius_px, bulb_radius_px);
             float hy = clamp(bulb_diff.y, -bulb_radius_px, bulb_radius_px);
             d_bulb_px = min(length(bulb_diff - vec2(hx, 0.0)), length(bulb_diff - vec2(0.0, hy)));
         } else if (filament_shape == 5) {
-            d_bulb_px = (abs(bulb_diff.x) + abs(bulb_diff.y)) * 0.7071;
+            d_bulb_px = (abs(bulb_diff.x) + abs(bulb_diff.y)) * 0.707106;
         }
         
-        float d_norm = d_bulb_px / min_dim; 
+        float d_norm = d_bulb_px * inv_min_dim; 
 
-        float glow_falloff = is_led_profile ? (1.0 / (1.0 + d_norm * light_scatter * bulb_halo_power * 5.0)) : exp(-d_norm * light_scatter * bulb_halo_power);
+        float glow_falloff = is_led_profile ? (1.0 / (1.0 + d_norm * led_halo_scatter)) : exp(-d_norm * scatter_power);
         total_cap_glow += glow_falloff;
         
         vec2 dir_to_bulb = d_bulb_px > 0.0 ? -bulb_diff / d_bulb_px : vec2(0.0);
         float internal_angle = max(0.0, dot(-bevel_dir, dir_to_bulb));
         
-        float side_base_falloff = is_led_profile ? (1.0 / (1.0 + d_norm * light_scatter * 5.0)) : (1.0 / (1.0 + d_norm * light_scatter * 1.5));
+        float side_base_falloff = is_led_profile ? (1.0 / (1.0 + d_norm * led_side_scatter)) : (1.0 / (1.0 + d_norm * norm_side_scatter));
         total_side_glow += side_base_falloff * mix(0.4, 1.0, internal_angle * side_angle_sensitivity);
 
         if (use_3d_spherical_bulbs && filament_shape == 0) {
@@ -588,19 +592,19 @@ void fragment() {
                 float z = sqrt(max(0.0, 1.0 - sphere_dist * sphere_dist));
                 
                 vec3 sphere_n = normalize(vec3(bulb_diff / bulb_radius_px, z));
-                float spec_h = pow(max(0.0, dot(sphere_n, normalize(sphere_light_dir + vec3(0.0, 0.0, 1.0)))), bulb_3d_shininess);
+                float spec_h = pow(max(0.0, dot(sphere_n, sphere_half_vec)), bulb_3d_shininess);
                 
-                vec3 glass_color = current_base_b_col.rgb * max(0.3, dot(sphere_n, sphere_light_dir)) + vec3(spec_h * bulb_3d_specular_intensity * active_spec_mult);
+                vec3 glass_color = base_b_col.rgb * max(0.3, dot(sphere_n, sphere_light_dir)) + vec3(spec_h * bulb_3d_specular_intensity * active_spec_mult);
                 glass_color += backlight_color.rgb * pow(1.0 - z, 2.0) * bulb_3d_rim_glow * active_rim_mult;
                 
                 float a_mask = smoothstep(1.0, 0.88, sphere_dist);
-                bulb_vis = mix(bulb_vis, vec4(mix(current_core_col.rgb * core_mask, glass_color, glass_opacity), a_mask), a_mask);
+                bulb_vis = mix(bulb_vis, vec4(mix(core_b_col.rgb * core_mask, glass_color, glass_opacity), a_mask), a_mask);
                 bulb_mask = max(bulb_mask, a_mask);
             }
         } else {
             float b_edge = smoothstep(bulb_size, bulb_size - 0.015, d_norm);
             if (b_edge > 0.0) {
-                vec4 flat_col = current_base_b_col + vec4(smoothstep(bulb_size * 0.4, 0.0, d_norm) * (is_active ? 1.5 : 0.1));
+                vec4 flat_col = base_b_col + vec4(smoothstep(bulb_size * 0.4, 0.0, d_norm) * (is_active ? 1.5 : 0.1));
                 bulb_vis = mix(bulb_vis, flat_col, b_edge);
                 bulb_mask = max(bulb_mask, b_edge);
             }
@@ -608,8 +612,8 @@ void fragment() {
     }
     
     if (internal_baffle_grid.x > 0.0 || internal_baffle_grid.y > 0.0) {
-        vec2 grid = fract(refracted_px * 0.1 * internal_baffle_grid);
-        if ((internal_baffle_grid.x > 0.0 && grid.x < 0.1) || (internal_baffle_grid.y > 0.0 && grid.y < 0.1)) {
+        vec2 grid = fract(refracted_px * (0.1 * internal_baffle_grid));
+        if (grid.x < 0.1 || grid.y < 0.1) {
             float b_mask = baffle_cap_only ? (1.0 - bevel_factor) : 1.0;
             bulb_mask *= (1.0 - b_mask);
             bulb_vis *= (1.0 - b_mask);
@@ -618,10 +622,7 @@ void fragment() {
         }
     }
 
-    vec3 effective_backlight_color = backlight_color.rgb;
-    if (enable_dual_layer_hue) {
-        effective_backlight_color = mix(secondary_subsurface_hue.rgb, backlight_color.rgb, clamp(total_side_glow, 0.0, 1.0));
-    }
+    vec3 effective_backlight_color = enable_dual_layer_hue ? mix(secondary_subsurface_hue.rgb, backlight_color.rgb, clamp(total_side_glow, 0.0, 1.0)) : backlight_color.rgb;
 
     float edge_glow_boost = smoothstep(0.0, 2.0, raw_slope_progression);
     float cap_glow = (total_cap_glow * (1.0 - frosted_diffusion) + edge_glow_boost * frosted_diffusion) * active_mult * seam_darken;
@@ -679,21 +680,20 @@ void fragment() {
     vec4 glaze_color = vec4(fresnel_color.rgb * fresnel, fresnel * environment_reflectivity) + vec4(vec3(spec), spec * 0.5); 
     
     if (enable_mouse_light) {
-        vec4 current_m_color = mix(inactive_mouse_light_color, active_mouse_light_color, is_active ? 1.0 : 0.0);
-        float current_m_intensity = mix(inactive_mouse_light_intensity, active_mouse_light_intensity, is_active ? 1.0 : 0.0);
-        float current_m_range = mix(inactive_mouse_light_range, active_mouse_light_range, is_active ? 1.0 : 0.0);
-        float current_m_height = mix(inactive_mouse_light_height, active_mouse_light_height, is_active ? 1.0 : 0.0);
+        vec4 current_m_color = is_active ? active_mouse_light_color : inactive_mouse_light_color;
+        float current_m_intensity = is_active ? active_mouse_light_intensity : inactive_mouse_light_intensity;
+        float current_m_range = is_active ? active_mouse_light_range : inactive_mouse_light_range;
+        float current_m_height = is_active ? active_mouse_light_height : inactive_mouse_light_height;
 
         vec3 mouse_light_vec = vec3(px - mouse_position, current_m_height);
         float mouse_dist = length(mouse_light_vec);
         float mouse_attenuation = smoothstep(current_m_range, 0.0, mouse_dist);
-        vec3 mouse_dir_norm = mouse_light_vec / max(0.001, mouse_dist);
+        vec3 mouse_dir_norm = mouse_light_vec * (1.0 / max(0.001, mouse_dist));
         
-        float m_diff = max(0.0, dot(normal, mouse_dir_norm));
-        vec3 m_half = normalize(mouse_dir_norm + view_dir);
+        vec3 m_half = normalize(mouse_dir_norm + vec3(0.0, 0.0, 1.0));
         float m_spec = pow(max(0.0, dot(normal, m_half)), shininess) * specular_intensity;
         
-        vec3 added_mouse_light = (current_m_color.rgb * m_diff + vec3(m_spec)) * mouse_attenuation * current_m_intensity;
+        vec3 added_mouse_light = (current_m_color.rgb * max(0.0, dot(normal, mouse_dir_norm)) + vec3(m_spec)) * mouse_attenuation * current_m_intensity;
         final_color.rgb += added_mouse_light;
     }
     
