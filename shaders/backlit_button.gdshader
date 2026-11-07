@@ -28,29 +28,29 @@ uniform float bevel_opacity : hint_range(0.0, 1.0) = 1.0;
 
 group_uniforms Inactive_Color_Overrides;
 uniform bool override_inactive_cap = false;
-uniform int inactive_cap_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen") = 0;
+uniform int inactive_cap_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 0;
 uniform int inactive_cap_grad_dir : hint_enum("Horizontal", "Vertical", "Diagonal", "Radial") = 0;
 uniform sampler2D inactive_cap_gradient : hint_default_white;
 uniform bool override_inactive_bevel = false;
-uniform int inactive_bevel_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen") = 0;
+uniform int inactive_bevel_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 0;
 uniform int inactive_bevel_grad_dir : hint_enum("Horizontal", "Vertical", "Diagonal", "Radial") = 0;
 uniform sampler2D inactive_bevel_gradient : hint_default_white;
 uniform bool override_inactive_edge = false;
-uniform int inactive_edge_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen") = 0;
+uniform int inactive_edge_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 0;
 uniform int inactive_edge_grad_dir : hint_enum("Horizontal", "Vertical", "Diagonal", "Radial") = 0;
 uniform sampler2D inactive_edge_gradient : hint_default_white;
 
 group_uniforms Active_Color_Overrides;
 uniform bool override_active_cap = false;
-uniform int active_cap_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen") = 0;
+uniform int active_cap_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 0;
 uniform int active_cap_grad_dir : hint_enum("Horizontal", "Vertical", "Diagonal", "Radial") = 0;
 uniform sampler2D active_cap_gradient : hint_default_white;
 uniform bool override_active_bevel = false;
-uniform int active_bevel_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen") = 0;
+uniform int active_bevel_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 0;
 uniform int active_bevel_grad_dir : hint_enum("Horizontal", "Vertical", "Diagonal", "Radial") = 0;
 uniform sampler2D active_bevel_gradient : hint_default_white;
 uniform bool override_active_edge = false;
-uniform int active_edge_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen") = 0;
+uniform int active_edge_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 0;
 uniform int active_edge_grad_dir : hint_enum("Horizontal", "Vertical", "Diagonal", "Radial") = 0;
 uniform sampler2D active_edge_gradient : hint_default_white;
 
@@ -145,7 +145,9 @@ uniform bool stamp1_base_repeat = false;
 uniform sampler2D stamp1_base_texture : hint_default_black;
 
 group_uniforms Surface_Stamping.Stamp1_Depth;
-uniform vec2 stamp1_depth_xy = vec2(1.0, 1.0);
+uniform float stamp1_depth : hint_range(-5.0, 5.0) = 1.0;
+uniform bool stamp1_depth_split_axis = false;
+uniform vec2 stamp1_depth_split_xy = vec2(1.0, 1.0);
 uniform float stamp1_depth_softness : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_depth_inset_shadow : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_depth_crevice_dirt : hint_range(0.0, 1.0) = 0.0;
@@ -154,6 +156,7 @@ uniform float stamp1_depth_dirt_opacity : hint_range(0.0, 1.0) = 1.0;
 uniform float stamp1_depth_dirt_contrast : hint_range(0.1, 5.0) = 1.0;
 
 group_uniforms Surface_Stamping.Stamp1_Appearance;
+uniform int stamp1_appear_albedo_blend_mode : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 1;
 uniform float stamp1_appear_albedo_blend : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 stamp1_appear_albedo_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float stamp1_appear_albedo_margin : hint_range(0.0, 1.0) = 0.0;
@@ -161,11 +164,20 @@ uniform float stamp1_appear_emissive_intensity : hint_range(0.0, 5.0) = 0.0;
 uniform float stamp1_appear_light_blocker : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_appear_roughness_override : hint_range(-1.0, 1.0) = -1.0;
 uniform float stamp1_appear_metallic_override : hint_range(-1.0, 1.0) = -1.0;
-uniform float stamp1_appear_iridescent_foil : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_appear_cap_transparency : hint_range(0.0, 1.0) = 0.0;
+
+group_uniforms Surface_Stamping.Stamp1_Iridescence;
+uniform float stamp1_appear_iridescent_foil : hint_range(0.0, 1.0) = 0.0;
+uniform float stamp1_appear_irid_saturation : hint_range(0.0, 2.0) = 1.0;
+uniform float stamp1_appear_irid_scale : hint_range(0.1, 10.0) = 5.0;
+uniform bool stamp1_appear_irid_mouse_fade = false;
+uniform float stamp1_appear_irid_fade_range : hint_range(10.0, 1000.0) = 250.0;
+uniform bool stamp1_appear_irid_use_gradient = false;
+uniform sampler2D stamp1_appear_irid_gradient : hint_default_white;
 
 group_uniforms Surface_Stamping.Stamp1_Interactivity;
 uniform bool stamp1_interact_active_swap = false;
+uniform int stamp1_interact_albedo_blend_mode : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 1;
 uniform float stamp1_interact_albedo_blend : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 stamp1_interact_albedo_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float stamp1_interact_emissive_intensity : hint_range(0.0, 5.0) = 0.0;
@@ -176,6 +188,7 @@ uniform float stamp1_interact_iridescent_foil : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_interact_cap_transparency : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_interact_press_depth_link : hint_range(0.0, 1.0) = 0.0;
 uniform bool stamp1_interact_heat_isolate = false;
+
 
 group_uniforms Surface_Stamping.Stamp2_Base;
 uniform bool enable_stamp_2 = false;
@@ -194,7 +207,9 @@ uniform bool stamp2_base_repeat = false;
 uniform sampler2D stamp2_base_texture : hint_default_black;
 
 group_uniforms Surface_Stamping.Stamp2_Depth;
-uniform vec2 stamp2_depth_xy = vec2(1.0, 1.0);
+uniform float stamp2_depth : hint_range(-5.0, 5.0) = 1.0;
+uniform bool stamp2_depth_split_axis = false;
+uniform vec2 stamp2_depth_split_xy = vec2(1.0, 1.0);
 uniform float stamp2_depth_softness : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp2_depth_inset_shadow : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp2_depth_crevice_dirt : hint_range(0.0, 1.0) = 0.0;
@@ -203,6 +218,7 @@ uniform float stamp2_depth_dirt_opacity : hint_range(0.0, 1.0) = 1.0;
 uniform float stamp2_depth_dirt_contrast : hint_range(0.1, 5.0) = 1.0;
 
 group_uniforms Surface_Stamping.Stamp2_Appearance;
+uniform int stamp2_appear_albedo_blend_mode : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 1;
 uniform float stamp2_appear_albedo_blend : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 stamp2_appear_albedo_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float stamp2_appear_albedo_margin : hint_range(0.0, 1.0) = 0.0;
@@ -210,11 +226,20 @@ uniform float stamp2_appear_emissive_intensity : hint_range(0.0, 5.0) = 0.0;
 uniform float stamp2_appear_light_blocker : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp2_appear_roughness_override : hint_range(-1.0, 1.0) = -1.0;
 uniform float stamp2_appear_metallic_override : hint_range(-1.0, 1.0) = -1.0;
-uniform float stamp2_appear_iridescent_foil : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp2_appear_cap_transparency : hint_range(0.0, 1.0) = 0.0;
+
+group_uniforms Surface_Stamping.Stamp2_Iridescence;
+uniform float stamp2_appear_iridescent_foil : hint_range(0.0, 1.0) = 0.0;
+uniform float stamp2_appear_irid_saturation : hint_range(0.0, 2.0) = 1.0;
+uniform float stamp2_appear_irid_scale : hint_range(0.1, 10.0) = 5.0;
+uniform bool stamp2_appear_irid_mouse_fade = false;
+uniform float stamp2_appear_irid_fade_range : hint_range(10.0, 1000.0) = 250.0;
+uniform bool stamp2_appear_irid_use_gradient = false;
+uniform sampler2D stamp2_appear_irid_gradient : hint_default_white;
 
 group_uniforms Surface_Stamping.Stamp2_Interactivity;
 uniform bool stamp2_interact_active_swap = false;
+uniform int stamp2_interact_albedo_blend_mode : hint_enum("Replace", "Mix", "Multiply", "Add", "Screen", "Subtract") = 1;
 uniform float stamp2_interact_albedo_blend : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 stamp2_interact_albedo_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float stamp2_interact_emissive_intensity : hint_range(0.0, 5.0) = 0.0;
@@ -335,7 +360,8 @@ vec4 apply_blend(vec4 base, vec4 blend, int mode) {
     if (mode == 1) return mix(base, blend, blend.a);                      
     if (mode == 2) return base * blend;                                   
     if (mode == 3) return min(base + blend, vec4(1.0));                   
-    return vec4(1.0) - (vec4(1.0) - base) * (vec4(1.0) - blend);          
+    if (mode == 4) return vec4(1.0) - (vec4(1.0) - base) * (vec4(1.0) - blend);          
+    return max(base - blend * blend.a, vec4(0.0));
 }
 
 vec2 get_grad_coord(vec2 uv, int dir) {
@@ -484,7 +510,6 @@ void fragment() {
     // --- ACCUMULATOR VARIABLES FOR DUAL STAMPING ---
     vec4 stamp_albedo_acc = vec4(0.0);
     vec4 stamp_dirt_acc = vec4(0.0);
-    vec4 stamp_irid_acc = vec4(0.0);
     float stamp_emissive_acc = 0.0;
     float stamp_blocker_acc = 0.0;
     float stamp_transparency_acc = 0.0;
@@ -495,7 +520,14 @@ void fragment() {
 
     // --- PRIMARY STAMP LOGIC ---
     if (enable_stamping) {
-        vec2 st_uv = (stamp1_base_mapping_mode == 1) ? ((px - rect_size * 0.5) * inv_min_dim + 0.5) : UV;
+        vec2 panned_uv1 = UV;
+        vec2 panned_px1 = px;
+        if (stamp1_base_uv_panning != vec2(0.0)) {
+            panned_uv1 = fract(UV - TIME * stamp1_base_uv_panning);
+            panned_px1 = panned_uv1 * rect_size;
+        }
+
+        vec2 st_uv = (stamp1_base_mapping_mode == 1) ? ((panned_px1 - rect_size * 0.5) * inv_min_dim + 0.5) : panned_uv1;
         if (stamp1_base_bevel_wrapping && !stamp1_base_cap_only) st_uv -= base_normal.xy * 0.05;
         
         st_uv -= 0.5;
@@ -503,13 +535,14 @@ void fragment() {
         float cr = cos(r_rad); float sr = sin(r_rad);
         st_uv = vec2(st_uv.x * cr - st_uv.y * sr, st_uv.x * sr + st_uv.y * cr);
         st_uv = (st_uv / max(vec2(0.001), stamp1_base_scale)) + 0.5 - stamp1_base_offset;
-        st_uv += fract(TIME * stamp1_base_uv_panning);
         
         bool in_bounds = true;
-        if (!stamp1_base_repeat && stamp1_base_uv_panning == vec2(0.0) && !stamp1_base_grid_tiling) {
+        if (!stamp1_base_repeat && !stamp1_base_grid_tiling) {
             in_bounds = (st_uv.x >= 0.0 && st_uv.x <= 1.0 && st_uv.y >= 0.0 && st_uv.y <= 1.0);
-        } else {
-            st_uv = fract(st_uv * (stamp1_base_grid_tiling ? stamp1_base_grid_scale : vec2(1.0)) + (stamp1_base_grid_tiling ? stamp1_base_grid_offset : vec2(0.0)));
+        } else if (stamp1_base_grid_tiling) {
+            st_uv = fract(st_uv * stamp1_base_grid_scale + stamp1_base_grid_offset);
+        } else if (stamp1_base_repeat) {
+            st_uv = fract(st_uv);
         }
 
         if (stamp1_interact_heat_isolate && heat_distortion_intensity > 0.0 && is_active) {
@@ -543,8 +576,9 @@ void fragment() {
                 float cur_metal = is_swap ? stamp1_interact_metallic_override : stamp1_appear_metallic_override;
                 float cur_foil = is_swap ? stamp1_interact_iridescent_foil : stamp1_appear_iridescent_foil;
                 float cur_transp = is_swap ? stamp1_interact_cap_transparency : stamp1_appear_cap_transparency;
+                int cur_blend_mode = is_swap ? stamp1_interact_albedo_blend_mode : stamp1_appear_albedo_blend_mode;
 
-                vec2 current_depth_xy = stamp1_depth_xy * stamp1_base_opacity;
+                vec2 current_depth_xy = (stamp1_depth_split_axis ? stamp1_depth_split_xy : vec2(stamp1_depth)) * stamp1_base_opacity;
                 if (stamp1_interact_press_depth_link > 0.0) current_depth_xy *= mix(1.0, abs(tilt_amount) * 2.0, stamp1_interact_press_depth_link);
                 
                 vec3 st_norm = vec3((s0 - sx) * 10.0, (s0 - sy) * 10.0, 1.0 / max(0.01, abs(current_depth_xy.x)));
@@ -553,8 +587,29 @@ void fragment() {
                 base_normal = normalize(base_normal + st_norm * cap_mask);
                 
                 float color_mask = smoothstep(stamp1_appear_albedo_margin, stamp1_appear_albedo_margin + 0.01, s0);
-                stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(cur_color.rgb, cur_color.a * color_mask * cur_blend * s_mask), 1);
+                stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(cur_color.rgb, cur_color.a * color_mask * cur_blend * s_mask), cur_blend_mode);
                 
+                if (cur_foil > 0.0) {
+                    vec3 irid_view = vec3(0.0, 0.0, 1.0);
+                    float mouse_fade = 1.0;
+                    if (enable_mouse_light) {
+                        float m_h = is_active ? active_mouse_light_height : inactive_mouse_light_height;
+                        vec3 mouse_vec = vec3((px - heat_dist_offset) - mouse_position, m_h);
+                        irid_view = normalize(mouse_vec);
+                        if (stamp1_appear_irid_mouse_fade) mouse_fade = smoothstep(stamp1_appear_irid_fade_range, 0.0, length(mouse_vec));
+                    }
+                    float stamp_dot = max(0.0, dot(base_normal, irid_view));
+                    float t = stamp_dot * stamp1_appear_irid_scale; 
+                    vec3 irid_color;
+                    if (stamp1_appear_irid_use_gradient) {
+                        irid_color = texture(stamp1_appear_irid_gradient, vec2(fract(t), 0.5)).rgb;
+                    } else {
+                        irid_color = clamp(vec3(sin(t), sin(t + 2.094), sin(t + 4.188)) * 0.5 + 0.5, 0.0, 1.0);
+                        irid_color = mix(vec3(dot(irid_color, vec3(0.333))), irid_color, stamp1_appear_irid_saturation);
+                    }
+                    stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(irid_color, cur_foil * s_mask * mouse_fade), cur_blend_mode);
+                }
+
                 stamp_emissive_acc += cur_emiss * s_mask;
                 stamp_blocker_acc += cur_block * s_mask;
                 stamp_transparency_acc += cur_transp * s_mask;
@@ -569,15 +624,20 @@ void fragment() {
                     float dirt_mask = pow(s0, stamp1_depth_dirt_contrast) * s_mask * stamp1_depth_crevice_dirt;
                     stamp_dirt_acc = apply_blend(stamp_dirt_acc, vec4(stamp1_depth_dirt_color.rgb, stamp1_depth_dirt_color.a * dirt_mask * stamp1_depth_dirt_opacity), 1);
                 }
-                
-                if (cur_foil > 0.0) stamp_irid_acc.a += cur_foil * s_mask;
             }
         }
     }
 
     // --- SECONDARY STAMP LOGIC ---
     if (enable_stamp_2) {
-        vec2 st_uv = (stamp2_base_mapping_mode == 1) ? ((px - rect_size * 0.5) * inv_min_dim + 0.5) : UV;
+        vec2 panned_uv2 = UV;
+        vec2 panned_px2 = px;
+        if (stamp2_base_uv_panning != vec2(0.0)) {
+            panned_uv2 = fract(UV - TIME * stamp2_base_uv_panning);
+            panned_px2 = panned_uv2 * rect_size;
+        }
+
+        vec2 st_uv = (stamp2_base_mapping_mode == 1) ? ((panned_px2 - rect_size * 0.5) * inv_min_dim + 0.5) : panned_uv2;
         if (stamp2_base_bevel_wrapping && !stamp2_base_cap_only) st_uv -= base_normal.xy * 0.05;
         
         st_uv -= 0.5;
@@ -585,13 +645,14 @@ void fragment() {
         float cr = cos(r_rad); float sr = sin(r_rad);
         st_uv = vec2(st_uv.x * cr - st_uv.y * sr, st_uv.x * sr + st_uv.y * cr);
         st_uv = (st_uv / max(vec2(0.001), stamp2_base_scale)) + 0.5 - stamp2_base_offset;
-        st_uv += fract(TIME * stamp2_base_uv_panning);
         
         bool in_bounds = true;
-        if (!stamp2_base_repeat && stamp2_base_uv_panning == vec2(0.0) && !stamp2_base_grid_tiling) {
+        if (!stamp2_base_repeat && !stamp2_base_grid_tiling) {
             in_bounds = (st_uv.x >= 0.0 && st_uv.x <= 1.0 && st_uv.y >= 0.0 && st_uv.y <= 1.0);
-        } else {
-            st_uv = fract(st_uv * (stamp2_base_grid_tiling ? stamp2_base_grid_scale : vec2(1.0)) + (stamp2_base_grid_tiling ? stamp2_base_grid_offset : vec2(0.0)));
+        } else if (stamp2_base_grid_tiling) {
+            st_uv = fract(st_uv * stamp2_base_grid_scale + stamp2_base_grid_offset);
+        } else if (stamp2_base_repeat) {
+            st_uv = fract(st_uv);
         }
 
         if (stamp2_interact_heat_isolate && heat_distortion_intensity > 0.0 && is_active) {
@@ -625,8 +686,9 @@ void fragment() {
                 float cur_metal = is_swap ? stamp2_interact_metallic_override : stamp2_appear_metallic_override;
                 float cur_foil = is_swap ? stamp2_interact_iridescent_foil : stamp2_appear_iridescent_foil;
                 float cur_transp = is_swap ? stamp2_interact_cap_transparency : stamp2_appear_cap_transparency;
+                int cur_blend_mode = is_swap ? stamp2_interact_albedo_blend_mode : stamp2_appear_albedo_blend_mode;
 
-                vec2 current_depth_xy = stamp2_depth_xy * stamp2_base_opacity;
+                vec2 current_depth_xy = (stamp2_depth_split_axis ? stamp2_depth_split_xy : vec2(stamp2_depth)) * stamp2_base_opacity;
                 if (stamp2_interact_press_depth_link > 0.0) current_depth_xy *= mix(1.0, abs(tilt_amount) * 2.0, stamp2_interact_press_depth_link);
                 
                 vec3 st_norm = vec3((s0 - sx) * 10.0, (s0 - sy) * 10.0, 1.0 / max(0.01, abs(current_depth_xy.x)));
@@ -635,8 +697,29 @@ void fragment() {
                 base_normal = normalize(base_normal + st_norm * cap_mask);
                 
                 float color_mask = smoothstep(stamp2_appear_albedo_margin, stamp2_appear_albedo_margin + 0.01, s0);
-                stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(cur_color.rgb, cur_color.a * color_mask * cur_blend * s_mask), 1);
+                stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(cur_color.rgb, cur_color.a * color_mask * cur_blend * s_mask), cur_blend_mode);
                 
+                if (cur_foil > 0.0) {
+                    vec3 irid_view = vec3(0.0, 0.0, 1.0);
+                    float mouse_fade = 1.0;
+                    if (enable_mouse_light) {
+                        float m_h = is_active ? active_mouse_light_height : inactive_mouse_light_height;
+                        vec3 mouse_vec = vec3((px - heat_dist_offset) - mouse_position, m_h);
+                        irid_view = normalize(mouse_vec);
+                        if (stamp2_appear_irid_mouse_fade) mouse_fade = smoothstep(stamp2_appear_irid_fade_range, 0.0, length(mouse_vec));
+                    }
+                    float stamp_dot = max(0.0, dot(base_normal, irid_view));
+                    float t = stamp_dot * stamp2_appear_irid_scale; 
+                    vec3 irid_color;
+                    if (stamp2_appear_irid_use_gradient) {
+                        irid_color = texture(stamp2_appear_irid_gradient, vec2(fract(t), 0.5)).rgb;
+                    } else {
+                        irid_color = clamp(vec3(sin(t), sin(t + 2.094), sin(t + 4.188)) * 0.5 + 0.5, 0.0, 1.0);
+                        irid_color = mix(vec3(dot(irid_color, vec3(0.333))), irid_color, stamp2_appear_irid_saturation);
+                    }
+                    stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(irid_color, cur_foil * s_mask * mouse_fade), cur_blend_mode);
+                }
+
                 stamp_emissive_acc += cur_emiss * s_mask;
                 stamp_blocker_acc += cur_block * s_mask;
                 stamp_transparency_acc += cur_transp * s_mask;
@@ -651,8 +734,6 @@ void fragment() {
                     float dirt_mask = pow(s0, stamp2_depth_dirt_contrast) * s_mask * stamp2_depth_crevice_dirt;
                     stamp_dirt_acc = apply_blend(stamp_dirt_acc, vec4(stamp2_depth_dirt_color.rgb, stamp2_depth_dirt_color.a * dirt_mask * stamp2_depth_dirt_opacity), 1);
                 }
-                
-                if (cur_foil > 0.0) stamp_irid_acc.a += cur_foil * s_mask;
             }
         }
     }
@@ -697,23 +778,8 @@ void fragment() {
 
     normal = normalize(normal + detail_normal * 0.15);
 
-    // --- APPLY STAMP DIRT TO GLOBAL COLORS ---
     final_cap_color.rgb = mix(final_cap_color.rgb, stamp_dirt_acc.rgb, stamp_dirt_acc.a);
     final_bevel_color.rgb = mix(final_bevel_color.rgb, stamp_dirt_acc.rgb, stamp_dirt_acc.a);
-    
-    // --- EVALUATE IRIDESCENT FOIL ---
-    if (stamp_irid_acc.a > 0.0) {
-        vec3 irid_view = vec3(0.0, 0.0, 1.0);
-        if (enable_mouse_light) {
-            float m_h = is_active ? active_mouse_light_height : inactive_mouse_light_height;
-            irid_view = normalize(vec3((px - heat_dist_offset) - mouse_position, m_h));
-        }
-        float irid_dot = max(0.0, dot(normal, irid_view));
-        float t = irid_dot * 10.0; 
-        vec3 irid_color = clamp(vec3(sin(t), sin(t + 2.094), sin(t + 4.188)) * 0.5 + 0.5, 0.0, 1.0);
-        stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(irid_color, stamp_irid_acc.a), 1);
-    }
-    
     final_cap_color.rgb = mix(final_cap_color.rgb, stamp_albedo_acc.rgb, stamp_albedo_acc.a);
     final_bevel_color.rgb = mix(final_bevel_color.rgb, stamp_albedo_acc.rgb, stamp_albedo_acc.a);
 
