@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ce403gokpmwt5" path="res://assets/Check.svg" id="2_ovrgc"]
 [ext_resource type="Shader" uid="uid://bdt6cndq2dv0d" path="res://shaders/backlit_button.gdshader" id="3_2o76q"]
 [ext_resource type="Script" uid="uid://bwee0efqucus8" path="res://scripts/backlit_button_shadercontrol.gd" id="4_6bivr"]
-[ext_resource type="Texture2D" uid="uid://voyy3ehagrqi" path="res://assets/test_texture_BW.png" id="4_ng0o5"]
+[ext_resource type="Texture2D" uid="uid://bpogv05rj87a0" path="res://assets/test_texture_MSDF.png" id="4_ng0o5"]
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="5_ng0o5"]
 
 [sub_resource type="Gradient" id="Gradient_6bivr"]
@@ -133,7 +133,7 @@ shader_parameter/fill_intensity = 0.5
 shader_parameter/rim_light_dir = Vector3(0, 1, 0.2)
 shader_parameter/rim_light_color = Color(0.18274236, 0.4073811, 1, 1)
 shader_parameter/rim_intensity = 2.694000127965
-shader_parameter/use_optional_surface_texture = true
+shader_parameter/use_optional_surface_texture = false
 shader_parameter/optional_surface_texture = SubResource("NoiseTexture2D_6gw0i")
 shader_parameter/texture_tiling = Vector2(1, 1)
 shader_parameter/normal_map_depth = 1.0
@@ -160,10 +160,10 @@ shader_parameter/stamp1_base_grid_tiling = false
 shader_parameter/stamp1_base_grid_scale = Vector2(3, 3)
 shader_parameter/stamp1_base_grid_offset = Vector2(0, 0)
 shader_parameter/stamp1_base_repeat = false
-shader_parameter/stamp1_base_edge_sharpness = 0.0
+shader_parameter/stamp1_base_edge_sharpness = 1.0
 shader_parameter/stamp1_base_texture = ExtResource("4_ng0o5")
 shader_parameter/stamp1_outline_enabled = false
-shader_parameter/stamp1_outline_size = 1.7390000826025
+shader_parameter/stamp1_outline_size = 39.54000187815
 shader_parameter/stamp1_outline_depth = 1.0
 shader_parameter/stamp1_outline_color = Color(1, 1, 1, 1)
 shader_parameter/stamp1_outline_opacity = 1.0
@@ -173,27 +173,28 @@ shader_parameter/stamp1_outline_use_iridescence = false
 shader_parameter/stamp1_outline_mouse_fade = false
 shader_parameter/stamp1_outline_fade_range = 250.0
 shader_parameter/stamp1_outline_mouse_hover = false
-shader_parameter/stamp1_depth = 0.6700002693249996
+shader_parameter/stamp1_depth = -0.9699998085750005
 shader_parameter/stamp1_depth_split_axis = false
 shader_parameter/stamp1_depth_split_xy = Vector2(1, 1)
-shader_parameter/stamp1_depth_softness = 0.0
+shader_parameter/stamp1_bevel_width = 0.5
+shader_parameter/stamp1_bevel_curve = 1.4470000654726198
 shader_parameter/stamp1_depth_inset_shadow = 0.0
 shader_parameter/stamp1_depth_crevice_dirt = 0.0
 shader_parameter/stamp1_depth_dirt_color = Color(0, 0, 0, 1)
 shader_parameter/stamp1_depth_dirt_opacity = 1.0
 shader_parameter/stamp1_depth_dirt_contrast = 1.0
 shader_parameter/stamp1_appear_albedo_blend_mode = 1
-shader_parameter/stamp1_appear_albedo_blend = 1.0
+shader_parameter/stamp1_appear_albedo_blend = 0.554000026315
 shader_parameter/stamp1_appear_albedo_color = Color(0.5481332, 0.76541495, 1, 1)
 shader_parameter/stamp1_appear_albedo_margin = 0.0
 shader_parameter/stamp1_appear_emissive_intensity = 0.0
 shader_parameter/stamp1_appear_light_blocker = 1.0
-shader_parameter/stamp1_appear_roughness_override = -1.0
-shader_parameter/stamp1_appear_metallic_override = -1.0
+shader_parameter/stamp1_appear_roughness_override = 0.3200000626999999
+shader_parameter/stamp1_appear_metallic_override = 1.0
 shader_parameter/stamp1_appear_cap_transparency = 0.0
-shader_parameter/stamp1_appear_iridescent_foil = 0.4430000210425
+shader_parameter/stamp1_appear_iridescent_foil = 0.5950000282625
 shader_parameter/stamp1_appear_irid_saturation = 1.0
-shader_parameter/stamp1_appear_irid_scale = 5.0
+shader_parameter/stamp1_appear_irid_scale = 0.94500004162762
 shader_parameter/stamp1_appear_irid_mouse_fade = false
 shader_parameter/stamp1_appear_irid_fade_range = 250.0
 shader_parameter/stamp1_appear_irid_use_gradient = true
@@ -239,7 +240,8 @@ shader_parameter/stamp2_outline_mouse_hover = false
 shader_parameter/stamp2_depth = 1.0
 shader_parameter/stamp2_depth_split_axis = false
 shader_parameter/stamp2_depth_split_xy = Vector2(1, 1)
-shader_parameter/stamp2_depth_softness = 0.0
+shader_parameter/stamp2_bevel_width = 0.05
+shader_parameter/stamp2_bevel_curve = 1.0
 shader_parameter/stamp2_depth_inset_shadow = 0.0
 shader_parameter/stamp2_depth_crevice_dirt = 0.0
 shader_parameter/stamp2_depth_dirt_color = Color(0, 0, 0, 1)
@@ -327,7 +329,7 @@ shader_parameter/slope_light_intensity = 0.7030000333925
 shader_parameter/slope_light_corner_fade = 1.0
 shader_parameter/slope_light_tint = Color(1, 0.9166666, 0, 1)
 shader_parameter/enable_mouse_light = true
-shader_parameter/mouse_position = Vector2(253.68668, 41.98471)
+shader_parameter/mouse_position = Vector2(458.82922, -154.79445)
 shader_parameter/inactive_mouse_light_color = Color(1, 0.85, 0, 1)
 shader_parameter/inactive_mouse_light_intensity = 0.13200000627
 shader_parameter/inactive_mouse_light_range = 350.00001615
