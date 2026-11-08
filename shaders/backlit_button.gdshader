@@ -142,7 +142,21 @@ uniform bool stamp1_base_grid_tiling = false;
 uniform vec2 stamp1_base_grid_scale = vec2(3.0, 3.0);
 uniform vec2 stamp1_base_grid_offset = vec2(0.0, 0.0);
 uniform bool stamp1_base_repeat = false;
+uniform float stamp1_base_edge_sharpness : hint_range(0.0, 1.0) = 0.0;
 uniform sampler2D stamp1_base_texture : hint_default_black;
+
+group_uniforms Surface_Stamping.Stamp1_Outline;
+uniform bool stamp1_outline_enabled = false;
+uniform float stamp1_outline_size : hint_range(0.0, 50.0) = 5.0;
+uniform float stamp1_outline_depth : hint_range(-5.0, 5.0) = 1.0;
+uniform vec4 stamp1_outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float stamp1_outline_opacity : hint_range(0.0, 1.0) = 1.0;
+uniform float stamp1_outline_roughness : hint_range(-1.0, 1.0) = -1.0;
+uniform float stamp1_outline_metallic : hint_range(-1.0, 1.0) = -1.0;
+uniform bool stamp1_outline_use_iridescence = false;
+uniform bool stamp1_outline_mouse_fade = false;
+uniform float stamp1_outline_fade_range : hint_range(10.0, 1000.0) = 250.0;
+uniform bool stamp1_outline_mouse_hover = false;
 
 group_uniforms Surface_Stamping.Stamp1_Depth;
 uniform float stamp1_depth : hint_range(-5.0, 5.0) = 1.0;
@@ -189,7 +203,6 @@ uniform float stamp1_interact_cap_transparency : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_interact_press_depth_link : hint_range(0.0, 1.0) = 0.0;
 uniform bool stamp1_interact_heat_isolate = false;
 
-
 group_uniforms Surface_Stamping.Stamp2_Base;
 uniform bool enable_stamp_2 = false;
 uniform float stamp2_base_opacity : hint_range(0.0, 1.0) = 1.0;
@@ -204,7 +217,21 @@ uniform bool stamp2_base_grid_tiling = false;
 uniform vec2 stamp2_base_grid_scale = vec2(3.0, 3.0);
 uniform vec2 stamp2_base_grid_offset = vec2(0.0, 0.0);
 uniform bool stamp2_base_repeat = false;
+uniform float stamp2_base_edge_sharpness : hint_range(0.0, 1.0) = 0.0;
 uniform sampler2D stamp2_base_texture : hint_default_black;
+
+group_uniforms Surface_Stamping.Stamp2_Outline;
+uniform bool stamp2_outline_enabled = false;
+uniform float stamp2_outline_size : hint_range(0.0, 50.0) = 5.0;
+uniform float stamp2_outline_depth : hint_range(-5.0, 5.0) = 1.0;
+uniform vec4 stamp2_outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float stamp2_outline_opacity : hint_range(0.0, 1.0) = 1.0;
+uniform float stamp2_outline_roughness : hint_range(-1.0, 1.0) = -1.0;
+uniform float stamp2_outline_metallic : hint_range(-1.0, 1.0) = -1.0;
+uniform bool stamp2_outline_use_iridescence = false;
+uniform bool stamp2_outline_mouse_fade = false;
+uniform float stamp2_outline_fade_range : hint_range(10.0, 1000.0) = 250.0;
+uniform bool stamp2_outline_mouse_hover = false;
 
 group_uniforms Surface_Stamping.Stamp2_Depth;
 uniform float stamp2_depth : hint_range(-5.0, 5.0) = 1.0;
@@ -357,10 +384,10 @@ vec2 hash2(vec2 p) {
 // --- UTILITY FUNCTIONS ---
 vec4 apply_blend(vec4 base, vec4 blend, int mode) {
     if (mode == 0) return blend;                                          
-    if (mode == 1) return mix(base, blend, blend.a);                      
-    if (mode == 2) return base * blend;                                   
+    if (mode == 1) return vec4(mix(base.rgb, blend.rgb, blend.a), max(base.a, blend.a));                      
+    if (mode == 2) return vec4(base.rgb * blend.rgb, max(base.a, blend.a));                                   
     if (mode == 3) return min(base + blend, vec4(1.0));                   
-    if (mode == 4) return vec4(1.0) - (vec4(1.0) - base) * (vec4(1.0) - blend);          
+    if (mode == 4) return vec4(vec3(1.0) - (vec3(1.0) - base.rgb) * (vec3(1.0) - blend.rgb), max(base.a, blend.a));          
     return max(base - blend * blend.a, vec4(0.0));
 }
 
@@ -521,19 +548,17 @@ void fragment() {
     // --- PRIMARY STAMP LOGIC ---
     if (enable_stamping) {
         vec2 panned_uv1 = UV;
-        vec2 panned_px1 = px;
-        if (stamp1_base_uv_panning != vec2(0.0)) {
-            panned_uv1 = fract(UV - TIME * stamp1_base_uv_panning);
-            panned_px1 = panned_uv1 * rect_size;
-        }
+        if (stamp1_base_uv_panning != vec2(0.0)) panned_uv1 = fract(UV - TIME * stamp1_base_uv_panning);
 
-        vec2 st_uv = (stamp1_base_mapping_mode == 1) ? ((panned_px1 - rect_size * 0.5) * inv_min_dim + 0.5) : panned_uv1;
+        vec2 st_uv = (stamp1_base_mapping_mode == 1) ? (((panned_uv1 - 0.5) * rect_size * inv_min_dim) + 0.5) : panned_uv1;
         if (stamp1_base_bevel_wrapping && !stamp1_base_cap_only) st_uv -= base_normal.xy * 0.05;
         
         st_uv -= 0.5;
-        float r_rad = stamp1_base_rotation * 0.017453292;
-        float cr = cos(r_rad); float sr = sin(r_rad);
-        st_uv = vec2(st_uv.x * cr - st_uv.y * sr, st_uv.x * sr + st_uv.y * cr);
+        if (stamp1_base_rotation != 0.0) {
+            float r_rad = stamp1_base_rotation * 0.017453292;
+            float cr = cos(r_rad); float sr = sin(r_rad);
+            st_uv = vec2(st_uv.x * cr - st_uv.y * sr, st_uv.x * sr + st_uv.y * cr);
+        }
         st_uv = (st_uv / max(vec2(0.001), stamp1_base_scale)) + 0.5 - stamp1_base_offset;
         
         bool in_bounds = true;
@@ -552,18 +577,96 @@ void fragment() {
         float cap_mask = stamp1_base_cap_only ? (1.0 - bevel_factor) : 1.0;
         
         if (in_bounds && cap_mask > 0.0) {
-            float e_off = inv_min_dim; 
             float s0 = texture(stamp1_base_texture, st_uv).r;
-            float sx = texture(stamp1_base_texture, st_uv + vec2(e_off, 0.0)).r;
-            float sy = texture(stamp1_base_texture, st_uv + vec2(0.0, e_off)).r;
+            
+            // Decoupled Multi-Tap Central Difference for Curved Normal/Depth
+            float d_off1 = inv_min_dim * max(1.0, stamp1_depth_softness * 5.0);
+            
+            float sl1_1 = texture(stamp1_base_texture, st_uv - vec2(d_off1 * 0.5, 0.0)).r;
+            float sr1_1 = texture(stamp1_base_texture, st_uv + vec2(d_off1 * 0.5, 0.0)).r;
+            float su1_1 = texture(stamp1_base_texture, st_uv - vec2(0.0, d_off1 * 0.5)).r;
+            float sd1_1 = texture(stamp1_base_texture, st_uv + vec2(0.0, d_off1 * 0.5)).r;
+            
+            float sl1_2 = texture(stamp1_base_texture, st_uv - vec2(d_off1, 0.0)).r;
+            float sr1_2 = texture(stamp1_base_texture, st_uv + vec2(d_off1, 0.0)).r;
+            float su1_2 = texture(stamp1_base_texture, st_uv - vec2(0.0, d_off1)).r;
+            float sd1_2 = texture(stamp1_base_texture, st_uv + vec2(0.0, d_off1)).r;
+            
+            float dx1 = ((sl1_1 - sr1_1) * 2.0 + (sl1_2 - sr1_2)) / 3.0;
+            float dy1 = ((su1_1 - sd1_1) * 2.0 + (su1_2 - sd1_2)) / 3.0;
+            
+            // Apply edge sharpness strictly to the primary shape (s0)
+            s0 = mix(s0, step(0.5, s0), stamp1_base_edge_sharpness);
             
             if (stamp1_depth_softness > 0.0) {
                 s0 = smoothstep(0.0, stamp1_depth_softness, s0);
-                sx = smoothstep(0.0, stamp1_depth_softness, sx);
-                sy = smoothstep(0.0, stamp1_depth_softness, sy);
             }
             
             global_stamp_mask = max(global_stamp_mask, s0 * cap_mask);
+            
+            // --- STAMP 1 OUTLINE EVALUATION ---
+            if (stamp1_outline_enabled && stamp1_outline_size > 0.0) {
+                float sz = stamp1_outline_size * inv_min_dim;
+                float diag = sz * 0.707106;
+                float o_up = texture(stamp1_base_texture, st_uv + vec2(0.0, -sz)).r;
+                float o_dn = texture(stamp1_base_texture, st_uv + vec2(0.0, sz)).r;
+                float o_lf = texture(stamp1_base_texture, st_uv + vec2(-sz, 0.0)).r;
+                float o_rt = texture(stamp1_base_texture, st_uv + vec2(sz, 0.0)).r;
+                float o_ul = texture(stamp1_base_texture, st_uv + vec2(-diag, -diag)).r;
+                float o_ur = texture(stamp1_base_texture, st_uv + vec2(diag, -diag)).r;
+                float o_dl = texture(stamp1_base_texture, st_uv + vec2(-diag, diag)).r;
+                float o_dr = texture(stamp1_base_texture, st_uv + vec2(diag, diag)).r;
+                
+                float o_max = max(max(max(o_up, o_dn), max(o_lf, o_rt)), max(max(o_ul, o_ur), max(o_dl, o_dr)));
+                
+                o_max = mix(o_max, step(0.5, o_max), stamp1_base_edge_sharpness);
+                
+                if (stamp1_depth_softness > 0.0) o_max = smoothstep(0.0, stamp1_depth_softness, o_max);
+                
+                float o_mask = clamp(o_max - s0, 0.0, 1.0) * cap_mask;
+                vec2 out_grad = vec2(dFdx(o_mask), dFdy(o_mask)) * 5.0 * stamp1_outline_depth;
+                
+                if (o_mask > 0.0) {
+                    float m_fade = 1.0;
+                    if (enable_mouse_light) {
+                        if (stamp1_outline_mouse_hover) {
+                            bool inside = (mouse_position.x >= 0.0 && mouse_position.x <= rect_size.x && mouse_position.y >= 0.0 && mouse_position.y <= rect_size.y);
+                            if (!inside) m_fade = 0.0;
+                        }
+                        if (stamp1_outline_mouse_fade && m_fade > 0.0) {
+                            float m_dist = length(mouse_position - (px - heat_dist_offset));
+                            m_fade *= smoothstep(stamp1_outline_fade_range, 0.0, m_dist);
+                        }
+                    }
+                    
+                    float final_o_alpha = o_mask * stamp1_outline_opacity * m_fade;
+                    if (final_o_alpha > 0.0) {
+                        stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(stamp1_outline_color.rgb, final_o_alpha), 1);
+                        
+                        if (stamp1_outline_roughness >= 0.0) { stamp_roughness_val = mix(stamp_roughness_val, stamp1_outline_roughness, final_o_alpha); stamp_roughness_blend = max(stamp_roughness_blend, final_o_alpha); }
+                        if (stamp1_outline_metallic >= 0.0) { stamp_metallic_val = mix(stamp_metallic_val, stamp1_outline_metallic, final_o_alpha); stamp_metallic_blend = max(stamp_metallic_blend, final_o_alpha); }
+                        if (stamp1_outline_depth != 0.0) base_normal = normalize(vec3(base_normal.xy + out_grad * final_o_alpha, base_normal.z));
+                        
+                        if (stamp1_outline_use_iridescence) {
+                            vec3 irid_view = vec3(0.0, 0.0, 1.0);
+                            if (enable_mouse_light) {
+                                float m_h = is_active ? active_mouse_light_height : inactive_mouse_light_height;
+                                irid_view = normalize(vec3((px - heat_dist_offset) - mouse_position, m_h));
+                            }
+                            float stamp_dot = max(0.0, dot(base_normal, irid_view));
+                            float t = stamp_dot * stamp1_appear_irid_scale;
+                            vec3 irid_color;
+                            if (stamp1_appear_irid_use_gradient) irid_color = texture(stamp1_appear_irid_gradient, vec2(fract(t), 0.5)).rgb;
+                            else {
+                                irid_color = clamp(vec3(sin(t), sin(t + 2.094), sin(t + 4.188)) * 0.5 + 0.5, 0.0, 1.0);
+                                irid_color = mix(vec3(dot(irid_color, vec3(0.333))), irid_color, stamp1_appear_irid_saturation);
+                            }
+                            stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(irid_color, final_o_alpha), 1);
+                        }
+                    }
+                }
+            }
+
             float s_mask = clamp(s0 * stamp1_base_opacity * cap_mask, 0.0, 1.0);
             
             if (s_mask > 0.0) {
@@ -581,7 +684,7 @@ void fragment() {
                 vec2 current_depth_xy = (stamp1_depth_split_axis ? stamp1_depth_split_xy : vec2(stamp1_depth)) * stamp1_base_opacity;
                 if (stamp1_interact_press_depth_link > 0.0) current_depth_xy *= mix(1.0, abs(tilt_amount) * 2.0, stamp1_interact_press_depth_link);
                 
-                vec3 st_norm = vec3((s0 - sx) * 10.0, (s0 - sy) * 10.0, 1.0 / max(0.01, abs(current_depth_xy.x)));
+                vec3 st_norm = vec3(dx1 * 10.0, dy1 * 10.0, 1.0 / max(0.01, abs(current_depth_xy.x)));
                 st_norm.xy *= current_depth_xy;
                 if (current_depth_xy.x < 0.0) st_norm.xy *= -1.0;
                 base_normal = normalize(base_normal + st_norm * cap_mask);
@@ -631,19 +734,17 @@ void fragment() {
     // --- SECONDARY STAMP LOGIC ---
     if (enable_stamp_2) {
         vec2 panned_uv2 = UV;
-        vec2 panned_px2 = px;
-        if (stamp2_base_uv_panning != vec2(0.0)) {
-            panned_uv2 = fract(UV - TIME * stamp2_base_uv_panning);
-            panned_px2 = panned_uv2 * rect_size;
-        }
+        if (stamp2_base_uv_panning != vec2(0.0)) panned_uv2 = fract(UV - TIME * stamp2_base_uv_panning);
 
-        vec2 st_uv = (stamp2_base_mapping_mode == 1) ? ((panned_px2 - rect_size * 0.5) * inv_min_dim + 0.5) : panned_uv2;
+        vec2 st_uv = (stamp2_base_mapping_mode == 1) ? (((panned_uv2 - 0.5) * rect_size * inv_min_dim) + 0.5) : panned_uv2;
         if (stamp2_base_bevel_wrapping && !stamp2_base_cap_only) st_uv -= base_normal.xy * 0.05;
         
         st_uv -= 0.5;
-        float r_rad = stamp2_base_rotation * 0.017453292;
-        float cr = cos(r_rad); float sr = sin(r_rad);
-        st_uv = vec2(st_uv.x * cr - st_uv.y * sr, st_uv.x * sr + st_uv.y * cr);
+        if (stamp2_base_rotation != 0.0) {
+            float r_rad = stamp2_base_rotation * 0.017453292;
+            float cr = cos(r_rad); float sr = sin(r_rad);
+            st_uv = vec2(st_uv.x * cr - st_uv.y * sr, st_uv.x * sr + st_uv.y * cr);
+        }
         st_uv = (st_uv / max(vec2(0.001), stamp2_base_scale)) + 0.5 - stamp2_base_offset;
         
         bool in_bounds = true;
@@ -662,18 +763,96 @@ void fragment() {
         float cap_mask = stamp2_base_cap_only ? (1.0 - bevel_factor) : 1.0;
         
         if (in_bounds && cap_mask > 0.0) {
-            float e_off = inv_min_dim; 
             float s0 = texture(stamp2_base_texture, st_uv).r;
-            float sx = texture(stamp2_base_texture, st_uv + vec2(e_off, 0.0)).r;
-            float sy = texture(stamp2_base_texture, st_uv + vec2(0.0, e_off)).r;
+            
+            // Decoupled Multi-Tap Central Difference for Curved Normal/Depth
+            float d_off2 = inv_min_dim * max(1.0, stamp2_depth_softness * 5.0);
+            
+            float sl2_1 = texture(stamp2_base_texture, st_uv - vec2(d_off2 * 0.5, 0.0)).r;
+            float sr2_1 = texture(stamp2_base_texture, st_uv + vec2(d_off2 * 0.5, 0.0)).r;
+            float su2_1 = texture(stamp2_base_texture, st_uv - vec2(0.0, d_off2 * 0.5)).r;
+            float sd2_1 = texture(stamp2_base_texture, st_uv + vec2(0.0, d_off2 * 0.5)).r;
+            
+            float sl2_2 = texture(stamp2_base_texture, st_uv - vec2(d_off2, 0.0)).r;
+            float sr2_2 = texture(stamp2_base_texture, st_uv + vec2(d_off2, 0.0)).r;
+            float su2_2 = texture(stamp2_base_texture, st_uv - vec2(0.0, d_off2)).r;
+            float sd2_2 = texture(stamp2_base_texture, st_uv + vec2(0.0, d_off2)).r;
+            
+            float dx2 = ((sl2_1 - sr2_1) * 2.0 + (sl2_2 - sr2_2)) / 3.0;
+            float dy2 = ((su2_1 - sd2_1) * 2.0 + (su2_2 - sd2_2)) / 3.0;
+            
+            // Apply edge sharpness strictly to the primary shape (s0)
+            s0 = mix(s0, step(0.5, s0), stamp2_base_edge_sharpness);
             
             if (stamp2_depth_softness > 0.0) {
                 s0 = smoothstep(0.0, stamp2_depth_softness, s0);
-                sx = smoothstep(0.0, stamp2_depth_softness, sx);
-                sy = smoothstep(0.0, stamp2_depth_softness, sy);
             }
             
             global_stamp_mask = max(global_stamp_mask, s0 * cap_mask);
+            
+            // --- STAMP 2 OUTLINE EVALUATION ---
+            if (stamp2_outline_enabled && stamp2_outline_size > 0.0) {
+                float sz = stamp2_outline_size * inv_min_dim;
+                float diag = sz * 0.707106;
+                float o_up = texture(stamp2_base_texture, st_uv + vec2(0.0, -sz)).r;
+                float o_dn = texture(stamp2_base_texture, st_uv + vec2(0.0, sz)).r;
+                float o_lf = texture(stamp2_base_texture, st_uv + vec2(-sz, 0.0)).r;
+                float o_rt = texture(stamp2_base_texture, st_uv + vec2(sz, 0.0)).r;
+                float o_ul = texture(stamp2_base_texture, st_uv + vec2(-diag, -diag)).r;
+                float o_ur = texture(stamp2_base_texture, st_uv + vec2(diag, -diag)).r;
+                float o_dl = texture(stamp2_base_texture, st_uv + vec2(-diag, diag)).r;
+                float o_dr = texture(stamp2_base_texture, st_uv + vec2(diag, diag)).r;
+                
+                float o_max = max(max(max(o_up, o_dn), max(o_lf, o_rt)), max(max(o_ul, o_ur), max(o_dl, o_dr)));
+                
+                o_max = mix(o_max, step(0.5, o_max), stamp2_base_edge_sharpness);
+                
+                if (stamp2_depth_softness > 0.0) o_max = smoothstep(0.0, stamp2_depth_softness, o_max);
+                
+                float o_mask = clamp(o_max - s0, 0.0, 1.0) * cap_mask;
+                vec2 out_grad = vec2(dFdx(o_mask), dFdy(o_mask)) * 5.0 * stamp2_outline_depth;
+                
+                if (o_mask > 0.0) {
+                    float m_fade = 1.0;
+                    if (enable_mouse_light) {
+                        if (stamp2_outline_mouse_hover) {
+                            bool inside = (mouse_position.x >= 0.0 && mouse_position.x <= rect_size.x && mouse_position.y >= 0.0 && mouse_position.y <= rect_size.y);
+                            if (!inside) m_fade = 0.0;
+                        }
+                        if (stamp2_outline_mouse_fade && m_fade > 0.0) {
+                            float m_dist = length(mouse_position - (px - heat_dist_offset));
+                            m_fade *= smoothstep(stamp2_outline_fade_range, 0.0, m_dist);
+                        }
+                    }
+                    
+                    float final_o_alpha = o_mask * stamp2_outline_opacity * m_fade;
+                    if (final_o_alpha > 0.0) {
+                        stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(stamp2_outline_color.rgb, final_o_alpha), 1);
+                        
+                        if (stamp2_outline_roughness >= 0.0) { stamp_roughness_val = mix(stamp_roughness_val, stamp2_outline_roughness, final_o_alpha); stamp_roughness_blend = max(stamp_roughness_blend, final_o_alpha); }
+                        if (stamp2_outline_metallic >= 0.0) { stamp_metallic_val = mix(stamp_metallic_val, stamp2_outline_metallic, final_o_alpha); stamp_metallic_blend = max(stamp_metallic_blend, final_o_alpha); }
+                        if (stamp2_outline_depth != 0.0) base_normal = normalize(vec3(base_normal.xy + out_grad * final_o_alpha, base_normal.z));
+                        
+                        if (stamp2_outline_use_iridescence) {
+                            vec3 irid_view = vec3(0.0, 0.0, 1.0);
+                            if (enable_mouse_light) {
+                                float m_h = is_active ? active_mouse_light_height : inactive_mouse_light_height;
+                                irid_view = normalize(vec3((px - heat_dist_offset) - mouse_position, m_h));
+                            }
+                            float stamp_dot = max(0.0, dot(base_normal, irid_view));
+                            float t = stamp_dot * stamp2_appear_irid_scale;
+                            vec3 irid_color;
+                            if (stamp2_appear_irid_use_gradient) irid_color = texture(stamp2_appear_irid_gradient, vec2(fract(t), 0.5)).rgb;
+                            else {
+                                irid_color = clamp(vec3(sin(t), sin(t + 2.094), sin(t + 4.188)) * 0.5 + 0.5, 0.0, 1.0);
+                                irid_color = mix(vec3(dot(irid_color, vec3(0.333))), irid_color, stamp2_appear_irid_saturation);
+                            }
+                            stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(irid_color, final_o_alpha), 1);
+                        }
+                    }
+                }
+            }
+
             float s_mask = clamp(s0 * stamp2_base_opacity * cap_mask, 0.0, 1.0);
             
             if (s_mask > 0.0) {
@@ -691,7 +870,7 @@ void fragment() {
                 vec2 current_depth_xy = (stamp2_depth_split_axis ? stamp2_depth_split_xy : vec2(stamp2_depth)) * stamp2_base_opacity;
                 if (stamp2_interact_press_depth_link > 0.0) current_depth_xy *= mix(1.0, abs(tilt_amount) * 2.0, stamp2_interact_press_depth_link);
                 
-                vec3 st_norm = vec3((s0 - sx) * 10.0, (s0 - sy) * 10.0, 1.0 / max(0.01, abs(current_depth_xy.x)));
+                vec3 st_norm = vec3(dx2 * 10.0, dy2 * 10.0, 1.0 / max(0.01, abs(current_depth_xy.x)));
                 st_norm.xy *= current_depth_xy;
                 if (current_depth_xy.x < 0.0) st_norm.xy *= -1.0;
                 base_normal = normalize(base_normal + st_norm * cap_mask);
