@@ -18,6 +18,8 @@ func apply(_context = null) -> void:
 	
 	if amount == 0:
 		dmg = Global.run_stats.player_stats[amount_from_stat] * multiplier
+		if _context != null:
+			dmg = _context * multiplier
 	match target:
 		Who.CENTER:
 			pos = EnemyPosition.Position.CENTER

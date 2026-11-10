@@ -20,7 +20,7 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 ##If consumable, trigger will be ignored
 @export var trigger: Trigger.Type
 @export var effect: Array[ImplantEffect]
-@export var custom_effect: bool = false
+#@export var custom_effect: bool = false
 ##All conditions must be met to execute
 @export var conditions: Array[ImplantCondition]
 
@@ -28,20 +28,46 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 
 
 func connect_triggers() -> void:
+	print('opa!')
 	if consumable:
 		return
-	for ef in effect:
-		EventBus.signals_list[trigger].connect(check_condition)
+	for module in config:
+		for ef in module.effect:
+			print('trigger: ', Trigger.Type.keys()[module.trigger])
+			#print('trigger: ', module.)
+			EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
 
-func check_condition(context = null) -> void:
+func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
 	var counter = 0
-	for con in conditions:
+	for con in module.conditions:
 		if con.is_met(context):
 			counter += 1
-	if conditions.size() == counter:
-		for ef in effect:
+	if module.conditions.size() == counter:
+		for ef in module.effect:
+			print('aplicando o feito: ', ef.get_script().get_global_name())
 			ef.apply(context)
+	print('\n')
 
 func revert() -> void:
-	for ef in effect:
-		ef.revert()
+	for module in config:
+		for ef in module.effect:
+			ef.revert()
+
+#func connect_triggers2() -> void:
+	#if consumable:
+		#return
+	#for ef in effect:
+		#EventBus.signals_list[trigger].connect(check_condition)
+#
+#func check_condition2(context = null) -> void:
+	#var counter = 0
+	#for con in conditions:
+		#if con.is_met(context):
+			#counter += 1
+	#if conditions.size() == counter:
+		#for ef in effect:
+			#ef.apply(context)
+#
+#func revert2() -> void:
+	#for ef in effect:
+		#ef.revert()

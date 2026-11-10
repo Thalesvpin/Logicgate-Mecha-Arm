@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://byl7rod47gfwb" path="res://scripts/classes/implant_effects/add_max_health_percent.gd" id="5_3la5f"]
 [ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="6_j6xw3"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="7_weh3a"]
-[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://resources/biohacks/mod_icon.png" id="8_q6k1v"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="8_q6k1v"]
 
 [sub_resource type="Resource" id="Resource_hco57"]
 script = ExtResource("2_fpuuu")

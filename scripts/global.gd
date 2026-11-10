@@ -209,8 +209,8 @@ var bh_ultra_rare: Array[Implant] = []
 var bh_legendary: Array[Implant] = []
 
 func load_implants() -> void:
-	var tech_mods_path: String = "res://resources/techmods/"
-	var bio_hacks_path: String = "res://resources/biohacks/"
+	var tech_mods_path: String = "res://resources/implants/techmods/"
+	var bio_hacks_path: String = "res://resources/implants/biohacks/"
 	
 	sort(tech_mods_path)
 	sort(bio_hacks_path)
