@@ -143,7 +143,7 @@ uniform vec2 stamp1_base_grid_scale = vec2(3.0, 3.0);
 uniform vec2 stamp1_base_grid_offset = vec2(0.0, 0.0);
 uniform bool stamp1_base_repeat = false;
 uniform float stamp1_base_edge_sharpness : hint_range(0.0, 1.0) = 0.0;
-uniform sampler2D stamp1_base_texture : hint_default_black, filter_linear_mipmap;
+uniform sampler2D stamp1_base_MSDF_texture : hint_default_black, filter_linear_mipmap;
 
 group_uniforms Surface_Stamping.Stamp1_Outline;
 uniform bool stamp1_outline_enabled = false;
@@ -159,11 +159,13 @@ uniform float stamp1_outline_fade_range : hint_range(10.0, 1000.0) = 250.0;
 uniform bool stamp1_outline_mouse_hover = false;
 
 group_uniforms Surface_Stamping.Stamp1_Depth;
-uniform float stamp1_depth : hint_range(-5.0, 5.0) = 1.0;
+uniform float stamp1_depth : hint_range(-1.0, 1.0) = 0.0;
 uniform bool stamp1_depth_split_axis = false;
 uniform vec2 stamp1_depth_split_xy = vec2(1.0, 1.0);
 uniform float stamp1_bevel_width : hint_range(0.0, 0.5) = 0.05;
 uniform float stamp1_bevel_curve : hint_range(0.1, 5.0) = 1.0;
+uniform bool stamp1_bevel_invert_curve = false;
+uniform float stamp1_depth_softness : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_depth_inset_shadow : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp1_depth_crevice_dirt : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 stamp1_depth_dirt_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
@@ -219,7 +221,7 @@ uniform vec2 stamp2_base_grid_scale = vec2(3.0, 3.0);
 uniform vec2 stamp2_base_grid_offset = vec2(0.0, 0.0);
 uniform bool stamp2_base_repeat = false;
 uniform float stamp2_base_edge_sharpness : hint_range(0.0, 1.0) = 0.0;
-uniform sampler2D stamp2_base_texture : hint_default_black, filter_linear_mipmap;
+uniform sampler2D stamp2_base_MSDF_texture : hint_default_black, filter_linear_mipmap;
 
 group_uniforms Surface_Stamping.Stamp2_Outline;
 uniform bool stamp2_outline_enabled = false;
@@ -235,11 +237,13 @@ uniform float stamp2_outline_fade_range : hint_range(10.0, 1000.0) = 250.0;
 uniform bool stamp2_outline_mouse_hover = false;
 
 group_uniforms Surface_Stamping.Stamp2_Depth;
-uniform float stamp2_depth : hint_range(-5.0, 5.0) = 1.0;
+uniform float stamp2_depth : hint_range(-1.0, 1.0) = 0.0;
 uniform bool stamp2_depth_split_axis = false;
 uniform vec2 stamp2_depth_split_xy = vec2(1.0, 1.0);
 uniform float stamp2_bevel_width : hint_range(0.0, 0.5) = 0.05;
 uniform float stamp2_bevel_curve : hint_range(0.1, 5.0) = 1.0;
+uniform bool stamp2_bevel_invert_curve = false;
+uniform float stamp2_depth_softness : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp2_depth_inset_shadow : hint_range(0.0, 1.0) = 0.0;
 uniform float stamp2_depth_crevice_dirt : hint_range(0.0, 1.0) = 0.0;
 uniform vec4 stamp2_depth_dirt_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
@@ -584,16 +588,17 @@ void fragment() {
         float cap_mask = stamp1_base_cap_only ? (1.0 - bevel_factor) : 1.0;
         
         if (in_bounds && cap_mask > 0.0) {
-            float d_center = get_msdf(stamp1_base_texture, st_uv);
+            float d_center = get_msdf(stamp1_base_MSDF_texture, st_uv);
             
             float aa_width = mix(0.1, 0.001, stamp1_base_edge_sharpness);
             float s0 = smoothstep(0.5 - aa_width, 0.5 + aa_width, d_center);
             
-            float d_off = 0.002; 
-            float d_l = get_msdf(stamp1_base_texture, st_uv - vec2(d_off, 0.0));
-            float d_r = get_msdf(stamp1_base_texture, st_uv + vec2(d_off, 0.0));
-            float d_u = get_msdf(stamp1_base_texture, st_uv - vec2(0.0, d_off));
-            float d_d = get_msdf(stamp1_base_texture, st_uv + vec2(0.0, d_off));
+            // Keep outlines crisp regardless of bevel softness
+            float out_d_off = 0.002; 
+            float od_l = get_msdf(stamp1_base_MSDF_texture, st_uv - vec2(out_d_off, 0.0));
+            float od_r = get_msdf(stamp1_base_MSDF_texture, st_uv + vec2(out_d_off, 0.0));
+            float od_u = get_msdf(stamp1_base_MSDF_texture, st_uv - vec2(0.0, out_d_off));
+            float od_d = get_msdf(stamp1_base_MSDF_texture, st_uv + vec2(0.0, out_d_off));
             
             global_stamp_mask = max(global_stamp_mask, s0 * cap_mask);
             
@@ -603,7 +608,7 @@ void fragment() {
                 float o_max = smoothstep(0.5 - out_dist - aa_width, 0.5 - out_dist + aa_width, d_center);
                 float o_mask = clamp(o_max - s0, 0.0, 1.0) * cap_mask;
                 
-                vec2 out_grad = vec2(d_l - d_r, d_u - d_d) * 20.0 * stamp1_outline_depth;
+                vec2 out_grad = vec2(od_l - od_r, od_u - od_d) * 20.0 * stamp1_outline_depth;
                 
                 if (o_mask > 0.0) {
                     float m_fade = 1.0;
@@ -660,16 +665,34 @@ void fragment() {
                 float cur_transp = is_swap ? stamp1_interact_cap_transparency : stamp1_appear_cap_transparency;
                 int cur_blend_mode = is_swap ? stamp1_interact_albedo_blend_mode : stamp1_appear_albedo_blend_mode;
 
+                // Scale up the normal sampling distance for flawless normal-map blurring
+                float d_off = mix(0.002, 0.025, stamp1_depth_softness); 
+                float d_l = get_msdf(stamp1_base_MSDF_texture, st_uv - vec2(d_off, 0.0));
+                float d_r = get_msdf(stamp1_base_MSDF_texture, st_uv + vec2(d_off, 0.0));
+                float d_u = get_msdf(stamp1_base_MSDF_texture, st_uv - vec2(0.0, d_off));
+                float d_d = get_msdf(stamp1_base_MSDF_texture, st_uv + vec2(0.0, d_off));
+
                 float w1 = max(0.001, stamp1_bevel_width);
                 float c1 = stamp1_bevel_curve;
-                float h_c = pow(clamp((d_center - 0.5) / w1, 0.0, 1.0), c1);
-                float h_l = pow(clamp((d_l - 0.5) / w1, 0.0, 1.0), c1);
-                float h_r = pow(clamp((d_r - 0.5) / w1, 0.0, 1.0), c1);
-                float h_u = pow(clamp((d_u - 0.5) / w1, 0.0, 1.0), c1);
-                float h_d = pow(clamp((d_d - 0.5) / w1, 0.0, 1.0), c1);
+                bool inv1 = stamp1_bevel_invert_curve;
 
-                float dx = (h_l - h_r) * 15.0;
-                float dy = (h_u - h_d) * 15.0;
+                float val_c = clamp((d_center - 0.5) / w1, 0.0, 1.0);
+                float val_l = clamp((d_l - 0.5) / w1, 0.0, 1.0);
+                float val_r = clamp((d_r - 0.5) / w1, 0.0, 1.0);
+                float val_u = clamp((d_u - 0.5) / w1, 0.0, 1.0);
+                float val_d = clamp((d_d - 0.5) / w1, 0.0, 1.0);
+
+                // Math to support both Convex (Dome) and Concave (Bowl) bevels
+                float h_c = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_c), c1)) : pow(val_c, c1);
+                float h_l = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_l), c1)) : pow(val_l, c1);
+                float h_r = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_r), c1)) : pow(val_r, c1);
+                float h_u = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_u), c1)) : pow(val_u, c1);
+                float h_d = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_d), c1)) : pow(val_d, c1);
+
+                // Normalize derivative strength to keep height constant while blurring
+                float norm_d_off = d_off / 0.002;
+                float dx = (h_l - h_r) * 15.0 / norm_d_off;
+                float dy = (h_u - h_d) * 15.0 / norm_d_off;
 
                 vec2 current_depth_xy = (stamp1_depth_split_axis ? stamp1_depth_split_xy : vec2(stamp1_depth)) * stamp1_base_opacity;
                 if (stamp1_interact_press_depth_link > 0.0) current_depth_xy *= mix(1.0, abs(tilt_amount) * 2.0, stamp1_interact_press_depth_link);
@@ -753,16 +776,16 @@ void fragment() {
         float cap_mask = stamp2_base_cap_only ? (1.0 - bevel_factor) : 1.0;
         
         if (in_bounds && cap_mask > 0.0) {
-            float d_center = get_msdf(stamp2_base_texture, st_uv);
+            float d_center = get_msdf(stamp2_base_MSDF_texture, st_uv);
             
             float aa_width = mix(0.1, 0.001, stamp2_base_edge_sharpness);
             float s0 = smoothstep(0.5 - aa_width, 0.5 + aa_width, d_center);
             
-            float d_off = 0.002; 
-            float d_l = get_msdf(stamp2_base_texture, st_uv - vec2(d_off, 0.0));
-            float d_r = get_msdf(stamp2_base_texture, st_uv + vec2(d_off, 0.0));
-            float d_u = get_msdf(stamp2_base_texture, st_uv - vec2(0.0, d_off));
-            float d_d = get_msdf(stamp2_base_texture, st_uv + vec2(0.0, d_off));
+            float out_d_off = 0.002; 
+            float od_l = get_msdf(stamp2_base_MSDF_texture, st_uv - vec2(out_d_off, 0.0));
+            float od_r = get_msdf(stamp2_base_MSDF_texture, st_uv + vec2(out_d_off, 0.0));
+            float od_u = get_msdf(stamp2_base_MSDF_texture, st_uv - vec2(0.0, out_d_off));
+            float od_d = get_msdf(stamp2_base_MSDF_texture, st_uv + vec2(0.0, out_d_off));
             
             global_stamp_mask = max(global_stamp_mask, s0 * cap_mask);
             
@@ -772,7 +795,7 @@ void fragment() {
                 float o_max = smoothstep(0.5 - out_dist - aa_width, 0.5 - out_dist + aa_width, d_center);
                 float o_mask = clamp(o_max - s0, 0.0, 1.0) * cap_mask;
                 
-                vec2 out_grad = vec2(d_l - d_r, d_u - d_d) * 20.0 * stamp2_outline_depth;
+                vec2 out_grad = vec2(od_l - od_r, od_u - od_d) * 20.0 * stamp2_outline_depth;
                 
                 if (o_mask > 0.0) {
                     float m_fade = 1.0;
@@ -829,16 +852,31 @@ void fragment() {
                 float cur_transp = is_swap ? stamp2_interact_cap_transparency : stamp2_appear_cap_transparency;
                 int cur_blend_mode = is_swap ? stamp2_interact_albedo_blend_mode : stamp2_appear_albedo_blend_mode;
 
+                float d_off = mix(0.002, 0.025, stamp2_depth_softness); 
+                float d_l = get_msdf(stamp2_base_MSDF_texture, st_uv - vec2(d_off, 0.0));
+                float d_r = get_msdf(stamp2_base_MSDF_texture, st_uv + vec2(d_off, 0.0));
+                float d_u = get_msdf(stamp2_base_MSDF_texture, st_uv - vec2(0.0, d_off));
+                float d_d = get_msdf(stamp2_base_MSDF_texture, st_uv + vec2(0.0, d_off));
+
                 float w2 = max(0.001, stamp2_bevel_width);
                 float c2 = stamp2_bevel_curve;
-                float h_c = pow(clamp((d_center - 0.5) / w2, 0.0, 1.0), c2);
-                float h_l = pow(clamp((d_l - 0.5) / w2, 0.0, 1.0), c2);
-                float h_r = pow(clamp((d_r - 0.5) / w2, 0.0, 1.0), c2);
-                float h_u = pow(clamp((d_u - 0.5) / w2, 0.0, 1.0), c2);
-                float h_d = pow(clamp((d_d - 0.5) / w2, 0.0, 1.0), c2);
+                bool inv2 = stamp2_bevel_invert_curve;
 
-                float dx = (h_l - h_r) * 15.0;
-                float dy = (h_u - h_d) * 15.0;
+                float val_c = clamp((d_center - 0.5) / w2, 0.0, 1.0);
+                float val_l = clamp((d_l - 0.5) / w2, 0.0, 1.0);
+                float val_r = clamp((d_r - 0.5) / w2, 0.0, 1.0);
+                float val_u = clamp((d_u - 0.5) / w2, 0.0, 1.0);
+                float val_d = clamp((d_d - 0.5) / w2, 0.0, 1.0);
+
+                float h_c = inv2 ? (1.0 - pow(max(0.0, 1.0 - val_c), c2)) : pow(val_c, c2);
+                float h_l = inv2 ? (1.0 - pow(max(0.0, 1.0 - val_l), c2)) : pow(val_l, c2);
+                float h_r = inv2 ? (1.0 - pow(max(0.0, 1.0 - val_r), c2)) : pow(val_r, c2);
+                float h_u = inv2 ? (1.0 - pow(max(0.0, 1.0 - val_u), c2)) : pow(val_u, c2);
+                float h_d = inv2 ? (1.0 - pow(max(0.0, 1.0 - val_d), c2)) : pow(val_d, c2);
+
+                float norm_d_off = d_off / 0.002;
+                float dx = (h_l - h_r) * 15.0 / norm_d_off;
+                float dy = (h_u - h_d) * 15.0 / norm_d_off;
 
                 vec2 current_depth_xy = (stamp2_depth_split_axis ? stamp2_depth_split_xy : vec2(stamp2_depth)) * stamp2_base_opacity;
                 if (stamp2_interact_press_depth_link > 0.0) current_depth_xy *= mix(1.0, abs(tilt_amount) * 2.0, stamp2_interact_press_depth_link);
