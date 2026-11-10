@@ -1,18 +1,18 @@
 extends IOBar
 
 @onready var drag_area: Area2D = $DragArea
+@onready var final_output: Control = $FinalOutput
+@onready var final_output_2: Control = $FinalOutput2
+@onready var final_output_3: Control = $FinalOutput3
+@onready var final_output_4: Control = $FinalOutput4
 
 var output: int
 var output_nodes: Array[Control]
+var connections: Array = []
 
 func ready() -> void:
 	Global.output_manager = self
-	get_output_nodes()
-
-func get_output_nodes():
-	for child in get_children():
-		if child.get_class() == "Control":
-			output_nodes.append(child)
+	output_nodes = [final_output, final_output_2, final_output_3, final_output_4]
 
 func process() -> void:
 	pass
@@ -35,6 +35,12 @@ func submit(queue_idx: int) -> void:
 
 func prevent_click(value: bool) -> void:
 	drag_area.input_pickable = !value
+
+func check_submit_requirements() -> bool:
+	for output in output_nodes:
+		if output.connections.size() == 0:
+			return false
+	return true
 
 func _on_drag_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:

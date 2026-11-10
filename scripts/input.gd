@@ -23,7 +23,7 @@ func _input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed:
 			if connected_gate != null:
-				for wire in owner.connected_wires:
+				for wire in owner.get_parent().owner.connected_wires:
 					if wire.point_b == self:
 						unplug_wire.emit()
 			else:

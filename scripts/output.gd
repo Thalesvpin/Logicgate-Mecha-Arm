@@ -4,7 +4,7 @@ var sprite: Sprite2D
 var collision: CollisionShape2D
 var type: String = "output"
 var is_active: bool = false
-
+var connections: Array = []
 signal new_wire(pin)
 
 func _ready() -> void:

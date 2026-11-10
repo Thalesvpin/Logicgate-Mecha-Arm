@@ -234,3 +234,15 @@ func handle_radial_menu_selection(id: String, position: Vector2):
 
 func disconnect_wire(wire: Node2D):
 	connected_wires.erase(wire)
+
+func check_submit_requirements() -> bool:
+	var sum = 0
+	for input in input_nodes:
+		if input.connected_gate != null:
+			sum += 1
+	if output.connections.size() == 0:
+		return false
+	if type == Gates.Type.NOT:
+		return sum == 1
+	else:
+		return sum >= 2

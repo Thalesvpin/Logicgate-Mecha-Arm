@@ -23,6 +23,8 @@ func _process(delta: float) -> void:
 		submit()
 
 func submit() -> void:
+	if !Global.circuit_editor.sandbox.check_submit_requirements():
+		return
 	EventBus.submit_circuit.emit()
 	EventBus.pulse.emit(0)
 	await get_tree().create_timer(4).timeout

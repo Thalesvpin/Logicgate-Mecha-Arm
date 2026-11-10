@@ -1,7 +1,7 @@
 extends Control
 
 @onready var area_2d: Area2D = $Area2D
-
+var connections: Array = []
 var output: bool = false
 
 func disconnect_wire(wire: Node2D):

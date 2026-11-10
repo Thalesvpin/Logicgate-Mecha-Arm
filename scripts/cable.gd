@@ -93,6 +93,10 @@ func set_point_a(node: Node2D):
 	if point_b && point_c:
 		point_b.connected_gate = point_a
 		set_point_c(true)
+	if point_a.owner.get_parent() is IOBar:
+		point_a.owner.connections.append(self)
+	else:
+		point_a.connections.append(self)
 
 func set_point_b(node: Node2D):
 	point_b = node
@@ -100,6 +104,8 @@ func set_point_b(node: Node2D):
 	if point_a && point_c:
 		point_b.connected_gate = point_a
 		set_point_c(true)
+	if point_b.owner.get_parent() is IOBar:
+		point_b.owner.connections.append(self)
 
 func set_point_c(reset: bool = false):
 	if reset:
@@ -112,8 +118,13 @@ func set_point_c(reset: bool = false):
 
 func reset_point_b():
 	point_b.connected_gate = null
-	point_b.owner.disconnect_wire(self)
+	if point_b.owner.get_parent() is IOBar:
+		point_b.owner.disconnect_wire(self)
+	else:
+		point_b.owner.get_parent().owner.disconnect_wire(self)
 	point_b.unplug_wire.disconnect(unplug)
+	if point_b.owner.get_parent() is IOBar:
+		point_b.owner.connections.erase(self)
 	point_b = null
 
 func unplug():
@@ -192,6 +203,10 @@ func self_delete():
 			point_a.owner.connected_wires.erase(self)
 		else:
 			point_a.connected_wires.erase(self)
+		if point_a.owner.get_parent() is IOBar:
+			point_a.owner.connections.erase(self)
+		else:
+			point_a.connections.erase(self)
 	
 	set_point_c(true)
 	queue_free()

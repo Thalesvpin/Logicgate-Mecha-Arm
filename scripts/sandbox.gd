@@ -74,6 +74,7 @@ func gate_removed(type: Gates.Type) -> void:
 			xnor_count -= 1
 	total_gates_count -= 1
 
+#runs only on first clicked terminal of each line
 func trace_line(point):
 	if !_line:
 		_line = line.instantiate()
@@ -86,15 +87,28 @@ func trace_line(point):
 	if point.type.to_lower() == "input":
 		_line.set_point_b(point)
 	
-	
-	if point.owner is Area2D:
+	if point.owner is Area2D: #gate output
 		point.owner.connected_wires.append(_line)
-	elif point.owner is Control && point.owner.get_parent().owner is Area2D:
+	elif point.owner is Control && point.owner.get_parent().owner is Area2D: #gate input
 		point.owner.get_parent().owner.connected_wires.append(_line)
 	else:
-		point.connected_wires.append(_line)
+		point.connected_wires.append(_line) #input and output bars
 	
 	_line = null
+
+func check_submit_requirements() -> bool:
+	if !game_input_manager.check_submit_requirements():
+		print('missing requirement at InputBar')
+		return false
+	if !game_output_manager.check_submit_requirements():
+		print('missing requirement at OutputBar')
+		return false
+	
+	for gate in gate_layer.get_children():
+		if !gate.check_submit_requirements():
+			print('missing requirement at gate ', Gates.Type.keys()[gate.type],'  node: ', gate)
+			return false
+	return true
 
 func _on_area_2d_mouse_entered() -> void:
 	cursor_in = true
