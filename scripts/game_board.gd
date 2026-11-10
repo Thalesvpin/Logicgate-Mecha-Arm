@@ -175,6 +175,7 @@ const BH_1 = preload("uid://cdfw1je21a364")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Y"):
+		EventBus.self_damage.emit(2)
 		pass
 	if event.is_action_pressed("H"):
 		var ef = ChargeHeavyAttackEffect.new()

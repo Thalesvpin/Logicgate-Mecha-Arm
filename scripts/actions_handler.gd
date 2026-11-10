@@ -39,10 +39,14 @@ func charge_attack() -> void:
 	var effect = ChargeHeavyAttackEffect.new()
 	effect.apply()
 
-func self_dmg() -> void:
-	print('Self Damage')
+func self_dmg(value: int = 0) -> void:
+	print('Self Damage ')
 	var effect = SelfDamageEffect.new()
-	effect.amount = Global.run_stats.player_stats[Stats.List.SELF_DAMAGE]
+	if value == 0:
+		effect.amount = Global.run_stats.player_stats[Stats.List.SELF_DAMAGE]
+	else:
+		
+		effect.amount = value
 	effect.apply()
 
 func heal() -> void:

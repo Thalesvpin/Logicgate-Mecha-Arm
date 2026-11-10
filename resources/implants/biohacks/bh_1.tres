@@ -1,38 +1,33 @@
 [gd_resource type="Resource" script_class="Implant" format=3 uid="uid://cdfw1je21a364"]
 
-[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_ywd58"]
-[ext_resource type="Resource" uid="uid://bmxyhk5fk4fbb" path="res://resources/implants/conditions/none.tres" id="2_rnksa"]
-[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_48yi5"]
-[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_5h6yn"]
-[ext_resource type="Script" uid="uid://drkh7n0dptl6c" path="res://scripts/classes/implant_effects/undone/deal_damage.gd" id="5_ptmfy"]
-[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_qo5hq"]
-[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="7_rnksa"]
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_wxjpu"]
+[ext_resource type="Resource" uid="uid://bmxyhk5fk4fbb" path="res://resources/implants/conditions/none.tres" id="2_onbdu"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_2jotn"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_1t5m7"]
+[ext_resource type="Script" uid="uid://drkh7n0dptl6c" path="res://scripts/classes/implant_effects/undone/deal_damage.gd" id="5_yvcgl"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_cs722"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="7_54nxs"]
 
 [sub_resource type="Resource" id="Resource_x06xc"]
-script = ExtResource("5_ptmfy")
+script = ExtResource("5_yvcgl")
 multiplier = 2.0
 target = 3
 metadata/_custom_type_script = "uid://drkh7n0dptl6c"
 
 [sub_resource type="Resource" id="Resource_tub8o"]
-script = ExtResource("3_48yi5")
+script = ExtResource("3_2jotn")
 trigger = 4
-effect = Array[ExtResource("4_5h6yn")]([SubResource("Resource_x06xc")])
-conditions = Array[ExtResource("1_ywd58")]([ExtResource("2_rnksa")])
+effect = Array[ExtResource("4_1t5m7")]([SubResource("Resource_x06xc")])
+conditions = Array[ExtResource("1_wxjpu")]([ExtResource("2_onbdu")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
 [resource]
-script = ExtResource("6_qo5hq")
+script = ExtResource("6_cs722")
 id = 1
 name = "bio hack 1"
 description = "toda vez que você leva Dano Próprio, dê o dobro do valor desse Dano em um inimigo vivo aleatório. O valor padrão da Ação de Dano Próprio é o mesmo do Dano do Ataque comum."
 type = 1
-texture = ExtResource("7_rnksa")
+texture = ExtResource("7_54nxs")
 rarity = 1
-corrupted = true
-consumable = true
-trigger = 4
-effect = Array[ExtResource("4_5h6yn")]([SubResource("Resource_x06xc")])
-conditions = Array[ExtResource("1_ywd58")]([ExtResource("2_rnksa")])
-config = Array[ExtResource("3_48yi5")]([SubResource("Resource_tub8o")])
+config = Array[ExtResource("3_2jotn")]([SubResource("Resource_tub8o")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"
