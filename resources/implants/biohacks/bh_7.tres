@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_u5qw3"]
 [ext_resource type="Script" uid="uid://chkj8op6nrwho" path="res://scripts/classes/implant_effects/heal.gd" id="5_k6w22"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="6_o2vu1"]
-[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://resources/biohacks/mod_icon.png" id="7_w6ext"]
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="7_w6ext"]
 
 [sub_resource type="Resource" id="Resource_l5cny"]
 script = ExtResource("2_ro2x6")
