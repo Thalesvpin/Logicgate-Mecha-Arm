@@ -38,6 +38,7 @@ signal open_shop
 signal close_shop
 signal pack_item_chosen
 signal reroll_shop
+signal skip_pack
 #endregion
 
 var signals_list: Dictionary[Trigger.Type, Variant] = {
@@ -64,4 +65,5 @@ var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.PLAYER_DEFEATED: player_defeated,
 	Trigger.Type.PACK_ITEM_CHOSEN: pack_item_chosen,
 	Trigger.Type.REROLL_SHOP: reroll_shop,
+	Trigger.Type.SKIP_PACK: skip_pack,
 }

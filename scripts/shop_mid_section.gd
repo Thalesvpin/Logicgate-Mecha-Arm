@@ -14,6 +14,7 @@ extends PanelContainer
 @onready var reroll_card: PanelContainer = $Packs/RerollCard
 @onready var pack_card_3: Pack = $Packs/PackCard3
 @onready var pack_card_4: Pack = $Packs/PackCard4
+@onready var instruction: RichTextLabel = $OpenPackHolder/Instruction
 
 const OPEN_PACK_ITEM = preload("uid://8jbakdrf5e68")
 
@@ -27,6 +28,7 @@ func _ready() -> void:
 	EventBus.pack_item_chosen.connect(pack_item_chosen)
 	EventBus.open_shop.connect(refresh)
 	EventBus.reroll_shop.connect(reroll)
+	EventBus.skip_pack.connect(get_out_of_pack)
 	
 	pack_list.append(pack_card)
 	pack_list.append(pack_card_2)
@@ -37,6 +39,7 @@ func _ready() -> void:
 
 func refresh() -> void:
 	print('shop mid refresh()')
+	reset_packs()
 	for pack in pack_list:
 		pack.randomize_pack()
 
@@ -64,7 +67,7 @@ func chose_pack(pack) -> void:
 			tween.tween_callback(func(): item.hide())
 		i += 1
 		#tween.chain()
-	Global.shop.hide_implants()
+	Global.shop.pack_open()
 
 func open_pack(pack: PanelContainer) -> void:
 	pack.offset_transform_enabled = true
@@ -87,17 +90,24 @@ func open_pack(pack: PanelContainer) -> void:
 		var item = OPEN_PACK_ITEM.instantiate()
 		pack_items.add_child(item)
 		item.load_implant(pack.drawn[i])
+	instruction.text = 'Escolha %d Implante' % pack.choices_amount
+	if pack.choices_amount > 1:
+		instruction.text += 's'
 
 func close_pack() -> void:
 	open_pack_holder.hide()
-	Global.shop.show_implants()
+	Global.shop.pack_close()
 	reset_open_pack()
 
 func pack_item_chosen() -> void:
 	choices_left -= 1
 	if choices_left <= 0:
-		close_pack()
-		show_packs()
+		get_out_of_pack()
+
+func get_out_of_pack() -> void:
+	choices_left = 0
+	close_pack()
+	show_packs()
 
 func reset_open_pack() -> void:
 	for child in pack_items.get_children():

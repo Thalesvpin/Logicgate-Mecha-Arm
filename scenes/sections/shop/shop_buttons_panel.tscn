@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="1_a7046"]
 [ext_resource type="Script" uid="uid://cslyi5amaspr2" path="res://scripts/shop_buttons_panel.gd" id="1_ipg35"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oje0l"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipg35"]
 content_margin_left = 0.0
 content_margin_top = 0.0
 content_margin_right = 0.0
@@ -47,7 +47,8 @@ metadata/_live_palette_bindings = {
 [node name="ShopButtonsPanel" type="PanelContainer" unique_id=789120704]
 custom_minimum_size = Vector2(480, 120)
 custom_maximum_size = Vector2(480, 120)
-theme_override_styles/panel = SubResource("StyleBoxFlat_oje0l")
+offset_transform_enabled = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_ipg35")
 script = ExtResource("1_ipg35")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=392611224]

@@ -18,8 +18,6 @@ dmg numbers na tela
 bloquear implantes fora do turno
 bloquear inputs e outputs vazios
 -SCRIPT
-montar lista de implantes corrompidos no global
-	usar essa lista em pack_card.gd
 ===================
 checar se vai rodar is_met() antes ou dps de aplicar o dano
 

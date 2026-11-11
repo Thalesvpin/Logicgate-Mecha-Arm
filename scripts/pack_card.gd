@@ -26,6 +26,8 @@ func randomize_pack() -> void:
 	if chance < 45:
 		_theme = Type.MINI
 		price = 200
+		items_amount = 3
+		choices_amount = 1
 		title.text = 'PACOTE'
 		title.add_theme_color_override('default_color', Color.BLACK)
 		name_label.text = 'minipack\n.zip'
@@ -37,6 +39,8 @@ func randomize_pack() -> void:
 	elif chance < 75:
 		_theme = Type.BIG
 		price = 300
+		items_amount = 5
+		choices_amount = 2
 		title.text = 'PACOTÃO'
 		title.add_theme_color_override('default_color', Color.BLACK)
 		name_label.text = 'megapack\n.zip'
@@ -48,6 +52,8 @@ func randomize_pack() -> void:
 	else:
 		_theme = Type.CORRUPTED
 		price = 300
+		items_amount = 3
+		choices_amount = 1
 		title.text = 'P̴͉̘̞̃̓̀Ą̴̛̯͈̋̌͑̈C̵̮͓̣̭̋̽̔̕ͅO̷̜̟̓̔́T̶̛̰͓̦͂̏Ę̷͎̎́'
 		title.add_theme_color_override('default_color', LivePalette.GLOBAL.REDDARK)
 		name_label.text = 'pack_corrompido'
@@ -89,7 +95,8 @@ func randomize_options2() -> void:
 		drawn.append(Global.get_random_implant(drawn, type))
 
 func _on_buy_btn_button_up() -> void:
-	var effect = AddMoneyEffect.new()
-	effect.amount = -price
-	effect.apply()
-	owner.chose_pack(self)
+	if Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] >= price:
+		var effect = AddMoneyEffect.new()
+		effect.amount = -price
+		effect.apply()
+		owner.chose_pack(self)

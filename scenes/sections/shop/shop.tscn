@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bap1wppk0gxk1" path="res://scenes/sections/shop/shop_bio_hacks_container.tscn" id="2_yfiyx"]
 [ext_resource type="PackedScene" uid="uid://b83ioundydby3" path="res://scenes/sections/shop/shop_money_panel.tscn" id="4_7dnml"]
 [ext_resource type="PackedScene" uid="uid://c48vtxigrm1i8" path="res://scenes/sections/shop/shop_buttons_panel.tscn" id="5_2x4v1"]
+[ext_resource type="PackedScene" uid="uid://bpaq7adlxafub" path="res://scenes/sections/shop/pack_button_panel.tscn" id="5_5qvrb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -84,6 +85,11 @@ offset_transform_visual_only = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+
+[node name="PackButtonPanel" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer/VBoxContainer" unique_id=1468448522 instance=ExtResource("5_5qvrb")]
+visible = false
+layout_mode = 2
+offset_transform_position = Vector2(0, 120)
 
 [node name="ShopBioHacksContainer" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer" unique_id=1030358402 instance=ExtResource("2_yfiyx")]
 layout_mode = 2
