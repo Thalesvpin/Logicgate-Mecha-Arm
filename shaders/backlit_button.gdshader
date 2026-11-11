@@ -54,6 +54,31 @@ uniform int active_edge_blend : hint_enum("Replace", "Mix", "Multiply", "Add", "
 uniform int active_edge_grad_dir : hint_enum("Horizontal", "Vertical", "Diagonal", "Radial") = 0;
 uniform sampler2D active_edge_gradient : hint_default_white;
 
+// --- MAIN IRIDESCENCE ---
+group_uniforms Main_Iridescence;
+uniform bool enable_main_iridescence = false;
+uniform bool main_irid_exclude_stamp1 = false;
+uniform bool main_irid_exclude_stamp2 = false;
+uniform int carbon_fiber_masks_iridescence : hint_enum("Off", "Full", "Cap Only", "Bevel Only") = 0;
+
+group_uniforms Main_Iridescence.Cap_Iridescence;
+uniform float main_irid_cap_intensity : hint_range(0.0, 1.0) = 0.5;
+uniform float main_irid_cap_saturation : hint_range(0.0, 2.0) = 1.0;
+uniform float main_irid_cap_scale : hint_range(0.1, 10.0) = 5.0;
+uniform bool main_irid_cap_mouse_fade = false;
+uniform float main_irid_cap_fade_range : hint_range(10.0, 1000.0) = 250.0;
+uniform bool main_irid_cap_use_gradient = false;
+uniform sampler2D main_irid_cap_gradient : hint_default_white;
+
+group_uniforms Main_Iridescence.Bevel_Iridescence;
+uniform float main_irid_bevel_intensity : hint_range(0.0, 1.0) = 0.5;
+uniform float main_irid_bevel_saturation : hint_range(0.0, 2.0) = 1.0;
+uniform float main_irid_bevel_scale : hint_range(0.1, 10.0) = 5.0;
+uniform bool main_irid_bevel_mouse_fade = false;
+uniform float main_irid_bevel_fade_range : hint_range(10.0, 1000.0) = 250.0;
+uniform bool main_irid_bevel_use_gradient = false;
+uniform sampler2D main_irid_bevel_gradient : hint_default_white;
+
 // --- SHAPE MODIFIERS ---
 group_uniforms Rocker_Shape;
 uniform float tilt_amount : hint_range(-1.0, 1.0) = 0.0; 
@@ -112,6 +137,7 @@ uniform float rim_intensity : hint_range(0.0, 5.0) = 1.0;
 // --- TEXTURES & STAMPING ---
 group_uniforms Texture_And_Imperfections;
 uniform bool use_optional_surface_texture = false;
+uniform int surface_texture_stamp_mask : hint_enum("None", "Mask White Areas", "Mask Black Areas") = 0;
 uniform sampler2D optional_surface_texture : hint_normal, filter_linear_mipmap; 
 uniform vec2 texture_tiling = vec2(1.0, 1.0);
 uniform float normal_map_depth : hint_range(0.0, 5.0) = 1.0;      
@@ -123,9 +149,18 @@ uniform float bevel_normal_depth : hint_range(0.0, 5.0) = 1.0;
 uniform float bevel_texture_influence : hint_range(0.0, 1.0) = 0.35;
 uniform float procedural_grain : hint_range(0.0, 1.0) = 0.15;     
 uniform float backlight_texture_reveal : hint_range(0.0, 2.0) = 0.0; 
+
+group_uniforms Texture_And_Imperfections.Carbon_Fiber;
 uniform float carbon_fiber_intensity : hint_range(0.0, 1.0) = 0.0;
+uniform int carbon_fiber_pattern : hint_enum("Standard Checker", "Diagonal Weave", "Custom Texture") = 0;
+uniform sampler2D custom_carbon_texture : hint_default_white, filter_linear_mipmap, repeat_enable;
+uniform bool carbon_fiber_split_axis_scale = false;
 uniform float carbon_fiber_scale : hint_range(1.0, 100.0) = 20.0;
+uniform vec2 carbon_fiber_scale_xy = vec2(20.0, 20.0);
+uniform vec2 carbon_fiber_pan_speed = vec2(0.0, 0.0);
 uniform int carbon_fiber_stamp_mask : hint_enum("None", "Mask White Areas", "Mask Black Areas") = 0;
+uniform float carbon_fiber_hue_shift : hint_range(-180.0, 180.0) = 0.0;
+uniform float carbon_fiber_albedo_darkening : hint_range(0.0, 1.0) = 0.0;
 
 // --- SURFACE STAMPING MASTER GROUP ---
 group_uniforms Surface_Stamping.Stamp1_Base;
@@ -133,7 +168,7 @@ uniform bool enable_stamping = false;
 uniform float stamp1_base_opacity : hint_range(0.0, 1.0) = 1.0;
 uniform int stamp1_base_mapping_mode : hint_enum("Stretch", "Keep Aspect") = 0;
 uniform bool stamp1_base_cap_only = false;
-uniform bool stamp1_base_bevel_wrapping = false;
+uniform float stamp1_base_surface_wrapping : hint_range(0.0, 1.0) = 0.0;
 uniform vec2 stamp1_base_scale = vec2(1.0, 1.0);
 uniform vec2 stamp1_base_offset = vec2(0.0, 0.0);
 uniform float stamp1_base_rotation : hint_range(-180.0, 180.0) = 0.0;
@@ -211,7 +246,7 @@ uniform bool enable_stamp_2 = false;
 uniform float stamp2_base_opacity : hint_range(0.0, 1.0) = 1.0;
 uniform int stamp2_base_mapping_mode : hint_enum("Stretch", "Keep Aspect") = 0;
 uniform bool stamp2_base_cap_only = false;
-uniform bool stamp2_base_bevel_wrapping = false;
+uniform float stamp2_base_surface_wrapping : hint_range(0.0, 1.0) = 0.0;
 uniform vec2 stamp2_base_scale = vec2(1.0, 1.0);
 uniform vec2 stamp2_base_offset = vec2(0.0, 0.0);
 uniform float stamp2_base_rotation : hint_range(-180.0, 180.0) = 0.0;
@@ -311,9 +346,26 @@ uniform vec4 bulb_off_color : source_color = vec4(0.25, 0.2, 0.1, 0.8);
 uniform vec4 bulb_on_color : source_color = vec4(1.0, 0.95, 0.8, 1.0);
 uniform bool use_blackbody_colors = false;
 
+group_uniforms Internal_Bulbs.Baffle_Grid;
 uniform vec2 internal_baffle_grid = vec2(0.0, 0.0);
+uniform float baffle_thickness : hint_range(0.01, 1.0) = 0.05;
+uniform float baffle_softness : hint_range(0.001, 1.0) = 0.02;
+uniform float baffle_opacity : hint_range(0.0, 1.0) = 1.0;
+uniform float baffle_rotation : hint_range(-180.0, 180.0) = 0.0;
+uniform vec2 baffle_grid_offset = vec2(0.0, 0.0);
 uniform bool baffle_cap_only = true;
 
+group_uniforms Internal_Bulbs.Secondary_Baffle_Grid;
+uniform bool use_secondary_grid = false;
+uniform vec2 sec_internal_baffle_grid = vec2(0.0, 0.0);
+uniform float sec_baffle_thickness : hint_range(0.01, 1.0) = 0.05;
+uniform float sec_baffle_softness : hint_range(0.001, 1.0) = 0.02;
+uniform float sec_baffle_opacity : hint_range(0.0, 1.0) = 1.0;
+uniform float sec_baffle_rotation : hint_range(-180.0, 180.0) = 0.0;
+uniform vec2 sec_baffle_grid_offset = vec2(0.0, 0.0);
+uniform bool sec_baffle_cap_only = true;
+
+group_uniforms Internal_Bulbs.Advanced_3D;
 uniform bool use_3d_spherical_bulbs = false;
 uniform float bulb_3d_depth : hint_range(0.1, 3.0) = 1.0;
 uniform float bulb_3d_shininess : hint_range(1.0, 128.0) = 32.0;
@@ -371,7 +423,11 @@ uniform float heat_distortion_intensity : hint_range(0.0, 1.0) = 0.0;
 
 // --- POST PROCESSING ---
 group_uniforms Post_Processing;
+uniform float global_brightness : hint_range(-1.0, 1.0) = 0.0;
 uniform float global_contrast : hint_range(0.1, 3.0) = 1.0;          
+uniform float global_saturation : hint_range(0.0, 3.0) = 1.0;
+uniform float global_vibrance : hint_range(-1.0, 2.0) = 0.0;
+uniform float global_hue_shift : hint_range(-180.0, 180.0) = 0.0;
 uniform float light_bleed_overflow : hint_range(0.0, 1.0) = 0.0;     
 
 // --- FAST GPU HASH FUNCTIONS ---
@@ -486,6 +542,30 @@ void fragment() {
         final_bevel_color.rgb = mix(final_bevel_color.rgb, final_bevel_color.rgb * unlit_albedo_tint, 0.5);
     }
 
+    // --- APPLY EARLY CARBON FIBER ALBEDO/HUE LOGIC ---
+    float cf_normalized = 0.0;
+    if (carbon_fiber_intensity > 0.0) {
+        vec2 cf_scale = carbon_fiber_split_axis_scale ? carbon_fiber_scale_xy : vec2(carbon_fiber_scale);
+        vec2 cf_uv = (px * cf_scale * 0.01) + TIME * carbon_fiber_pan_speed;
+        
+        if (carbon_fiber_pattern == 0) {
+            cf_normalized = step(0.5, fract(cf_uv.x)) == step(0.5, fract(cf_uv.y)) ? 1.0 : 0.0;
+        } else if (carbon_fiber_pattern == 1) {
+            cf_normalized = (sin((cf_uv.x + cf_uv.y) * 3.14159) * sin((cf_uv.x - cf_uv.y) * 3.14159)) * 0.5 + 0.5;
+        } else {
+            cf_normalized = texture(custom_carbon_texture, cf_uv).r;
+        }
+        
+        final_cap_color.rgb *= mix(1.0, 1.0 - carbon_fiber_albedo_darkening, cf_normalized);
+        
+        if (carbon_fiber_hue_shift != 0.0) {
+            float h_rad = carbon_fiber_hue_shift * 0.017453292 * cf_normalized;
+            vec3 k = vec3(0.57735);
+            float ch = cos(h_rad);
+            final_cap_color.rgb = final_cap_color.rgb * ch + cross(k, final_cap_color.rgb) * sin(h_rad) + k * dot(k, final_cap_color.rgb) * (1.0 - ch);
+        }
+    }
+
     vec2 primary_dir;
     vec2 bev_uv;
     if (is_x_bevel) {
@@ -555,6 +635,9 @@ void fragment() {
     float stamp_roughness_val = 0.0; float stamp_roughness_blend = 0.0;
     float stamp_metallic_val = 0.0;  float stamp_metallic_blend = 0.0;
     float global_stamp_mask = 0.0;
+    
+    float stamp1_exclusion = 0.0;
+    float stamp2_exclusion = 0.0;
 
     // --- PRIMARY STAMP LOGIC ---
     if (enable_stamping) {
@@ -562,7 +645,10 @@ void fragment() {
         if (stamp1_base_uv_panning != vec2(0.0)) panned_uv1 = fract(UV - TIME * stamp1_base_uv_panning);
 
         vec2 st_uv = (stamp1_base_mapping_mode == 1) ? (((panned_uv1 - 0.5) * rect_size * inv_min_dim) + 0.5) : panned_uv1;
-        if (stamp1_base_bevel_wrapping && !stamp1_base_cap_only) st_uv -= base_normal.xy * 0.05;
+        
+        if (stamp1_base_surface_wrapping > 0.0) {
+            st_uv -= base_normal.xy * stamp1_base_surface_wrapping * 0.15;
+        }
         
         st_uv -= 0.5;
         if (stamp1_base_rotation != 0.0) {
@@ -593,7 +679,6 @@ void fragment() {
             float aa_width = mix(0.1, 0.001, stamp1_base_edge_sharpness);
             float s0 = smoothstep(0.5 - aa_width, 0.5 + aa_width, d_center);
             
-            // Keep outlines crisp regardless of bevel softness
             float out_d_off = 0.002; 
             float od_l = get_msdf(stamp1_base_MSDF_texture, st_uv - vec2(out_d_off, 0.0));
             float od_r = get_msdf(stamp1_base_MSDF_texture, st_uv + vec2(out_d_off, 0.0));
@@ -602,7 +687,6 @@ void fragment() {
             
             global_stamp_mask = max(global_stamp_mask, s0 * cap_mask);
             
-            // --- STAMP 1 OUTLINE EVALUATION ---
             if (stamp1_outline_enabled && stamp1_outline_size > 0.0) {
                 float out_dist = stamp1_outline_size * 0.005;
                 float o_max = smoothstep(0.5 - out_dist - aa_width, 0.5 - out_dist + aa_width, d_center);
@@ -625,6 +709,8 @@ void fragment() {
                     
                     float final_o_alpha = o_mask * stamp1_outline_opacity * m_fade;
                     if (final_o_alpha > 0.0) {
+                        stamp1_exclusion = max(stamp1_exclusion, final_o_alpha);
+                        
                         stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(stamp1_outline_color.rgb, final_o_alpha), 1);
                         
                         if (stamp1_outline_roughness >= 0.0) { stamp_roughness_val = mix(stamp_roughness_val, stamp1_outline_roughness, final_o_alpha); stamp_roughness_blend = max(stamp_roughness_blend, final_o_alpha); }
@@ -654,6 +740,8 @@ void fragment() {
             float s_mask = clamp(s0 * stamp1_base_opacity * cap_mask, 0.0, 1.0);
             
             if (s_mask > 0.0) {
+                stamp1_exclusion = max(stamp1_exclusion, s_mask);
+                
                 bool is_swap = (stamp1_interact_active_swap && is_active);
                 float cur_blend = is_swap ? stamp1_interact_albedo_blend : stamp1_appear_albedo_blend;
                 vec4 cur_color = is_swap ? stamp1_interact_albedo_color : stamp1_appear_albedo_color;
@@ -665,7 +753,6 @@ void fragment() {
                 float cur_transp = is_swap ? stamp1_interact_cap_transparency : stamp1_appear_cap_transparency;
                 int cur_blend_mode = is_swap ? stamp1_interact_albedo_blend_mode : stamp1_appear_albedo_blend_mode;
 
-                // Scale up the normal sampling distance for flawless normal-map blurring
                 float d_off = mix(0.002, 0.025, stamp1_depth_softness); 
                 float d_l = get_msdf(stamp1_base_MSDF_texture, st_uv - vec2(d_off, 0.0));
                 float d_r = get_msdf(stamp1_base_MSDF_texture, st_uv + vec2(d_off, 0.0));
@@ -682,14 +769,12 @@ void fragment() {
                 float val_u = clamp((d_u - 0.5) / w1, 0.0, 1.0);
                 float val_d = clamp((d_d - 0.5) / w1, 0.0, 1.0);
 
-                // Math to support both Convex (Dome) and Concave (Bowl) bevels
                 float h_c = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_c), c1)) : pow(val_c, c1);
                 float h_l = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_l), c1)) : pow(val_l, c1);
                 float h_r = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_r), c1)) : pow(val_r, c1);
                 float h_u = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_u), c1)) : pow(val_u, c1);
                 float h_d = inv1 ? (1.0 - pow(max(0.0, 1.0 - val_d), c1)) : pow(val_d, c1);
 
-                // Normalize derivative strength to keep height constant while blurring
                 float norm_d_off = d_off / 0.002;
                 float dx = (h_l - h_r) * 15.0 / norm_d_off;
                 float dy = (h_u - h_d) * 15.0 / norm_d_off;
@@ -750,7 +835,10 @@ void fragment() {
         if (stamp2_base_uv_panning != vec2(0.0)) panned_uv2 = fract(UV - TIME * stamp2_base_uv_panning);
 
         vec2 st_uv = (stamp2_base_mapping_mode == 1) ? (((panned_uv2 - 0.5) * rect_size * inv_min_dim) + 0.5) : panned_uv2;
-        if (stamp2_base_bevel_wrapping && !stamp2_base_cap_only) st_uv -= base_normal.xy * 0.05;
+        
+        if (stamp2_base_surface_wrapping > 0.0) {
+            st_uv -= base_normal.xy * stamp2_base_surface_wrapping * 0.15;
+        }
         
         st_uv -= 0.5;
         if (stamp2_base_rotation != 0.0) {
@@ -789,7 +877,6 @@ void fragment() {
             
             global_stamp_mask = max(global_stamp_mask, s0 * cap_mask);
             
-            // --- STAMP 2 OUTLINE EVALUATION ---
             if (stamp2_outline_enabled && stamp2_outline_size > 0.0) {
                 float out_dist = stamp2_outline_size * 0.005;
                 float o_max = smoothstep(0.5 - out_dist - aa_width, 0.5 - out_dist + aa_width, d_center);
@@ -812,6 +899,8 @@ void fragment() {
                     
                     float final_o_alpha = o_mask * stamp2_outline_opacity * m_fade;
                     if (final_o_alpha > 0.0) {
+                        stamp2_exclusion = max(stamp2_exclusion, final_o_alpha);
+
                         stamp_albedo_acc = apply_blend(stamp_albedo_acc, vec4(stamp2_outline_color.rgb, final_o_alpha), 1);
                         
                         if (stamp2_outline_roughness >= 0.0) { stamp_roughness_val = mix(stamp_roughness_val, stamp2_outline_roughness, final_o_alpha); stamp_roughness_blend = max(stamp_roughness_blend, final_o_alpha); }
@@ -841,6 +930,8 @@ void fragment() {
             float s_mask = clamp(s0 * stamp2_base_opacity * cap_mask, 0.0, 1.0);
             
             if (s_mask > 0.0) {
+                stamp2_exclusion = max(stamp2_exclusion, s_mask);
+
                 bool is_swap = (stamp2_interact_active_swap && is_active);
                 float cur_blend = is_swap ? stamp2_interact_albedo_blend : stamp2_appear_albedo_blend;
                 vec4 cur_color = is_swap ? stamp2_interact_albedo_color : stamp2_appear_albedo_color;
@@ -932,8 +1023,12 @@ void fragment() {
 
     vec3 cap_tex_normal = vec3(0.0, 0.0, 1.0);
     if (use_optional_surface_texture) {
+        float tex_stamp_mult = 1.0;
+        if (surface_texture_stamp_mask == 1) tex_stamp_mult = clamp(1.0 - global_stamp_mask, 0.0, 1.0);
+        else if (surface_texture_stamp_mask == 2) tex_stamp_mult = clamp(global_stamp_mask, 0.0, 1.0);
+        
         cap_tex_normal = texture(optional_surface_texture, UV * texture_tiling).rgb * 2.0 - 1.0;
-        cap_tex_normal.xy *= normal_map_depth; 
+        cap_tex_normal.xy *= normal_map_depth * tex_stamp_mult; 
         cap_tex_normal = normalize(cap_tex_normal);
     }
     
@@ -961,9 +1056,8 @@ void fragment() {
         if (carbon_fiber_stamp_mask == 1) cf_multiplier = clamp(1.0 - global_stamp_mask, 0.0, 1.0);
         else if (carbon_fiber_stamp_mask == 2) cf_multiplier = clamp(global_stamp_mask, 0.0, 1.0);
         
-        vec2 cf_uv = px * carbon_fiber_scale * 0.01;
-        float pattern = step(0.5, fract(cf_uv.x)) == step(0.5, fract(cf_uv.y)) ? 1.0 : -1.0;
-        detail_normal.xy += pattern * carbon_fiber_intensity * (1.0 - bevel_factor) * cf_multiplier;
+        float final_cf_norm = (cf_normalized * 2.0 - 1.0) * carbon_fiber_intensity * (1.0 - bevel_factor) * cf_multiplier;
+        detail_normal.xy += final_cf_norm;
     }
 
     normal = normalize(normal + detail_normal * 0.15);
@@ -987,7 +1081,8 @@ void fragment() {
         vec3 norm_fill = normalize(fill_light_dir);
         vec3 norm_rim = normalize(rim_light_dir);
         ambient_diffuse += max(0.0, dot(normal, norm_fill)) * fill_light_color.rgb * fill_intensity;
-        ambient_diffuse += pow(max(0.0, 1.0 - normal.z), 4.0) * max(0.0, dot(normal, norm_rim)) * rim_light_color.rgb * rim_intensity;
+        float rim_p = max(0.0, 1.0 - normal.z);
+        ambient_diffuse += (rim_p * rim_p * rim_p * rim_p) * max(0.0, dot(normal, norm_rim)) * rim_light_color.rgb * rim_intensity;
     }
 
     vec3 spec_half_vector = normalize(light_3d + vec3(manual_specular_offset, 1.0));
@@ -1070,33 +1165,37 @@ void fragment() {
     vec3 sphere_half_vec = normalize(sphere_light_dir + vec3(0.0, 0.0, 1.0));
     vec2 inv_filament_stretch = 1.0 / max(vec2(0.001), filament_stretch);
 
-    float bulb_start_x = 0.0;
-    vec2 grid_start = vec2(0.0);
-    int grid_cols = 1;
+    // --- OPTIMIZED LAYOUT CALCULATION (LOOP-INVARIANT) ---
+    vec2 bulb_start_pos = vec2(0.0);
+    float fcols = 1.0;
     float angle_step = 0.0;
     float bulb_spacing_px = bulb_spacing * min_dim;
+    float b_count = float(internal_bulb_max);
 
     if (bulb_layout == 0) {
-        bulb_start_x = (rect_size.x - float(internal_bulb_max - 1) * bulb_spacing * rect_size.x) * 0.5;
+        bulb_start_pos.x = (rect_size.x - (b_count - 1.0) * bulb_spacing * rect_size.x) * 0.5;
+        bulb_start_pos.y = rect_size.y * 0.5;
     } else if (bulb_layout == 1) {
-        grid_cols = int(ceil(sqrt(float(internal_bulb_max))));
-        int rows = int(ceil(float(internal_bulb_max) / float(grid_cols)));
-        grid_start = (rect_size - vec2(float(grid_cols - 1), float(rows - 1)) * bulb_spacing_px) * 0.5;
+        fcols = ceil(sqrt(b_count));
+        float frows = ceil(b_count / fcols);
+        bulb_start_pos = (rect_size - vec2(fcols - 1.0, frows - 1.0) * bulb_spacing_px) * 0.5;
     } else if (bulb_layout == 2) {
-        angle_step = 6.283185 / float(internal_bulb_max);
+        angle_step = 6.283185 / b_count;
+        bulb_start_pos = rect_size * 0.5;
     }
     
     for(int i = 0; i < 10; i++) {
         if (i >= internal_bulb_max) break;
         
-        vec2 bulb_px = rect_size * 0.5;
+        vec2 bulb_px;
         if (bulb_layout == 0) {
-            bulb_px.x = (internal_bulb_max > 1) ? bulb_start_x + float(i) * bulb_spacing * rect_size.x : rect_size.x * 0.5;
+            bulb_px = vec2(bulb_start_pos.x + float(i) * bulb_spacing * rect_size.x, bulb_start_pos.y);
         } else if (bulb_layout == 1) {
-            bulb_px = grid_start + vec2(float(i % grid_cols), float(i / grid_cols)) * bulb_spacing_px;
-        } else if (bulb_layout == 2) {
+            float fi = float(i);
+            bulb_px = bulb_start_pos + vec2(mod(fi, fcols), floor(fi / fcols)) * bulb_spacing_px;
+        } else {
             float angle = float(i) * angle_step;
-            bulb_px += vec2(cos(angle), sin(angle)) * bulb_spacing_px;
+            bulb_px = bulb_start_pos + vec2(cos(angle), sin(angle)) * bulb_spacing_px;
         }
         
         vec2 bulb_diff = (refracted_px - bulb_px) * inv_filament_stretch;
@@ -1118,7 +1217,7 @@ void fragment() {
         
         float d_norm = d_bulb_px * inv_min_dim; 
 
-        float glow_falloff = is_led_profile ? (1.0 / (1.0 + d_norm * led_halo_scatter)) : exp(-d_norm * scatter_power);
+        float glow_falloff = is_led_profile ? (1.0 / (1.0 + d_norm * led_halo_scatter)) : exp2(-d_norm * scatter_power * 1.442695);
         total_cap_glow += glow_falloff;
         
         vec2 dir_to_bulb = d_bulb_px > 0.0 ? -bulb_diff / d_bulb_px : vec2(0.0);
@@ -1136,8 +1235,9 @@ void fragment() {
                 vec3 sphere_n = normalize(vec3(bulb_diff / bulb_radius_px, z));
                 float spec_h = pow(max(0.0, dot(sphere_n, sphere_half_vec)), bulb_3d_shininess);
                 
+                float rim_z = 1.0 - z;
                 vec3 glass_color = base_b_col.rgb * max(0.3, dot(sphere_n, sphere_light_dir)) + vec3(spec_h * bulb_3d_specular_intensity * active_spec_mult);
-                glass_color += backlight_color.rgb * pow(1.0 - z, 2.0) * bulb_3d_rim_glow * active_rim_mult;
+                glass_color += backlight_color.rgb * (rim_z * rim_z) * bulb_3d_rim_glow * active_rim_mult;
                 
                 float a_mask = smoothstep(1.0, 0.88, sphere_dist);
                 bulb_vis = mix(bulb_vis, vec4(mix(core_b_col.rgb * core_mask, glass_color, glass_opacity), a_mask), a_mask);
@@ -1153,15 +1253,44 @@ void fragment() {
         }
     }
     
+    // --- ADVANCED BAFFLE GRID COMBINATION ---
+    float b_mask_main = 0.0;
     if (internal_baffle_grid.x > 0.0 || internal_baffle_grid.y > 0.0) {
-        vec2 grid = fract(refracted_px * (0.1 * internal_baffle_grid));
-        if (grid.x < 0.1 || grid.y < 0.1) {
-            float b_mask = baffle_cap_only ? (1.0 - bevel_factor) : 1.0;
-            bulb_mask *= (1.0 - b_mask);
-            bulb_vis *= (1.0 - b_mask);
-            total_cap_glow *= mix(1.0, 0.2, b_mask);
-            total_side_glow *= mix(1.0, 0.5, b_mask);
+        vec2 grid_px = refracted_px;
+        if (baffle_rotation != 0.0) {
+            float rad = baffle_rotation * 0.017453292;
+            float cr = cos(rad); float sr = sin(rad);
+            grid_px = vec2(grid_px.x * cr - grid_px.y * sr, grid_px.x * sr + grid_px.y * cr);
         }
+        vec2 grid = fract((grid_px * (0.1 * internal_baffle_grid)) + baffle_grid_offset);
+        float b_line_x = internal_baffle_grid.x > 0.0 ? (1.0 - smoothstep(baffle_thickness - baffle_softness, baffle_thickness + baffle_softness, grid.x)) : 0.0;
+        float b_line_y = internal_baffle_grid.y > 0.0 ? (1.0 - smoothstep(baffle_thickness - baffle_softness, baffle_thickness + baffle_softness, grid.y)) : 0.0;
+        b_mask_main = max(b_line_x, b_line_y) * baffle_opacity;
+        if (baffle_cap_only) b_mask_main *= (1.0 - bevel_factor);
+    }
+    
+    float b_mask_sec = 0.0;
+    if (use_secondary_grid && (sec_internal_baffle_grid.x > 0.0 || sec_internal_baffle_grid.y > 0.0)) {
+        vec2 grid_px = refracted_px;
+        if (sec_baffle_rotation != 0.0) {
+            float rad = sec_baffle_rotation * 0.017453292;
+            float cr = cos(rad); float sr = sin(rad);
+            grid_px = vec2(grid_px.x * cr - grid_px.y * sr, grid_px.x * sr + grid_px.y * cr);
+        }
+        vec2 grid = fract((grid_px * (0.1 * sec_internal_baffle_grid)) + sec_baffle_grid_offset);
+        float b_line_x = sec_internal_baffle_grid.x > 0.0 ? (1.0 - smoothstep(sec_baffle_thickness - sec_baffle_softness, sec_baffle_thickness + sec_baffle_softness, grid.x)) : 0.0;
+        float b_line_y = sec_internal_baffle_grid.y > 0.0 ? (1.0 - smoothstep(sec_baffle_thickness - sec_baffle_softness, sec_baffle_thickness + sec_baffle_softness, grid.y)) : 0.0;
+        b_mask_sec = max(b_line_x, b_line_y) * sec_baffle_opacity;
+        if (sec_baffle_cap_only) b_mask_sec *= (1.0 - bevel_factor);
+    }
+    
+    float final_b_mask = b_mask_main + b_mask_sec * (1.0 - b_mask_main);
+    
+    if (final_b_mask > 0.0) {
+        bulb_mask *= (1.0 - final_b_mask);
+        bulb_vis *= (1.0 - final_b_mask);
+        total_cap_glow *= mix(1.0, 0.2, final_b_mask);
+        total_side_glow *= mix(1.0, 0.5, final_b_mask);
     }
 
     float stamp_light_pass = clamp(1.0 - stamp_blocker_acc, 0.0, 1.0);
@@ -1208,7 +1337,8 @@ void fragment() {
         side_bleed = total_side_glow * active_mult * side_glow_intensity * 1.2 * mix(max(0.4, base_light_retention), 1.0, falloff_curve);
     } else if (bevel_light_mode == 2) {
         falloff_curve = pow(slope_progression, side_light_falloff * 0.8);
-        side_bleed = pow(total_side_glow + 0.01, 2.0) * 1.5 * active_mult * side_glow_intensity * mix(base_light_retention * 0.5, 1.0, falloff_curve);
+        float sg = total_side_glow + 0.01;
+        side_bleed = (sg * sg) * 1.5 * active_mult * side_glow_intensity * mix(base_light_retention * 0.5, 1.0, falloff_curve);
     } else if (bevel_light_mode == 3) {
         falloff_curve = pow(slope_progression, side_light_falloff * 2.0);
         side_bleed = total_side_glow * active_mult * side_glow_intensity * mix(base_light_retention * 0.2, 1.0, falloff_curve);
@@ -1224,6 +1354,64 @@ void fragment() {
     
     vec3 final_glow_color = effective_backlight_color * slope_light_tint.rgb;
     lit_side_color = mix(lit_side_color, final_glow_color, clamp(side_bleed * side_color_shift, 0.0, 1.0)) + (final_glow_color * side_bleed);
+
+    // --- APPLY MAIN IRIDESCENCE BEFORE COMPOSITION ---
+    if (enable_main_iridescence) {
+        vec3 irid_view = vec3(0.0, 0.0, 1.0);
+        float mouse_fade_cap = 1.0;
+        float mouse_fade_bevel = 1.0;
+        
+        if (enable_mouse_light) {
+            float m_h = is_active ? active_mouse_light_height : inactive_mouse_light_height;
+            vec3 mouse_vec = vec3((px - heat_dist_offset) - mouse_position, m_h);
+            irid_view = normalize(mouse_vec);
+            
+            if (main_irid_cap_mouse_fade) mouse_fade_cap = smoothstep(main_irid_cap_fade_range, 0.0, length(mouse_vec));
+            if (main_irid_bevel_mouse_fade) mouse_fade_bevel = smoothstep(main_irid_bevel_fade_range, 0.0, length(mouse_vec));
+        }
+        
+        float main_dot = max(0.0, dot(normal, irid_view)); 
+        
+        // CAP IRIDESCENCE
+        float t_cap = main_dot * main_irid_cap_scale;
+        vec3 irid_color_cap;
+        if (main_irid_cap_use_gradient) {
+            irid_color_cap = texture(main_irid_cap_gradient, vec2(fract(t_cap), 0.5)).rgb;
+        } else {
+            irid_color_cap = clamp(vec3(sin(t_cap), sin(t_cap + 2.094), sin(t_cap + 4.188)) * 0.5 + 0.5, 0.0, 1.0);
+            irid_color_cap = mix(vec3(dot(irid_color_cap, vec3(0.333))), irid_color_cap, main_irid_cap_saturation);
+        }
+        
+        // BEVEL IRIDESCENCE
+        float t_bevel = main_dot * main_irid_bevel_scale;
+        vec3 irid_color_bevel;
+        if (main_irid_bevel_use_gradient) {
+            irid_color_bevel = texture(main_irid_bevel_gradient, vec2(fract(t_bevel), 0.5)).rgb;
+        } else {
+            irid_color_bevel = clamp(vec3(sin(t_bevel), sin(t_bevel + 2.094), sin(t_bevel + 4.188)) * 0.5 + 0.5, 0.0, 1.0);
+            irid_color_bevel = mix(vec3(dot(irid_color_bevel, vec3(0.333))), irid_color_bevel, main_irid_bevel_saturation);
+        }
+        
+        float cap_cf_mask = 1.0;
+        float bev_cf_mask = 1.0;
+        if (carbon_fiber_intensity > 0.0) {
+            float mask_val = cf_normalized > 0.5 ? 1.0 : 0.0;
+            if (carbon_fiber_masks_iridescence == 1) { cap_cf_mask = mask_val; bev_cf_mask = mask_val; }
+            else if (carbon_fiber_masks_iridescence == 2) { cap_cf_mask = mask_val; }
+            else if (carbon_fiber_masks_iridescence == 3) { bev_cf_mask = mask_val; }
+        }
+        
+        float stamp_exclusion_mask = 1.0;
+        if (main_irid_exclude_stamp1) stamp_exclusion_mask -= stamp1_exclusion;
+        if (main_irid_exclude_stamp2) stamp_exclusion_mask -= stamp2_exclusion;
+        stamp_exclusion_mask = clamp(stamp_exclusion_mask, 0.0, 1.0);
+        
+        vec3 cap_irid = irid_color_cap * main_irid_cap_intensity * mouse_fade_cap * cap_cf_mask * stamp_exclusion_mask;
+        vec3 bevel_irid = irid_color_bevel * main_irid_bevel_intensity * mouse_fade_bevel * bev_cf_mask * stamp_exclusion_mask;
+        
+        cap_final.rgb += cap_irid;
+        lit_side_color += bevel_irid;
+    }
 
     vec4 final_color = mix(cap_final, vec4(lit_side_color, bevel_opacity), bevel_factor);
     
@@ -1251,13 +1439,34 @@ void fragment() {
     final_color.a = clamp(mix(cap_final.a, bevel_opacity, bevel_factor) + (glaze_color.a * active_smoothness), 0.0, 1.0);
     
     if (light_bleed_overflow > 0.0 && alpha_mask <= 0.0) {
-        float overflow_falloff = exp(-distance(px, clamp(px, vec2(0.0), rect_size)) * 0.1);
+        float overflow_falloff = exp2(-distance(px, clamp(px, vec2(0.0), rect_size)) * 0.1442695);
         final_color = vec4(effective_backlight_color * total_side_glow * active_mult * light_bleed_overflow * overflow_falloff, overflow_falloff * 0.5 * light_bleed_overflow);
     } else {
         final_color.a *= alpha_mask;
     }
 
-    final_color.rgb = clamp((final_color.rgb - 0.5) * global_contrast + 0.5, 0.0, 1.0);
+    // --- APPLY POST PROCESSING MATH ---
+    if (global_hue_shift != 0.0) {
+        float hue_rad = global_hue_shift * 0.017453292;
+        vec3 k = vec3(0.57735);
+        float cos_h = cos(hue_rad);
+        final_color.rgb = final_color.rgb * cos_h + cross(k, final_color.rgb) * sin(hue_rad) + k * dot(k, final_color.rgb) * (1.0 - cos_h);
+    }
+    
+    float current_lum = dot(final_color.rgb, vec3(0.299, 0.587, 0.114));
+    
+    if (global_saturation != 1.0) {
+        final_color.rgb = mix(vec3(current_lum), final_color.rgb, global_saturation);
+    }
+    
+    if (global_vibrance != 0.0) {
+        float max_c = max(max(final_color.r, final_color.g), final_color.b);
+        float min_c = min(min(final_color.r, final_color.g), final_color.b);
+        float pixel_sat = max_c - min_c;
+        final_color.rgb = mix(vec3(current_lum), final_color.rgb, 1.0 + (global_vibrance * (1.0 - pixel_sat)));
+    }
+
+    final_color.rgb = clamp((final_color.rgb - 0.5) * global_contrast + 0.5 + global_brightness, 0.0, 1.0);
 
     COLOR = final_color;
 }
