@@ -86,6 +86,7 @@ texture = ExtResource("3_5wyd8")
 stretch_mode = 2
 
 [node name="ExtendedVersions" type="VBoxContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1284248849]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
@@ -132,12 +133,17 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="RarityTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder" unique_id=997189646]
+custom_minimum_size = Vector2(37, 37)
+custom_maximum_size = Vector2(37, 37)
 layout_mode = 2
 size_flags_vertical = 0
 texture = ExtResource("4_0ih7b")
-stretch_mode = 2
+expand_mode = 3
+stretch_mode = 4
 
 [node name="CorruptedTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder" unique_id=1461488900]
+custom_minimum_size = Vector2(37, 37)
+custom_maximum_size = Vector2(37, 37)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("5_5wyd8")
@@ -154,6 +160,8 @@ theme_override_constants/separation = 4
 alignment = 2
 
 [node name="ActivationUses" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=700298017]
+custom_minimum_size = Vector2(37, 37)
+custom_maximum_size = Vector2(37, 37)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("4_0ih7b")
@@ -199,13 +207,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ActivatorBtn" type="TextureButton" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=464088979]
+custom_minimum_size = Vector2(0, 37)
+custom_maximum_size = Vector2(-1, 37)
 layout_mode = 2
 mouse_filter = 1
 texture_normal = ExtResource("4_0ih7b")
 stretch_mode = 4
 
 [node name="CompactVersion" type="GridContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1818323556]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -213,18 +222,27 @@ theme_override_constants/v_separation = 12
 columns = 2
 
 [node name="RarityTextureCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=391175054]
+custom_minimum_size = Vector2(37, 37)
+custom_maximum_size = Vector2(37, 37)
 layout_mode = 2
 texture = ExtResource("4_0ih7b")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="CorruptedTextureCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=698713144]
+custom_minimum_size = Vector2(37, 37)
+custom_maximum_size = Vector2(37, 37)
 layout_mode = 2
-texture = ExtResource("4_0ih7b")
+texture = ExtResource("5_5wyd8")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="ActivationUsesCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=2108366740]
 layout_mode = 2
 texture = ExtResource("4_0ih7b")
 
-[node name="ActivationCountCompact" type="Label" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact" unique_id=1988332757]
+[node name="ActivationCountCompact2" type="Label" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact" unique_id=1988332757]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -239,6 +257,26 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "3"
 label_settings = SubResource("LabelSettings_eofqg")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActivationCountCompact" type="RichTextLabel" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact" unique_id=1969724923]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -24.0
+offset_right = 20.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 32
+text = "3"
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 

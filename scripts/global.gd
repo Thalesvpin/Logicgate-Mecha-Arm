@@ -1,6 +1,11 @@
 extends Node
 
 const RARITY_PLACEHOLDER = preload("uid://b8l68f41218q5")
+const TCC_ICON_RARITY_COMMON = preload("uid://kub74t2rwwrn")
+const TCC_ICON_RARITY_CORRUPTED = preload("uid://cmge5yrejrvvy")
+const TCC_ICON_RARITY_LEGENDARY = preload("uid://44dmfdhgq5e8")
+const TCC_ICON_RARITY_RARE = preload("uid://bi0undpkibnf1")
+const TCC_ICON_RARITY_ULTRA_RARE = preload("uid://qy32kqp5gywt")
 
 
 
@@ -113,10 +118,10 @@ var shop_implant_options = [
 	},
 ]
 var rarity_textures: Dictionary[Rarity, Texture2D] = {
-	Rarity.COMMON: RARITY_PLACEHOLDER,
-	Rarity.RARE: RARITY_PLACEHOLDER,
-	Rarity.ULTRA_RARE: RARITY_PLACEHOLDER,
-	Rarity.LEGENDARY: RARITY_PLACEHOLDER,
+	Rarity.COMMON: TCC_ICON_RARITY_COMMON,
+	Rarity.RARE: TCC_ICON_RARITY_RARE,
+	Rarity.ULTRA_RARE: TCC_ICON_RARITY_ULTRA_RARE,
+	Rarity.LEGENDARY: TCC_ICON_RARITY_LEGENDARY,
 }
 
 #var action_attack: Dictionary = new_action(0, true, _null)

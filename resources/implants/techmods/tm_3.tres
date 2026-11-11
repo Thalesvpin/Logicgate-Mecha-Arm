@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_8rbls"]
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="2_he5js"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="3_avt0q"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_rpkav"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_he5js"]
 [ext_resource type="Script" uid="uid://o1nr0uqt4xgo" path="res://scripts/classes/implant_effects/duplicate_pulse.gd" id="4_ryrt6"]
 
