@@ -1,5 +1,7 @@
 -PRA FICAR JOGAVEL
-	-pacotes
+	-randomizar inimigos (com peso de inimigos)
+	-aplicar dificuldade por batalha
+	-criar batalha com boss
 
 
 definir preços
@@ -9,7 +11,6 @@ THALES:
 nomes e icones dos implantes
 -LOJA
 criar scipt generico pra usar o color remap no stats viewport
-terminar de ajustar os packs
 -SHADER
 -COMBATE
 barras de stats psicar branco ao reduzir

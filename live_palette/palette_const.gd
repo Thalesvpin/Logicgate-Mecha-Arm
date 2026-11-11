@@ -103,6 +103,7 @@ class GLOBAL:
 	const SHIELDTEXT := Color(0.8745098, 0.972549, 1, 1)
 	const HEAVYATTKGREEN := Color(0, 0.8509804, 0, 1)
 	const HEAVYATTKYELLOW := Color(1, 0.83137256, 0.06666667, 1)
+	const REDDARK := Color(0.43529412, 0.06666667, 0.06666667, 1)
 
 	## Palette name -> color, for lookups by a name held in a variable.
 	## Prefer the constants above: they are checked at compile time.
@@ -114,6 +115,7 @@ class GLOBAL:
 		"ShieldText": SHIELDTEXT,
 		"HeavyAttkGreen": HEAVYATTKGREEN,
 		"HeavyAttkYellow": HEAVYATTKYELLOW,
+		"RedDark": REDDARK,
 	}
 
 	## Variant name -> {name -> color}, for reading a variant you are not on.
@@ -126,6 +128,7 @@ class GLOBAL:
 			"ShieldText": Color(0.8745098, 0.972549, 1, 1),
 			"HeavyAttkGreen": Color(0, 0.8509804, 0, 1),
 			"HeavyAttkYellow": Color(1, 0.83137256, 0.06666667, 1),
+			"RedDark": Color(0.43529412, 0.06666667, 0.06666667, 1),
 		},
 	}
 

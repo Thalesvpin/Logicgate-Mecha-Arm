@@ -1,6 +1,5 @@
 extends Node
 
-const RARITY_PLACEHOLDER = preload("uid://b8l68f41218q5")
 const TCC_ICON_RARITY_COMMON = preload("uid://kub74t2rwwrn")
 const TCC_ICON_RARITY_CORRUPTED = preload("uid://cmge5yrejrvvy")
 const TCC_ICON_RARITY_LEGENDARY = preload("uid://44dmfdhgq5e8")
@@ -40,6 +39,10 @@ var _seed: int = 0
 var random = PcgRandom.new()
 var execution_sequence: Array[int]
 enum Rarity {COMMON, RARE, ULTRA_RARE, LEGENDARY}
+var commom_rarity: int = 40
+var rare_rarity: int = 30
+var ultra_rare_rarity: int = 20
+var legendary_rarity: int = 10
 #signal _null
 
 #radial menu presets
@@ -149,7 +152,6 @@ var rarity_textures: Dictionary[Rarity, Texture2D] = {
 	#return template
 
 func _ready() -> void:
-	print('n rodou ne')
 	load_implants()
 	pass
 
@@ -200,6 +202,10 @@ func reset_wires_color() -> void:
 		if child.get_child(0).get_class() == 'Line2D':
 			child.default_color()
 
+var all_commom_corrupted: Array[Implant] = []
+var all_rare_corrupted: Array[Implant] = []
+var all_ultra_rare_corrupted: Array[Implant] = []
+var all_legendary_corrupted: Array[Implant] = []
 var all_commom: Array[Implant] = []
 var all_rare: Array[Implant] = []
 var all_ultra_rare: Array[Implant] = []
@@ -219,19 +225,6 @@ func load_implants() -> void:
 	
 	sort(tech_mods_path)
 	sort(bio_hacks_path)
-	print('\nall_commom: ', all_commom)
-	print('all_rare: ', all_rare)
-	print('all_ultra_rare: ', all_ultra_rare)
-	print('all_legendary: ', all_legendary)
-	print('tm_commom: ', tm_commom)
-	print('tm_rare: ', tm_rare)
-	print('tm_ultra_rare: ', tm_ultra_rare)
-	print('tm_legendary: ', tm_legendary)
-	print('bh_commom: ', bh_commom)
-	print('bh_rare: ', bh_rare)
-	print('bh_ultra_rare: ', bh_ultra_rare)
-	print('bh_legendary: ', bh_legendary)
-	print('\n')
 
 func sort(path: String) -> void:
 	sort_rarity(path)
@@ -250,15 +243,26 @@ func sort_rarity(path: String) -> void:
 		if !dir.current_is_dir() && file.ends_with(".tres"):
 			implant = load(path.path_join(file))
 			if implant is Implant:
-				match implant.rarity:
-					Rarity.COMMON:
-						all_commom.append(implant)
-					Rarity.RARE:
-						all_rare.append(implant)
-					Rarity.ULTRA_RARE:
-						all_ultra_rare.append(implant)
-					Rarity.LEGENDARY:
-						all_legendary.append(implant)
+				if implant.corrupted:
+					match implant.rarity:
+						Rarity.COMMON:
+							all_commom_corrupted.append(implant)
+						Rarity.RARE:
+							all_rare_corrupted.append(implant)
+						Rarity.ULTRA_RARE:
+							all_ultra_rare_corrupted.append(implant)
+						Rarity.LEGENDARY:
+							all_legendary_corrupted.append(implant)
+				else:
+					match implant.rarity:
+						Rarity.COMMON:
+							all_commom.append(implant)
+						Rarity.RARE:
+							all_rare.append(implant)
+						Rarity.ULTRA_RARE:
+							all_ultra_rare.append(implant)
+						Rarity.LEGENDARY:
+							all_legendary.append(implant)
 		file = dir.get_next()
 	dir.list_dir_end()
 
@@ -302,11 +306,11 @@ func get_random_implant(exclude: Array = [], type: Implant.Type = -1) -> Implant
 	var result
 	
 	chance = Global.random.next() % 100
-	if chance < 40:
+	if chance < commom_rarity:
 		list = all_commom if type == -1 else tm_commom if type == Implant.Type.TECH_MOD else bh_commom
-	elif chance < 70:
+	elif chance < commom_rarity + rare_rarity:
 		list = all_rare if type == -1 else tm_rare if type == Implant.Type.TECH_MOD else bh_rare
-	elif chance < 90:
+	elif chance < 100 - legendary_rarity:
 		list = all_ultra_rare if type == -1 else tm_ultra_rare if type == Implant.Type.TECH_MOD else tm_ultra_rare
 	else:
 		list = all_legendary if type == -1 else tm_legendary if type == Implant.Type.TECH_MOD else tm_legendary
@@ -314,6 +318,29 @@ func get_random_implant(exclude: Array = [], type: Implant.Type = -1) -> Implant
 	chance  = Global.random.next() % list.size()
 	if exclude.has(list[chance]):
 		result = get_random_implant(exclude, type)
+	else:
+		result = list[chance]
+	return result
+
+func get_random_corrupted_implant(exclude: Array = [], attempt: int = 0) -> Implant:
+	var list: Array[Implant]
+	var chance
+	var result
+	
+	while list.size() == 0:
+		chance = Global.random.next() % 100
+		if chance < commom_rarity:
+			list = all_commom_corrupted
+		elif chance < commom_rarity + rare_rarity:
+			list = all_rare_corrupted
+		elif chance < 100 - legendary_rarity:
+			list = all_ultra_rare_corrupted
+		else:
+			list = all_legendary_corrupted
+	
+	chance  = Global.random.next() % list.size()
+	if exclude.has(list[chance]) && attempt < 5:
+		result = get_random_corrupted_implant(exclude, attempt+1)
 	else:
 		result = list[chance]
 	return result

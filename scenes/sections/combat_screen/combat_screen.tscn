@@ -386,6 +386,8 @@ layout_mode = 2
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer2" unique_id=1930583407]
 own_world_3d = true
+handle_input_locally = false
+render_target_update_mode = 4
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer2/SubViewport" unique_id=1393624379]
 environment = SubResource("Environment_mjyp6")

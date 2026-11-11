@@ -1,17 +1,81 @@
 extends PanelContainer
 class_name Pack
 
-enum Content {ANY, TECH_MOD, BIO_HACK, CORRUPTED}
+@onready var price_label: RichTextLabel = $MarginContainer/VBoxContainer/PanelContainer2/Price
+@onready var title: RichTextLabel = $MarginContainer/VBoxContainer/PanelContainer/Title
+@onready var name_label: RichTextLabel = $MarginContainer/VBoxContainer/Name
+@onready var background: PanelContainer = $Background
 
-@export var price: int
-@export var items_amount: int = 3
-@export var choices_amount: int = 1
-@export var content: Content
-var chosen: Array[Implant]
+enum Content {ANY, TECH_MOD, BIO_HACK, CORRUPTED}
+enum Type {BIG, MINI, CORRUPTED}
+
+var price: int
+var items_amount: int = 3
+var choices_amount: int = 1
+var content: Content
+var drawn: Array[Implant]
+var _theme
+var bg_shader: ShaderMaterial
+
+func _ready() -> void:
+	bg_shader = background.material.duplicate() as ShaderMaterial
+	background.material = bg_shader
+
+func randomize_pack() -> void:
+	var chance = Global.random.next() % 100
+	if chance < 45:
+		_theme = Type.MINI
+		price = 200
+		title.text = 'PACOTE'
+		title.add_theme_color_override('default_color', Color.BLACK)
+		name_label.text = 'minipack\n.zip'
+		price_label.text = '$%d' % price
+		bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
+		var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
+		style.border_color = LivePalette.SHOP.PACKOUTLINE
+		add_theme_stylebox_override("panel", style)
+	elif chance < 75:
+		_theme = Type.BIG
+		price = 300
+		title.text = 'PACOTÃO'
+		title.add_theme_color_override('default_color', Color.BLACK)
+		name_label.text = 'megapack\n.zip'
+		price_label.text = '$%d' % price
+		bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
+		var border_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
+		border_style.border_color = LivePalette.SHOP.PACKOUTLINE
+		add_theme_stylebox_override("panel", border_style)
+	else:
+		_theme = Type.CORRUPTED
+		price = 300
+		title.text = 'P̴͉̘̞̃̓̀Ą̴̛̯͈̋̌͑̈C̵̮͓̣̭̋̽̔̕ͅO̷̜̟̓̔́T̶̛̰͓̦͂̏Ę̷͎̎́'
+		title.add_theme_color_override('default_color', LivePalette.GLOBAL.REDDARK)
+		name_label.text = 'pack_corrompido'
+		price_label.text = '$%d' % price
+		bg_shader.set_shader_parameter('start_color', LivePalette.GLOBAL.REDHEALTH)
+		var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
+		style.border_color = LivePalette.GLOBAL.REDDARK
+		add_theme_stylebox_override("panel", style)
+	randomize_options()
 
 func randomize_options() -> void:
+	var implant_count = 0
+	match _theme:
+		Type.MINI:
+			implant_count = 3
+		Type.BIG:
+			implant_count = 5
+		Type.CORRUPTED:
+			implant_count = 3
+			for i in range(implant_count):
+				drawn.append(Global.get_random_corrupted_implant(drawn))
+			return
+	for i in range(implant_count):
+		drawn.append(Global.get_random_implant(drawn))
+
+func randomize_options2() -> void:
 	var type: Implant.Type
-	chosen = []
+	drawn = []
 	match type:
 		Content.ANY:
 			type = -1
@@ -22,7 +86,7 @@ func randomize_options() -> void:
 		#Content.CORRUPTED:
 			#type = Implant.Type
 	for i in range(items_amount):
-		chosen.append(Global.get_random_implant(chosen, type))
+		drawn.append(Global.get_random_implant(drawn, type))
 
 func _on_buy_btn_button_up() -> void:
 	var effect = AddMoneyEffect.new()

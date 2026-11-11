@@ -35,8 +35,14 @@ custom_maximum_size = Vector2(200, -1)
 layout_mode = 2
 
 [node name="PackCardSmall" parent="Packs" unique_id=1025698057 instance=ExtResource("2_37gkg")]
+visible = false
 layout_mode = 2
 offset_transform_enabled = true
+offset_transform_position = Vector2(0, 13)
+offset_transform_visual_only = false
+
+[node name="PackCard3" parent="Packs" unique_id=1165079472 instance=ExtResource("1_37gkg")]
+layout_mode = 2
 offset_transform_position = Vector2(0, 13)
 offset_transform_visual_only = false
 
@@ -50,8 +56,14 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="PackCardSmall2" parent="Packs" unique_id=236396797 instance=ExtResource("2_37gkg")]
+visible = false
 layout_mode = 2
 offset_transform_enabled = true
+offset_transform_position = Vector2(0, 13)
+offset_transform_visual_only = false
+
+[node name="PackCard4" parent="Packs" unique_id=2042181406 instance=ExtResource("1_37gkg")]
+layout_mode = 2
 offset_transform_position = Vector2(0, 13)
 offset_transform_visual_only = false
 
@@ -61,7 +73,7 @@ custom_minimum_size = Vector2(200, 0)
 custom_maximum_size = Vector2(200, -1)
 layout_mode = 2
 
-[node name="PackCard2" parent="Packs" unique_id=1560850944 instance=ExtResource("1_37gkg")]
+[node name="PackCard2" parent="Packs" unique_id=640912437 instance=ExtResource("1_37gkg")]
 layout_mode = 2
 offset_transform_position = Vector2(0, 13)
 offset_transform_visual_only = false

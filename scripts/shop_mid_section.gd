@@ -12,6 +12,8 @@ extends PanelContainer
 @onready var pack_card_small_2: PanelContainer = $Packs/PackCardSmall2
 @onready var pack_card_2: Pack = $Packs/PackCard2
 @onready var reroll_card: PanelContainer = $Packs/RerollCard
+@onready var pack_card_3: Pack = $Packs/PackCard3
+@onready var pack_card_4: Pack = $Packs/PackCard4
 
 const OPEN_PACK_ITEM = preload("uid://8jbakdrf5e68")
 
@@ -25,15 +27,18 @@ func _ready() -> void:
 	EventBus.pack_item_chosen.connect(pack_item_chosen)
 	EventBus.open_shop.connect(refresh)
 	EventBus.reroll_shop.connect(reroll)
+	
+	pack_list.append(pack_card)
+	pack_list.append(pack_card_2)
+	pack_list.append(pack_card_3)
+	pack_list.append(pack_card_4)
 	for child in get_child(0).get_children():
 		fade_list2.append(child)
-		if child is Pack:
-			pack_list.append(child)
 
 func refresh() -> void:
 	print('shop mid refresh()')
 	for pack in pack_list:
-		pack.randomize_options()
+		pack.randomize_pack()
 
 func chose_pack(pack) -> void:
 	var fade_list = fade_list2.duplicate()
@@ -81,7 +86,7 @@ func open_pack(pack: PanelContainer) -> void:
 	for i in pack.items_amount:
 		var item = OPEN_PACK_ITEM.instantiate()
 		pack_items.add_child(item)
-		item.load_implant(pack.chosen[i])
+		item.load_implant(pack.drawn[i])
 
 func close_pack() -> void:
 	open_pack_holder.hide()
@@ -106,23 +111,23 @@ func show_packs() -> void:
 		match pack:
 			pack_card:
 				spacer.show()
-			pack_card_small:
+			pack_card_3:
 				spacer_small.show()
-			pack_card_small_2:
+			pack_card_4:
 				spacer_small_2.show()
 			pack_card_2:
 				spacer_2.show()
 
 func reset_packs_visual() -> void:
 	pack_card.show()
-	pack_card_small.show()
-	pack_card_small_2.show()
+	pack_card_3.show()
+	pack_card_4.show()
 	pack_card_2.show()
 	reroll_card.show()
 	
 	pack_card.modulate.a = 1.0
-	pack_card_small.modulate.a = 1.0
-	pack_card_small_2.modulate.a = 1.0
+	pack_card_3.modulate.a = 1.0
+	pack_card_4.modulate.a = 1.0
 	pack_card_2.modulate.a = 1.0
 	reroll_card.modulate.a = 1.0
 	

@@ -1,9 +1,7 @@
 [gd_scene format=3 uid="uid://cjqnenypvdvqd"]
 
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_bycc7"]
-[ext_resource type="LabelSettings" uid="uid://eu5rxff72spr" path="res://ui_elements/card_pack_price_tag.tres" id="1_pfw6h"]
 [ext_resource type="Script" uid="uid://fyw37f608gmu" path="res://scripts/pack_card.gd" id="1_q8owf"]
-[ext_resource type="LabelSettings" uid="uid://cs27xol0fwvf5" path="res://ui_elements/card_pack_title.tres" id="2_q8owf"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_ypclj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
@@ -12,10 +10,14 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
+border_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
+metadata/_live_palette_bindings = {
+"border_color": "2pjy5"
+}
 
 [sub_resource type="Shader" id="Shader_pfw6h"]
 code = "shader_type canvas_item;
@@ -101,9 +103,6 @@ metadata/_live_palette_bindings = {
 "bg_color": "2pjy5"
 }
 
-[sub_resource type="LabelSettings" id="LabelSettings_gtatl"]
-font_size = 22
-
 [node name="PackCard" type="PanelContainer" unique_id=1952346557]
 custom_minimum_size = Vector2(200, 365)
 custom_maximum_size = Vector2(200, 365)
@@ -118,7 +117,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 script = ExtResource("1_q8owf")
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=627834542]
+[node name="Background" type="PanelContainer" parent="." unique_id=627834542]
 material = SubResource("ShaderMaterial_q8owf")
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jdl66")
@@ -136,20 +135,28 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer2" unique_id=1726086677]
+[node name="Price" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PanelContainer2" unique_id=319971697]
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 35
 text = "$300"
-label_settings = ExtResource("1_pfw6h")
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1393595241]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1023113795]
+[node name="Title" type="RichTextLabel" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1355006702]
+z_index = 1
+custom_minimum_size = Vector2(0, 36)
+custom_maximum_size = Vector2(-1, 36)
+clip_contents = false
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 26
 text = "PACOTÃO"
-label_settings = ExtResource("2_q8owf")
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -159,14 +166,15 @@ size_flags_horizontal = 4
 texture = ExtResource("1_bycc7")
 stretch_mode = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1204067784]
+[node name="Name" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1815955343]
+custom_minimum_size = Vector2(0, 62)
+custom_maximum_size = Vector2(-1, 62)
 layout_mode = 2
-text = "doublebiopack
-.zip"
-label_settings = SubResource("LabelSettings_gtatl")
+theme_override_font_sizes/normal_font_size = 22
+text = "pack_corrompido"
+fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
 
 [node name="BuyBtn" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=819162156]
 custom_minimum_size = Vector2(134, 60)
