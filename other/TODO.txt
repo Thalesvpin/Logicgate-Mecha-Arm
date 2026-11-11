@@ -19,7 +19,6 @@ bloquear inputs e outputs vazios
 -SCRIPT
 montar lista de implantes corrompidos no global
 	usar essa lista em pack_card.gd
-FAZER BTN DE USO DO IMPLANTE FUNCIONAR
 ===================
 checar se vai rodar is_met() antes ou dps de aplicar o dano
 

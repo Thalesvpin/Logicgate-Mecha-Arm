@@ -11,7 +11,7 @@ extends PanelContainer
 @onready var extended_versions: VBoxContainer = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions
 @onready var rarity_outline: PanelContainer = $MarginContainer/RarityOutline
 @onready var activator_holder: HBoxContainer = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder
-@onready var activation_count: Label = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivationUses/ActivationCount
+@onready var activation_count: RichTextLabel = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivationUses/ActivationCount
 @onready var rarity_texture_compact: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/RarityTextureCompact
 @onready var corrupted_texture_compact: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/CorruptedTextureCompact
 @onready var activation_uses_compact: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact
@@ -154,7 +154,17 @@ func _on_resized() -> void:
 			set_template(3)
 
 func _on_activator_btn_button_up() -> void:
-	print('executa o implante')
+	if uses_amount > 0:
+		uses_amount -= 1
+		activation_count.text = str(uses_amount)
+		for module in resource.config:
+			for effect in module.effect:
+				effect.apply()
+	if uses_amount == 0:
+		if type == Type.TECH_MOD:
+			Global.implant_manager.remove_tech_mod(self)
+		if type == Type.BIO_HACK:
+			Global.implant_manager.remove_bio_hack(self)
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

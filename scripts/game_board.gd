@@ -171,18 +171,19 @@ func game_over(is_victory: bool) -> void:
 const TECHMOD_TEST = preload("uid://3gmr422layic")
 const TM_6 = preload("uid://dm2y0nuwvhshu")
 const BH_1 = preload("uid://cdfw1je21a364")
+const BH_7 = preload("uid://c24lfewwtgac8")
 
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Y"):
-		EventBus.self_damage.emit(2)
+		EventBus.self_damage.emit(25)
 		pass
 	if event.is_action_pressed("H"):
 		var ef = ChargeHeavyAttackEffect.new()
 		ef.amount = 1
 		ef.apply()
 	if event.is_action_pressed("B"):
-		Global.implant_manager.add_bio_hack(BH_1)
+		Global.implant_manager.add_bio_hack(BH_7)
 	if event.is_action_pressed("T"):
 		Global.implant_manager.add_tech_mod(TM_6)
 	if event.is_action_pressed("S"):

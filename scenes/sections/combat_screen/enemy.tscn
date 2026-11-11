@@ -344,6 +344,7 @@ tooltip_text = "aaaaaaaaaaaaaaaaaaa"
 texture = ExtResource("1_87g8f")
 
 [node name="TurnIndicator" type="TextureRect" parent="." unique_id=2041767468]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5

@@ -40,10 +40,10 @@ func add_bio_hack(implant: Implant):
 
 func remove_tech_mod(implant: Node):
 	implant.resource.revert()
-	Global.tech_mods_container.remove_implant(implant)
 	active_tech_mods.erase(implant.resource)
+	Global.tech_mods_container.remove_implant(implant)
 
 func remove_bio_hack(implant: Node):
-	implant.revert()
-	Global.bio_hacks_container.remove_implant(implant)
+	implant.resource.revert()
 	active_bio_hacks.erase(implant.resource)
+	Global.bio_hacks_container.remove_implant(implant)

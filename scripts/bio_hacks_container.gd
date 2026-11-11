@@ -23,6 +23,7 @@ func add_implant(resource: Implant):
 
 func remove_implant(implant) -> void:
 	implants_holder.remove_child(implant)
+	
 	update_counter()
 
 func update_counter() -> void:
