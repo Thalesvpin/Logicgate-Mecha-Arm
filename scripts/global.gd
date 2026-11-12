@@ -45,6 +45,32 @@ var ultra_rare_rarity: int = 20
 var legendary_rarity: int = 10
 #signal _null
 
+#region IMPLANT LISTS
+var all_commom_corrupted: Array[Implant] = []
+var all_rare_corrupted: Array[Implant] = []
+var all_ultra_rare_corrupted: Array[Implant] = []
+var all_legendary_corrupted: Array[Implant] = []
+var all_commom: Array[Implant] = []
+var all_rare: Array[Implant] = []
+var all_ultra_rare: Array[Implant] = []
+var all_legendary: Array[Implant] = []
+var tm_commom: Array[Implant] = []
+var tm_rare: Array[Implant] = []
+var tm_ultra_rare: Array[Implant] = []
+var tm_legendary: Array[Implant] = []
+var bh_commom: Array[Implant] = []
+var bh_rare: Array[Implant] = []
+var bh_ultra_rare: Array[Implant] = []
+var bh_legendary: Array[Implant] = []
+#endregion
+#region ENEMY LISTS
+var boss_enemies: Array[EnemyConfig]
+var minion_enemies: Array[EnemyConfig]
+var weak_enemies: Array[EnemyConfig]
+var medium_enemies: Array[EnemyConfig]
+var strong_enemies: Array[EnemyConfig]
+#endregion
+
 #radial menu presets
 #display order: ↑ → ↓ ←
 var gate_options = [
@@ -126,7 +152,7 @@ var rarity_textures: Dictionary[Rarity, Texture2D] = {
 	Rarity.ULTRA_RARE: TCC_ICON_RARITY_ULTRA_RARE,
 	Rarity.LEGENDARY: TCC_ICON_RARITY_LEGENDARY,
 }
-
+var enemies_path: String = "res://resources/enemies/"
 #var action_attack: Dictionary = new_action(0, true, _null)
 #var action_heal_shield: Dictionary = new_action(0, true, _null)
 #var action_self_damage: Dictionary = new_action(0, true, _null)
@@ -153,6 +179,7 @@ var rarity_textures: Dictionary[Rarity, Texture2D] = {
 
 func _ready() -> void:
 	load_implants()
+	load_enemies()
 	pass
 
 func pause_game(value: bool) -> void:
@@ -201,23 +228,6 @@ func reset_wires_color() -> void:
 	for child in circuit_editor.wire_layer.get_children():
 		if child.get_child(0).get_class() == 'Line2D':
 			child.default_color()
-
-var all_commom_corrupted: Array[Implant] = []
-var all_rare_corrupted: Array[Implant] = []
-var all_ultra_rare_corrupted: Array[Implant] = []
-var all_legendary_corrupted: Array[Implant] = []
-var all_commom: Array[Implant] = []
-var all_rare: Array[Implant] = []
-var all_ultra_rare: Array[Implant] = []
-var all_legendary: Array[Implant] = []
-var tm_commom: Array[Implant] = []
-var tm_rare: Array[Implant] = []
-var tm_ultra_rare: Array[Implant] = []
-var tm_legendary: Array[Implant] = []
-var bh_commom: Array[Implant] = []
-var bh_rare: Array[Implant] = []
-var bh_ultra_rare: Array[Implant] = []
-var bh_legendary: Array[Implant] = []
 
 func load_implants() -> void:
 	var tech_mods_path: String = "res://resources/implants/techmods/"
@@ -344,3 +354,28 @@ func get_random_corrupted_implant(exclude: Array = [], attempt: int = 0) -> Impl
 	else:
 		result = list[chance]
 	return result
+
+func load_enemies() -> void:
+	var dir := DirAccess.open(enemies_path)
+	if dir == null:
+		return
+	dir.list_dir_begin()
+	
+	var file := (dir.get_next())
+	var enemy
+	while file != "":
+		if !dir.current_is_dir() && file.ends_with(".tres"):
+			enemy = load(enemies_path.path_join(file))
+			if !enemy.is_boss:
+				minion_enemies.append(enemy)
+				match enemy.status_preset:
+					Enemy.Strength.WEAK:
+						weak_enemies.append(enemy)
+					Enemy.Strength.MEDIUM:
+						medium_enemies.append(enemy)
+					Enemy.Strength.STRONG:
+						strong_enemies.append(enemy)
+			else:
+				boss_enemies.append(enemy)
+		file = dir.get_next()
+	dir.list_dir_end()

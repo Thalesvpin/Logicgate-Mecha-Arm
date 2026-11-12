@@ -90,18 +90,32 @@ func attack() -> void:
 	EventBus.damage_taken.emit(stats[Stats.List.BASE_ATTACK_DAMAGE])
 
 func set_stats() -> void:
-	stats[Stats.List.MAX_HEALTH] = config.health
-	stats[Stats.List.CURRENT_HEALTH] = config.health
-	stats[Stats.List.BASE_HEAL] = config.heal
-	stats[Stats.List.MAX_SHIELD] = config.shield
-	stats[Stats.List.CURRENT_SHIELD] = config.shield
-	stats[Stats.List.BASE_SHIELD_REPAIR] = config.shield_repair
-	stats[Stats.List.BASE_ATTACK_DAMAGE] = config.base_damage
-	stats[Stats.List.CRITIC_CHANCE] = 0
-	stats[Stats.List.CRITIC_MULTIPLIER] = 0
-	stats[Stats.List.MITIGATION_PERCENT] = config.mitigation
-	stats[Stats.List.CURRENT_ELEMENTALS] = null
-	stats[Stats.List.CURRENT_AFFLICTED_ELEMENT] = null
+	if config.is_boss:
+		stats[Stats.List.MAX_HEALTH] = Enemy.status_boss[Stats.List.MAX_HEALTH]
+		stats[Stats.List.CURRENT_HEALTH] = stats[Stats.List.MAX_HEALTH]
+		stats[Stats.List.BASE_HEAL] = Enemy.status_boss[Stats.List.BASE_HEAL]
+		stats[Stats.List.MAX_SHIELD] = Enemy.status_boss[Stats.List.MAX_SHIELD]
+		stats[Stats.List.CURRENT_SHIELD] = stats[Stats.List.MAX_SHIELD]
+		stats[Stats.List.BASE_SHIELD_REPAIR] = Enemy.status_boss[Stats.List.BASE_SHIELD_REPAIR]
+		stats[Stats.List.BASE_ATTACK_DAMAGE] = Enemy.status_boss[Stats.List.BASE_ATTACK_DAMAGE]
+		stats[Stats.List.CRITIC_CHANCE] = 0
+		stats[Stats.List.CRITIC_MULTIPLIER] = 0
+		stats[Stats.List.MITIGATION_PERCENT] = Enemy.status_boss[Stats.List.MITIGATION_PERCENT]
+		stats[Stats.List.CURRENT_ELEMENTALS] = null
+		stats[Stats.List.CURRENT_AFFLICTED_ELEMENT] = null
+	else:
+		stats[Stats.List.MAX_HEALTH] = Enemy.status_preset[config.status_preset][Stats.List.MAX_HEALTH]
+		stats[Stats.List.CURRENT_HEALTH] = stats[Stats.List.MAX_HEALTH]
+		stats[Stats.List.BASE_HEAL] = Enemy.status_preset[config.status_preset][Stats.List.BASE_HEAL]
+		stats[Stats.List.MAX_SHIELD] = Enemy.status_preset[config.status_preset][Stats.List.MAX_SHIELD]
+		stats[Stats.List.CURRENT_SHIELD] = stats[Stats.List.MAX_SHIELD]
+		stats[Stats.List.BASE_SHIELD_REPAIR] = Enemy.status_preset[config.status_preset][Stats.List.BASE_SHIELD_REPAIR]
+		stats[Stats.List.BASE_ATTACK_DAMAGE] = Enemy.status_preset[config.status_preset][Stats.List.BASE_ATTACK_DAMAGE]
+		stats[Stats.List.CRITIC_CHANCE] = 0
+		stats[Stats.List.CRITIC_MULTIPLIER] = 0
+		stats[Stats.List.MITIGATION_PERCENT] = Enemy.status_preset[config.status_preset][Stats.List.MITIGATION_PERCENT]
+		stats[Stats.List.CURRENT_ELEMENTALS] = null
+		stats[Stats.List.CURRENT_AFFLICTED_ELEMENT] = null
 	
 	texture_rect.texture = config.texture
 	actions_list = config.actions_list

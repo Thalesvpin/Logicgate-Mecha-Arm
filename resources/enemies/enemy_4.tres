@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyConfig" format=3 uid="uid://3bajag5tjsun"]
+
+[ext_resource type="Script" uid="uid://cfvuju87aunm3" path="res://scripts/classes/enemy_config.gd" id="1_usqcb"]
+[ext_resource type="Texture2D" uid="uid://cyf1t07um23p6" path="res://assets/CHEF.png" id="2_8m0wa"]
+
+[resource]
+script = ExtResource("1_usqcb")
+_name = "enemy 4"
+texture = ExtResource("2_8m0wa")
+status_preset = 1
+actions_list = Array[int]([0])
+actions_weight = Array[float]([0.0])
+actions_per_turn = 1
+metadata/_custom_type_script = "uid://cfvuju87aunm3"

@@ -81,6 +81,7 @@ func center_enemy(enemy):
 
 	enemy.move(old_pos_enemy)
 	front_enemy.move(old_pos_front)
+	show_enemy_name(enemy)
 
 func connect_signals() -> void:
 	#EventBus.enemy_defeated.connect(enemy_defeated)
@@ -129,19 +130,47 @@ func get_enemy(_position: EnemyPosition.Position):
 		if child.get_class() == "Control":
 			return child
 
-const ENEMY_TEST_3 = preload("uid://bmtwmbaxdbb5b")
-const ENEMY_TEST_2 = preload("uid://btj4l0vpo5o5m")
-const ENEMY_TEST = preload("uid://dh7i6kpmm4sh8")
-
-func get_random_enemies(amount:int, unique:bool = true, boss:bool = false) -> Array:
+func get_random_enemies(amount:int, unique:bool = true, boss:bool = false, attempts: int = 0) -> Array:
 	var result: Array = []
 	var enemy: EnemyConfig
 	for i in range(amount):
-		#randomize here
+		var chance = Global.random.next()
+		if boss:
+			enemy = Global.boss_enemies[chance%Global.boss_enemies.size()]
+		else:
+			match Global.run_stats.current_battle:
+				1:
+					if Global.run_stats.current_firewall == 1:
+						chance = chance % Global.weak_enemies.size()
+						enemy = Global.weak_enemies[chance]
+					else:
+						chance = chance % 100
+						if chance < 65:
+							enemy = Global.weak_enemies[chance%Global.weak_enemies.size()]
+						else:
+							enemy = Global.medium_enemies[chance%Global.medium_enemies.size()]
+				2:
+					chance = chance % 100
+					if chance < 25:
+						enemy = Global.weak_enemies[chance%Global.weak_enemies.size()]
+					elif chance < 75:
+						enemy = Global.medium_enemies[chance%Global.medium_enemies.size()]
+					else:
+						enemy = Global.strong_enemies[chance%Global.strong_enemies.size()]
+				3:
+					chance = chance % 100
+					if chance < 40:
+						enemy = Global.weak_enemies[chance%Global.weak_enemies.size()]
+					elif chance < 75:
+						enemy = Global.medium_enemies[chance%Global.medium_enemies.size()]
+					else:
+						enemy = Global.strong_enemies[chance%Global.strong_enemies.size()]
 		
-		if unique && result.has(enemy):
-			#randomize again
-			pass
+		while unique && result.has(enemy):
+			attempts += 1
+			enemy = get_random_enemies(1, false, boss, attempts)[0]
+			if attempts > 10:
+				break
 		
 		result.append(enemy)
 	return result
@@ -151,15 +180,21 @@ func add_enemies() -> void:
 	Global.turn_manager.add_to_turn_sequence(enemy_l)
 	Global.turn_manager.add_to_turn_sequence(enemy_r)
 	
+	#enemy_l.config = ENEMY_TEST
+	#enemy_r.config = ENEMY_TEST_3
+	#enemy_c.config = ENEMY_TEST_2
 	
-	enemy_l.config = ENEMY_TEST
-	enemy_r.config = ENEMY_TEST_3
-	enemy_c.config = ENEMY_TEST_2
-	#var random_enemy_list = get_random_enemies(3)
-	#enemy_l.config = random_enemy_list[0]
-	#enemy_r.config = random_enemy_list[1]
-	#enemy_c.config = random_enemy_list[2]
-	
+	if Global.run_stats.current_battle % 3:
+		var random_enemy_list = get_random_enemies(3)
+		enemy_l.config = random_enemy_list[0]
+		enemy_r.config = random_enemy_list[1]
+		enemy_c.config = random_enemy_list[2]
+	else:
+		var random_enemy_list = get_random_enemies(2)
+		random_enemy_list.append(get_random_enemies(1, true, true)[0])
+		enemy_l.config = random_enemy_list[0]
+		enemy_r.config = random_enemy_list[1]
+		enemy_c.config = random_enemy_list[2]
 	
 	enemy_l._position = EnemyPosition.Position.LEFT
 	enemy_r._position = EnemyPosition.Position.RIGHT
@@ -174,7 +209,7 @@ func add_enemies() -> void:
 	left_enemy_container.add_child(left_enemy_status_bar)
 	right_enemy_container.add_child(right_enemy_status_bar)
 	center_enemy_container.add_child(center_enemy_status_bar)
-
+	
 	left_enemy_container.add_child(enemy_l)
 	right_enemy_container.add_child(enemy_r)
 	center_enemy_container.add_child(enemy_c)
@@ -182,7 +217,10 @@ func add_enemies() -> void:
 	left_enemy_status_bar.update()
 	right_enemy_status_bar.update()
 	center_enemy_status_bar.update()
+	show_enemy_name(enemy_c)
 
+func show_enemy_name(enemy) -> void:
+	enemy_name_bar.set_display_name(enemy.config._name)
 
 func flash_red(arg) -> void:
 	var style: StyleBoxFlat = red_dmg_flash.get_theme_stylebox("panel").duplicate()

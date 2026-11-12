@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyConfig" format=3 uid="uid://cbpyflhv6qhky"]
+
+[ext_resource type="Script" uid="uid://cfvuju87aunm3" path="res://scripts/classes/enemy_config.gd" id="1_2ye6j"]
+[ext_resource type="Texture2D" uid="uid://yiixgalslpim" path="res://assets/ENFERMEIRA.png" id="2_8a3aj"]
+
+[resource]
+script = ExtResource("1_2ye6j")
+_name = "enemy 3"
+texture = ExtResource("2_8a3aj")
+actions_list = Array[int]([0])
+actions_weight = Array[float]([0.0])
+actions_per_turn = 1
+metadata/_custom_type_script = "uid://cfvuju87aunm3"

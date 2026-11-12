@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyConfig" format=3 uid="uid://cg8lj4xcdwtv8"]
+
+[ext_resource type="Script" uid="uid://cfvuju87aunm3" path="res://scripts/classes/enemy_config.gd" id="1_taojo"]
+[ext_resource type="Texture2D" uid="uid://wab42d74fop" path="res://assets/OFFICEBOY.png" id="2_uc556"]
+
+[resource]
+script = ExtResource("1_taojo")
+_name = "enemy 5"
+texture = ExtResource("2_uc556")
+actions_list = Array[int]([0])
+actions_weight = Array[float]([0.0])
+actions_per_turn = 1
+metadata/_custom_type_script = "uid://cfvuju87aunm3"

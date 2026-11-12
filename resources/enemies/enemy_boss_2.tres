@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyConfig" format=3 uid="uid://dq0eqwot36wbo"]
+
+[ext_resource type="Script" uid="uid://cfvuju87aunm3" path="res://scripts/classes/enemy_config.gd" id="1_yiv4l"]
+[ext_resource type="Texture2D" uid="uid://c3hikrn434n32" path="res://assets/SARGENTOCORONELGENERAL.png" id="2_rs3wd"]
+
+[resource]
+script = ExtResource("1_yiv4l")
+_name = "boss 2"
+texture = ExtResource("2_rs3wd")
+actions_list = Array[int]([0, 2])
+actions_weight = Array[float]([70.0, 30.0])
+actions_per_turn = 1
+is_boss = true
+metadata/_custom_type_script = "uid://cfvuju87aunm3"
