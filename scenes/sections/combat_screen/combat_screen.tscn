@@ -485,7 +485,7 @@ size_flags_vertical = 8
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8ur3c")
 
-[node name="ChargedAttackPanel" parent="SubViewportContainer/SubViewport/PanelContainer/RightBottomPanels" unique_id=1885342446 instance=ExtResource("4_iibci")]
+[node name="HeavyAttackPanel" parent="SubViewportContainer/SubViewport/PanelContainer/RightBottomPanels" unique_id=1885342446 instance=ExtResource("4_iibci")]
 layout_mode = 2
 
 [node name="LeftBottomPanels" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1617303371]

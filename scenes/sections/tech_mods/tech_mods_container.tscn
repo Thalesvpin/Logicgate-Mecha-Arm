@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b2lwrx75npshp"]
 
-[ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_1lvlk"]
 [ext_resource type="LabelSettings" uid="uid://du6amkwtjx7mk" path="res://ui_elements/ui_list_titles.tres" id="1_7qnlp"]
 [ext_resource type="Script" uid="uid://bl6ay1dh4jaea" path="res://scripts/tech_mods_container.gd" id="1_ihy3r"]
+[ext_resource type="Texture2D" uid="uid://s0uva87wtgws" path="res://assets/icon_mini_techmods.png" id="3_pkk5a"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="4_ihy3r"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="5_jnc7b"]
 [ext_resource type="Shader" uid="uid://chr5yh64fe4ws" path="res://shaders/CRTpass2.gdshader" id="6_j5bc0"]
@@ -243,6 +243,11 @@ shader_parameter/use_v_blanking = false
 shader_parameter/v_blanking_speed = 1.0
 shader_parameter/v_blanking_bar_size = 0.1
 shader_parameter/v_blanking_tearing = 0.2
+shader_parameter/use_h_sync_loss = false
+shader_parameter/h_sync_strength = 0.15
+shader_parameter/h_sync_frequency = 3.0
+shader_parameter/h_sync_speed = 2.0
+shader_parameter/h_sync_threshold = 0.8
 shader_parameter/use_tape_crease = false
 shader_parameter/crease_speed = 1.0
 shader_parameter/crease_interval = 3.0
@@ -266,6 +271,9 @@ shader_parameter/sharpness = 0.6666667
 shader_parameter/animate_sharpness = false
 shader_parameter/sharpness_anim_speed = 1.0
 shader_parameter/sharpness_anim_amplitude = 1.0
+shader_parameter/use_analog_clipping = false
+shader_parameter/analog_pedestal = 0.0
+shader_parameter/analog_gain = 1.0
 shader_parameter/use_yiq_bleed = false
 shader_parameter/yiq_bleed_spread = 1.0
 shader_parameter/yiq_chroma_offset = 0.0
@@ -288,6 +296,9 @@ shader_parameter/cross_luminance_strength = 0.5
 shader_parameter/use_dpg = false
 shader_parameter/phase_shift = 0.0
 shader_parameter/gain_multiplier = 0.0
+shader_parameter/use_phase_drift = false
+shader_parameter/phase_drift_strength = 0.1
+shader_parameter/phase_drift_speed = 5.0
 shader_parameter/use_signal_ringing = false
 shader_parameter/ringing_strength = 0.2
 shader_parameter/ringing_frequency = 20.0
@@ -509,8 +520,9 @@ custom_minimum_size = Vector2(25, 25)
 custom_maximum_size = Vector2(25, 25)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("1_1lvlk")
-expand_mode = 1
+texture = ExtResource("3_pkk5a")
+expand_mode = 5
+stretch_mode = 5
 
 [node name="ImplantCount" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1917093783]
 layout_mode = 2

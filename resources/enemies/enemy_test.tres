@@ -1,16 +1,12 @@
 [gd_resource type="Resource" script_class="EnemyConfig" format=3 uid="uid://dh7i6kpmm4sh8"]
 
 [ext_resource type="Script" uid="uid://cfvuju87aunm3" path="res://scripts/classes/enemy_config.gd" id="1_14r4h"]
-[ext_resource type="Texture2D" uid="uid://yiixgalslpim" path="res://assets/ENFERMEIRA.png" id="2_lea6h"]
+[ext_resource type="Texture2D" uid="uid://tdm62mawpb5d" path="res://assets/skeleton.png" id="2_lea6h"]
 
 [resource]
 script = ExtResource("1_14r4h")
 _name = "DONA MARIA"
 texture = ExtResource("2_lea6h")
-health = 15
-shield = 2
-base_damage = 10
-mitigation = 10.0
 actions_list = Array[int]([0, 3])
 actions_weight = Array[float]([90.0, 10.0])
 actions_per_turn = 2

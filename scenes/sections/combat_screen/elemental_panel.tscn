@@ -254,6 +254,11 @@ shader_parameter/scanline_beam_width_min = 0.25
 shader_parameter/scanline_beam_width_max = 1.0
 shader_parameter/scanline_drift_speed = 0.0
 shader_parameter/scanline_cutoff = 0.0
+shader_parameter/use_decoupled_scanlines = false
+shader_parameter/decoupled_use_native_res = true
+shader_parameter/decoupled_vertical_res = 480.0
+shader_parameter/decoupled_dynamic_thickness = true
+shader_parameter/decoupled_beam_opacity = 1.0
 shader_parameter/interlaced_strength = 0.0
 shader_parameter/animate_interlaced = false
 shader_parameter/interlaced_anim_speed = 1.0
@@ -268,6 +273,11 @@ shader_parameter/use_v_blanking = false
 shader_parameter/v_blanking_speed = 1.0
 shader_parameter/v_blanking_bar_size = 0.1
 shader_parameter/v_blanking_tearing = 0.2
+shader_parameter/use_h_sync_loss = false
+shader_parameter/h_sync_strength = 0.15
+shader_parameter/h_sync_frequency = 3.0
+shader_parameter/h_sync_speed = 2.0
+shader_parameter/h_sync_threshold = 0.8
 shader_parameter/use_tape_crease = false
 shader_parameter/crease_speed = 1.0
 shader_parameter/crease_interval = 3.0
@@ -291,6 +301,9 @@ shader_parameter/sharpness = 1.0
 shader_parameter/animate_sharpness = false
 shader_parameter/sharpness_anim_speed = 1.0
 shader_parameter/sharpness_anim_amplitude = 1.0
+shader_parameter/use_analog_clipping = false
+shader_parameter/analog_pedestal = 0.0
+shader_parameter/analog_gain = 1.0
 shader_parameter/use_yiq_bleed = true
 shader_parameter/yiq_bleed_spread = 2.26500010432762
 shader_parameter/yiq_chroma_offset = 1.3190003001525
@@ -313,6 +326,9 @@ shader_parameter/cross_luminance_strength = 0.5
 shader_parameter/use_dpg = false
 shader_parameter/phase_shift = 0.0
 shader_parameter/gain_multiplier = 0.0
+shader_parameter/use_phase_drift = false
+shader_parameter/phase_drift_strength = 0.1
+shader_parameter/phase_drift_speed = 5.0
 shader_parameter/use_signal_ringing = true
 shader_parameter/ringing_strength = 0.2
 shader_parameter/ringing_frequency = 20.0
@@ -433,6 +449,7 @@ offset_right = 370.0
 offset_bottom = 150.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
+mouse_filter = 2
 script = ExtResource("1_srban")
 charged_offset = 155
 elemental_offset = 155
@@ -450,6 +467,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_u22wb")
 
 [node name="Control" type="Control" parent="PanelContainer" unique_id=167225928]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/Control" unique_id=1173568756]
 custom_minimum_size = Vector2(200, 122)
@@ -460,15 +478,18 @@ offset_top = 6.0
 offset_right = 212.0
 offset_bottom = 128.0
 size_flags_horizontal = 8
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_srban")
 
 [node name="Mask" type="PanelContainer" parent="PanelContainer/Control/PanelContainer2" unique_id=2141913348]
 clip_children = 1
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_l7h74")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="PanelContainer/Control/PanelContainer2/Mask" unique_id=224996970]
 layout_mode = 2
+mouse_filter = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer" unique_id=1752220368]
@@ -483,6 +504,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.09789304, 0.033154253, 0, 1)
 
 [node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG" unique_id=455825662]
@@ -515,10 +537,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="CRT1" type="ColorRect" parent="PanelContainer/Control/PanelContainer2/Mask" unique_id=1721252060]
 material = SubResource("ShaderMaterial_ul2j5")
 layout_mode = 2
+mouse_filter = 2
 
 [node name="GridContainer" type="GridContainer" parent="PanelContainer/Control" unique_id=954476235]
 layout_mode = 0
@@ -526,6 +550,7 @@ offset_left = 223.0
 offset_top = 11.0
 offset_right = 339.0
 offset_bottom = 127.0
+mouse_filter = 2
 columns = 2
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/Control/GridContainer" unique_id=1280458586]
