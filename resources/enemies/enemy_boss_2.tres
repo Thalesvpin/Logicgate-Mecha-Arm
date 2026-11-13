@@ -7,8 +7,8 @@
 script = ExtResource("1_yiv4l")
 _name = "boss 2"
 texture = ExtResource("2_rs3wd")
-actions_list = Array[int]([0, 2])
-actions_weight = Array[float]([70.0, 30.0])
-actions_per_turn = 1
+actions_list = Array[int]([0, 2, 3])
+actions_weight = Array[float]([55.0, 30.0, 15.0])
+actions_per_turn = 3
 is_boss = true
 metadata/_custom_type_script = "uid://cfvuju87aunm3"

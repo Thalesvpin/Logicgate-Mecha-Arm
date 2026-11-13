@@ -26,7 +26,7 @@ func randomize_pack() -> void:
 	if chance < 45:
 		_theme = Type.MINI
 		price = 200
-		items_amount = 3
+		items_amount = 2
 		choices_amount = 1
 		title.text = 'PACOTE'
 		title.add_theme_color_override('default_color', Color.BLACK)

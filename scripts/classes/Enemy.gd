@@ -50,11 +50,11 @@ static var status_preset: Dictionary[Strength, Dictionary] = {
 }
 
 static var status_boss: Dictionary[Stats.List, Variant] = {
-	Stats.List.MAX_HEALTH: 500,
+	Stats.List.MAX_HEALTH: 700,
 	Stats.List.BASE_HEAL: 0,
 	Stats.List.MAX_SHIELD: 0,
 	Stats.List.BASE_SHIELD_REPAIR: 0,
-	Stats.List.BASE_ATTACK_DAMAGE: 250,
+	Stats.List.BASE_ATTACK_DAMAGE: 200,
 	Stats.List.CRITIC_CHANCE: 0,
 	Stats.List.CRITIC_MULTIPLIER: 0,
 	Stats.List.MITIGATION_PERCENT: 0,

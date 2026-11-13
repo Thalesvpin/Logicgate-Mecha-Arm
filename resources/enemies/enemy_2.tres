@@ -9,6 +9,6 @@ _name = "enemy 2"
 texture = ExtResource("2_lfhi6")
 status_preset = 2
 actions_list = Array[int]([0])
-actions_weight = Array[float]([0.0])
+actions_weight = Array[float]([100.0])
 actions_per_turn = 1
 metadata/_custom_type_script = "uid://cfvuju87aunm3"

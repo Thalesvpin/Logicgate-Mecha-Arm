@@ -2,6 +2,22 @@ Inimigo
 vida = 200 - 300 - 400 (x1.5 por firewall layer)
 dano base = 100 - 150 - 200 (x1.5 por firewall layer)
 
+BOSSES
+vida = 700
+dano base = 200
+heal = 10%
+shield repair = 1
+shield max = 5
+mitigation = 10%
+	 
+	Boss Bodybuilder
+	quantidade de ações = 2
+	ações = [attack, cura]
+
+	Boss General
+	quantidade de ações = 3
+	ações = [attack, cura, reparar escudo]
+
 player
 vida = 1000 (+200)
 dano base = 100 (+20 a 25)

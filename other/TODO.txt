@@ -2,6 +2,9 @@
 	-randomizar inimigos (com peso de inimigos)
 	-aplicar dificuldade por batalha
 	-criar batalha com boss
+	-tooltip customizavel
+	-pacote corrompido nem sempre vem corrompido
+	-reroll cai em loop infinito dps de alguns cliques
 
 
 definir preços
@@ -11,6 +14,7 @@ THALES:
 nomes e icones dos implantes
 -LOJA
 criar scipt generico pra usar o color remap no stats viewport
+resize da loja quebra se algo ja tiver recebido resize
 -SHADER
 -COMBATE
 barras de stats psicar branco ao reduzir
@@ -28,6 +32,23 @@ checar se vai rodar is_met() antes ou dps de aplicar o dano
 dano do ataque = dano base * mult de ataque
 ============================
 centralizar os inimigos verticalmente
+separar techmods e biohacks em seus respectivos lados dentro de um pacote
+"escolha ATE x implantes"
+add icone de bio hack e tech mod nos itens do pacote
+
+PACOTES
+mini mix
+big mix
+corrupted mix
+mini TM
+big TM
+min BH
+big BH
+
+
+
+TEXTO
+falar q os implantes mudam de preço de acordo com a raridade
 
 
 
