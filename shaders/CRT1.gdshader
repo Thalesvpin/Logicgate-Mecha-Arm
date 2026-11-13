@@ -59,6 +59,8 @@ uniform float scanline_beam_width_min : hint_range(0.1, 1.0) = 0.25;
 uniform float scanline_beam_width_max : hint_range(0.5, 3.0) = 1.0;
 uniform float scanline_drift_speed : hint_range(-5.0, 5.0) = 0.0;
 uniform float scanline_cutoff : hint_range(0.0, 1.0) = 0.0;
+uniform bool use_rgb_scanline_phase = false;
+uniform float rgb_scanline_phase_offset : hint_range(-0.5, 0.5) = 0.15;
 
 group_uniforms Scanlines.Artistic_Decoupling;
 uniform bool use_decoupled_scanlines = false;
@@ -408,6 +410,20 @@ uniform float glitch_anim_amplitude = 1.0;
 uniform float glitch_rate : hint_range(0.0, 1.0) = 0.05;
 uniform float glitch_size : hint_range(0.01, 1.0) = 0.05;
 
+group_uniforms Digital_Glitch_FX;
+uniform bool use_macroblock_bitrot = false;
+uniform float macroblock_rate : hint_range(0.0, 1.0) = 0.08;
+uniform float macroblock_scale : hint_range(4.0, 64.0) = 16.0;
+uniform float macroblock_speed : hint_range(0.0, 30.0) = 8.0;
+uniform float macroblock_uv_shift : hint_range(0.0, 0.2) = 0.04;
+uniform float macroblock_chroma_shift : hint_range(0.0, 1.0) = 0.5;
+
+uniform bool use_datamosh_stretch = false;
+uniform float datamosh_rate : hint_range(0.0, 1.0) = 0.06;
+uniform float datamosh_band_scale : hint_range(2.0, 40.0) = 12.0;
+uniform float datamosh_speed : hint_range(0.0, 20.0) = 4.0;
+uniform float datamosh_stretch_amount : hint_range(0.0, 1.0) = 0.65;
+
 group_uniforms Tape_Dropouts;
 uniform bool use_tape_dropouts = false;
 uniform float dropout_strength : hint_range(0.0, 1.0) = 1.0;
@@ -435,7 +451,67 @@ uniform float noise_lacunarity : hint_range(0.1, 5.0) = 2.0;
 uniform float noise_gain : hint_range(0.1, 1.0) = 0.5;
 uniform float noise_base_scale : hint_range(0.1, 10.0) = 1.0;
 
+group_uniforms Optical_Lens_FX;
+uniform bool use_halation = false;
+uniform float halation_strength : hint_range(0.0, 2.0) = 0.45;
+uniform float halation_threshold : hint_range(0.0, 1.0) = 0.55;
+uniform float halation_radius : hint_range(1.0, 20.0) = 6.0;
+uniform vec3 halation_color : source_color = vec3(1.0, 0.28, 0.08);
+
+uniform bool use_anamorphic_streak = false;
+uniform float anamorphic_streak_strength : hint_range(0.0, 2.0) = 0.5;
+uniform float anamorphic_threshold : hint_range(0.0, 1.0) = 0.65;
+uniform float anamorphic_streak_length : hint_range(5.0, 120.0) = 36.0;
+uniform vec3 anamorphic_streak_color : source_color = vec3(0.25, 0.75, 1.0);
+
+group_uniforms Display_Emulation_FX;
+uniform bool use_vector_edge_glow = false;
+uniform float vector_edge_strength : hint_range(0.0, 3.0) = 0.85;
+uniform float vector_edge_threshold : hint_range(0.0, 1.0) = 0.08;
+uniform vec3 vector_edge_color : source_color = vec3(0.35, 1.0, 0.65);
+
+uniform bool use_vfd_display = false;
+uniform float vfd_glow_strength : hint_range(0.0, 2.0) = 0.65;
+uniform float vfd_mesh_strength : hint_range(0.0, 1.0) = 0.35;
+uniform float vfd_mesh_scale : hint_range(10.0, 200.0) = 65.0;
+uniform vec3 vfd_phosphor_color : source_color = vec3(0.15, 1.0, 0.72);
+
+group_uniforms False_Color;
+uniform int false_color_mode : hint_enum(
+	"Off:0",
+	"FLIR Ironbow Thermal:1",
+	"White-Hot IR:2",
+	"Black-Hot IR:3",
+	"Predator Thermal:4",
+	"Phosphor Night-Vision:5",
+	"Rainbow / Jet Thermal:6",
+	"Arctic / Cryo:7",
+	"Inferno / Magma:8",
+	"Viridis Scientific:9",
+	"Amber Phosphor P3:10",
+	"Cyan Radar / Sonar:11",
+	"Exposure / Zebra Monitor:12"
+) = 0;
+uniform float false_color_mix : hint_range(0.0, 1.0) = 1.0;
+uniform float false_color_gain : hint_range(0.1, 4.0) = 1.0;
+uniform float false_color_offset : hint_range(-1.0, 1.0) = 0.0;
+uniform float false_color_gamma : hint_range(0.2, 3.0) = 1.0;
+uniform bool false_color_invert = false;
+uniform float false_color_steps : hint_range(0.0, 32.0) = 0.0;
+uniform float false_color_hue_shift : hint_range(-3.14159, 3.14159) = 0.0;
+
 group_uniforms Stylization_FX;
+uniform bool use_solarization = false;
+uniform float solarization_threshold : hint_range(0.05, 0.95) = 0.5;
+uniform float solarization_mix : hint_range(0.0, 1.0) = 1.0;
+
+uniform bool use_bayer_dither = false;
+uniform float bayer_dither_spread : hint_range(0.0, 0.5) = 0.12;
+uniform float bayer_dither_scale : hint_range(0.25, 4.0) = 1.0;
+uniform float bayer_dither_min_luma : hint_range(0.0, 1.0) = 0.15;
+uniform float bayer_dither_fade_range : hint_range(0.01, 0.5) = 0.15;
+uniform float bayer_dither_levels : hint_range(0.0, 32.0) = 8.0;
+
 uniform bool use_gradient_map = false;
 uniform sampler2D gradient_texture : hint_default_white;
 uniform bool use_monochrome = false;
@@ -797,6 +873,111 @@ float evaluate_wave(int profile, float pos) {
 	return f;
 }
 
+float bayer4x4(ivec2 p) {
+	int x = p.x & 3;
+	int y = p.y & 3;
+	int idx = ((x ^ y) & 1) * 8 + (y & 1) * 4 + (((x ^ y) >> 1) & 1) * 2 + ((y >> 1) & 1);
+	return (float(idx) + 0.5) * 0.0625 - 0.5;
+}
+
+vec3 evaluate_false_color(float luma, int mode) {
+	float t = clamp(luma * false_color_gain + false_color_offset, 0.0, 1.0);
+	t = pow(t, false_color_gamma);
+	if (false_color_invert) t = 1.0 - t;
+	if (false_color_steps > 1.5) t = floor(t * false_color_steps) / (false_color_steps - 1.0);
+	t = clamp(t, 0.0, 1.0);
+
+	vec3 out_col;
+	if (mode == 1) { // FLIR Ironbow
+		vec3 c0 = vec3(0.01, 0.0, 0.06);
+		vec3 c1 = vec3(0.28, 0.02, 0.52);
+		vec3 c2 = vec3(0.85, 0.16, 0.12);
+		vec3 c3 = vec3(1.0, 0.78, 0.08);
+		vec3 c4 = vec3(1.0, 1.0, 0.96);
+		vec3 col = mix(c0, c1, smoothstep(0.0, 0.28, t));
+		col = mix(col, c2, smoothstep(0.28, 0.56, t));
+		col = mix(col, c3, smoothstep(0.56, 0.82, t));
+		out_col = mix(col, c4, smoothstep(0.82, 1.0, t));
+	} else if (mode == 2) { // White-Hot IR
+		out_col = vec3(pow(t, 0.85));
+	} else if (mode == 3) { // Black-Hot IR
+		out_col = vec3(1.0 - pow(t, 0.85));
+	} else if (mode == 4) { // Predator Thermal
+		vec3 c0 = vec3(0.02, 0.05, 0.45);
+		vec3 c1 = vec3(0.0, 0.75, 0.85);
+		vec3 c2 = vec3(0.15, 0.9, 0.2);
+		vec3 c3 = vec3(1.0, 0.85, 0.0);
+		vec3 c4 = vec3(1.0, 0.08, 0.05);
+		vec3 col = mix(c0, c1, smoothstep(0.0, 0.25, t));
+		col = mix(col, c2, smoothstep(0.25, 0.5, t));
+		col = mix(col, c3, smoothstep(0.5, 0.75, t));
+		out_col = mix(col, c4, smoothstep(0.75, 1.0, t));
+	} else if (mode == 5) { // Phosphor Night-Vision
+		float boosted = clamp(pow(t, 0.75) * 1.25, 0.0, 1.0);
+		out_col = vec3(boosted * 0.12, boosted, boosted * 0.18) + vec3(smoothstep(0.88, 1.0, t) * 0.65);
+	} else if (mode == 6) { // Rainbow / Jet Thermal
+		vec3 c0 = vec3(0.0, 0.0, 0.5);
+		vec3 c1 = vec3(0.0, 0.7, 1.0);
+		vec3 c2 = vec3(0.1, 0.95, 0.25);
+		vec3 c3 = vec3(1.0, 0.9, 0.0);
+		vec3 c4 = vec3(0.95, 0.05, 0.0);
+		vec3 col = mix(c0, c1, smoothstep(0.0, 0.25, t));
+		col = mix(col, c2, smoothstep(0.25, 0.5, t));
+		col = mix(col, c3, smoothstep(0.5, 0.75, t));
+		out_col = mix(col, c4, smoothstep(0.75, 1.0, t));
+	} else if (mode == 7) { // Arctic / Cryo
+		vec3 c0 = vec3(0.01, 0.03, 0.12);
+		vec3 c1 = vec3(0.04, 0.24, 0.58);
+		vec3 c2 = vec3(0.18, 0.78, 0.95);
+		vec3 c3 = vec3(0.92, 0.99, 1.0);
+		vec3 col = mix(c0, c1, smoothstep(0.0, 0.35, t));
+		col = mix(col, c2, smoothstep(0.35, 0.72, t));
+		out_col = mix(col, c3, smoothstep(0.72, 1.0, t));
+	} else if (mode == 8) { // Inferno / Magma
+		vec3 c0 = vec3(0.01, 0.0, 0.03);
+		vec3 c1 = vec3(0.32, 0.04, 0.42);
+		vec3 c2 = vec3(0.78, 0.16, 0.24);
+		vec3 c3 = vec3(0.98, 0.56, 0.06);
+		vec3 c4 = vec3(0.99, 0.99, 0.65);
+		vec3 col = mix(c0, c1, smoothstep(0.0, 0.25, t));
+		col = mix(col, c2, smoothstep(0.25, 0.5, t));
+		col = mix(col, c3, smoothstep(0.5, 0.78, t));
+		out_col = mix(col, c4, smoothstep(0.78, 1.0, t));
+	} else if (mode == 9) { // Viridis Scientific
+		vec3 c0 = vec3(0.26, 0.01, 0.33);
+		vec3 c1 = vec3(0.23, 0.32, 0.54);
+		vec3 c2 = vec3(0.13, 0.57, 0.55);
+		vec3 c3 = vec3(0.37, 0.79, 0.38);
+		vec3 c4 = vec3(0.99, 0.91, 0.14);
+		vec3 col = mix(c0, c1, smoothstep(0.0, 0.25, t));
+		col = mix(col, c2, smoothstep(0.25, 0.5, t));
+		col = mix(col, c3, smoothstep(0.5, 0.75, t));
+		out_col = mix(col, c4, smoothstep(0.75, 1.0, t));
+	} else if (mode == 10) { // Amber Phosphor P3
+		float a = pow(t, 0.85);
+		out_col = vec3(1.0, 0.48, 0.03) * a + vec3(1.0, 0.88, 0.45) * smoothstep(0.82, 1.0, t) * 0.45;
+	} else if (mode == 11) { // Cyan Radar / Sonar
+		vec3 c0 = vec3(0.0, 0.03, 0.06);
+		vec3 c1 = vec3(0.0, 0.32, 0.48);
+		vec3 c2 = vec3(0.08, 0.88, 0.92);
+		vec3 c3 = vec3(0.88, 1.0, 1.0);
+		vec3 col = mix(c0, c1, smoothstep(0.0, 0.35, t));
+		col = mix(col, c2, smoothstep(0.35, 0.78, t));
+		out_col = mix(col, c3, smoothstep(0.78, 1.0, t));
+	} else { // Exposure / Zebra Monitor
+		if (t < 0.06) out_col = vec3(0.08, 0.15, 0.95);
+		else if (t > 0.94) out_col = vec3(0.98, 0.06, 0.06);
+		else if (t > 0.84) out_col = vec3(0.96, 0.82, 0.05);
+		else if (abs(t - 0.52) < 0.04) out_col = vec3(0.12, 0.85, 0.22);
+		else out_col = vec3(t);
+	}
+
+	if (abs(false_color_hue_shift) > 0.001) {
+		out_col = shift_hue(out_col, false_color_hue_shift);
+	}
+	return out_col;
+}
+
 vec3 sample_row(int ix, int iy, vec3 wa, vec3 wb, vec3 wc, vec3 wd, vec3 we) {
 	return srgb_to_linear(texelFetch(tex, ivec2(ix - 2, iy), 0).rgb) * wa +
 	       srgb_to_linear(texelFetch(tex, ivec2(ix - 1, iy), 0).rgb) * wb +
@@ -838,8 +1019,9 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 		float diff = fract(shifted_y) - 0.5;
 		float y_center2 = y_center1 + (diff < 0.0 ? -1.0 : 1.0);
 		
-		float dist1 = abs(shifted_y - y_center1); 
-		float dist2 = abs(shifted_y - y_center2); 
+		vec3 rgb_phase = use_rgb_scanline_phase ? vec3(-rgb_scanline_phase_offset, 0.0, rgb_scanline_phase_offset) : vec3(0.0);
+		vec3 dist1 = abs(vec3(shifted_y) + rgb_phase - y_center1); 
+		vec3 dist2 = abs(vec3(shifted_y) + rgb_phase - y_center2); 
 		
 		float fw = max(fwidth(shifted_y), 0.001);
 
@@ -860,8 +1042,8 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 			vec3 thick = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), decoupled_dynamic_thickness ? col : vec3(1.0));
 			
 			float blur = fw * 1.25;
-			vec3 beam1 = smoothstep(thick * 0.5 + blur, thick * 0.5 - blur, vec3(dist1));
-			vec3 beam2 = smoothstep(thick * 0.5 + blur, thick * 0.5 - blur, vec3(dist2));
+			vec3 beam1 = smoothstep(thick * 0.5 + blur, thick * 0.5 - blur, dist1);
+			vec3 beam2 = smoothstep(thick * 0.5 + blur, thick * 0.5 - blur, dist2);
 			
 			int field_glitch = int(v_glitch_field.z);
 			beam1 *= 1.0 - float((int(y_center1) & 1) ^ field_glitch) * v_dyn_pack1.w;
@@ -898,8 +1080,8 @@ vec3 sample_image(vec2 uv, vec2 local_chroma_offset) {
 			vec3 thick2 = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), col2);
 			
 			float blur = fw * 1.25; 
-			vec3 profile1 = smoothstep(thick1 * 0.5 + blur, thick1 * 0.5 - blur, vec3(dist1)) * col1;
-			vec3 profile2 = smoothstep(thick2 * 0.5 + blur, thick2 * 0.5 - blur, vec3(dist2)) * col2;
+			vec3 profile1 = smoothstep(thick1 * 0.5 + blur, thick1 * 0.5 - blur, dist1) * col1;
+			vec3 profile2 = smoothstep(thick2 * 0.5 + blur, thick2 * 0.5 - blur, dist2) * col2;
 			
 			int field_glitch = int(v_glitch_field.z);
 			profile1 *= 1.0 - float((int(y_center1) & 1) ^ field_glitch) * v_dyn_pack1.w;
@@ -1110,6 +1292,28 @@ void fragment() {
 			warped_coords.x += exp(-100.0 * tear_dist * tear_dist) * sin(warped_coords.y * 150.0) * vsync_tearing;
 		}
 
+		if (use_datamosh_stretch && datamosh_rate > 0.0 && datamosh_stretch_amount > 0.0) {
+			float mosh_band = floor(warped_coords.y * datamosh_band_scale);
+			float mosh_t = floor(TIME * datamosh_speed);
+			float mosh_rnd = hash12(vec2(mosh_band, mosh_t * 17.31));
+			if (mosh_rnd > (1.0 - datamosh_rate)) {
+				float anchor_x = hash12(vec2(mosh_band + 9.1, mosh_t * 31.7));
+				warped_coords.x = mix(warped_coords.x, anchor_x, datamosh_stretch_amount);
+			}
+		}
+
+		vec3 macroblock_iq_glitch = vec3(0.0);
+		if (use_macroblock_bitrot && macroblock_rate > 0.0) {
+			vec2 block_grid = vec2(macroblock_scale * quad_aspect, macroblock_scale);
+			vec2 block_id = floor(warped_coords * block_grid);
+			float block_t = floor(TIME * macroblock_speed);
+			vec3 block_rnd = hash32(block_id + vec2(block_t * 11.13, block_t * 29.71));
+			if (block_rnd.x > (1.0 - macroblock_rate)) {
+				warped_coords = clamp(warped_coords + (block_rnd.yz - 0.5) * macroblock_uv_shift, vec2(0.0), vec2(0.9999));
+				macroblock_iq_glitch = vec3(1.0, (block_rnd.y - 0.5) * macroblock_chroma_shift, (block_rnd.z - 0.5) * macroblock_chroma_shift);
+			}
+		}
+
 		float stripe_factor = 0.0;
 		vec2 local_chroma = vec2(0.0);
 		vec2 rotated_uv = vec2(0.0); 
@@ -1148,7 +1352,7 @@ void fragment() {
 		float inv_bw = v_phase_err_anim.w;
 		float bw_freq = use_bandwidth_scale ? bandwidth_scale : 1.0;
 
-		bool need_yiq = use_yiq_bleed || use_vertical_chroma_smear || use_vertical_chroma_delay || use_tape_noise || use_color_killer || use_yc_delay || use_tape_crease || use_vhs_tape_speed || use_vhs_sharpen || use_luma_smear || (use_fm_slew_rate && fm_slew_rate_mix > 0.0) || (use_chroma_heterodyne_beat && chroma_beat_strength > 0.0) || use_chroma_dropout || use_chroma_demod || use_chroma_phase_error || (use_chroma_demod_axis_error && abs(chroma_demod_axis_skew) > 0.001) || (use_chroma_gain_ripple && chroma_gain_ripple_strength > 0.0) || (use_scanline_phase_noise && scanline_phase_noise_strength > 0.0) || (use_head_switching && head_switch_color_recovery && head_switch_t > 0.0);
+		bool need_yiq = use_yiq_bleed || use_vertical_chroma_smear || use_vertical_chroma_delay || use_tape_noise || use_color_killer || use_yc_delay || use_tape_crease || use_vhs_tape_speed || use_vhs_sharpen || use_luma_smear || (use_fm_slew_rate && fm_slew_rate_mix > 0.0) || (use_chroma_heterodyne_beat && chroma_beat_strength > 0.0) || (macroblock_iq_glitch.x > 0.0) || use_chroma_dropout || use_chroma_demod || use_chroma_phase_error || (use_chroma_demod_axis_error && abs(chroma_demod_axis_skew) > 0.001) || (use_chroma_gain_ripple && chroma_gain_ripple_strength > 0.0) || (use_scanline_phase_noise && scanline_phase_noise_strength > 0.0) || (use_head_switching && head_switch_color_recovery && head_switch_t > 0.0);
 		if (need_yiq) {
 			vec3 center_yiq = rgb_to_yiq(col);
 			float final_y = center_yiq.x;
@@ -1331,6 +1535,11 @@ void fragment() {
 					final_i += sin(beat_phase) * beat_mod;
 					final_q += cos(beat_phase) * beat_mod;
 				}
+			}
+
+			if (macroblock_iq_glitch.x > 0.0) {
+				final_i += macroblock_iq_glitch.y;
+				final_q += macroblock_iq_glitch.z;
 			}
 
 			if (use_head_switching && head_switch_color_recovery && head_switch_t > 0.0) {
@@ -1560,6 +1769,38 @@ void fragment() {
 		if (v_dyn_pack3.x > 0.0) col += srgb_to_linear(textureLod(tex, warped_coords - vec2(v_dyn_pack3.y, 0.0), 0.0).rgb) * v_dyn_pack3.x;
 		if (v_dyn_pack2.x > 0.0) col *= 1.0 + smoothstep(0.8, 1.0, sin(warped_coords.y * roll_size - v_time_pack2.y)) * v_dyn_pack2.x;
 
+		if (use_vector_edge_glow && vector_edge_strength > 0.0) {
+			vec3 vec_r = srgb_to_linear(textureLod(tex, warped_coords + vec2(v_tex_data.z, 0.0), 0.0).rgb);
+			vec3 vec_d = srgb_to_linear(textureLod(tex, warped_coords + vec2(0.0, v_tex_data.w), 0.0).rgb);
+			float edge_grad = length(col - vec_r) + length(col - vec_d);
+			float beam_boost = smoothstep(vector_edge_threshold, vector_edge_threshold + 0.25, edge_grad);
+			col += vector_edge_color * beam_boost * vector_edge_strength;
+		}
+
+		if (use_halation && halation_strength > 0.0) {
+			vec2 hal_off = vec2(halation_radius / max(quad_aspect, 0.001), halation_radius) * v_tex_data.zw;
+			vec3 h1 = srgb_to_linear(textureLod(tex, warped_coords + vec2(hal_off.x, hal_off.y), 0.0).rgb);
+			vec3 h2 = srgb_to_linear(textureLod(tex, warped_coords + vec2(-hal_off.x, hal_off.y), 0.0).rgb);
+			vec3 h3 = srgb_to_linear(textureLod(tex, warped_coords + vec2(hal_off.x, -hal_off.y), 0.0).rgb);
+			vec3 h4 = srgb_to_linear(textureLod(tex, warped_coords + vec2(-hal_off.x, -hal_off.y), 0.0).rgb);
+			vec3 hal_avg = (h1 + h2 + h3 + h4) * 0.25;
+			float hal_luma = dot(hal_avg, HUE_LUMA);
+			float hal_mask = smoothstep(halation_threshold, min(1.0, halation_threshold + 0.35), hal_luma);
+			col += halation_color * hal_mask * halation_strength;
+		}
+
+		if (use_anamorphic_streak && anamorphic_streak_strength > 0.0) {
+			float str_dx = anamorphic_streak_length * v_tex_data.z;
+			vec3 s1 = srgb_to_linear(textureLod(tex, warped_coords - vec2(str_dx * 0.4, 0.0), 0.0).rgb);
+			vec3 s2 = srgb_to_linear(textureLod(tex, warped_coords + vec2(str_dx * 0.4, 0.0), 0.0).rgb);
+			vec3 s3 = srgb_to_linear(textureLod(tex, warped_coords - vec2(str_dx, 0.0), 0.0).rgb);
+			vec3 s4 = srgb_to_linear(textureLod(tex, warped_coords + vec2(str_dx, 0.0), 0.0).rgb);
+			vec3 streak_avg = (s1 + s2) * 0.32 + (s3 + s4) * 0.18;
+			float streak_luma = dot(streak_avg, HUE_LUMA);
+			float streak_mask = smoothstep(anamorphic_threshold, min(1.0, anamorphic_threshold + 0.3), streak_luma);
+			col += anamorphic_streak_color * streak_mask * anamorphic_streak_strength;
+		}
+
 		if (use_rf_snow && rf_snow_intensity > 0.0) {
 			float inv_snow_scale = 1.0 / max(rf_snow_scale, 0.05);
 			float snow_lines = v_extra_data.y * inv_snow_scale;
@@ -1601,6 +1842,11 @@ void fragment() {
 			}
 		}
 
+		if (use_solarization && solarization_mix > 0.0) {
+			vec3 sol = 1.0 - abs(col - vec3(solarization_threshold)) / max(solarization_threshold, 1.0 - solarization_threshold);
+			col = mix(col, clamp(sol, 0.0, 1.0), solarization_mix);
+		}
+
 		vec2 mask_coords = warped_coords * quad_pixels;
 		mask_coords *= v_time_pack2.w; 
 		col = mask(col, mask_coords);
@@ -1609,10 +1855,38 @@ void fragment() {
 			float luma = dot(col, HUE_LUMA);
 			col = mix(col, vec3(1.0), smoothstep(exposure_threshold, 1.0, luma) * exposure_intensity);
 		}
+		if (use_bayer_dither && bayer_dither_spread > 0.0) {
+			float dither_luma = dot(col, HUE_LUMA);
+			float luma_gate = smoothstep(bayer_dither_min_luma, min(1.0, bayer_dither_min_luma + bayer_dither_fade_range), dither_luma);
+			if (luma_gate > 0.0) {
+				float dither_res = v_extra_data.y / max(bayer_dither_scale, 0.1);
+				ivec2 dither_cell = ivec2(floor(vec2(warped_coords.x * (dither_res * quad_aspect), warped_coords.y * dither_res)));
+				vec3 dithered = clamp(col + vec3(bayer4x4(dither_cell) * bayer_dither_spread * luma_gate), 0.0, 1.0);
+				if (bayer_dither_levels > 1.5) {
+					vec3 snapped = floor(dithered * bayer_dither_levels + 0.5) / bayer_dither_levels;
+					dithered = mix(col, snapped, luma_gate);
+				}
+				col = dithered;
+			}
+		}
 		if (use_color_quantization) col = floor(col * color_levels) / color_levels;
 		if (use_gradient_map) {
 			float luma = dot(col, HUE_LUMA);
 			col = textureLod(gradient_texture, vec2(clamp(luma, 0.0, 1.0), 0.0), 0.0).rgb;
+		}
+		if (false_color_mode > 0 && false_color_mix > 0.0) {
+			float luma = dot(col, HUE_LUMA);
+			col = mix(col, evaluate_false_color(luma, false_color_mode), false_color_mix);
+		}
+		if (use_vfd_display) {
+			float luma = dot(col, HUE_LUMA);
+			vec2 grid_uv = aspect_coords * vfd_mesh_scale;
+			float diag1 = abs(fract(grid_uv.x + grid_uv.y) - 0.5) * 2.0;
+			float diag2 = abs(fract(grid_uv.x - grid_uv.y) - 0.5) * 2.0;
+			float wire_mask = smoothstep(0.84, 0.96, max(diag1, diag2));
+			vec3 vfd_col = vfd_phosphor_color * (luma + pow(luma, 2.0) * vfd_glow_strength);
+			vfd_col *= 1.0 - wire_mask * vfd_mesh_strength;
+			col = clamp(vfd_col, 0.0, 1.0);
 		}
 		if (use_monochrome) {
 			float luma = dot(col, HUE_LUMA);
