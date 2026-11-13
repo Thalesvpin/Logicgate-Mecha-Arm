@@ -438,16 +438,13 @@ uniform float rf_snow_speed : hint_range(0.0, 60.0) = 30.0;
 
 group_uniforms Static_Noise;
 uniform bool use_noise = false;
-uniform float noise_strength : hint_range(0.0, 0.5) = 0.03;
+uniform float noise_strength : hint_range(0.0, 0.5) = 0.015;
 uniform bool chroma_noise = false;
 uniform bool animate_noise = false;
 uniform sampler2D noise_curve;
 uniform float noise_anim_speed = 1.0;
 uniform float noise_anim_amplitude = 1.0;
-uniform int noise_octaves : hint_range(1, 5) = 3;
-uniform float noise_lacunarity : hint_range(0.1, 5.0) = 2.0;
-uniform float noise_gain : hint_range(0.1, 1.0) = 0.5;
-uniform float noise_base_scale : hint_range(0.1, 10.0) = 1.0;
+uniform float noise_base_scale : hint_range(0.1, 30.0) = 20.0;
 
 group_uniforms Optical_Lens_FX;
 uniform bool use_halation = false;
@@ -793,32 +790,16 @@ vec3 value_noise_3(vec2 p) {
 			   mix(hash32(i + vec2(0.0, 1.0)), hash32(i + vec2(1.0, 1.0)), u.x), u.y);
 }
 
-float fbm_1(vec2 p, int octaves, float lacunarity, float gain) {
-	float val = 0.0;
-	float amp = 1.0;
-	float norm = 0.0;
-	for (int i = 0; i < 5; i++) {
-		if (i >= octaves) break;
-		val += amp * value_noise_1(p);
-		norm += amp;
-		p *= lacunarity;
-		amp *= gain;
-	}
-	return val / norm;
+float fbm2_1(vec2 p) {
+	return (value_noise_1(p) + 0.5 * value_noise_1(p * 2.0)) * 0.66666667;
 }
 
-vec3 fbm_3(vec2 p, int octaves, float lacunarity, float gain) {
-	vec3 val = vec3(0.0);
-	float amp = 1.0;
-	float norm = 0.0;
-	for (int i = 0; i < 5; i++) {
-		if (i >= octaves) break;
-		val += amp * value_noise_3(p);
-		norm += amp;
-		p *= lacunarity;
-		amp *= gain;
-	}
-	return val / norm;
+vec3 fbm2_3(vec2 p) {
+	return (value_noise_3(p) + 0.5 * value_noise_3(p * 2.0)) * 0.66666667;
+}
+
+vec3 fbm3_3(vec2 p) {
+	return (value_noise_3(p) + 0.5 * value_noise_3(p * 2.0) + 0.25 * value_noise_3(p * 4.0)) * 0.57142857;
 }
 
 vec2 warp(vec2 uv, float inv_aspect) {
@@ -1646,7 +1627,7 @@ void fragment() {
 			}
 
 			if (use_tape_noise && tape_noise_strength > 0.0) {
-				mediump vec3 t_noise = fbm_3(aspect_coords * tape_noise_scale + vec2(TIME * tape_noise_speed, -TIME * tape_noise_speed * 0.5), 2, 2.0, 0.5);
+				mediump vec3 t_noise = fbm2_3(aspect_coords * tape_noise_scale + vec2(TIME * tape_noise_speed, -TIME * tape_noise_speed * 0.5));
 				if (use_tape_noise_streak && tape_noise_streak_detail > 0.0) {
 					float x_stretch = mix(1.0, 0.04, tape_noise_streak_anisotropy);
 					vec2 streak_uv = vec2(aspect_coords.x * tape_noise_scale * 16.0 * x_stretch + floor(TIME * tape_noise_speed * 15.0) * 13.7, scanline_idx);
@@ -1657,7 +1638,7 @@ void fragment() {
 			}
 
 			if (use_color_killer && color_killer_threshold > 0.0) {
-				float killer_noise = fbm_1(vec2(aspect_coords.y * 5.0, TIME * 10.0), 2, 2.0, 0.5);
+				float killer_noise = fbm2_1(vec2(aspect_coords.y * 5.0, TIME * 10.0));
 				mediump float killer_mult = smoothstep(color_killer_threshold - 0.05, color_killer_threshold + 0.05, killer_noise);
 				final_i *= killer_mult;
 				final_q *= killer_mult;
@@ -1693,11 +1674,11 @@ void fragment() {
 			}
 
 			if (crease_factor > 0.0) {
-				mediump vec3 c_noise = fbm_3(aspect_coords * 10.0 + vec2(TIME * 10.0, 0.0), 3, 2.0, 0.5);
+				mediump vec3 c_noise = fbm3_3(aspect_coords * 10.0 + vec2(TIME * 10.0, 0.0));
 				final_i += (c_noise.x - 0.5) * crease_factor * crease_noise_strength;
 				final_q += (c_noise.y - 0.5) * crease_factor * crease_noise_strength;
 				
-				float crease_killer = fbm_1(vec2(aspect_coords.y * 10.0, TIME * 15.0), 2, 2.0, 0.5);
+				float crease_killer = fbm2_1(vec2(aspect_coords.y * 10.0, TIME * 15.0));
 				mediump float kill_mult = smoothstep(0.4, 0.6, crease_killer + (1.0 - crease_factor));
 				final_i *= kill_mult;
 				final_q *= kill_mult;
@@ -1893,7 +1874,6 @@ void fragment() {
 
 		if (dyn_noise_maskscale.x > 0.0) {
 			vec2 noise_coords = (warped_coords * quad_pixels) * (noise_base_scale * 0.05) + v_noise_offset.xy;
-			mediump float fbm_rms = (noise_octaves <= 1) ? 1.0 : ((noise_octaves == 2) ? 0.745356 : 0.665);
 			mediump vec3 noise_val;
 			if (noise_base_scale >= 3.0) {
 				vec2 cell = floor(noise_coords);
@@ -1901,7 +1881,7 @@ void fragment() {
 			} else {
 				noise_val = chroma_noise ? value_noise_3(noise_coords) : vec3(value_noise_1(noise_coords));
 			}
-			col += (noise_val - 0.5) * (dyn_noise_maskscale.x * fbm_rms);
+			col += (noise_val - 0.5) * dyn_noise_maskscale.x;
 		}
 		
 		if (use_tape_dropouts && dropout_rate > 0.0 && dropout_strength > 0.0) {
