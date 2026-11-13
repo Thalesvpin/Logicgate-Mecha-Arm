@@ -16,7 +16,9 @@ func _process(delta: float) -> void:
 	clock.text = " | %02d:%02d" % [time.hour, time.minute]
 	fps.text = ' | FPS: %d  ' % Engine.get_frames_per_second()
 
-func update_battle() -> void:
+func update_battle(arg) -> void:
+	await get_tree().create_timer(0.1).timeout
+	print('current_battle: ', Global.run_stats.current_battle)
 	var fire_wall = Global.run_stats.current_firewall
 	firewall_counter.text = str(fire_wall)
 	

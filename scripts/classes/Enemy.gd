@@ -1,7 +1,7 @@
 extends Node
 class_name Enemy
 
-var dificulty_progression: float = 1.5
+static var difficulty_progression: float = 1.5
 
 enum Type {MINION, BOSS}
 enum Strength {WEAK, MEDIUM, STRONG}

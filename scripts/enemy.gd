@@ -122,9 +122,9 @@ func set_stats() -> void:
 	actions_weight = config.actions_weight
 
 func apply_firewall_difficulty() -> void:
-	stats[Stats.List.MAX_HEALTH] *= Enemy.dificulty_progression**Global.run_stats.current_firewall
-	stats[Stats.List.CURRENT_HEALTH] *= Enemy.dificulty_progression**Global.run_stats.current_firewall
-	stats[Stats.List.BASE_ATTACK_DAMAGE] *= Enemy.dificulty_progression**Global.run_stats.current_firewall
+	stats[Stats.List.MAX_HEALTH] *= Enemy.difficulty_progression**Global.run_stats.current_firewall
+	stats[Stats.List.CURRENT_HEALTH] *= Enemy.difficulty_progression**Global.run_stats.current_firewall
+	stats[Stats.List.BASE_ATTACK_DAMAGE] *= Enemy.difficulty_progression**Global.run_stats.current_firewall
 
 func connect_signals() -> void:
 	EventBus.turn_started.connect(turn_start)

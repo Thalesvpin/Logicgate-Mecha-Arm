@@ -56,7 +56,7 @@ func _process(delta: float) -> void:
 func connect_signals() -> void:
 	EventBus.battle_ended.connect(next_battle)
 
-func next_battle() -> void:
+func next_battle(arg) -> void:
 	if current_battle < 3:
 		current_battle += 1
 	else:

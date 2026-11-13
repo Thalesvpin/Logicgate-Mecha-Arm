@@ -29,7 +29,7 @@ func _ready() -> void:
 func start_battle() -> void:
 	if is_first_battle:
 		is_first_battle = false
-		set_battle_field()
+	set_battle_field()
 	clear_battle()
 	add_enemies()
 
@@ -43,7 +43,12 @@ func set_battle_field() -> void:
 
 func clear_battle() -> void:
 	Global.turn_manager.reset_turn_sequence()
-	pass
+	for child in left_enemy_container.get_children():
+		child.queue_free()
+	for child in right_enemy_container.get_children():
+		child.queue_free()
+	for child in center_enemy_container.get_children():
+		child.queue_free()
 
 func center_enemy(enemy):
 	if block_movement or enemy._position == EnemyPosition.Position.CENTER:
