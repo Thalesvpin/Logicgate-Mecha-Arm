@@ -29,7 +29,8 @@ const RARITY_PLACEHOLDER = preload("uid://b8l68f41218q5")
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 enum Type {TECH_MOD, BIO_HACK}
 
-@export var resource: Implant
+@export var tooltip := preload("uid://bus2twh8u8sjx")
+var resource: Implant
 var type: int
 var texture: Texture2D
 var modifier_name: String
@@ -143,6 +144,11 @@ func sell() -> void:
 		Global.implant_manager.remove_tech_mod(self)
 	if type == Type.BIO_HACK:
 		Global.implant_manager.remove_bio_hack(self)
+
+func _make_custom_tooltip(for_text: String) -> Object:
+	var _tooltip = tooltip.instantiate()
+	_tooltip.config(for_text)
+	return _tooltip
 
 func _on_resized() -> void:
 	if is_loaded:

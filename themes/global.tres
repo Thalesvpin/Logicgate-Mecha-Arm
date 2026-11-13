@@ -1,0 +1,9 @@
+[gd_resource type="Theme" format=3 uid="uid://b3unk1hxasljf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[resource]
+TooltipPanel/colors/title_color = Color(0, 0, 0, 0)
+TooltipPanel/colors/title_outline_modulate = Color(0, 0, 0, 0)
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_a7lv4")
