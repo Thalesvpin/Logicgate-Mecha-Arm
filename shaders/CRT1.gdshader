@@ -540,7 +540,6 @@ uniform float degauss_ripple_strength : hint_range(0.0, 0.2) = 0.05;
 
 group_uniforms;
 
-// Packed into 14 vec4s (56 floats) to stay strictly under the 64-component low-end/mobile GPU limit
 varying flat vec4 v_tex_data;        // .xy = tex_size, .zw = pixel_size
 varying flat vec4 v_degauss_data;    // .x = degauss_curve, .y = wobble_x, .z = bulge, .w = ripple
 varying flat vec4 v_extra_data;      // .x = tear, .y = eff_scanlines, .z = dither_res, .w = inv_bw
@@ -561,6 +560,8 @@ const vec3 INV_GAMMA = vec3(0.4166666666666667);
 const float TWO_THIRD_PI = 2.09439510239;
 const vec3 PHASE_OFFSETS = vec3(0.0, 2.09439510239, 4.18879020479); 
 const vec3 HUE_LUMA = vec3(0.299, 0.587, 0.114);
+const vec3 YIQ_I_ROW = vec3(0.5959, -0.2746, -0.3213);
+const vec3 YIQ_Q_ROW = vec3(0.2115, -0.5227, 0.3112);
 const vec3 HUE_V1 = vec3(0.701, -0.587, -0.114);
 const vec3 HUE_V2 = vec3(-0.299, 0.413, -0.114);
 const vec3 HUE_V3 = vec3(-0.299, -0.587, 0.886);
@@ -705,7 +706,7 @@ void vertex() {
 	}
 
 	v_dyn_pack3.y = echo_offset;
-	if (animate_echo_offset) {
+	if (animate_echo_offset && use_echo) {
 		if (echo_offset_anim_interval > 0.0) {
 			float active_time = 1.0 / max(0.001, echo_offset_anim_speed);
 			float local_t = mod(TIME, active_time + echo_offset_anim_interval);
@@ -766,6 +767,10 @@ vec3 rgb_to_yiq(vec3 rgb) {
 	return RGB_TO_YIQ * rgb;
 }
 
+vec2 rgb_to_iq(vec3 rgb) {
+	return vec2(dot(rgb, YIQ_I_ROW), dot(rgb, YIQ_Q_ROW));
+}
+
 vec3 yiq_to_rgb(vec3 yiq) {
 	return clamp(YIQ_TO_RGB * yiq, 0.0, 1.0);
 }
@@ -786,7 +791,7 @@ float value_noise_1(vec2 p) {
 	vec2 i = floor(p);
 	vec2 f = fract(p);
 	vec2 u = f * f * (3.0 - 2.0 * f);
-	return mix(mix(hash12(i + vec2(0.0, 0.0)), hash12(i + vec2(1.0, 0.0)), u.x),
+	return mix(mix(hash12(i), hash12(i + vec2(1.0, 0.0)), u.x),
 			   mix(hash12(i + vec2(0.0, 1.0)), hash12(i + vec2(1.0, 1.0)), u.x), u.y);
 }
 
@@ -794,7 +799,7 @@ vec3 value_noise_3(vec2 p) {
 	vec2 i = floor(p);
 	vec2 f = fract(p);
 	vec2 u = f * f * (3.0 - 2.0 * f);
-	return mix(mix(hash32(i + vec2(0.0, 0.0)), hash32(i + vec2(1.0, 0.0)), u.x),
+	return mix(mix(hash32(i), hash32(i + vec2(1.0, 0.0)), u.x),
 			   mix(hash32(i + vec2(0.0, 1.0)), hash32(i + vec2(1.0, 1.0)), u.x), u.y);
 }
 
@@ -828,11 +833,12 @@ vec3 fbm_3(vec2 p, int octaves, float lacunarity, float gain) {
 
 vec2 warp(vec2 uv) {
 	uv -= 0.5;
-	uv.x *= v_warp_power_pack.x;
-	uv /= 1.0 - curve * (dot(uv, uv) - 0.25);
-	uv.x *= v_warp_power_pack.y;
-	uv += 0.5;
-	return (uv - 0.5) * v_warp_power_pack.zw + 0.5;
+	if (curve > 0.0) {
+		uv.x *= v_warp_power_pack.x;
+		uv /= 1.0 - curve * (dot(uv, uv) - 0.25);
+		uv.x *= v_warp_power_pack.y;
+	}
+	return uv * v_warp_power_pack.zw + 0.5;
 }
 
 vec3 linear_to_srgb(vec3 col) {
@@ -843,6 +849,10 @@ vec3 linear_to_srgb(vec3 col) {
 vec3 srgb_to_linear(vec3 col) {
 	col = max(col, vec3(0.0));
 	return mix(pow((col + 0.055) * 0.947867298578, vec3(2.4)), col * 0.0773993808049, lessThan(col, vec3(0.04045)));
+}
+
+float sample_luma(vec2 uv) {
+	return dot(srgb_to_linear(textureLod(tex, uv, 0.0).rgb), HUE_LUMA);
 }
 
 vec3 shift_hue(vec3 color, float shift) {
@@ -878,81 +888,51 @@ vec3 evaluate_false_color(float luma, int mode) {
 
 	vec3 out_col;
 	if (mode == 1) { // FLIR Ironbow
-		vec3 c0 = vec3(0.01, 0.0, 0.06);
-		vec3 c1 = vec3(0.28, 0.02, 0.52);
-		vec3 c2 = vec3(0.85, 0.16, 0.12);
-		vec3 c3 = vec3(1.0, 0.78, 0.08);
-		vec3 c4 = vec3(1.0, 1.0, 0.96);
-		vec3 col = mix(c0, c1, smoothstep(0.0, 0.28, t));
-		col = mix(col, c2, smoothstep(0.28, 0.56, t));
-		col = mix(col, c3, smoothstep(0.56, 0.82, t));
-		out_col = mix(col, c4, smoothstep(0.82, 1.0, t));
+		if (t < 0.28) out_col = mix(vec3(0.01, 0.0, 0.06), vec3(0.28, 0.02, 0.52), smoothstep(0.0, 0.28, t));
+		else if (t < 0.56) out_col = mix(vec3(0.28, 0.02, 0.52), vec3(0.85, 0.16, 0.12), smoothstep(0.28, 0.56, t));
+		else if (t < 0.82) out_col = mix(vec3(0.85, 0.16, 0.12), vec3(1.0, 0.78, 0.08), smoothstep(0.56, 0.82, t));
+		else out_col = mix(vec3(1.0, 0.78, 0.08), vec3(1.0, 1.0, 0.96), smoothstep(0.82, 1.0, t));
 	} else if (mode == 2) { // White-Hot IR
 		out_col = vec3(pow(t, 0.85));
 	} else if (mode == 3) { // Black-Hot IR
 		out_col = vec3(1.0 - pow(t, 0.85));
 	} else if (mode == 4) { // Predator Thermal
-		vec3 c0 = vec3(0.02, 0.05, 0.45);
-		vec3 c1 = vec3(0.0, 0.75, 0.85);
-		vec3 c2 = vec3(0.15, 0.9, 0.2);
-		vec3 c3 = vec3(1.0, 0.85, 0.0);
-		vec3 c4 = vec3(1.0, 0.08, 0.05);
-		vec3 col = mix(c0, c1, smoothstep(0.0, 0.25, t));
-		col = mix(col, c2, smoothstep(0.25, 0.5, t));
-		col = mix(col, c3, smoothstep(0.5, 0.75, t));
-		out_col = mix(col, c4, smoothstep(0.75, 1.0, t));
+		float s = t * 4.0;
+		if (s < 1.0) out_col = mix(vec3(0.02, 0.05, 0.45), vec3(0.0, 0.75, 0.85), smoothstep(0.0, 1.0, s));
+		else if (s < 2.0) out_col = mix(vec3(0.0, 0.75, 0.85), vec3(0.15, 0.9, 0.2), smoothstep(0.0, 1.0, s - 1.0));
+		else if (s < 3.0) out_col = mix(vec3(0.15, 0.9, 0.2), vec3(1.0, 0.85, 0.0), smoothstep(0.0, 1.0, s - 2.0));
+		else out_col = mix(vec3(1.0, 0.85, 0.0), vec3(1.0, 0.08, 0.05), smoothstep(0.0, 1.0, s - 3.0));
 	} else if (mode == 5) { // Phosphor Night-Vision
 		float boosted = clamp(pow(t, 0.75) * 1.25, 0.0, 1.0);
 		out_col = vec3(boosted * 0.12, boosted, boosted * 0.18) + vec3(smoothstep(0.88, 1.0, t) * 0.65);
 	} else if (mode == 6) { // Rainbow / Jet Thermal
-		vec3 c0 = vec3(0.0, 0.0, 0.5);
-		vec3 c1 = vec3(0.0, 0.7, 1.0);
-		vec3 c2 = vec3(0.1, 0.95, 0.25);
-		vec3 c3 = vec3(1.0, 0.9, 0.0);
-		vec3 c4 = vec3(0.95, 0.05, 0.0);
-		vec3 col = mix(c0, c1, smoothstep(0.0, 0.25, t));
-		col = mix(col, c2, smoothstep(0.25, 0.5, t));
-		col = mix(col, c3, smoothstep(0.5, 0.75, t));
-		out_col = mix(col, c4, smoothstep(0.75, 1.0, t));
+		float s = t * 4.0;
+		if (s < 1.0) out_col = mix(vec3(0.0, 0.0, 0.5), vec3(0.0, 0.7, 1.0), smoothstep(0.0, 1.0, s));
+		else if (s < 2.0) out_col = mix(vec3(0.0, 0.7, 1.0), vec3(0.1, 0.95, 0.25), smoothstep(0.0, 1.0, s - 1.0));
+		else if (s < 3.0) out_col = mix(vec3(0.1, 0.95, 0.25), vec3(1.0, 0.9, 0.0), smoothstep(0.0, 1.0, s - 2.0));
+		else out_col = mix(vec3(1.0, 0.9, 0.0), vec3(0.95, 0.05, 0.0), smoothstep(0.0, 1.0, s - 3.0));
 	} else if (mode == 7) { // Arctic / Cryo
-		vec3 c0 = vec3(0.01, 0.03, 0.12);
-		vec3 c1 = vec3(0.04, 0.24, 0.58);
-		vec3 c2 = vec3(0.18, 0.78, 0.95);
-		vec3 c3 = vec3(0.92, 0.99, 1.0);
-		vec3 col = mix(c0, c1, smoothstep(0.0, 0.35, t));
-		col = mix(col, c2, smoothstep(0.35, 0.72, t));
-		out_col = mix(col, c3, smoothstep(0.72, 1.0, t));
+		if (t < 0.35) out_col = mix(vec3(0.01, 0.03, 0.12), vec3(0.04, 0.24, 0.58), smoothstep(0.0, 0.35, t));
+		else if (t < 0.72) out_col = mix(vec3(0.04, 0.24, 0.58), vec3(0.18, 0.78, 0.95), smoothstep(0.35, 0.72, t));
+		else out_col = mix(vec3(0.18, 0.78, 0.95), vec3(0.92, 0.99, 1.0), smoothstep(0.72, 1.0, t));
 	} else if (mode == 8) { // Inferno / Magma
-		vec3 c0 = vec3(0.01, 0.0, 0.03);
-		vec3 c1 = vec3(0.32, 0.04, 0.42);
-		vec3 c2 = vec3(0.78, 0.16, 0.24);
-		vec3 c3 = vec3(0.98, 0.56, 0.06);
-		vec3 c4 = vec3(0.99, 0.99, 0.65);
-		vec3 col = mix(c0, c1, smoothstep(0.0, 0.25, t));
-		col = mix(col, c2, smoothstep(0.25, 0.5, t));
-		col = mix(col, c3, smoothstep(0.5, 0.78, t));
-		out_col = mix(col, c4, smoothstep(0.78, 1.0, t));
+		if (t < 0.25) out_col = mix(vec3(0.01, 0.0, 0.03), vec3(0.32, 0.04, 0.42), smoothstep(0.0, 0.25, t));
+		else if (t < 0.5) out_col = mix(vec3(0.32, 0.04, 0.42), vec3(0.78, 0.16, 0.24), smoothstep(0.25, 0.5, t));
+		else if (t < 0.78) out_col = mix(vec3(0.78, 0.16, 0.24), vec3(0.98, 0.56, 0.06), smoothstep(0.5, 0.78, t));
+		else out_col = mix(vec3(0.98, 0.56, 0.06), vec3(0.99, 0.99, 0.65), smoothstep(0.78, 1.0, t));
 	} else if (mode == 9) { // Viridis Scientific
-		vec3 c0 = vec3(0.26, 0.01, 0.33);
-		vec3 c1 = vec3(0.23, 0.32, 0.54);
-		vec3 c2 = vec3(0.13, 0.57, 0.55);
-		vec3 c3 = vec3(0.37, 0.79, 0.38);
-		vec3 c4 = vec3(0.99, 0.91, 0.14);
-		vec3 col = mix(c0, c1, smoothstep(0.0, 0.25, t));
-		col = mix(col, c2, smoothstep(0.25, 0.5, t));
-		col = mix(col, c3, smoothstep(0.5, 0.75, t));
-		out_col = mix(col, c4, smoothstep(0.75, 1.0, t));
+		float s = t * 4.0;
+		if (s < 1.0) out_col = mix(vec3(0.26, 0.01, 0.33), vec3(0.23, 0.32, 0.54), smoothstep(0.0, 1.0, s));
+		else if (s < 2.0) out_col = mix(vec3(0.23, 0.32, 0.54), vec3(0.13, 0.57, 0.55), smoothstep(0.0, 1.0, s - 1.0));
+		else if (s < 3.0) out_col = mix(vec3(0.13, 0.57, 0.55), vec3(0.37, 0.79, 0.38), smoothstep(0.0, 1.0, s - 2.0));
+		else out_col = mix(vec3(0.37, 0.79, 0.38), vec3(0.99, 0.91, 0.14), smoothstep(0.0, 1.0, s - 3.0));
 	} else if (mode == 10) { // Amber Phosphor P3
 		float a = pow(t, 0.85);
 		out_col = vec3(1.0, 0.48, 0.03) * a + vec3(1.0, 0.88, 0.45) * smoothstep(0.82, 1.0, t) * 0.45;
 	} else if (mode == 11) { // Cyan Radar / Sonar
-		vec3 c0 = vec3(0.0, 0.03, 0.06);
-		vec3 c1 = vec3(0.0, 0.32, 0.48);
-		vec3 c2 = vec3(0.08, 0.88, 0.92);
-		vec3 c3 = vec3(0.88, 1.0, 1.0);
-		vec3 col = mix(c0, c1, smoothstep(0.0, 0.35, t));
-		col = mix(col, c2, smoothstep(0.35, 0.78, t));
-		out_col = mix(col, c3, smoothstep(0.78, 1.0, t));
+		if (t < 0.35) out_col = mix(vec3(0.0, 0.03, 0.06), vec3(0.0, 0.32, 0.48), smoothstep(0.0, 0.35, t));
+		else if (t < 0.78) out_col = mix(vec3(0.0, 0.32, 0.48), vec3(0.08, 0.88, 0.92), smoothstep(0.35, 0.78, t));
+		else out_col = mix(vec3(0.08, 0.88, 0.92), vec3(0.88, 1.0, 1.0), smoothstep(0.78, 1.0, t));
 	} else { // Exposure / Zebra Monitor
 		if (t < 0.06) out_col = vec3(0.08, 0.15, 0.95);
 		else if (t > 0.94) out_col = vec3(0.98, 0.06, 0.06);
@@ -967,154 +947,128 @@ vec3 evaluate_false_color(float luma, int mode) {
 	return out_col;
 }
 
-vec3 sample_row_scalar(int ix, int iy, int max_x, float wa, float wb, float wc, float wd, float we) {
-	return srgb_to_linear(texelFetch(tex, ivec2(clamp(ix - 2, 0, max_x), iy), 0).rgb) * wa +
-	       srgb_to_linear(texelFetch(tex, ivec2(clamp(ix - 1, 0, max_x), iy), 0).rgb) * wb +
-	       srgb_to_linear(texelFetch(tex, ivec2(clamp(ix,     0, max_x), iy), 0).rgb) * wc +
-	       srgb_to_linear(texelFetch(tex, ivec2(clamp(ix + 1, 0, max_x), iy), 0).rgb) * wd +
-	       srgb_to_linear(texelFetch(tex, ivec2(clamp(ix + 2, 0, max_x), iy), 0).rgb) * we;
-}
+vec3 sample_horizontal(float uv_x, int iy, int max_x, bool fast, bool has_rgb_split, float sh) {
+	float scaled_x = uv_x * v_tex_data.x;
+	int ix = clamp(int(floor(scaled_x)), 0, max_x);
 
-vec3 sample_row_rgb(int ix, int iy, int max_x, vec3 wa, vec3 wb, vec3 wc, vec3 wd, vec3 we) {
-	return srgb_to_linear(texelFetch(tex, ivec2(clamp(ix - 2, 0, max_x), iy), 0).rgb) * wa +
-	       srgb_to_linear(texelFetch(tex, ivec2(clamp(ix - 1, 0, max_x), iy), 0).rgb) * wb +
-	       srgb_to_linear(texelFetch(tex, ivec2(clamp(ix,     0, max_x), iy), 0).rgb) * wc +
-	       srgb_to_linear(texelFetch(tex, ivec2(clamp(ix + 1, 0, max_x), iy), 0).rgb) * wd +
-	       srgb_to_linear(texelFetch(tex, ivec2(clamp(ix + 2, 0, max_x), iy), 0).rgb) * we;
-}
-
-vec3 sample_image(vec2 uv) {
-	if (use_interleaved_fields && field_bob_strength > 0.0) {
-		uv.y += (v_glitch_field.z - 0.5) * (field_bob_strength / max(v_extra_data.y, 1.0));
+	if (fast) {
+		return srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb);
 	}
 
-	vec2 scaled_uv = uv * v_tex_data.xy;
+	float diff_base = fract(scaled_x) - 0.5;
+	if (!has_rgb_split) {
+		float wa = 1.0 - smoothstep(0.0, 1.0, (diff_base + 2.0) * sh);
+		float wb = 1.0 - smoothstep(0.0, 1.0, (diff_base + 1.0) * sh);
+		float wc = 1.0 - smoothstep(0.0, 1.0, abs(diff_base) * sh);
+		float wd = 1.0 - smoothstep(0.0, 1.0, (1.0 - diff_base) * sh);
+		float we = 1.0 - smoothstep(0.0, 1.0, (2.0 - diff_base) * sh);
+		vec3 acc = srgb_to_linear(texelFetch(tex, ivec2(clamp(ix - 1, 0, max_x), iy), 0).rgb) * wb +
+		           srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb) * wc +
+		           srgb_to_linear(texelFetch(tex, ivec2(clamp(ix + 1, 0, max_x), iy), 0).rgb) * wd;
+		if (wa > 0.0) acc += srgb_to_linear(texelFetch(tex, ivec2(clamp(ix - 2, 0, max_x), iy), 0).rgb) * wa;
+		if (we > 0.0) acc += srgb_to_linear(texelFetch(tex, ivec2(clamp(ix + 2, 0, max_x), iy), 0).rgb) * we;
+		return acc / (wa + wb + wc + wd + we);
+	}
+
+	vec3 diff = vec3(diff_base - v_dyn_pack1.x, diff_base, diff_base + v_dyn_pack1.x);
+	vec3 wa = vec3(1.0) - smoothstep(vec3(0.0), vec3(1.0), (diff + 2.0) * sh);
+	vec3 wb = vec3(1.0) - smoothstep(vec3(0.0), vec3(1.0), (diff + 1.0) * sh);
+	vec3 wc = vec3(1.0) - smoothstep(vec3(0.0), vec3(1.0), abs(diff) * sh);
+	vec3 wd = vec3(1.0) - smoothstep(vec3(0.0), vec3(1.0), (1.0 - diff) * sh);
+	vec3 we = vec3(1.0) - smoothstep(vec3(0.0), vec3(1.0), (2.0 - diff) * sh);
+	vec3 acc = srgb_to_linear(texelFetch(tex, ivec2(clamp(ix - 1, 0, max_x), iy), 0).rgb) * wb +
+	           srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb) * wc +
+	           srgb_to_linear(texelFetch(tex, ivec2(clamp(ix + 1, 0, max_x), iy), 0).rgb) * wd;
+	if (any(greaterThan(wa, vec3(0.0)))) acc += srgb_to_linear(texelFetch(tex, ivec2(clamp(ix - 2, 0, max_x), iy), 0).rgb) * wa;
+	if (any(greaterThan(we, vec3(0.0)))) acc += srgb_to_linear(texelFetch(tex, ivec2(clamp(ix + 2, 0, max_x), iy), 0).rgb) * we;
+	return acc / (wa + wb + wc + wd + we);
+}
+
+void prepare_scanline_row(float uv_y, float blur, out ivec4 sl_i, out vec4 sl_d1, out vec4 sl_d2, out vec4 sl_m) {
+	if (use_interleaved_fields && field_bob_strength > 0.0) {
+		uv_y += (v_glitch_field.z - 0.5) * (field_bob_strength / max(v_extra_data.y, 1.0));
+	}
+
 	int max_x = int(v_tex_data.x) - 1;
 	int max_y = int(v_tex_data.y) - 1;
-	int ix = clamp(int(floor(scaled_uv.x)), 0, max_x);
-
-	bool has_rgb_split = (v_dyn_pack1.x != 0.0);
-	bool fast = (!has_rgb_split && v_dyn_pack1.y >= 0.999);
-
-	float s_wa = 0.0, s_wb = 0.0, s_wc = 0.0, s_wd = 0.0, s_we = 0.0, s_scaler = 0.0;
-	vec3 weight_a = vec3(0.0), weight_b = vec3(0.0), weight_c = vec3(0.0), weight_d = vec3(0.0), weight_e = vec3(0.0), weight_scaler_vec = vec3(0.0);
-
-	if (!fast) {
-		float diff_base = fract(scaled_uv.x) - 0.5;
-		float sh = v_dyn_pack1.y;
-		if (!has_rgb_split) {
-			s_wa = smoothstep(1.0, 0.0, (diff_base + 2.0) * sh);
-			s_wb = smoothstep(1.0, 0.0, (diff_base + 1.0) * sh);
-			s_wc = smoothstep(1.0, 0.0, abs(diff_base) * sh);
-			s_wd = smoothstep(1.0, 0.0, (1.0 - diff_base) * sh);
-			s_we = smoothstep(1.0, 0.0, (2.0 - diff_base) * sh);
-			s_scaler = 1.0 / (s_wa + s_wb + s_wc + s_wd + s_we);
-		} else {
-			vec3 diff = vec3(diff_base - v_dyn_pack1.x, diff_base, diff_base + v_dyn_pack1.x);
-			weight_a = smoothstep(vec3(1.0), vec3(0.0), (diff + 2.0) * sh);
-			weight_b = smoothstep(vec3(1.0), vec3(0.0), (diff + 1.0) * sh);
-			weight_c = smoothstep(vec3(1.0), vec3(0.0), abs(diff) * sh);
-			weight_d = smoothstep(vec3(1.0), vec3(0.0), (1.0 - diff) * sh);
-			weight_e = smoothstep(vec3(1.0), vec3(0.0), (2.0 - diff) * sh);
-			weight_scaler_vec = 1.0 / (weight_a + weight_b + weight_c + weight_d + weight_e);
-		}
-	}
-
-	float abstract_y = uv.y * v_extra_data.y;
-	vec3 result_color;
+	float abstract_y = uv_y * v_extra_data.y;
+	float blank_mult = (use_interleaved_fields && field_line_blanking > 0.0)
+		? (1.0 - float((int(floor(abstract_y)) & 1) ^ int(v_glitch_field.z)) * field_line_blanking)
+		: 1.0;
 
 	if (use_scanlines) {
 		float shifted_y = abstract_y - TIME * scanline_drift_speed;
 		float y_center1 = floor(shifted_y) + 0.5;
 		float diff = fract(shifted_y) - 0.5;
 		float y_center2 = y_center1 + (diff < 0.0 ? -1.0 : 1.0);
-		
+
 		vec3 rgb_phase = use_rgb_scanline_phase ? vec3(-rgb_scanline_phase_offset, 0.0, rgb_scanline_phase_offset) : vec3(0.0);
-		vec3 dist1 = abs(vec3(shifted_y) + rgb_phase - y_center1); 
-		vec3 dist2 = abs(vec3(shifted_y) + rgb_phase - y_center2); 
-		float blur = max(fwidth(shifted_y), 0.001) * 1.25;
+		sl_d1 = vec4(abs(vec3(shifted_y) + rgb_phase - y_center1), blur);
+		sl_d2 = vec4(abs(vec3(shifted_y) + rgb_phase - y_center2), blank_mult);
+
+		int field_glitch = int(v_glitch_field.z);
+		float fm1 = 1.0 - float((int(y_center1) & 1) ^ field_glitch) * v_dyn_pack1.w;
+		float fm2 = 1.0 - float((int(y_center2) & 1) ^ field_glitch) * v_dyn_pack1.w;
+		sl_m = vec4(fm1, fm2, 0.0, 0.0);
 
 		if (use_decoupled_scanlines) {
 			float sample_res = decoupled_use_native_res ? v_tex_data.y : decoupled_vertical_res;
-			float tex_y = (floor(uv.y * sample_res) + 0.5) / sample_res * v_tex_data.y;
+			float tex_y = (floor(uv_y * sample_res) + 0.5) / sample_res * v_tex_data.y;
 			int iy = clamp(int(floor(tex_y)), 0, max_y);
-			
-			vec3 raw_color = fast
-				? srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb)
-				: (!has_rgb_split
-					? sample_row_scalar(ix, iy, max_x, s_wa, s_wb, s_wc, s_wd, s_we) * s_scaler
-					: sample_row_rgb(ix, iy, max_x, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec);
-			
-			vec3 col = raw_color * v_dyn_pack3.w;
-			vec3 thick = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), decoupled_dynamic_thickness ? col : vec3(1.0));
-			
-			vec3 beam1 = smoothstep(thick * 0.5 + blur, thick * 0.5 - blur, dist1);
-			vec3 beam2 = smoothstep(thick * 0.5 + blur, thick * 0.5 - blur, dist2);
-			
-			int field_glitch = int(v_glitch_field.z);
-			beam1 *= 1.0 - float((int(y_center1) & 1) ^ field_glitch) * v_dyn_pack1.w;
-			beam2 *= 1.0 - float((int(y_center2) & 1) ^ field_glitch) * v_dyn_pack1.w;
-			
-			vec3 final_lines = mix(raw_color, col * (beam1 + beam2), decoupled_beam_opacity);
-			result_color = (scanline_cutoff > 0.0)
-				? mix(raw_color, final_lines, smoothstep(0.0, scanline_cutoff, dot(raw_color, vec3(0.333))))
-				: final_lines;
+			sl_i = ivec4(max_x, iy, iy, 1);
 		} else {
 			float tex_y1 = y_center1 + TIME * scanline_drift_speed;
 			float tex_y2 = y_center2 + TIME * scanline_drift_speed;
 			int iy1 = clamp(int(floor((tex_y1 / v_extra_data.y) * v_tex_data.y)), 0, max_y);
 			int iy2 = clamp(int(floor((tex_y2 / v_extra_data.y) * v_tex_data.y)), 0, max_y);
-
-			vec3 raw1, raw2;
-			if (fast) {
-				raw1 = srgb_to_linear(texelFetch(tex, ivec2(ix, iy1), 0).rgb);
-				raw2 = srgb_to_linear(texelFetch(tex, ivec2(ix, iy2), 0).rgb);
-			} else if (!has_rgb_split) {
-				raw1 = sample_row_scalar(ix, iy1, max_x, s_wa, s_wb, s_wc, s_wd, s_we) * s_scaler;
-				raw2 = sample_row_scalar(ix, iy2, max_x, s_wa, s_wb, s_wc, s_wd, s_we) * s_scaler;
-			} else {
-				raw1 = sample_row_rgb(ix, iy1, max_x, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec;
-				raw2 = sample_row_rgb(ix, iy2, max_x, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec;
-			}
-
-			vec3 col1 = raw1 * v_dyn_pack3.w;
-			vec3 col2 = raw2 * v_dyn_pack3.w;
-			vec3 thick1 = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), col1);
-			vec3 thick2 = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), col2);
-			
-			vec3 profile1 = smoothstep(thick1 * 0.5 + blur, thick1 * 0.5 - blur, dist1) * col1;
-			vec3 profile2 = smoothstep(thick2 * 0.5 + blur, thick2 * 0.5 - blur, dist2) * col2;
-			
-			int field_glitch = int(v_glitch_field.z);
-			profile1 *= 1.0 - float((int(y_center1) & 1) ^ field_glitch) * v_dyn_pack1.w;
-			profile2 *= 1.0 - float((int(y_center2) & 1) ^ field_glitch) * v_dyn_pack1.w;
-
-			vec3 final_lines = profile1 + profile2;
-			result_color = (scanline_cutoff > 0.0)
-				? mix(raw1, final_lines, smoothstep(0.0, scanline_cutoff, dot(raw1, vec3(0.333))))
-				: final_lines;
+			sl_i = ivec4(max_x, iy1, iy2, 0);
 		}
 	} else {
-		int iy = clamp(int(floor(scaled_uv.y)), 0, max_y);
-		vec3 color = fast
-			? srgb_to_linear(texelFetch(tex, ivec2(ix, iy), 0).rgb)
-			: (!has_rgb_split
-				? sample_row_scalar(ix, iy, max_x, s_wa, s_wb, s_wc, s_wd, s_we) * s_scaler
-				: sample_row_rgb(ix, iy, max_x, weight_a, weight_b, weight_c, weight_d, weight_e) * weight_scaler_vec);
-		
-		if (v_dyn_pack1.w > 0.0) {
-			int abstract_iy = int(floor(abstract_y));
-			color *= 1.0 - float((abstract_iy & 1) ^ int(v_glitch_field.z)) * v_dyn_pack1.w;
-		}
-		result_color = color;
+		int iy = clamp(int(floor(uv_y * v_tex_data.y)), 0, max_y);
+		float interlace_mult = (v_dyn_pack1.w > 0.0)
+			? (1.0 - float((int(floor(abstract_y)) & 1) ^ int(v_glitch_field.z)) * v_dyn_pack1.w)
+			: 1.0;
+		sl_i = ivec4(max_x, iy, iy, 2);
+		sl_d1 = vec4(0.0);
+		sl_d2 = vec4(0.0, 0.0, 0.0, blank_mult);
+		sl_m = vec4(interlace_mult, 0.0, 0.0, 0.0);
+	}
+}
+
+vec3 sample_scanline_point(float uv_x, ivec4 sl_i, vec4 sl_d1, vec4 sl_d2, vec4 sl_m) {
+	bool has_rgb_split = (v_dyn_pack1.x != 0.0);
+	bool fast = (!has_rgb_split && v_dyn_pack1.y >= 0.999);
+	float sh = v_dyn_pack1.y;
+	vec3 result_color;
+
+	if (sl_i.w == 1) { // Decoupled scanlines
+		vec3 raw_color = sample_horizontal(uv_x, sl_i.y, sl_i.x, fast, has_rgb_split, sh);
+		vec3 col = raw_color * v_dyn_pack3.w;
+		vec3 half_t = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), decoupled_dynamic_thickness ? col : vec3(1.0)) * 0.5;
+		vec3 beam1 = (vec3(1.0) - smoothstep(half_t - sl_d1.w, half_t + sl_d1.w, sl_d1.xyz)) * sl_m.x;
+		vec3 beam2 = (vec3(1.0) - smoothstep(half_t - sl_d1.w, half_t + sl_d1.w, sl_d2.xyz)) * sl_m.y;
+		vec3 final_lines = mix(raw_color, col * (beam1 + beam2), decoupled_beam_opacity);
+		result_color = (scanline_cutoff > 0.0)
+			? mix(raw_color, final_lines, smoothstep(0.0, scanline_cutoff, dot(raw_color, vec3(0.333))))
+			: final_lines;
+	} else if (sl_i.w == 0) { // Standard scanlines
+		vec3 raw1 = sample_horizontal(uv_x, sl_i.y, sl_i.x, fast, has_rgb_split, sh);
+		vec3 raw2 = sample_horizontal(uv_x, sl_i.z, sl_i.x, fast, has_rgb_split, sh);
+		vec3 col1 = raw1 * v_dyn_pack3.w;
+		vec3 col2 = raw2 * v_dyn_pack3.w;
+		vec3 half_t1 = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), col1) * 0.5;
+		vec3 half_t2 = mix(vec3(scanline_beam_width_min), vec3(scanline_beam_width_max), col2) * 0.5;
+		vec3 profile1 = (vec3(1.0) - smoothstep(half_t1 - sl_d1.w, half_t1 + sl_d1.w, sl_d1.xyz)) * (col1 * sl_m.x);
+		vec3 profile2 = (vec3(1.0) - smoothstep(half_t2 - sl_d1.w, half_t2 + sl_d1.w, sl_d2.xyz)) * (col2 * sl_m.y);
+		vec3 final_lines = profile1 + profile2;
+		result_color = (scanline_cutoff > 0.0)
+			? mix(raw1, final_lines, smoothstep(0.0, scanline_cutoff, dot(raw1, vec3(0.333))))
+			: final_lines;
+	} else { // Scanlines disabled
+		result_color = sample_horizontal(uv_x, sl_i.y, sl_i.x, fast, has_rgb_split, sh) * sl_m.x;
 	}
 
-	if (use_interleaved_fields && field_line_blanking > 0.0) {
-		int line_parity = int(floor(abstract_y)) & 1;
-		result_color *= 1.0 - float(line_parity ^ int(v_glitch_field.z)) * field_line_blanking;
-	}
-
-	return result_color;
+	return result_color * sl_d2.w;
 }
 
 vec3 mask(vec3 linear_color, vec2 coords) {
@@ -1124,12 +1078,16 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 
 	vec3 m_rgb = vec3(0.5);
 	float m_w = 0.5;
+	float inv_m_w = 2.0;
+	float hi_scale = 1.0;
 	float cx = coords.x * TWO_THIRD_PI;
 
 	switch (mask_type) {
 		case 1: 
 			m_rgb = (0.5 + 0.5 * cos(cx - PHASE_OFFSETS)) * (0.5 + 0.5 * cos(coords.y * PI));
 			m_w = 0.25;
+			inv_m_w = 4.0;
+			hi_scale = 0.33333333;
 			break;
 		case 2: 
 			m_rgb = mix(vec3(0.0, 1.0, 0.0), vec3(1.0, 0.0, 1.0), 0.5 + 0.5 * cos(coords.x * PI));
@@ -1137,39 +1095,55 @@ vec3 mask(vec3 linear_color, vec2 coords) {
 		case 3: 
 			m_rgb = clamp(0.5 + 0.8 * cos(cx - PHASE_OFFSETS), 0.0, 1.0);
 			m_w = 0.25;
+			inv_m_w = 4.0;
+			hi_scale = 0.33333333;
 			break;
 		case 4: 
 			m_rgb = 0.5 + 0.5 * cos(cx - PHASE_OFFSETS);
 			m_w = 0.3125;
+			inv_m_w = 3.2;
+			hi_scale = 0.45454545;
 			break;
-		case 5: 
-			m_rgb = (0.5 + 0.5 * cos(cx - PHASE_OFFSETS)) * (0.5 + 0.5 * cos((coords.y + (0.5 - 0.5 * cos(cx)) * 0.5) * TAU));
+		case 5: {
+			vec3 slot_cos = cos(cx - PHASE_OFFSETS);
+			m_rgb = (0.5 + 0.5 * slot_cos) * (0.5 + 0.5 * cos((coords.y + (0.5 - 0.5 * slot_cos.x) * 0.5) * TAU));
 			m_w = 0.375;
+			inv_m_w = 2.66666667;
+			hi_scale = 0.6;
 			break;
+		}
 		case 6: 
 			m_rgb = vec3(1.0);
-			m_w = mix(1.0, 0.6, clamp(0.5 + 1.5 * cos(cx), 0.0, 1.0)); 
+			m_w = mix(1.0, 0.6, clamp(0.5 + 1.5 * cos(cx), 0.0, 1.0));
+			inv_m_w = 1.0 / m_w;
+			hi_scale = (m_w < 0.999) ? (m_w / (1.0 - m_w)) : 0.0;
 			break;
 		case 7:
 			m_rgb = clamp(0.5 + 1.5 * cos(cx - PHASE_OFFSETS), 0.0, 1.0);
 			m_w = 0.6;
+			inv_m_w = 1.66666667;
+			hi_scale = 1.5;
 			break;
 		case 8:
 			m_rgb = clamp(0.5 + 1.5 * cos(cx - PHASE_OFFSETS), 0.0, 1.0) * clamp(0.5 + 1.5 * cos(coords.y * TAU), 0.0, 1.0);
 			m_w = 0.6;
+			inv_m_w = 1.66666667;
+			hi_scale = 1.5;
 			break;
 		case 9: {
 			float shift = (0.5 - 0.5 * cos(coords.y * PI)) * TWO_THIRD_PI;
 			m_rgb = clamp(0.5 + 1.5 * cos(cx + shift - PHASE_OFFSETS), 0.0, 1.0);
 			m_w = 0.6;
+			inv_m_w = 1.66666667;
+			hi_scale = 1.5;
 			break;
 		}
 	}
 
 	linear_color *= mix(m_w, 1.0, v_dyn_pack1.z);
-	vec3 target_color = linear_color * (1.0 / m_w);
+	vec3 target_color = linear_color * inv_m_w;
 	vec3 primary_col = clamp(target_color, 0.0, 1.0);
-	vec3 highlights = (m_w < 0.999) ? ((target_color - primary_col) * (m_w / (1.0 - m_w))) : vec3(0.0);
+	vec3 highlights = (target_color - primary_col) * hi_scale;
 	
 	return primary_col * m_rgb + highlights * (1.0 - m_rgb);
 }
@@ -1178,6 +1152,7 @@ void fragment() {
 	float fw_x = max(fwidth(UV.x), 0.0001);
 	float fw_y = max(fwidth(UV.y), 0.0001);
 	vec2 warped_coords = warp(UV);
+	float scanline_blur = max(fwidth(warped_coords.y) * v_extra_data.y, 0.001) * 1.25;
 	
 	if (power_state < 0.001 || warped_coords.x < 0.0 || warped_coords.x > 1.0 || warped_coords.y < 0.0 || warped_coords.y > 1.0) {
 		COLOR = vec4(0.0, 0.0, 0.0, 1.0);
@@ -1195,7 +1170,9 @@ void fragment() {
 				in_v_blank = 1.0;
 			} else if (v_blanking_tearing > 0.0) {
 				float tear_dist = v_bar_y - v_blanking_bar_size;
-				warped_coords.x += exp(-20.0 * tear_dist) * sin(tear_dist * 50.0) * v_blanking_tearing;
+				if (tear_dist < 0.55) {
+					warped_coords.x += exp(-20.0 * tear_dist) * sin(tear_dist * 50.0) * v_blanking_tearing;
+				}
 			}
 		}
 
@@ -1207,7 +1184,7 @@ void fragment() {
 			if (local_t < active_time) {
 				float c_pos = -crease_width + (local_t * crease_speed);
 				float dist = abs(warped_coords.y - c_pos);
-				crease_factor = smoothstep(crease_width, crease_width * 0.2, dist);
+				crease_factor = 1.0 - smoothstep(crease_width * 0.2, max(crease_width, 0.0001), dist);
 				if (crease_factor > 0.0 && crease_noise_strength > 0.0) {
 					float crease_noise = value_noise_1(vec2(aspect_coords.y * 100.0, TIME * 20.0));
 					warped_coords.x += (crease_noise - 0.5) * crease_factor * crease_noise_strength * 0.1;
@@ -1269,7 +1246,8 @@ void fragment() {
 					float snow_line = floor(warped_coords.y * v_extra_data.y);
 					float snow_rnd = hash12(vec2(snow_x + floor(v_time_pack1.x) * 19.31, snow_line));
 					float snow_env = sin(((warped_coords.y - v_dyn_pack3.z) / max(vhs_tracking_height, 0.0001)) * PI);
-					track_snow = (smoothstep(0.76, 0.99, snow_rnd) - smoothstep(0.24, 0.01, snow_rnd) * 0.65) * snow_env * vhs_tracking_snow_strength;
+					float snow_spark = smoothstep(0.76, 0.99, snow_rnd) - (1.0 - smoothstep(0.01, 0.24, snow_rnd)) * 0.65;
+					track_snow = snow_spark * snow_env * vhs_tracking_snow_strength;
 				}
 			}
 		}
@@ -1281,7 +1259,9 @@ void fragment() {
 			float ripple = sin(dist * 50.0 - v_time_pack2.w) * v_degauss_data.w;
 			warped_coords += center_offset * (bulge + ripple);
 			float tear_dy = warped_coords.y - v_time_pack1.y;
-			warped_coords.x += exp(-50.0 * tear_dy * tear_dy) * sin(warped_coords.y * 100.0) * v_extra_data.x;
+			if (abs(tear_dy) < 0.45) {
+				warped_coords.x += exp(-50.0 * tear_dy * tear_dy) * sin(warped_coords.y * 100.0) * v_extra_data.x;
+			}
 		}
 
 		if (v_dyn_pack2.y > 0.0) {
@@ -1289,7 +1269,9 @@ void fragment() {
 		}
 		if (vsync_tearing > 0.0) {
 			float tear_dist = warped_coords.y - v_time_pack1.z;
-			warped_coords.x += exp(-100.0 * tear_dist * tear_dist) * sin(warped_coords.y * 150.0) * vsync_tearing;
+			if (abs(tear_dist) < 0.32) {
+				warped_coords.x += exp(-100.0 * tear_dist * tear_dist) * sin(warped_coords.y * 150.0) * vsync_tearing;
+			}
 		}
 
 		if (use_datamosh_stretch && datamosh_rate > 0.0 && datamosh_stretch_amount > 0.0) {
@@ -1333,7 +1315,10 @@ void fragment() {
 			}
 		}
 
-		vec3 col = sample_image(warped_coords);
+		ivec4 sl_i;
+		vec4 sl_d1, sl_d2, sl_m;
+		prepare_scanline_row(warped_coords.y, scanline_blur, sl_i, sl_d1, sl_d2, sl_m);
+		vec3 col = sample_scanline_point(warped_coords.x, sl_i, sl_d1, sl_d2, sl_m);
 		
 		if (in_v_blank > 0.0) col = vec3(0.0);
 		if (track_snow != 0.0) col = clamp(col + vec3(track_snow), 0.0, 1.0);
@@ -1350,9 +1335,7 @@ void fragment() {
 			float final_q = center_yiq.z;
 
 			if (use_vhs_tape_speed && v_vhs_speed_pack.w > 0.0) {
-				vec3 l_rgb = (srgb_to_linear(textureLod(tex, warped_coords - vec2(v_vhs_speed_pack.x, 0.0), 0.0).rgb) +
-				              srgb_to_linear(textureLod(tex, warped_coords + vec2(v_vhs_speed_pack.x, 0.0), 0.0).rgb)) * 0.5;
-				float blurred_y = mix(final_y, dot(l_rgb, HUE_LUMA), 0.5 * v_vhs_speed_pack.w);
+				float blurred_y = mix(final_y, (sample_luma(warped_coords - vec2(v_vhs_speed_pack.x, 0.0)) + sample_luma(warped_coords + vec2(v_vhs_speed_pack.x, 0.0))) * 0.5, 0.5 * v_vhs_speed_pack.w);
 
 				vec2 c_base = warped_coords + vec2(v_vhs_speed_pack.z, 0.0);
 				vec3 c_rgb = srgb_to_linear(textureLod(tex, c_base - vec2(v_vhs_speed_pack.y * 2.0, 0.0), 0.0).rgb) * 0.15 +
@@ -1360,18 +1343,18 @@ void fragment() {
 				             srgb_to_linear(textureLod(tex, c_base, 0.0).rgb) * 0.26 +
 				             srgb_to_linear(textureLod(tex, c_base + vec2(v_vhs_speed_pack.y, 0.0), 0.0).rgb) * 0.22 +
 				             srgb_to_linear(textureLod(tex, c_base + vec2(v_vhs_speed_pack.y * 2.0, 0.0), 0.0).rgb) * 0.15;
-				vec3 c_yiq = rgb_to_yiq(c_rgb);
+				vec2 c_iq = rgb_to_iq(c_rgb);
 
 				final_y = blurred_y;
-				final_i = mix(final_i, c_yiq.y, v_vhs_speed_pack.w);
-				final_q = mix(final_q, c_yiq.z, v_vhs_speed_pack.w);
+				final_i = mix(final_i, c_iq.x, v_vhs_speed_pack.w);
+				final_q = mix(final_q, c_iq.y, v_vhs_speed_pack.w);
 			}
 
 			if (use_luma_smear && luma_smear_strength > 0.0) {
 				float sm_step = v_tex_data.z * luma_smear_length * inv_bw;
-				float y1 = dot(srgb_to_linear(textureLod(tex, warped_coords - vec2(sm_step * 0.33, 0.0), 0.0).rgb), HUE_LUMA);
-				float y2 = dot(srgb_to_linear(textureLod(tex, warped_coords - vec2(sm_step * 0.66, 0.0), 0.0).rgb), HUE_LUMA);
-				float y3 = dot(srgb_to_linear(textureLod(tex, warped_coords - vec2(sm_step, 0.0), 0.0).rgb), HUE_LUMA);
+				float y1 = sample_luma(warped_coords - vec2(sm_step * 0.33, 0.0));
+				float y2 = sample_luma(warped_coords - vec2(sm_step * 0.66, 0.0));
+				float y3 = sample_luma(warped_coords - vec2(sm_step, 0.0));
 				float smeared_y = (luma_smear_filter == 0)
 					? (final_y * 0.45 + y1 * 0.30 + y2 * 0.17 + y3 * 0.08)
 					: clamp(final_y * 0.55 + y1 * 0.40 + y2 * 0.17 - y3 * 0.12, 0.0, 1.0);
@@ -1380,8 +1363,8 @@ void fragment() {
 
 			if (use_fm_slew_rate && fm_slew_rate_mix > 0.0) {
 				float slew_dx = v_tex_data.z * inv_bw;
-				float y_prev2 = dot(srgb_to_linear(textureLod(tex, warped_coords - vec2(slew_dx * 2.0, 0.0), 0.0).rgb), HUE_LUMA);
-				float y_prev1 = dot(srgb_to_linear(textureLod(tex, warped_coords - vec2(slew_dx, 0.0), 0.0).rgb), HUE_LUMA);
+				float y_prev2 = sample_luma(warped_coords - vec2(slew_dx * 2.0, 0.0));
+				float y_prev1 = sample_luma(warped_coords - vec2(slew_dx, 0.0));
 				float step1 = y_prev2 + clamp(y_prev1 - y_prev2, -fm_slew_rate_limit, fm_slew_rate_limit);
 				float slewed_y = step1 + clamp(final_y - step1, -fm_slew_rate_limit, fm_slew_rate_limit);
 				final_y = mix(final_y, slewed_y, fm_slew_rate_mix);
@@ -1389,8 +1372,8 @@ void fragment() {
 
 			if (use_vhs_sharpen && vhs_sharpen_strength > 0.0) {
 				float sh_offset = v_tex_data.z * vhs_sharpen_radius * inv_bw;
-				float y_l = dot(srgb_to_linear(textureLod(tex, warped_coords - vec2(sh_offset, 0.0), 0.0).rgb), HUE_LUMA);
-				float y_r = dot(srgb_to_linear(textureLod(tex, warped_coords + vec2(sh_offset, 0.0), 0.0).rgb), HUE_LUMA);
+				float y_l = sample_luma(warped_coords - vec2(sh_offset, 0.0));
+				float y_r = sample_luma(warped_coords + vec2(sh_offset, 0.0));
 				float detail = final_y * 2.0 - y_l - y_r;
 				final_y = clamp(final_y + detail * vhs_sharpen_strength * 0.5, 0.0, 1.0);
 			}
@@ -1423,15 +1406,15 @@ void fragment() {
 			}
 
 			if (use_yc_delay) {
-				vec3 delayed_col = sample_image(warped_coords - vec2(yc_delay_amount * v_tex_data.z, 0.0));
-				vec3 delayed_yiq = rgb_to_yiq(delayed_col);
-				final_i = delayed_yiq.y;
-				final_q = delayed_yiq.z;
+				vec3 delayed_col = sample_scanline_point(warped_coords.x - yc_delay_amount * v_tex_data.z, sl_i, sl_d1, sl_d2, sl_m);
+				vec2 delayed_iq = rgb_to_iq(delayed_col);
+				final_i = delayed_iq.x;
+				final_q = delayed_iq.y;
 			}
 			
 			if (use_yiq_bleed) {
 				vec3 raw_col = srgb_to_linear(textureLod(tex, warped_coords, 0.0).rgb);
-				float raw_luma = rgb_to_yiq(raw_col).x;
+				float raw_luma = dot(raw_col, HUE_LUMA);
 				float luma_mask = (raw_luma > 0.001) ? (final_y / raw_luma) : 0.0;
 				
 				float spread = yiq_bleed_spread * v_tex_data.z * inv_bw;
@@ -1446,32 +1429,32 @@ void fragment() {
 				vec3 blurred_rgb = (yiq_bleed_filter == 0)
 					? ((rgb0 + rgb4) * 0.0625 + (rgb1 + rgb3) * 0.25 + rgb2 * 0.375)
 					: (-(rgb0 + rgb4) * 0.085 + (rgb1 + rgb3) * 0.345 + rgb2 * 0.48);
-				vec3 blurred_yiq = rgb_to_yiq(blurred_rgb);
+				vec2 blurred_iq = rgb_to_iq(blurred_rgb);
 
 				if (use_asymmetric_yiq_bleed && yiq_q_bleed_multiplier > 1.001) {
 					float q_blend = clamp((yiq_q_bleed_multiplier - 1.0) * 0.25, 0.0, 1.0);
 					vec3 wide_rgb = (yiq_bleed_filter == 0)
 						? ((rgb0 + rgb4) * 0.16 + (rgb1 + rgb3) * 0.22 + rgb2 * 0.24)
 						: (-(rgb0 + rgb4) * 0.06 + (rgb1 + rgb3) * 0.36 + rgb2 * 0.40);
-					blurred_yiq.z = mix(blurred_yiq.z, rgb_to_yiq(wide_rgb).z, q_blend);
+					blurred_iq.y = mix(blurred_iq.y, dot(wide_rgb, YIQ_Q_ROW), q_blend);
 				}
 
-				final_i = blurred_yiq.y * luma_mask;
-				final_q = blurred_yiq.z * luma_mask;
+				final_i = blurred_iq.x * luma_mask;
+				final_q = blurred_iq.y * luma_mask;
 			}
 			
 			if (use_vertical_chroma_smear && chroma_smear_strength > 0.0) {
 				float v_offset = v_tex_data.w * chroma_smear_scanlines;
-				vec3 up_yiq = rgb_to_yiq(srgb_to_linear(textureLod(tex, warped_coords - vec2(0.0, v_offset), 0.0).rgb));
-				vec3 down_yiq = rgb_to_yiq(srgb_to_linear(textureLod(tex, warped_coords + vec2(0.0, v_offset), 0.0).rgb));
-				final_i = mix(final_i, (up_yiq.y + down_yiq.y + final_i) * 0.3333333, chroma_smear_strength);
-				final_q = mix(final_q, (up_yiq.z + down_yiq.z + final_q) * 0.3333333, chroma_smear_strength);
+				vec2 up_iq = rgb_to_iq(srgb_to_linear(textureLod(tex, warped_coords - vec2(0.0, v_offset), 0.0).rgb));
+				vec2 down_iq = rgb_to_iq(srgb_to_linear(textureLod(tex, warped_coords + vec2(0.0, v_offset), 0.0).rgb));
+				final_i = mix(final_i, (up_iq.x + down_iq.x + final_i) * 0.3333333, chroma_smear_strength);
+				final_q = mix(final_q, (up_iq.y + down_iq.y + final_q) * 0.3333333, chroma_smear_strength);
 			}
 
 			if (use_vertical_chroma_delay && chroma_line_delay_mix > 0.0) {
-				vec3 prev_line_yiq = rgb_to_yiq(srgb_to_linear(textureLod(tex, warped_coords - vec2(0.0, v_tex_data.w), 0.0).rgb));
-				final_i = mix(final_i, (final_i + prev_line_yiq.y) * 0.5, chroma_line_delay_mix);
-				final_q = mix(final_q, (final_q + prev_line_yiq.z) * 0.5, chroma_line_delay_mix);
+				vec2 prev_line_iq = rgb_to_iq(srgb_to_linear(textureLod(tex, warped_coords - vec2(0.0, v_tex_data.w), 0.0).rgb));
+				final_i = mix(final_i, (final_i + prev_line_iq.x) * 0.5, chroma_line_delay_mix);
+				final_q = mix(final_q, (final_q + prev_line_iq.y) * 0.5, chroma_line_delay_mix);
 			}
 
 			if (use_chroma_demod_axis_error && abs(chroma_demod_axis_skew) > 0.001) {
@@ -1486,8 +1469,8 @@ void fragment() {
 					float phase_weight = pow(angle_match, v_phase_err_anim.y) * v_phase_err_anim.z;
 					if (phase_weight > 0.001) {
 						if (v_phase_err_anim.x > 0.0) {
-							vec3 bleed_yiq = rgb_to_yiq(srgb_to_linear(textureLod(tex, warped_coords - vec2(v_phase_err_anim.x * v_tex_data.z * inv_bw * phase_weight, 0.0), 0.0).rgb));
-							iq = mix(iq, bleed_yiq.yz, phase_weight * 0.65);
+							vec2 bleed_iq = rgb_to_iq(srgb_to_linear(textureLod(tex, warped_coords - vec2(v_phase_err_anim.x * v_tex_data.z * inv_bw * phase_weight, 0.0), 0.0).rgb));
+							iq = mix(iq, bleed_iq, phase_weight * 0.65);
 						}
 						mat2 phase_rot = mat2(vec2(v_phase_err_pack.z, v_phase_err_pack.w), vec2(-v_phase_err_pack.w, v_phase_err_pack.z));
 						iq = mix(iq, phase_rot * iq, phase_weight);
@@ -1609,8 +1592,8 @@ void fragment() {
 		bool need_l1_r1 = use_signal_ringing || use_dot_crawl || use_cross_color || use_cross_luminance || (use_luma_notch_bleed && luma_notch_bleed_strength > 0.0) || use_pre_emphasis || (use_deemphasis_mismatch && abs(deemphasis_mismatch_gain) > 0.001) || (use_composite_sharpening && abs(composite_sharpening) > 0.001);
 		if (need_l1_r1) {
 			float tap_dx = v_tex_data.z * inv_bw;
-			vec3 l1 = sample_image(warped_coords - vec2(tap_dx, 0.0));
-			vec3 r1 = sample_image(warped_coords + vec2(tap_dx, 0.0));
+			vec3 l1 = sample_scanline_point(warped_coords.x - tap_dx, sl_i, sl_d1, sl_d2, sl_m);
+			vec3 r1 = sample_scanline_point(warped_coords.x + tap_dx, sl_i, sl_d1, sl_d2, sl_m);
 			float luma_left = dot(l1, HUE_LUMA);
 			float luma_right = dot(r1, HUE_LUMA);
 
@@ -1636,14 +1619,13 @@ void fragment() {
 
 			if (use_deemphasis_mismatch && abs(deemphasis_mismatch_gain) > 0.001) {
 				float trail_dx = deemphasis_decay_pixels * v_tex_data.z * inv_bw;
-				vec3 trail_col = srgb_to_linear(textureLod(tex, warped_coords - vec2(trail_dx, 0.0), 0.0).rgb);
-				float trail_delta = dot(col - trail_col, HUE_LUMA);
+				float trail_delta = dot(col, HUE_LUMA) - sample_luma(warped_coords - vec2(trail_dx, 0.0));
 				col = clamp(col + vec3(trail_delta * deemphasis_mismatch_gain), 0.0, 1.0);
 			}
 			
 			if (use_signal_ringing && ringing_strength > 0.0) {
-				vec3 l2 = sample_image(warped_coords - vec2(tap_dx * 2.0, 0.0));
-				vec3 r2 = sample_image(warped_coords + vec2(tap_dx * 2.0, 0.0));
+				vec3 l2 = sample_scanline_point(warped_coords.x - tap_dx * 2.0, sl_i, sl_d1, sl_d2, sl_m);
+				vec3 r2 = sample_scanline_point(warped_coords.x + tap_dx * 2.0, sl_i, sl_d1, sl_d2, sl_m);
 				vec3 ringing_kernel = (col * 2.0 - l1 - r1) - 0.5 * (l2 + r2 - 2.0 * col);
 				col += ringing_kernel * ringing_strength;
 			}
@@ -1665,9 +1647,9 @@ void fragment() {
 			}
 
 			if (use_cross_luminance && cross_luminance_strength > 0.0) {
-				vec3 yiq_l = rgb_to_yiq(l1);
-				vec3 yiq_r = rgb_to_yiq(r1);
-				float chroma_diff = distance(yiq_l.yz, yiq_r.yz);
+				vec2 iq_l = rgb_to_iq(l1);
+				vec2 iq_r = rgb_to_iq(r1);
+				float chroma_diff = distance(iq_l, iq_r);
 				float luma_diff = abs(luma_left - luma_right);
 				
 				float zipper_mask = smoothstep(0.05, 0.2, chroma_diff) * (1.0 - smoothstep(0.0, 0.1, luma_diff));
@@ -1680,8 +1662,8 @@ void fragment() {
 			}
 
 			if (use_luma_notch_bleed && luma_notch_bleed_strength > 0.0) {
-				vec3 notch_yiq = rgb_to_yiq(col);
-				float chroma_amp = length(notch_yiq.yz);
+				vec2 notch_iq = rgb_to_iq(col);
+				float chroma_amp = length(notch_iq);
 				if (chroma_amp > 0.001) {
 					float notch_phase = use_subcarrier_line_phase
 						? (warped_coords.x * (v_extra_data.y * aspect) * PI * bw_freq + sub_line_phase)
@@ -1764,8 +1746,7 @@ void fragment() {
 			vec3 h2 = srgb_to_linear(textureLod(tex, warped_coords + vec2(-hal_off.x, hal_off.y), 0.0).rgb);
 			vec3 h3 = srgb_to_linear(textureLod(tex, warped_coords + vec2(hal_off.x, -hal_off.y), 0.0).rgb);
 			vec3 h4 = srgb_to_linear(textureLod(tex, warped_coords + vec2(-hal_off.x, -hal_off.y), 0.0).rgb);
-			vec3 hal_avg = (h1 + h2 + h3 + h4) * 0.25;
-			float hal_luma = dot(hal_avg, HUE_LUMA);
+			float hal_luma = dot((h1 + h2 + h3 + h4) * 0.25, HUE_LUMA);
 			float hal_mask = smoothstep(halation_threshold, min(1.0, halation_threshold + 0.35), hal_luma);
 			col += halation_color * hal_mask * halation_strength;
 		}
@@ -1776,8 +1757,7 @@ void fragment() {
 			vec3 s2 = srgb_to_linear(textureLod(tex, warped_coords + vec2(str_dx * 0.4, 0.0), 0.0).rgb);
 			vec3 s3 = srgb_to_linear(textureLod(tex, warped_coords - vec2(str_dx, 0.0), 0.0).rgb);
 			vec3 s4 = srgb_to_linear(textureLod(tex, warped_coords + vec2(str_dx, 0.0), 0.0).rgb);
-			vec3 streak_avg = (s1 + s2) * 0.32 + (s3 + s4) * 0.18;
-			float streak_luma = dot(streak_avg, HUE_LUMA);
+			float streak_luma = dot((s1 + s2) * 0.32 + (s3 + s4) * 0.18, HUE_LUMA);
 			float streak_mask = smoothstep(anamorphic_threshold, min(1.0, anamorphic_threshold + 0.3), streak_luma);
 			col += anamorphic_streak_color * streak_mask * anamorphic_streak_strength;
 		}
@@ -1788,7 +1768,7 @@ void fragment() {
 			float rf_x = floor(warped_coords.x * (snow_lines * quad_aspect) * mix(1.0, 0.065, rf_snow_anisotropy));
 			float rf_y = floor(warped_coords.y * snow_lines);
 			float rf_rnd = hash12(vec2(rf_x + floor(TIME * rf_snow_speed) * 23.71, rf_y));
-			float rf_burst = smoothstep(0.84, 0.995, rf_rnd) - smoothstep(0.16, 0.005, rf_rnd) * 0.6;
+			float rf_burst = smoothstep(0.84, 0.995, rf_rnd) - (1.0 - smoothstep(0.005, 0.16, rf_rnd)) * 0.6;
 			col = clamp(col + vec3(rf_burst * rf_snow_intensity), 0.0, 1.0);
 		}
 
@@ -1815,7 +1795,8 @@ void fragment() {
 		}
 
 		if (use_solarization && solarization_mix > 0.0) {
-			vec3 sol = 1.0 - abs(col - vec3(solarization_threshold)) / max(solarization_threshold, 1.0 - solarization_threshold);
+			float inv_sol_denom = 1.0 / max(solarization_threshold, 1.0 - solarization_threshold);
+			vec3 sol = 1.0 - abs(col - vec3(solarization_threshold)) * inv_sol_denom;
 			col = mix(col, clamp(sol, 0.0, 1.0), solarization_mix);
 		}
 
@@ -1827,8 +1808,8 @@ void fragment() {
 		}
 		if (use_bayer_dither && bayer_dither_spread > 0.0) {
 			float dither_luma = dot(col, HUE_LUMA);
-			float luma_gate = smoothstep(bayer_dither_min_luma, min(1.0, bayer_dither_min_luma + bayer_dither_fade_range), dither_luma);
-			if (luma_gate > 0.0) {
+			if (dither_luma > bayer_dither_min_luma) {
+				float luma_gate = smoothstep(bayer_dither_min_luma, min(1.0, bayer_dither_min_luma + bayer_dither_fade_range), dither_luma);
 				float dither_res = v_extra_data.z;
 				ivec2 dither_cell = ivec2(floor(vec2(warped_coords.x * (dither_res * quad_aspect), warped_coords.y * dither_res)));
 				vec3 dithered = clamp(col + vec3(bayer4x4(dither_cell) * bayer_dither_spread * luma_gate), 0.0, 1.0);
@@ -1876,7 +1857,7 @@ void fragment() {
 			float gc = cos(glare_rotation);
 			float gs = sin(glare_rotation);
 			float rot_x = gc * centered.x - gs * centered.y;
-			float glare = smoothstep(glare_size + glare_softness, glare_size, abs(rot_x));
+			float glare = 1.0 - smoothstep(glare_size, glare_size + max(glare_softness, 0.0001), abs(rot_x));
 			col += vec3(glare * glare_strength);
 		}
 		if (use_glass_reflection && glass_env_strength > 0.0 && glass_tint.a > 0.0) {
@@ -1895,7 +1876,7 @@ void fragment() {
 			
 			vec3 blended;
 			if (glass_blend_mode == 0) blended = col + env;
-			else if (glass_blend_mode == 1) blended = 1.0 - (1.0 - col) * (1.0 - env);
+			else if (glass_blend_mode == 1) blended = col + env - col * env;
 			else blended = max(col, env);
 			
 			col = mix(col, blended, glass_env_strength * glass_tint.a);
