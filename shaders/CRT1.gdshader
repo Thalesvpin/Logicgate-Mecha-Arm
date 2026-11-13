@@ -129,6 +129,9 @@ uniform float vhs_tracking_height : hint_range(0.01, 0.5) = 0.08;
 uniform float vhs_tracking_speed : hint_range(-10.0, 10.0) = 2.0;
 uniform float vhs_tracking_interval : hint_range(0.0, 10.0) = 2.0;
 uniform float vhs_tracking_noise_scale : hint_range(1.0, 100.0) = 40.0;
+uniform bool vhs_tracking_snow = false;
+uniform float vhs_tracking_snow_strength : hint_range(0.0, 2.0) = 0.75;
+uniform float vhs_tracking_snow_anisotropy : hint_range(0.0, 1.0) = 0.65;
 
 group_uniforms VHS_Tape_Speed;
 uniform bool use_vhs_tape_speed = false;
@@ -207,6 +210,10 @@ uniform sampler2D sharpness_curve;
 uniform float sharpness_anim_speed = 1.0;
 uniform float sharpness_anim_amplitude = 1.0;
 
+group_uniforms Composite_Sharpening;
+uniform bool use_composite_sharpening = false;
+uniform float composite_sharpening : hint_range(-1.0, 2.0) = 0.35;
+
 group_uniforms Composite_Pre_Emphasis;
 uniform bool use_pre_emphasis = false;
 uniform float pre_emphasis_strength : hint_range(0.0, 2.0) = 0.35;
@@ -235,6 +242,9 @@ uniform bool use_tape_noise = false;
 uniform float tape_noise_strength : hint_range(0.0, 1.0) = 0.2;
 uniform float tape_noise_scale : hint_range(0.01, 10.0) = 2.0;
 uniform float tape_noise_speed : hint_range(0.0, 10.0) = 5.0;
+uniform bool use_tape_noise_streak = false;
+uniform float tape_noise_streak_detail : hint_range(0.0, 1.0) = 0.6;
+uniform float tape_noise_streak_anisotropy : hint_range(0.0, 1.0) = 0.85;
 
 group_uniforms Color_Killer;
 uniform bool use_color_killer = false;
@@ -1022,11 +1032,20 @@ void fragment() {
 			}
 		}
 
+		float track_snow = 0.0;
 		if (v_optim_pack.y > -999.0) {
 			float track_band = step(v_optim_pack.y, warped_coords.y) * step(warped_coords.y, v_optim_pack.y + vhs_tracking_height);
 			if (track_band > 0.0) {
-				float pseudo_rand = fract(sin(floor(aspect_coords.y * vhs_tracking_noise_scale) + TIME * 10.0) * 43758.5453);
+				float track_row = floor(aspect_coords.y * vhs_tracking_noise_scale);
+				float pseudo_rand = fract(sin(track_row + TIME * 10.0) * 43758.5453);
 				warped_coords.x += (pseudo_rand - 0.5) * vhs_tracking_strength * 0.2;
+				if (vhs_tracking_snow && vhs_tracking_snow_strength > 0.0) {
+					float snow_x = floor(warped_coords.x * mix(180.0, 12.0, vhs_tracking_snow_anisotropy));
+					float snow_line = floor(warped_coords.y * v_extra_data.y);
+					float snow_rnd = hash12(vec2(snow_x + floor(TIME * 60.0) * 19.31, snow_line));
+					float snow_env = sin(((warped_coords.y - v_optim_pack.y) / max(vhs_tracking_height, 0.0001)) * PI);
+					track_snow = (smoothstep(0.76, 0.99, snow_rnd) - smoothstep(0.24, 0.01, snow_rnd) * 0.65) * snow_env * vhs_tracking_snow_strength;
+				}
 			}
 		}
 		
@@ -1071,6 +1090,9 @@ void fragment() {
 		
 		if (in_v_blank > 0.0) {
 			col = vec3(0.0);
+		}
+		if (track_snow != 0.0) {
+			col = clamp(col + vec3(track_snow), 0.0, 1.0);
 		}
 		
 		if (use_analog_clipping) {
@@ -1236,6 +1258,12 @@ void fragment() {
 
 			if (use_tape_noise && tape_noise_strength > 0.0) {
 				vec3 t_noise = fbm_3(aspect_coords * tape_noise_scale + vec2(TIME * tape_noise_speed, -TIME * tape_noise_speed * 0.5), 2, 2.0, 0.5);
+				if (use_tape_noise_streak && tape_noise_streak_detail > 0.0) {
+					float line_y = floor(warped_coords.y * v_extra_data.y);
+					float x_stretch = mix(1.0, 0.04, tape_noise_streak_anisotropy);
+					vec2 streak_uv = vec2(aspect_coords.x * tape_noise_scale * 16.0 * x_stretch + floor(TIME * tape_noise_speed * 15.0) * 13.7, line_y);
+					t_noise = mix(t_noise, value_noise_3(streak_uv), tape_noise_streak_detail);
+				}
 				final_i += (t_noise.x - 0.5) * tape_noise_strength;
 				final_q += (t_noise.y - 0.5) * tape_noise_strength;
 			}
@@ -1290,11 +1318,16 @@ void fragment() {
 			col = yiq_to_rgb(vec3(final_y, final_i, final_q));
 		}
 
-		bool need_l1_r1 = use_signal_ringing || use_dot_crawl || use_cross_color || use_cross_luminance || use_pre_emphasis;
+		bool need_l1_r1 = use_signal_ringing || use_dot_crawl || use_cross_color || use_cross_luminance || use_pre_emphasis || (use_composite_sharpening && abs(composite_sharpening) > 0.001);
 		if (need_l1_r1) {
 			float tap_dx = v_tex_data.z * inv_bw;
 			vec3 l1 = sample_image(warped_coords - vec2(tap_dx, 0.0), local_chroma);
 			vec3 r1 = sample_image(warped_coords + vec2(tap_dx, 0.0), local_chroma);
+
+			if (use_composite_sharpening && abs(composite_sharpening) > 0.001) {
+				vec3 comp_detail = col - (l1 + r1) * 0.5;
+				col = clamp(col + comp_detail * composite_sharpening, 0.0, 1.0);
+			}
 
 			if (use_pre_emphasis && pre_emphasis_strength > 0.0) {
 				float l_center = dot(col, HUE_LUMA);
