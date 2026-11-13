@@ -2,6 +2,11 @@ extends PanelContainer
 
 @onready var background: ColorRect = $Mask/Background
 @onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
+@onready var implant_type_icon: TextureRect = $MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/ImplantTypeIcon
+@onready var implant_type_icon_2: TextureRect = $MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer/ImplantTypeIcon2
+
+const ICON_MINI_BIOHACKS = preload("uid://byrpiwaihcjtv")
+const ICON_MINI_TECHMODS = preload("uid://s0uva87wtgws")
 
 var rarity: Global.Rarity
 
@@ -12,6 +17,12 @@ func load_implant(implant: Implant) -> void:
 	set_rarity(implant.rarity)
 	implant_card.resource = implant
 	implant_card.load_resource()
+	if implant.type == Implant.Type.TECH_MOD:
+		implant_type_icon.texture = ICON_MINI_TECHMODS
+		implant_type_icon_2.texture = ICON_MINI_TECHMODS
+	if implant.type == Implant.Type.BIO_HACK:
+		implant_type_icon.texture = ICON_MINI_BIOHACKS
+		implant_type_icon_2.texture = ICON_MINI_BIOHACKS
 
 func set_rarity(rarity) -> void:
 	var style: StyleBoxFlat = get_theme_stylebox('panel').duplicate()

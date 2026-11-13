@@ -1,9 +1,7 @@
 -PRA FICAR JOGAVEL
 	-randomizar inimigos (com peso de inimigos)
-	-aplicar dificuldade por batalha
-	-criar batalha com boss
 	-pacote corrompido nem sempre vem corrompido
-	-reroll cai em loop infinito dps de alguns cliques
+	-upgrade de stats
 
 
 definir preços
@@ -36,8 +34,6 @@ dano do ataque = dano base * mult de ataque
 ============================
 centralizar os inimigos verticalmente
 separar techmods e biohacks em seus respectivos lados dentro de um pacote
-"escolha ATE x implantes"
-add icone de bio hack e tech mod nos itens do pacote
 
 PACOTES
 mini mix - barato

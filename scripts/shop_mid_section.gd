@@ -27,7 +27,7 @@ var choices_left
 func _ready() -> void:
 	EventBus.pack_item_chosen.connect(pack_item_chosen)
 	EventBus.open_shop.connect(refresh)
-	EventBus.reroll_shop.connect(reroll)
+	#EventBus.reroll_shop.connect(reroll)
 	EventBus.skip_pack.connect(get_out_of_pack)
 	
 	pack_list.append(pack_card)
@@ -90,7 +90,7 @@ func open_pack(pack: PanelContainer) -> void:
 		var item = OPEN_PACK_ITEM.instantiate()
 		pack_items.add_child(item)
 		item.load_implant(pack.drawn[i])
-	instruction.text = 'Escolha %d Implante' % pack.choices_amount
+	instruction.text = 'Escolha até %d Implante' % pack.choices_amount
 	if pack.choices_amount > 1:
 		instruction.text += 's'
 
@@ -150,7 +150,3 @@ func reset_packs() -> void:
 	reset_packs_visual()
 	chosen_pack = null
 	chosen_packs = []
-
-func reroll() -> void:
-	refresh()
-	#randomizar packs

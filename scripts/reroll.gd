@@ -14,7 +14,7 @@ func _ready() -> void:
 func reset() -> void:
 	idx = 3
 	price = start_price
-	price_label.text = str(price)
+	price_label.text = '$%d' % price
 
 func fib(n: int) -> int:
 	var a := 0
@@ -32,5 +32,5 @@ func _on_texture_button_button_up() -> void:
 		ef.apply()
 		idx += 1
 		price = fib(idx) * base_price
-		price_label.text = str(price)
+		price_label.text = '$%d' % price
 		EventBus.reroll_shop.emit()

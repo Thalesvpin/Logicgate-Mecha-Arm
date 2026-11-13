@@ -7,6 +7,7 @@ uniform mediump float gamma : hint_range(0.1, 3.0) = 1.0;
 uniform bool premultiplied_alpha = false;
 uniform lowp float feather_edges : hint_range(0.0, 1.0) = 0.0;
 uniform lowp float dither_strength : hint_range(0.0, 0.1) = 0.0;
+uniform lowp float final_opacity : hint_range(0.0, 1.0) = 1.0; // transparência final
 
 // --- BASE OVERLAY ---
 group_uniforms BaseOverlay;
@@ -181,8 +182,11 @@ void fragment() {
         final_rgb += bayer_matrix[bayer_index] * (dither_strength * dither_weight);
     }
 
-    // Optimization #25: Alternative Premultiplied Alpha Math (Branchless vector mix)
-    final_rgb *= mix(vec3(1.0), vec3(base_color.a), float(premultiplied_alpha));
+    // --- 4. FINAL TRANSPARENCY (aplicada após todos os efeitos) ---
+    lowp float final_alpha = base_color.a * final_opacity;
+
+    // Premultiplied usa o alpha final, para a cor continuar consistente
+    final_rgb *= mix(vec3(1.0), vec3(final_alpha), float(premultiplied_alpha));
     
-    COLOR = vec4(final_rgb, base_color.a);
+    COLOR = vec4(final_rgb, final_alpha);
 }

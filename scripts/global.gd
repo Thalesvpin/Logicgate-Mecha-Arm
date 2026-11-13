@@ -310,7 +310,7 @@ func number_shift_animation(label: Variant, final_val: int, duration: float = 0.
 	tween.tween_method(func(v): label.text = str(v), int(label.text), final_val, duration)
 
 ##exclude is an array of implants to be ignored from the pool
-func get_random_implant(exclude: Array = [], type: Implant.Type = -1) -> Implant:
+func get_random_implant(exclude: Array = [], type: Implant.Type = -1, attempts: int = 0) -> Implant:
 	var list: Array[Implant]
 	var chance
 	var result
@@ -327,7 +327,9 @@ func get_random_implant(exclude: Array = [], type: Implant.Type = -1) -> Implant
 	
 	chance  = Global.random.next() % list.size()
 	if exclude.has(list[chance]):
-		result = get_random_implant(exclude, type)
+		if attempts > 10:
+			return result
+		result = get_random_implant(exclude, type, attempts+1)
 	else:
 		result = list[chance]
 	return result

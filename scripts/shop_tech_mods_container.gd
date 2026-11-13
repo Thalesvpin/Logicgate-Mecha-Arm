@@ -20,8 +20,6 @@ func refresh() -> void:
 	add_implants()
 
 func randomize_implants() -> void:
-	#implants.append(TM_1)
-	#implants.append(TM_2)
 	var implant1 = get_random_implant()
 	var implant2 = get_random_implant(implant1)
 	implants.append(implant1)
