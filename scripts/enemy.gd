@@ -116,10 +116,15 @@ func set_stats() -> void:
 		stats[Stats.List.MITIGATION_PERCENT] = Enemy.status_preset[config.status_preset][Stats.List.MITIGATION_PERCENT]
 		stats[Stats.List.CURRENT_ELEMENTALS] = null
 		stats[Stats.List.CURRENT_AFFLICTED_ELEMENT] = null
-	
+	apply_firewall_difficulty()
 	texture_rect.texture = config.texture
 	actions_list = config.actions_list
 	actions_weight = config.actions_weight
+
+func apply_firewall_difficulty() -> void:
+	stats[Stats.List.MAX_HEALTH] *= Enemy.dificulty_progression**Global.run_stats.current_firewall
+	stats[Stats.List.CURRENT_HEALTH] *= Enemy.dificulty_progression**Global.run_stats.current_firewall
+	stats[Stats.List.BASE_ATTACK_DAMAGE] *= Enemy.dificulty_progression**Global.run_stats.current_firewall
 
 func connect_signals() -> void:
 	EventBus.turn_started.connect(turn_start)
