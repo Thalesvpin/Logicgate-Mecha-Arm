@@ -1,14 +1,18 @@
 extends StatUpgrade
 
 func upgrade() -> void:
-	withdraw_money()
-	Global.run_stats.player_stats[stat] += amount_per_upgrade
-	upgrades += 1
-	update_price()
-	update_value()
+	if withdraw_money():
+		var ef = AddCritDamagePercent.new()
+		ef.amount = amount_per_upgrade
+		ef.apply()
+		
+		upgrades += 1
+		update_price()
+		update_value()
 
 func update_value() -> void:
-	current_value.text = 'x%02f' %(Global.run_stats.player_stats[stat] + Global.implant_manager.extra_stats[stat])
+	var value = Global.run_stats.player_stats[stat] + Global.implant_manager.extra_stats[stat]
+	current_value.text = ('x%.1f' % value).trim_suffix(".0")
 
 func _on_buy_button_button_down() -> void:
 	start_timer()

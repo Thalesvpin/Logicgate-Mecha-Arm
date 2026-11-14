@@ -11,5 +11,5 @@ func apply(_context = null) -> void:
 
 func revert() -> void:
 	if !is_permanent:
-		var result = add_to_player_stats(Stats.List.MAX_SHIELD, -amount, lesser, 1)
+		var result = add_to_player_stats(Stats.List.MAX_HEALTH, -amount, lesser, 1)
 		EventBus.stat_changed.emit(Stats.List.MAX_HEALTH , result)

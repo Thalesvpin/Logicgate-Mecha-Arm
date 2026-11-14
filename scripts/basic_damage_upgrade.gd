@@ -6,11 +6,14 @@ extends StatUpgrade
 @onready var label_2: Label = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label2
 
 func upgrade() -> void:
-	withdraw_money()
-	Global.run_stats.player_stats[stat] += amount_per_upgrade
-	upgrades += 1
-	update_price()
-	update_value()
+	if withdraw_money():
+		#Global.run_stats.player_stats[stat] += amount_per_upgrade
+		var ef = AddDamageFlatEffect.new()
+		ef.amount = amount_per_upgrade
+		ef.apply()
+		upgrades += 1
+		update_price()
+		update_value()
 
 func update_value() -> void:
 	if Global.implant_manager.extra_stats[stat] > 0:
@@ -18,14 +21,14 @@ func update_value() -> void:
 		implant_value.show()
 		label.show()
 		label_2.show()
-		current_value.text = str(Global.run_stats.player_stats[stat])
-		implant_value.text = str(Global.modifier_manager.extra_stats[stat])
+		current_value.text = '%d' % Global.run_stats.player_stats[stat]
+		implant_value.text = '%d' % Global.modifier_manager.extra_stats[stat]
 	else:
 		current_value.hide()
 		implant_value.hide()
 		label.hide()
 		label_2.hide()
-	total_value.text = str(Global.run_stats.player_stats[stat]+Global.implant_manager.extra_stats[stat])
+	total_value.text = '%d' % (Global.run_stats.player_stats[stat]+Global.implant_manager.extra_stats[stat])
 
 func _on_buy_button_button_down() -> void:
 	start_timer()

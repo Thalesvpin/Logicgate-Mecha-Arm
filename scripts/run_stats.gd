@@ -11,9 +11,10 @@ var run_stats: Dictionary #not used yet
 #region PLAYER
 @export var max_health: int = 100
 var current_health: int
-@export var base_heal: float
+@export_custom(PROPERTY_HINT_NONE,'suffix:%') var base_heal: float
 @export var max_shield: int = 10
 var current_shield: int
+@export var shield_strength: int = 1
 @export var base_shield_repair: int
 @export var max_heavy_attack_charges: int
 var current_active_charges: int
@@ -24,6 +25,7 @@ var current_active_charges: int
 @export var mitigation_percent: float
 @export var heavy_attack_max_charges: int = 4
 @export var heavy_attack_charge_amount: int = 1
+@export var heavy_attack_mult: float = 3.0
 @export_group('Gates Price')
 @export var max_tokens_amount: int
 @export var _and: int
@@ -77,13 +79,15 @@ func set_variables() -> void:
 		Stats.List.CURRENT_HEALTH: max_health,
 		Stats.List.BASE_HEAL: base_heal,
 		Stats.List.MAX_SHIELD: max_shield,
-		Stats.List.CURRENT_SHIELD: 5,
-		Stats.List.MAX_SHIELD_COUNT: 4,
-		Stats.List.CURRENT_SHIELD_COUNT: 1,
+		Stats.List.CURRENT_SHIELD: 0,
+		Stats.List.SHIELD_STRENGTH: shield_strength,
+		Stats.List.MAX_SHIELD_COUNT: 0,
+		Stats.List.CURRENT_SHIELD_COUNT: 0,
 		Stats.List.BASE_SHIELD_REPAIR: base_shield_repair,
 		Stats.List.MAX_HEAVY_ATTACK_CHARGES: max_heavy_attack_charges,
 		Stats.List.CURRENT_HEAVY_ATTACK_CHARGES: 0,
 		Stats.List.HEAVY_ATTACK_CHARGE_AMOUNT: heavy_attack_charge_amount,
+		Stats.List.HEAVY_ATTACK_MULT: heavy_attack_mult,
 		Stats.List.BASE_ATTACK_DAMAGE: attack_damage,
 		Stats.List.SELF_DAMAGE: self_damage,
 		Stats.List.CRITIC_CHANCE: crit_chance,

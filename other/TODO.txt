@@ -2,6 +2,7 @@
 	-randomizar inimigos (com peso de inimigos)
 	-pacote corrompido nem sempre vem corrompido
 	-upgrade de stats
+	-FAZER A SEPARAÇÃO DE FORÇA DO ESCUDO E MITIGAÇÃO
 
 
 definir preços

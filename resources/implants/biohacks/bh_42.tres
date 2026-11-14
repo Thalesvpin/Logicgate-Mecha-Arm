@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cvla25wgnutm8" path="res://scripts/classes/implant_conditions/none.gd" id="2_7h803"]
 [ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_6fxnl"]
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_qpe13"]
-[ext_resource type="Script" uid="uid://baqoni5l2stja" path="res://scripts/classes/implant_effects/add_max_shield.gd" id="5_bjxrv"]
+[ext_resource type="Script" uid="uid://baqoni5l2stja" path="res://scripts/classes/implant_effects/add_shield_strength.gd" id="5_bjxrv"]
 [ext_resource type="Script" uid="uid://b11kn64b4nt23" path="res://scripts/classes/implant_effects/add_mitigation_percent.gd" id="6_b1s8o"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="7_rp1cn"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="8_owhjj"]

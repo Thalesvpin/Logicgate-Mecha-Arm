@@ -39,11 +39,15 @@ script = ExtResource("1_mmjnl")
 
 [node name="RunStats" type="Node" parent="." unique_id=855585272]
 script = ExtResource("9_cwqdw")
-base_heal = 10.0
-base_shield_repair = 10
+max_health = 1000
+base_heal = 25.0
+max_shield = 0
+base_shield_repair = 1
 max_heavy_attack_charges = 4
-attack_damage = 10.0
-self_damage = 50.0
+attack_damage = 100.0
+crit_chance = 10.0
+crit_multiplier = 1.3
+mitigation_percent = 10.0
 max_tokens_amount = 10
 _and = 2
 _or = 2

@@ -7,17 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://bisald530eldg" path="res://scenes/sections/shop/stats_viewport/critic_chance_container.tscn" id="3_s5khm"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="3_ybi5s"]
 [ext_resource type="PackedScene" uid="uid://clfirvbm13hri" path="res://scenes/sections/shop/stats_viewport/max_health_container.tscn" id="4_k8u8d"]
-[ext_resource type="Texture2D" uid="uid://d0v4s6bi2ajd3" path="res://assets/TCC_icon_stat_BaseDamage.png" id="4_ybi5s"]
 [ext_resource type="PackedScene" uid="uid://dbxjoxyxc1l42" path="res://scenes/sections/shop/stats_viewport/shield_amount_container.tscn" id="5_qurlf"]
 [ext_resource type="PackedScene" uid="uid://k2ltjvdw5cpb" path="res://scenes/sections/shop/stats_viewport/shield_strength_container.tscn" id="6_pqe0e"]
 [ext_resource type="Theme" uid="uid://qghwmxll16y6" path="res://themes/stat_upgrade.tres" id="7_0y6mr"]
 [ext_resource type="PackedScene" uid="uid://cmqumgk5xljj7" path="res://scenes/sections/shop/stats_viewport/attack_elemental_container.tscn" id="8_1j0gq"]
-[ext_resource type="Texture2D" uid="uid://o0i8ouvje2tw" path="res://assets/TCC_icon_stat_CritChance.png" id="8_l102y"]
 [ext_resource type="PackedScene" uid="uid://dt1dcxopxob8b" path="res://scenes/sections/shop/stats_viewport/health_elemental_container.tscn" id="9_te4um"]
 [ext_resource type="PackedScene" uid="uid://bmsoxsl6notlo" path="res://scenes/sections/shop/stats_viewport/heavy_attack_elemental_container.tscn" id="10_mcw5o"]
-[ext_resource type="Texture2D" uid="uid://hop50j6i5brl" path="res://assets/TCC_icon_stat_MaxHealth.png" id="10_nwtl1"]
 [ext_resource type="PackedScene" uid="uid://nsyghpwf7exu" path="res://scenes/sections/shop/stats_viewport/shield_elemental_container.tscn" id="11_bv6u5"]
-[ext_resource type="Texture2D" uid="uid://ostgltg8hqpc" path="res://assets/TCC_icon_stat_ShieldPlates.png" id="12_2ujkr"]
 [ext_resource type="Theme" uid="uid://ulhofgmwnknp" path="res://themes/selected_stats_tab.tres" id="14_yr5m8"]
 [ext_resource type="PackedScene" uid="uid://di06vvgq8pav6" path="res://scenes/sections/shop/stats_viewport/tokens_amount_container.tscn" id="15_icxht"]
 [ext_resource type="Shader" uid="uid://dh3mmqwwbao10" path="res://shaders/ultimate_outerglow.gdshader" id="21_mdhfq"]
@@ -1104,9 +1100,6 @@ offset_left = -156.0
 offset_top = -164.0
 offset_right = 181.0
 offset_bottom = -96.0
-stat = 11
-title = "Dano Base"
-icon = ExtResource("4_ybi5s")
 
 [node name="CriticDamageMultContainer" parent="SubViewportContainer/SubViewport/Page1/HBoxContainer/PanelContainer/Control" unique_id=1743394783 instance=ExtResource("2_b0rs0")]
 layout_mode = 0
@@ -1121,10 +1114,6 @@ offset_left = -196.0
 offset_top = 85.0
 offset_right = 158.0
 offset_bottom = 180.0
-stat = 12
-title = "Chance de Acerto Crítico"
-icon = ExtResource("8_l102y")
-hold_run_duration = 0.35
 
 [node name="PanelContainer2" type="PanelContainer" parent="SubViewportContainer/SubViewport/Page1/HBoxContainer" unique_id=1030137640]
 layout_mode = 2
@@ -1142,8 +1131,6 @@ offset_left = -175.0
 offset_top = -142.0
 offset_right = 219.0
 offset_bottom = -74.0
-title = "Vida Máxima"
-icon = ExtResource("10_nwtl1")
 
 [node name="ShieldAmountContainer" parent="SubViewportContainer/SubViewport/Page1/HBoxContainer/PanelContainer2/Control" unique_id=1376948172 instance=ExtResource("5_qurlf")]
 layout_mode = 0
@@ -1151,9 +1138,6 @@ offset_left = -162.0
 offset_top = -50.0
 offset_right = 212.0
 offset_bottom = 45.0
-stat = 5
-title = "Quantidade de Escudos"
-icon = ExtResource("12_2ujkr")
 
 [node name="ShieldStrengthContainer" parent="SubViewportContainer/SubViewport/Page1/HBoxContainer/PanelContainer2/Control" unique_id=566576391 instance=ExtResource("6_pqe0e")]
 layout_mode = 0

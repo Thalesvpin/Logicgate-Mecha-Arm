@@ -9,13 +9,16 @@ class_name StatUpgrade
 @export var stat: Stats.List
 @export_multiline() var title: String
 @export var icon: Texture2D
-@export var inicial_price: int
-@export var price_escalation: float
+@export var preset_prices: Array[int]
+@export var action_after_preset: PriceAction
+@export var after_preset_value: int
 @export var amount_per_upgrade: float
 var upgrades: int = 0
+var current_price: int = 0
 
 ##How much the "Run" btn must be held to submit
 @export_custom(PROPERTY_HINT_NONE, "suffix: s") var hold_run_duration: float = 0.35
+enum PriceAction {ADD, MULTIPLY}
 var timer: float = 0.0
 var holding_run: bool = false
 var buy_btn: TextureButton
@@ -42,17 +45,22 @@ func setup() -> void:
 	update_price()
 
 func update_price() -> void:
-	if upgrades == 0:
-		price.text = '$ '+str(inicial_price)
+	if upgrades < preset_prices.size():
+		current_price = preset_prices[upgrades]
 	else:
-		price.text = '$ '+str(inicial_price+(upgrades*amount_per_upgrade))
+		if action_after_preset == PriceAction.ADD:
+			current_price += after_preset_value
+		if action_after_preset == PriceAction.MULTIPLY:
+			current_price *= after_preset_value
+	price.text = '$ %d' % current_price
 
-func get_current_price() -> int:
-	return int(inicial_price+(upgrades*amount_per_upgrade))
-
-func withdraw_money() -> void:
-	Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] -= get_current_price()
-	EventBus.stat_changed.emit(Stats.List.CURRENT_MONEY)
+func withdraw_money() -> bool:
+	if Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] < current_price:
+		return false
+	var ef = AddMoneyEffect.new()
+	ef.amount = -current_price
+	ef.apply()
+	return true
 
 func update_value() -> void:
 	print('update_value not implemented in ', self)

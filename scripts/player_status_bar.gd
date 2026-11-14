@@ -64,7 +64,7 @@ func heal(amount: int):
 func repair_shield(amount: int) -> void:
 	var curr_shield = Stats.List.CURRENT_SHIELD
 	var curr_shield_count = Stats.List.CURRENT_SHIELD_COUNT
-	var max_shield = Stats.List.MAX_SHIELD
+	var shield_strength = Stats.List.SHIELD_STRENGTH
 	var max_shield_count = Stats.List.MAX_SHIELD_COUNT
 	var new_value = Global.run_stats.player_stats[curr_shield] + amount
 	
@@ -72,8 +72,8 @@ func repair_shield(amount: int) -> void:
 	print('??????? ', amount)
 	
 	
-	if new_value > Global.run_stats.player_stats[max_shield]*Global.run_stats.player_stats[curr_shield_count]:
-		new_value = Global.run_stats.player_stats[max_shield]*Global.run_stats.player_stats[curr_shield_count]
+	if new_value > Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[curr_shield_count]:
+		new_value = Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[curr_shield_count]
 	
 	
 	
@@ -81,12 +81,12 @@ func repair_shield(amount: int) -> void:
 	
 	
 	
-	if new_value > Global.run_stats.player_stats[max_shield]*Global.run_stats.player_stats[curr_shield_count]:
+	if new_value > Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[curr_shield_count]:
 		if Global.run_stats.player_stats[curr_shield_count] == Global.run_stats.player_stats[max_shield_count]:
-			Global.run_stats.player_stats[curr_shield] = Global.run_stats.player_stats[max_shield]*Global.run_stats.player_stats[max_shield_count]
+			Global.run_stats.player_stats[curr_shield] = Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[max_shield_count]
 		else:
 			Global.run_stats.player_stats[curr_shield_count] += 1
-			#new_value -= Global.run_stats.player_stats[max_shield]
+			#new_value -= Global.run_stats.player_stats[shield_strength]
 			Global.run_stats.player_stats[curr_shield] = new_value
 	else:
 		print('agr aqi: ', new_value)
@@ -102,7 +102,7 @@ func adjust_shield():
 	var max_shield_count = Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT]
 	var shield_count = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT]
 	var curr_shield = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD]
-	var shield_size = Global.run_stats.player_stats[Stats.List.MAX_SHIELD]
+	var shield_size = Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]
 	
 	var curr_shield_percent: float = 0.0
 	if shield_count > 0:

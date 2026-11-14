@@ -9,11 +9,17 @@ extends StatUpgrade
 # 85/120 (100+20)
 
 func upgrade() -> void:
-	withdraw_money()
-	Global.run_stats.player_stats[stat] += amount_per_upgrade
-	upgrades += 1
-	update_price()
-	
+	if withdraw_money():
+		#Global.run_stats.player_stats[stat] += amount_per_upgrade
+		var ef = AddMaxHealthFlatEffect.new()
+		ef.amount = amount_per_upgrade
+		ef.apply()
+		var ef2 = HealEffect.new()
+		ef2.amount = amount_per_upgrade
+		ef2.apply()
+		upgrades += 1
+		update_price()
+		update_value()
 
 func _on_buy_button_button_down() -> void:
 	start_timer()
@@ -35,6 +41,6 @@ func update_value() -> void:
 		current_value.hide()
 		implant_value.hide()
 	
-	total_value.text = str(curr)+' / '+str(max)
+	total_value.text = '%d / %d' % [curr, max]
 	current_value.text = str(Global.run_stats.player_stats[stat])
 	implant_value.text = '+'+str(Global.implant_manager.extra_stats[stat])
