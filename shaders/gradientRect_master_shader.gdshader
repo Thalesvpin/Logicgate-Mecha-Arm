@@ -174,11 +174,39 @@ uniform float outline_color_hue_shift_speed : hint_range(-5.0, 5.0) = 0.0;
 // MAIN GROUP 5: Global Polish & FX
 // =============================================================================
 group_uniforms Global_Polish_And_FX.Scanlines;
+uniform bool enable_scanlines = false;
 uniform bool scanline_base_only = false;
-uniform float scanline_rotation : hint_range(0.0, 360.0) = 0.0;
-uniform float scanline_speed : hint_range(-10.0, 10.0) = 0.0;
-uniform float scanline_density : hint_range(0.0, 200.0) = 0.0; 
+uniform int scanline_blend_mode : hint_enum("Multiply", "Add", "Screen", "Normal") = 0;
+uniform vec4 scanline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float scanline_opacity : hint_range(0.0, 1.0) = 0.0; 
+uniform float scanline_density : hint_range(0.0, 200.0) = 0.0; 
+uniform float scanline_thickness : hint_range(0.0, 1.0) = 0.5;
+uniform float scanline_softness : hint_range(0.001, 1.0) = 1.0;
+uniform float scanline_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform float scanline_offset : hint_range(0.0, 1.0) = 0.0;
+uniform float scanline_speed : hint_range(-10.0, 10.0) = 0.0;
+uniform float scanline_curvature : hint_range(-1.0, 1.0) = 0.0;
+uniform float scanline_flicker_speed : hint_range(0.0, 60.0) = 0.0;
+uniform float scanline_flicker_intensity : hint_range(0.0, 1.0) = 0.0;
+
+group_uniforms Global_Polish_And_FX.Liquid_Stripes;
+uniform bool enable_liquid_stripes = false;
+uniform bool liquid_stripes_base_only = false;
+uniform float liquid_stripes_rotation : hint_range(0.0, 360.0) = 0.0;
+uniform float liquid_stripes_speed : hint_range(-10.0, 10.0) = 1.0;
+uniform float liquid_stripes_sway : hint_range(0.0, 5.0) = 1.0;
+uniform float liquid_stripes_density : hint_range(0.1, 100.0) = 4.82;
+uniform float liquid_stripes_thickness : hint_range(0.0, 1.0) = 0.45;
+uniform float liquid_stripes_softness : hint_range(0.001, 0.5) = 0.05;
+uniform float liquid_stripes_warp : hint_range(0.0, 2.0) = 1.0;
+uniform float liquid_stripes_warp_origin : hint_range(-1.0, 1.0) = -0.5;
+uniform float liquid_stripes_warp_falloff : hint_range(-2.0, 2.0) = 0.0;
+uniform float liquid_stripes_warp_direction : hint_range(0.0, 360.0) = 0.0;
+uniform float liquid_stripes_warp_frequency : hint_range(0.0, 50.0) = 15.0;
+uniform float liquid_stripes_warp_flow : hint_range(-10.0, 10.0) = 2.0;
+uniform vec4 liquid_stripes_color : source_color = vec4(0.59, 0.98, 0.69, 1.0);
+uniform vec4 liquid_stripes_bg_color : source_color = vec4(0.0, 0.0, 0.0, 0.0);
+uniform float liquid_stripes_opacity : hint_range(0.0, 1.0) = 0.5;
 
 group_uniforms Global_Polish_And_FX.Render;
 uniform float gamma_correction : hint_range(0.1, 3.0) = 1.0;  
@@ -191,10 +219,12 @@ group_uniforms;
 
 varying vec2 local_pos;
 varying flat float v_inv_gamma;
+varying flat float v_scan_flicker;
 varying flat vec4 v_trig_1; 
 varying flat vec4 v_trig_2; 
 varying flat vec4 v_trig_3; 
 varying flat vec4 v_trig_4; 
+varying flat vec4 v_ls_trig; // xy = rotation sin/cos, zw = warp push vector
 varying flat vec4 v_inv_scales; 
 varying flat vec4 v_shine_data; 
 varying flat vec4 v_shine_2_data; 
@@ -247,6 +277,23 @@ void vertex() {
 					sin(radians(outline_shine_2_angle)), cos(radians(outline_shine_2_angle)));
 	v_trig_4 = vec4(sin(radians(outline_fade_angle)), cos(radians(outline_fade_angle)),
 					sin(radians(scanline_rotation)), cos(radians(scanline_rotation)));
+
+	// Precompute Scanline flicker per vertex to avoid per-pixel trig
+	if (enable_scanlines && scanline_flicker_intensity > 0.0) {
+		v_scan_flicker = 1.0 - (sin(TIME * scanline_flicker_speed) * 0.5 + 0.5) * scanline_flicker_intensity;
+	} else {
+		v_scan_flicker = 1.0;
+	}
+
+	// Precompute time-oscillating Liquid Stripes rotation & warp direction vector per vertex
+	if (enable_liquid_stripes) {
+		float ls_angle = radians(liquid_stripes_rotation) - 0.2 + sin(TIME * liquid_stripes_speed) * (0.05 * liquid_stripes_sway);
+		float warp_rad = radians(liquid_stripes_warp_direction);
+		v_ls_trig = vec4(sin(ls_angle), cos(ls_angle), -sin(warp_rad), cos(warp_rad));
+	} else {
+		v_ls_trig = vec4(0.0, 1.0, 0.0, 1.0);
+	}
+
 	v_inv_scales = 1.0 / max(vec4(gradient_scale, overlay_gradient_scale, overlay_opacity_scale, outline_gradient_scale), 0.001);
 
 	// SHINE 1 DYNAMIC BOUNDARIES
@@ -281,7 +328,6 @@ void vertex() {
 	}
 	v_shine_2_data = vec4(s2_D + outline_shine_2_delay * outline_shine_2_speed, s2_s, s2_D, outline_shine_2_width * (1.0 - outline_shine_2_softness));
 	
-	// Precomputed inverses for faster per-pixel multiplication
 	v_shine_inv_D = 1.0 / max(vec2(s1_D, s2_D), 0.001);
 	
 	float alpha_edge = enable_outline ? outline_width : 0.0;
@@ -351,7 +397,6 @@ float get_path_t(vec2 p, vec2 h, float r, float offset) {
 
 float get_gradient_factor(vec2 normalized_uv, vec2 trig, float inv_scale, int type, float final_offset, bool rep, float smooth_val, float steps) {
 	float factor = 0.0;
-	// Zero-cost uniform branching avoids unnecessary per-pixel dot products
 	if (type == 0) {
 		factor = dot(normalized_uv, vec2(trig.y, -trig.x));
 	} else if (type == 1) {
@@ -385,7 +430,7 @@ float get_shine_alpha(
 	float dist = 10.0;
 
 	if (style == 0) {
-		float shine_uv_x = dot(normalized_uv, vec2(trig.y, -trig.x)); // Only evaluate needed axis
+		float shine_uv_x = dot(normalized_uv, vec2(trig.y, -trig.x));
 		dist = abs(shine_uv_x - current_shine_pos);
 		if (half_sweep && shine_uv_x > 0.5) dist = 10.0;
 	} else if (style == 1) {
@@ -411,8 +456,60 @@ float get_shine_alpha(
 	if (sweep_time > shine_data.z) dist = 10.0;
 
 	float shine_power = 1.0 - smoothstep(shine_data.w, width, dist);
-	float time_norm = clamp(sweep_time * inv_D, 0.0, 1.0); // Converted vertex division to fast multiplication
+	float time_norm = clamp(sweep_time * inv_D, 0.0, 1.0);
 	return shine_power * textureLod(opacity_curve, vec2(time_norm, 0.0), 0.0).r;
+}
+
+float evaluate_scanline_mask(vec2 uv_cen, vec2 trig, float flicker) {
+	float scan_y = dot(uv_cen, vec2(-trig.y, trig.x));
+	if (scanline_curvature != 0.0) {
+		float scan_x = dot(uv_cen, trig);
+		scan_y += (scan_x * scan_x) * scanline_curvature;
+	}
+	float raw_wave = sin(scan_y * scanline_density + (TIME * scanline_speed) + (scanline_offset * PI_TWO)) * 0.5 + 0.5;
+	float center = 1.0 - scanline_thickness;
+	float half_soft = scanline_softness * 0.5;
+	float bright_factor = smoothstep(center - half_soft, center + half_soft, raw_wave);
+	return (1.0 - bright_factor) * (scanline_opacity * scanline_color.a * flicker);
+}
+
+vec3 apply_scanlines(vec3 base_rgb, float line_alpha) {
+	switch (scanline_blend_mode) {
+		case 0: return base_rgb * mix(vec3(1.0), scanline_color.rgb, line_alpha);
+		case 1: return base_rgb + scanline_color.rgb * line_alpha;
+		case 2: return mix(base_rgb, vec3(1.0), scanline_color.rgb * line_alpha);
+		default: return mix(base_rgb, scanline_color.rgb, line_alpha);
+	}
+}
+
+vec4 evaluate_liquid_stripes(vec2 uv_cen, vec4 ls_trig) {
+	vec2 uv_rot = vec2(dot(uv_cen, vec2(ls_trig.y, ls_trig.x)), dot(uv_cen, vec2(-ls_trig.x, ls_trig.y)));
+	float dist_from_origin = uv_rot.x - liquid_stripes_warp_origin;
+	float abs_dist = abs(dist_from_origin);
+	
+	float amp_falloff = 1.0;
+	if (liquid_stripes_warp_falloff > 0.0) {
+		amp_falloff = mix(1.0, abs_dist * 2.0, clamp(liquid_stripes_warp_falloff, 0.0, 1.0));
+		if (liquid_stripes_warp_falloff > 1.0) {
+			amp_falloff = pow(abs_dist * 2.0, liquid_stripes_warp_falloff);
+		}
+	} else if (liquid_stripes_warp_falloff < 0.0) {
+		amp_falloff = pow(clamp(1.0 - abs_dist, 0.0, 1.0), -liquid_stripes_warp_falloff * 2.0);
+	}
+
+	float t = TIME * liquid_stripes_speed;
+	float osc = sin(uv_rot.x * dist_from_origin * liquid_stripes_warp_frequency) * (0.2 * liquid_stripes_warp * amp_falloff);
+	float disp = osc * sin(t + dist_from_origin * liquid_stripes_warp_flow);
+	uv_rot += ls_trig.zw * disp;
+
+	float warped_y = fract(uv_rot.y * liquid_stripes_density);
+	float th = liquid_stripes_thickness * 0.5;
+	float edge_end = 0.5 + liquid_stripes_softness;
+	float mask = smoothstep(0.5, edge_end, warped_y) - smoothstep(0.5 + th, edge_end + th, warped_y);
+	
+	vec4 tint = mix(liquid_stripes_bg_color, liquid_stripes_color, mask);
+	tint.a *= liquid_stripes_opacity;
+	return tint;
 }
 
 // =============================================================================
@@ -456,19 +553,25 @@ void fragment() {
 			case 0: final_color.rgb = mix(final_color.rgb, over_layer.rgb, over_layer.a); break;
 			case 1: final_color.rgb = mix(final_color.rgb, final_color.rgb * over_layer.rgb, over_layer.a); break;
 			case 2: final_color.rgb += (over_layer.rgb * over_layer.a); break;
-			case 3: final_color.rgb = mix(final_color.rgb, vec3(1.0), over_layer.rgb * over_layer.a); break; // Massive ALU savings over formula
+			case 3: final_color.rgb = mix(final_color.rgb, vec3(1.0), over_layer.rgb * over_layer.a); break;
 		}
 	}
 	
 	final_color.rgb = v_base_cg_mat * final_color.rgb + v_base_cg_off;
 	
-	float scan_multiplier = 1.0;
-	if (scanline_opacity > 0.0) {
-		float scan_y = dot(uv_cen, vec2(-v_trig_4.w, v_trig_4.z)); 
-		float scan_val = sin(scan_y * scanline_density + TIME * scanline_speed) * 0.5 + 0.5;
-		scan_multiplier = mix(1.0, scan_val, scanline_opacity);
+	float scan_line_alpha = 0.0;
+	if (enable_scanlines && scanline_opacity > 0.0) {
+		scan_line_alpha = evaluate_scanline_mask(uv_cen, v_trig_4.zw, v_scan_flicker);
+		if (scanline_base_only) final_color.rgb = apply_scanlines(final_color.rgb, scan_line_alpha);
 	}
-	if (scanline_base_only && scanline_opacity > 0.0) final_color.rgb *= scan_multiplier;
+
+	vec4 ls_tint = vec4(0.0);
+	if (enable_liquid_stripes && liquid_stripes_opacity > 0.0) {
+		ls_tint = evaluate_liquid_stripes(uv_cen, v_ls_trig);
+		if (liquid_stripes_base_only) {
+			final_color.rgb = mix(final_color.rgb, ls_tint.rgb, ls_tint.a);
+		}
+	}
 
 	// PASS 3: Shape & Outline Gradient
 	vec2 half_size = rect_size * 0.5;
@@ -559,7 +662,12 @@ void fragment() {
 	final_color.a *= 1.0 - smoothstep(v_edges.y, v_edges.z, d);
 
 	// GLOBAL POLISH & FX
-	if (!scanline_base_only && scanline_opacity > 0.0) final_color.rgb *= scan_multiplier;
+	if (enable_scanlines && !scanline_base_only && scanline_opacity > 0.0) {
+		final_color.rgb = apply_scanlines(final_color.rgb, scan_line_alpha);
+	}
+	if (enable_liquid_stripes && !liquid_stripes_base_only && liquid_stripes_opacity > 0.0) {
+		final_color.rgb = mix(final_color.rgb, ls_tint.rgb, ls_tint.a);
+	}
 	if (gamma_correction != 1.0) final_color.rgb = pow(max(final_color.rgb, 0.0), vec3(v_inv_gamma));
 	if (enable_dithering) final_color.rgb += random(FRAGCOORD.xy) * 0.015 - 0.0075;
 
