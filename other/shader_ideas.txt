@@ -1,0 +1,23 @@
+CRT1 Shader:
+	- Pixel Sorting / Fake Pixel Sorting
+	- Classic DOOM Screen Melt Effect
+	- Aaa
+
+CRTpass2 Shader:
+	DEPRECATED. Take any relevant features from it and port them to either 
+	"CRT1 or "Color PostProcess Adjustments", and remove it from the project.
+
+Backlit Button Shader:
+	- Aaa
+
+Color PostProcess Adjustments Shader:
+	- Aaa
+
+GradientRect Master Shader:
+	- Aaa
+
+Ultimate Outer Glow Shader:
+	- Aaa
+
+Grid 2D Shader:
+	- Aaa
