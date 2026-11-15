@@ -29,3 +29,4 @@ força dos escudos = 1 (vida de cada escudo - soft ceiling = 5)
 mitigação dos escudos = 10% (+3% por upgrade) (soft ceiling = 40%)
 cura = 25% da vida maxima
 reparo do escudo = 1
+self damage = 50% dano base

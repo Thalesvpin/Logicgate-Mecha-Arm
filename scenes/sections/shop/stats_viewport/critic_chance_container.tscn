@@ -117,14 +117,15 @@ shader_parameter/terminator_size_px = 4.0
 [node name="CriticChanceContainer" unique_id=1221763294 instance=ExtResource("1_od3im")]
 script = ExtResource("2_v2ox8")
 stat = 15
-title = "Chance de Acerto Crítico"
+title = "Chance de
+Acerto Crítico"
 icon = ExtResource("3_djpoi")
 preset_prices = Array[int]([100, 150, 200, 300, 500, 1000, 1500, 2000, 2500, 3000])
 after_preset_value = 1000
 amount_per_upgrade = 2.5
 
 [node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1176008596) index="0" unique_id=1472995469]
-custom_minimum_size = Vector2(150.51, 0)
+custom_minimum_size = Vector2(174.84, 0)
 text = "Chance de Acerto Crítico"
 autowrap_mode = 2
 

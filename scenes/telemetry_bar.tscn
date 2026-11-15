@@ -65,6 +65,7 @@ autowrap_mode = 0
 layout_mode = 2
 theme_override_colors/default_color = Color(0.6156863, 0.6156863, 0.6156863, 1)
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 fit_content = true
 autowrap_mode = 0
 

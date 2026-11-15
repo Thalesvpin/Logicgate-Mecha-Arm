@@ -124,8 +124,9 @@ after_preset_value = 1000
 amount_per_upgrade = 0.1
 
 [node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1176008596) index="0" unique_id=1472995469]
-custom_minimum_size = Vector2(186.595, 0)
-text = "Multiplicador de Dano Crítico"
+custom_minimum_size = Vector2(207.64, 0)
+text = "Multiplicador de
+Dano Crítico"
 autowrap_mode = 2
 
 [node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1186933452) index="0" unique_id=42870293]

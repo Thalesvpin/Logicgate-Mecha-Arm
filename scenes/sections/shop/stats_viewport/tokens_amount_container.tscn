@@ -10,19 +10,24 @@ offset_top = 0.0
 offset_right = 202.0
 offset_bottom = 104.0
 script = ExtResource("2_xy4bu")
+title = "Tokens de
+Portas Lógicas"
 
 [node name="MarginContainer" parent="." index="0" unique_id=904298958]
 size_flags_vertical = 0
+theme_override_constants/margin_right = 15
 
 [node name="HBoxContainer" parent="MarginContainer" index="0" unique_id=343544579]
 size_flags_vertical = 0
+theme_override_constants/separation = 20
 
 [node name="VBoxContainer" parent="MarginContainer/HBoxContainer" index="0" unique_id=1176008596]
 size_flags_vertical = 0
 alignment = 0
 
 [node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" index="0" unique_id=1472995469]
-custom_minimum_size = Vector2(156.58, 0)
+custom_minimum_size = Vector2(194.63, 0)
+theme_override_font_sizes/font_size = 22
 text = "Tokens de Portas Lógicas"
 autowrap_mode = 2
 

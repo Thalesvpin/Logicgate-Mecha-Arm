@@ -3,7 +3,7 @@ extends PanelContainer
 @onready var texture: TextureRect = $MarginContainer/HBoxContainer/Icon
 @onready var current_value: Label = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/CurrentValue
 
-@export var title: String = 'Tokens de Portas Lógicas'
+@export_multiline() var title: String = 'Tokens de Portas Lógicas'
 @export var icon: Texture2D
 
 func _ready() -> void:

@@ -7,7 +7,17 @@ uniform mediump float gamma : hint_range(0.1, 3.0) = 1.0;
 uniform bool premultiplied_alpha = false;
 uniform lowp float feather_edges : hint_range(0.0, 1.0) = 0.0;
 uniform lowp float dither_strength : hint_range(0.0, 0.1) = 0.0;
-uniform lowp float final_opacity : hint_range(0.0, 1.0) = 1.0; // transparência final
+
+// --- FINAL OPACITY ---
+group_uniforms FinalOpacity;
+uniform lowp float final_opacity : hint_range(0.0, 1.0) = 1.0;
+uniform bool use_final_opacity_gradient = false;
+uniform int final_opacity_gradient_type : hint_enum("Linear", "Radial", "Reflected") = 0;
+uniform sampler2D final_opacity_gradient : source_color; // Assign a GradientTexture1D (Black=0% opacity, White=100%)
+uniform mediump float final_opacity_gradient_angle : hint_range(0.0, 360.0) = 0.0;
+uniform mediump vec2 final_opacity_gradient_offset = vec2(0.0, 0.0);
+uniform mediump float final_opacity_gradient_scale = 1.0;
+uniform mediump float final_opacity_gradient_smoothstep : hint_range(0.0, 1.0) = 0.0;
 
 // --- BASE OVERLAY ---
 group_uniforms BaseOverlay;
@@ -19,7 +29,7 @@ uniform lowp float overlay_opacity : hint_range(0.0, 1.0) = 1.0;
 // --- 1D GRADIENT OVERLAY ---
 group_uniforms GradientOverlay;
 uniform bool use_gradient = false;
-uniform int gradient_type : hint_enum("Linear", "Radial") = 0;
+uniform int gradient_type : hint_enum("Linear", "Radial", "Reflected") = 0;
 uniform sampler2D gradient_texture : source_color; 
 uniform mediump float gradient_angle : hint_range(0.0, 360.0) = 0.0;
 uniform mediump vec2 gradient_offset = vec2(0.0, 0.0);
@@ -41,19 +51,19 @@ uniform int pattern_frame = 0;
 
 group_uniforms; // Reset Grouping
 
-// --- PACKED VARYINGS (Optimizations #29 & #30) ---
-// Packing saves 60% of varying register limits on hardware
+// --- PACKED VARYINGS ---
 varying mediump vec4 v_pack1; // x: aspect, y: grad_scale_inv, z: grad_cos, w: grad_sin
 varying mediump vec4 v_pack2; // x: pat_cos, y: pat_sin, z: sheet_scale_x, w: sheet_scale_y
-varying mediump vec2 v_pack3; // x: sheet_offset_x, y: sheet_offset_y
+varying mediump vec4 v_pack3; // x: sheet_offset_x, y: sheet_offset_y, z: op_grad_cos, w: op_grad_sin
+varying mediump float v_op_grad_scale_inv;
 
 // --- VERTEX STAGE ---
 void vertex() {
     mediump float g_rads = radians(gradient_angle);
     mediump float p_rads = radians(pattern_angle);
+    mediump float op_rads = radians(final_opacity_gradient_angle);
     mediump vec2 sheet_scale = 1.0 / vec2(pattern_frames);
 
-    // Pack 10 floats into highly efficient vector pipelines
     v_pack1 = vec4(
         TEXTURE_PIXEL_SIZE.y / TEXTURE_PIXEL_SIZE.x,
         1.0 / max(gradient_scale, 0.001),
@@ -68,10 +78,42 @@ void vertex() {
         sheet_scale.y
     );
 
-    v_pack3 = vec2(
-        float(pattern_frame % pattern_frames.x),
-        float(pattern_frame / pattern_frames.x)
-    ) * sheet_scale;
+    v_pack3 = vec4(
+        float(pattern_frame % pattern_frames.x) * sheet_scale.x,
+        float(pattern_frame / pattern_frames.x) * sheet_scale.y,
+        cos(op_rads),
+        sin(op_rads)
+    );
+    
+    v_op_grad_scale_inv = 1.0 / max(final_opacity_gradient_scale, 0.001);
+}
+
+// --- SHARED GRADIENT FACTOR HELPER (Linear, Radial, Reflected) ---
+mediump float get_gradient_factor(
+    int type, 
+    mediump vec2 uv, 
+    mediump vec2 offset, 
+    mediump float aspect, 
+    mediump mat2 rot, 
+    mediump float scale_inv, 
+    mediump float ease
+) {
+    mediump vec2 centered_uv = uv - 0.5 - offset;
+    centered_uv.x *= aspect;
+    centered_uv *= rot;
+    centered_uv *= scale_inv;
+
+    mediump float factor = 0.0;
+    if (type == 0) {
+        factor = centered_uv.x + 0.5; // Linear
+    } else if (type == 1) {
+        factor = length(centered_uv) * 2.0; // Radial
+    } else {
+        factor = abs(centered_uv.x) * 2.0; // Reflected
+    }
+
+    factor = clamp(factor, 0.0, 1.0);
+    return mix(factor, smoothstep(0.0, 1.0, factor), ease);
 }
 
 // --- EFFICIENT BLEND SWITCH ---
@@ -94,40 +136,27 @@ lowp vec3 apply_blend(int mode, lowp vec3 base, lowp vec3 blend) {
 void fragment() {
     lowp vec4 base_color = texture(TEXTURE, UV);
     
-    // Optimization #26: Smart Branch Elimination (using step/mix instead of if)
+    // Branchless edge feathering
     base_color.a *= mix(1.0, smoothstep(0.0, feather_edges + 0.0001, base_color.a), step(0.0001, feather_edges));
 
     lowp vec3 linear_base = pow(base_color.rgb, vec3(gamma * 2.2));
     
-    // Branchless overlay assignment
     lowp vec4 current_overlay = vec4(0.0);
     current_overlay += overlay_color * float(use_base_overlay); 
 
     // --- 1. GRADIENT PASS ---
     if (use_gradient) {
-        // Unpack matrix
         mediump mat2 grad_rot = mat2(vec2(v_pack1.z, v_pack1.w), vec2(-v_pack1.w, v_pack1.z));
-
-        mediump vec2 centered_uv = UV - 0.5 - gradient_offset;
-        centered_uv.x *= v_pack1.x; 
-        centered_uv *= grad_rot;
-        centered_uv *= v_pack1.y;
-        
-        mediump float factor = (gradient_type == 0) ? centered_uv.x + 0.5 : length(centered_uv) * 2.0;
-        factor = clamp(factor, 0.0, 1.0);
-        
-        // Branchless ease interpolation
-        factor = mix(factor, smoothstep(0.0, 1.0, factor), gradient_smoothstep);
+        mediump float factor = get_gradient_factor(
+            gradient_type, UV, gradient_offset, v_pack1.x, grad_rot, v_pack1.y, gradient_smoothstep
+        );
         
         lowp vec4 grad_color = texture(gradient_texture, vec2(factor, 0.5));
-        
-        // Branchless integration
-        current_overlay = mix(current_overlay, grad_color, grad_color.a * float(use_gradient));
+        current_overlay = mix(current_overlay, grad_color, grad_color.a);
     }
     
     current_overlay.rgb = pow(current_overlay.rgb, vec3(2.2));
     
-    // Optimization #31: Blend Mode Weight Blending (FMA Algebra)
     lowp vec3 final_rgb = linear_base;
     if (use_base_overlay || use_gradient) {
         lowp vec3 blended_rgb = apply_blend(blend_mode, linear_base, current_overlay.rgb);
@@ -138,30 +167,24 @@ void fragment() {
     if (use_pattern) {
         mediump mat2 pat_rot = mat2(vec2(v_pack2.x, v_pack2.y), vec2(-v_pack2.y, v_pack2.x));
 
-        // Branchless coordinate handling
         mediump vec2 p_uv = mix(UV, SCREEN_UV, float(pattern_screen_space));
         mediump float aspect = mix(v_pack1.x, SCREEN_PIXEL_SIZE.y / SCREEN_PIXEL_SIZE.x, float(pattern_screen_space));
         p_uv.x *= aspect; 
         
         p_uv *= pat_rot;
         p_uv *= pattern_scale;
-        
-        // Optimization #28: Sub-Pixel Jitter Prevention (fract loop)
         p_uv += fract(TIME * pattern_velocity); 
         
-        // Branchless sprite sheet math
-        p_uv = fract(p_uv) * vec2(v_pack2.z, v_pack2.w) + v_pack3;
+        p_uv = fract(p_uv) * vec2(v_pack2.z, v_pack2.w) + vec2(v_pack3.x, v_pack3.y);
 
         lowp vec4 pattern_col = texture(pattern_texture, p_uv);
         pattern_col.rgb = pow(pattern_col.rgb, vec3(2.2));
         
         lowp vec3 pattern_blended = apply_blend(pattern_blend_mode, final_rgb, pattern_col.rgb);
-        
-        // FMA Weight blending
         final_rgb = final_rgb + (pattern_blended - final_rgb) * (pattern_opacity * pattern_col.a);
     }
     
-    final_rgb = pow(final_rgb, vec3(0.454545)); // 1.0 / 2.2 approximation
+    final_rgb = pow(final_rgb, vec3(0.454545));
 
     // --- 3. FINAL POLISH ---
     if (dither_strength > 0.0) {
@@ -174,18 +197,28 @@ void fragment() {
         ivec2 f = ivec2(int(FRAGCOORD.x) & 3, int(FRAGCOORD.y) & 3); 
         int bayer_index = f.x + (f.y << 2); 
         
-        // Optimization #27: Optimized Luminance Weights
-        // Prevents over-dithering bright areas by analyzing shadow luminance mathematically
         lowp float luma = dot(base_color.rgb, vec3(0.299, 0.587, 0.114));
         lowp float dither_weight = mix(1.0, luma, 0.5); 
         
         final_rgb += bayer_matrix[bayer_index] * (dither_strength * dither_weight);
     }
 
-    // --- 4. FINAL TRANSPARENCY (aplicada após todos os efeitos) ---
-    lowp float final_alpha = base_color.a * final_opacity;
+    // --- 4. FINAL TRANSPARENCY ---
+    lowp float effective_opacity = final_opacity;
+    if (use_final_opacity_gradient) {
+        mediump mat2 op_rot = mat2(vec2(v_pack3.z, v_pack3.w), vec2(-v_pack3.w, v_pack3.z));
+        mediump float op_factor = get_gradient_factor(
+            final_opacity_gradient_type, UV, final_opacity_gradient_offset, v_pack1.x, op_rot, v_op_grad_scale_inv, final_opacity_gradient_smoothstep
+        );
+        
+        lowp vec4 op_grad_sample = texture(final_opacity_gradient, vec2(op_factor, 0.5));
+        // Supports both grayscale intensity (Black=0, White=1) and alpha gradients
+        lowp float grad_luma = dot(op_grad_sample.rgb, vec3(0.299, 0.587, 0.114));
+        effective_opacity *= grad_luma * op_grad_sample.a;
+    }
 
-    // Premultiplied usa o alpha final, para a cor continuar consistente
+    lowp float final_alpha = base_color.a * effective_opacity;
+
     final_rgb *= mix(vec3(1.0), vec3(final_alpha), float(premultiplied_alpha));
     
     COLOR = vec4(final_rgb, final_alpha);

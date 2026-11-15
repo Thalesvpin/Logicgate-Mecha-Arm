@@ -11,6 +11,7 @@ border_width_bottom = 2
 border_color = Color(0, 0, 0, 1)
 
 [node name="ImplantTooltip" type="PanelContainer" unique_id=1433298017]
+top_level = true
 offset_right = 220.0
 offset_bottom = 135.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
@@ -23,7 +24,50 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer" unique_id=1088379712]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=665959974]
+layout_mode = 2
+
+[node name="Header" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=612437842]
+layout_mode = 2
+
+[node name="Name" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Header" unique_id=1244816609]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 18
+text = "NOME"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Type" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Header" unique_id=1922625675]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 18
+text = "TYPE"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1104187818]
+layout_mode = 2
+
+[node name="Context" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1151764291]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 14
+text = "CONTEXT"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Power" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=707020156]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 14
+text = "POWER"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1088379712]
 custom_minimum_size = Vector2(300, 0)
 custom_maximum_size = Vector2(300, -1)
 layout_mode = 2

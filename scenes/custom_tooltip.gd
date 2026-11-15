@@ -1,8 +1,9 @@
 extends PanelContainer
 
-@onready var rich_text_label: RichTextLabel = $MarginContainer/RichTextLabel
+@onready var description: RichTextLabel = $MarginContainer/VBoxContainer/Description
 
 func config(for_text: String) -> void:
-	if !rich_text_label:
+	if !description:
 		await self.ready
-	rich_text_label.text = for_text
+	description.text = for_text
+	

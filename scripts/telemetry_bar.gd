@@ -12,8 +12,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var time = Time.get_time_dict_from_system() 
 	var curr_run_time = Global.run_stats.current_run_time
-	run_time.text = "Tempo da run: %02d:%02d:%02d" % [curr_run_time/(60*60), int(curr_run_time/60)%60, int(curr_run_time)%60]
-	clock.text = " | %02d:%02d" % [time.hour, time.minute]
+	run_time.text = "Tempo da run: %02d:%02d:%02d | " % [curr_run_time/(60*60), int(curr_run_time/60)%60, int(curr_run_time)%60]
+	clock.text = ''
+	clock.add_image(preload("uid://dtdmncjvb5ehx"), 18, 18)
+	clock.add_text(" %02d:%02d" % [time.hour, time.minute])
 	fps.text = ' | FPS: %d  ' % Engine.get_frames_per_second()
 
 func update_battle(arg) -> void:
