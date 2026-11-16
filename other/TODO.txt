@@ -44,6 +44,19 @@ big TM - caro
 min BH - barato
 big BH - caro
 
+ _ FIREWALL 1 - BATALHA FÁCIL (1)
+ _ FIREWALL 1 - LOJA (1)
+ _ FIREWALL 1 - BATALHA DIFÍCIL (2)
+ _ FIREWALL 1 - LOJA (2)
+ _ FIREWALL 1 - BATALHA CONTRA CHEFE (3)
+ _ FIREWALL 1 - LOJA (3)
+
+ _ FIREWALL 2 - BATALHA FÁCIL (4)
+
+
+STATS VIEWPORT
+retirar valores relativos aos jokers e aparecer o quanto o upgrade melhora em branco
+
 
 
 

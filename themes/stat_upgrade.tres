@@ -3945,4 +3945,4 @@ Label/colors/font_color = Color(0.20392157, 0.9529412, 1, 1)
 Label/font_sizes/font_size = 26
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_rfnr0")
 RichTextLabel/colors/default_color = Color(0.20392157, 0.9529412, 1, 1)
-RichTextLabel/font_sizes/normal_font_size = 22
+RichTextLabel/font_sizes/normal_font_size = 26

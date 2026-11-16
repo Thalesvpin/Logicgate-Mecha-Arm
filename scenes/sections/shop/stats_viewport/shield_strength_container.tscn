@@ -146,7 +146,7 @@ size_flags_vertical = 3
 
 [node name="ShieldStrengthPrice" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer" index="1" unique_id=1180821686]
 layout_mode = 2
-text = "$500"
+text = "$ 500"
 fit_content = true
 autowrap_mode = 0
 
@@ -157,7 +157,7 @@ size_flags_vertical = 3
 [node name="MitigationPrice" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer" index="3" unique_id=777857009]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.89411765, 0.84705883, 0.31764707, 1)
-text = "$500"
+text = "$ 500"
 fit_content = true
 autowrap_mode = 0
 
@@ -171,7 +171,11 @@ visible = false
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(1142370072) index="3" unique_id=2112298816]
 layout_mode = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2" index="0" unique_id=1116499270]
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer2" index="0" unique_id=1683500606]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2" index="1" unique_id=1116499270]
 custom_minimum_size = Vector2(48, 48)
 custom_maximum_size = Vector2(48, 48)
 layout_mode = 2
@@ -196,7 +200,11 @@ texture_pressed = ExtResource("4_dghar")
 texture_hover = ExtResource("5_vbn5h")
 stretch_mode = 0
 
-[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2" index="1" unique_id=1297040036]
+[node name="Spacer2" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer2" index="2" unique_id=1184336457]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2" index="3" unique_id=1297040036]
 custom_minimum_size = Vector2(48, 48)
 custom_maximum_size = Vector2(48, 48)
 layout_mode = 2
@@ -220,6 +228,10 @@ texture_normal = ExtResource("4_dghar")
 texture_pressed = ExtResource("4_dghar")
 texture_hover = ExtResource("5_vbn5h")
 stretch_mode = 0
+
+[node name="Spacer3" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer2" index="4" unique_id=593974359]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="PanelContainer2" parent="MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(1142370072) index="4" unique_id=997814973]
 visible = false

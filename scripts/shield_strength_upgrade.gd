@@ -5,10 +5,12 @@ extends StatUpgrade
 @onready var shield_strength_price_label: RichTextLabel = $MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/ShieldStrengthPrice
 @onready var mitigation_price_label: RichTextLabel = $MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/MitigationPrice
 
+@export var preset_price_mitigation: Array[int] = []
 @export var mitigation_increase: float:
 	set(value):
 		mitigation_increase = value/100
 var choice_price: int = 0
+enum Upgrade {STRENGHT, MITIGATION}
 
 func upgrade() -> void:
 	if withdraw_money():
@@ -68,16 +70,16 @@ func withdraw_money() -> bool:
 	ef.apply()
 	return true
 
-func _on_buy_button_button_down() -> void:
+func _on_buy_button_strength_button_down() -> void:
 	start_timer()
 
-func _on_buy_button_button_up() -> void:
+func _on_buy_button_strength_button_up() -> void:
 	stop_timer()
-
+	choice_price = 0
 
 func _on_buy_button_mitigation_button_up() -> void:
-	pass # Replace with function body.
+	stop_timer()
+	choice_price = 0
 
-
-func _on_buy_button_strength_button_up() -> void:
-	pass # Replace with function body.
+func _on_buy_button_mitigation_button_down() -> void:
+	start_timer()

@@ -23,9 +23,10 @@ func update_value() -> void:
 	var curr = Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT]
 	current_value.text = '%d / 3 ' % curr
 	for i in range(curr):
-		current_value.text += char(0x25A0)
+		
+		pass
 	for i in range(3-curr):
-		current_value.text += char(0x25A1)
+		pass
 		
 
 func _on_buy_button_button_down() -> void:
