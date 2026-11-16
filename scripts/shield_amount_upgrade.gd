@@ -8,16 +8,17 @@ func upgrade() -> void:
 		ef.amount = amount_per_upgrade
 		ef.apply()
 		var ef2 = RepairShieldEffect.new()
-		ef2.amount = Global.run_stats.player_stats[Stats.List.MAX_SHIELD]
+		ef2.amount = Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]
 		ef2.apply()
 	
-		upgrades += 1
-		if upgrades >= 3:
+		upgrades_count += 1
+		if upgrades_count >= 3:
 			buy_btn.disabled = true
 			price.text = '  MAX  '
 		else:
 			update_price()
 		update_value()
+		EventBus.shield_count.emit()
 
 func update_value() -> void:
 	var curr = Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT]

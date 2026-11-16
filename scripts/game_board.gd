@@ -176,7 +176,7 @@ const BH_7 = preload("uid://c24lfewwtgac8")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Y"):
-		print('Curr health: ',Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
+		print('Curr: ',Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT])
 		pass
 	if event.is_action_pressed("H"):
 		var ef = ChargeHeavyAttackEffect.new()

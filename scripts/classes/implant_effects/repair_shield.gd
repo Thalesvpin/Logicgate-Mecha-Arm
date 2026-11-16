@@ -15,12 +15,12 @@ func apply(_context = null) -> void:
 	var result
 	match mode:
 		Mode.VALUE:
-			result = add_to_player_stats(Stats.List.CURRENT_SHIELD, amount, greater, Global.run_stats.player_stats[Stats.List.MAX_SHIELD]*Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT])
-			while Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD] > Global.run_stats.player_stats[Stats.List.MAX_SHIELD]*Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT]:
+			result = add_to_player_stats(Stats.List.CURRENT_SHIELD, amount, greater, Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]*Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT])
+			while Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD] > Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]*Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT]:
 				Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT] += 1
 		Mode.UNIT:
 			var active = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT]
-			var max_p_unit = Global.run_stats.player_stats[Stats.List.MAX_SHIELD]
+			var max_p_unit = Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]
 			var max_active = active * max_p_unit
 			var current = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD]
 			
@@ -30,7 +30,7 @@ func apply(_context = null) -> void:
 				amount = max_active - current
 			result = add_to_player_stats(Stats.List.CURRENT_SHIELD, amount, greater, max_p_unit * Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT])
 		Mode.PERCENT:
-			var max_p_unit = Global.run_stats.player_stats[Stats.List.MAX_SHIELD]
+			var max_p_unit = Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]
 			var max_count = Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT]
 			var _max = max_p_unit * max_count
 			result = add_to_player_stats(Stats.List.CURRENT_SHIELD, _max * amount/100, greater, _max)

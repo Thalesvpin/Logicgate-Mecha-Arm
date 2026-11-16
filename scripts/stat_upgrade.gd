@@ -13,7 +13,7 @@ class_name StatUpgrade
 @export var action_after_preset: PriceAction
 @export var after_preset_value: int
 @export var amount_per_upgrade: float
-var upgrades: int = 0
+var upgrades_count: int = 0
 var current_price: int = 0
 
 ##How much the "Run" btn must be held to submit
@@ -32,6 +32,7 @@ func _process(delta: float) -> void:
 		upgrade()
 
 func _ready() -> void:
+	ready()
 	setup()
 	update_value()
 
@@ -45,8 +46,8 @@ func setup() -> void:
 	update_price()
 
 func update_price() -> void:
-	if upgrades < preset_prices.size():
-		current_price = preset_prices[upgrades]
+	if upgrades_count < preset_prices.size():
+		current_price = preset_prices[upgrades_count]
 	else:
 		if action_after_preset == PriceAction.ADD:
 			current_price += after_preset_value
@@ -74,3 +75,6 @@ func stop_timer() -> void:
 	timer = 0.0
 	holding_run = false
 	buy_btn.material.set_shader_parameter("progress", 1)
+
+func ready():
+	pass

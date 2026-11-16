@@ -107,6 +107,24 @@ void fragment() {
     COLOR = color;
 }"
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dghar"]
+shader = SubResource("Shader_6wn8n")
+shader_parameter/progress = 1.0
+shader_parameter/saturation = 0.2
+shader_parameter/lightness = 0.4
+shader_parameter/direction = 0
+shader_parameter/terminator_color = Color(1, 1, 1, 1)
+shader_parameter/terminator_size_px = 4.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vbn5h"]
+shader = SubResource("Shader_6wn8n")
+shader_parameter/progress = 1.0
+shader_parameter/saturation = 0.2
+shader_parameter/lightness = 0.4
+shader_parameter/direction = 0
+shader_parameter/terminator_color = Color(1, 1, 1, 1)
+shader_parameter/terminator_size_px = 4.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_etihk"]
 shader = SubResource("Shader_6wn8n")
 shader_parameter/progress = 1.0
@@ -119,15 +137,15 @@ shader_parameter/terminator_size_px = 4.0
 [node name="ShieldStrengthContainer" unique_id=109097967 instance=ExtResource("1_acptt")]
 mouse_filter = 1
 script = ExtResource("2_r5wt1")
-mitigation_increase = null
+preset_prices_mitigation = Array[int]([200])
+after_preset_value_mitigation = 200
+mitigation_increase = 3.0
 stat = 5
 title = "Força dos Escudos"
 icon = ExtResource("3_etihk")
 preset_prices = Array[int]([500, 1000, 2000, 5000, 10000, 25000])
-action_after_preset = null
 after_preset_value = 25000
 amount_per_upgrade = 1.0
-hold_run_duration = null
 
 [node name="MarginContainer" parent="." index="0" unique_id=924212442]
 theme_override_constants/margin_top = 7
@@ -190,7 +208,7 @@ theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
 [node name="BuyButtonStrength" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer2/MarginContainer" index="0" unique_id=1735539855]
-material = SubResource("ShaderMaterial_etihk")
+material = SubResource("ShaderMaterial_dghar")
 custom_minimum_size = Vector2(45, 45)
 custom_maximum_size = Vector2(45, 45)
 layout_mode = 2
@@ -219,7 +237,7 @@ theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
 [node name="BuyButtonMitigation" type="TextureButton" parent="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer3/MarginContainer" index="0" unique_id=334544859]
-material = SubResource("ShaderMaterial_etihk")
+material = SubResource("ShaderMaterial_vbn5h")
 custom_minimum_size = Vector2(45, 45)
 custom_maximum_size = Vector2(45, 45)
 layout_mode = 2
@@ -247,9 +265,12 @@ custom_minimum_size = Vector2(201.1, 0)
 text = "Força dos Escudos"
 
 [node name="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1014529621) index="1" unique_id=1768797470]
+custom_minimum_size = Vector2(0, 36)
+custom_maximum_size = Vector2(-1, 36)
 theme_override_constants/separation = 5
 
 [node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1465263440]
+visible = false
 text = "10/10"
 
 [node name="CurrentValue2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="1" unique_id=1747481202]
@@ -284,7 +305,9 @@ text = "-30%"
 fit_content = true
 autowrap_mode = 0
 
+[connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer2/MarginContainer/BuyButtonStrength" to="." method="_on_buy_button_strength_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer2/MarginContainer/BuyButtonStrength" to="." method="_on_buy_button_strength_button_up"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer3/MarginContainer/BuyButtonMitigation" to="." method="_on_buy_button_mitigation_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer3/MarginContainer/BuyButtonMitigation" to="." method="_on_buy_button_mitigation_button_up"]
 [connection signal="button_down" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_up"]

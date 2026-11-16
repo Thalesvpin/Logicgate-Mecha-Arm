@@ -39,6 +39,7 @@ signal close_shop
 signal pack_item_chosen
 signal reroll_shop
 signal skip_pack
+signal shield_count
 #endregion
 
 var signals_list: Dictionary[Trigger.Type, Variant] = {

@@ -17,7 +17,7 @@ func upgrade() -> void:
 		var ef2 = HealEffect.new()
 		ef2.amount = amount_per_upgrade
 		ef2.apply()
-		upgrades += 1
+		upgrades_count += 1
 		update_price()
 		update_value()
 

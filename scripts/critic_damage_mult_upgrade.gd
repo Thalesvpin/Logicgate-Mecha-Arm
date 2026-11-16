@@ -6,7 +6,7 @@ func upgrade() -> void:
 		ef.amount = amount_per_upgrade
 		ef.apply()
 		
-		upgrades += 1
+		upgrades_count += 1
 		update_price()
 		update_value()
 
