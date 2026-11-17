@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://cti7mt7x4b6bt"]
+
+[ext_resource type="Shader" uid="uid://nm2i2alfos4u" path="res://shaders/dna_helix.gdshader" id="1_jms2c"]
+
+[sub_resource type="Gradient" id="Gradient_nvjen"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.27058825, 0.8901961, 0.54901963, 1, 1.3160752e-07, 0.08612267, 0.026218114, 1, 0.27058825, 0.8901961, 0.54901963, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_nvjen")
+
+[sub_resource type="Gradient" id="Gradient_odwct"]
+offsets = PackedFloat32Array(0, 0.5088757, 1)
+colors = PackedColorArray(0.50591713, 0.50591713, 0.50591713, 1, 0.7581918, 0.7581918, 0.7581917, 1, 0.50591713, 0.50591713, 0.50591713, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_frvfp"]
+gradient = SubResource("Gradient_odwct")
+
+[sub_resource type="Gradient" id="Gradient_jms2c"]
+offsets = PackedFloat32Array(0, 0.4822485, 1)
+colors = PackedColorArray(1, 0, 0, 1, 0, 1, 0.6333332, 1, 0, 0.49803922, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nvjen"]
+gradient = SubResource("Gradient_jms2c")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7lv4"]
+shader = ExtResource("1_jms2c")
+shader_parameter/helix_color = Color(1, 1, 1, 1)
+shader_parameter/depth_contrast = 0.8
+shader_parameter/background_mode = 0
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/background_tint = Color(1, 1, 1, 1)
+shader_parameter/background_gradient = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/bg_gradient_type = 0
+shader_parameter/bg_gradient_smoothing = 0.5
+shader_parameter/bg_scale = Vector2(1.8, 1)
+shader_parameter/bg_offset = Vector2(0, 0)
+shader_parameter/bg_rotation_degrees = 0.0
+shader_parameter/bg_enable_scroll = false
+shader_parameter/bg_scroll_speed = Vector2(0.1, 0)
+shader_parameter/bg_repeat = true
+shader_parameter/use_individual_colors = true
+shader_parameter/row1_color = Color(1, 0, 0, 1)
+shader_parameter/row2_color = Color(0, 0.5, 1, 1)
+shader_parameter/rung_gradient = SubResource("GradientTexture1D_nvjen")
+shader_parameter/scale = 5.0
+shader_parameter/angle = -3.1415901184082
+shader_parameter/twist_density = 0.4
+shader_parameter/amplitude = 2.0
+shader_parameter/scroll_speed = 0.5
+shader_parameter/rotation_speed = 1.0
+shader_parameter/row1_shape = 0
+shader_parameter/row2_shape = 0
+shader_parameter/row1_base_radius = 0.2
+shader_parameter/row2_base_radius = 0.2
+shader_parameter/node_depth_scale = 0.1
+shader_parameter/rung_thickness = 2.0
+shader_parameter/rung_sharpness = 0.0
+shader_parameter/spin_row1_nodes = true
+shader_parameter/row1_spin_speed = 2.0
+shader_parameter/spin_row2_nodes = false
+shader_parameter/row2_spin_speed = 2.0
+shader_parameter/enable_shine_1 = true
+shader_parameter/shine_1_blend_mode = 0
+shader_parameter/shine_1_color = Color(1, 1, 1, 1)
+shader_parameter/shine_1_intensity = 1.5
+shader_parameter/shine_1_speed = 0.6
+shader_parameter/shine_1_width = 1.2
+shader_parameter/shine_1_softness = 0.7
+shader_parameter/shine_1_slant = 0.35
+shader_parameter/shine_1_interval = 0.5
+shader_parameter/shine_1_exclude_row1 = true
+shader_parameter/shine_1_exclude_row2 = false
+shader_parameter/shine_1_exclude_rung = true
+shader_parameter/enable_shine_2 = true
+shader_parameter/shine_2_blend_mode = 0
+shader_parameter/shine_2_color = Color(1, 1, 1, 1)
+shader_parameter/shine_2_intensity = 1.5
+shader_parameter/shine_2_speed = 0.6
+shader_parameter/shine_2_width = 5.0
+shader_parameter/shine_2_softness = 0.7
+shader_parameter/shine_2_slant = 0.35
+shader_parameter/shine_2_interval = 0.5
+shader_parameter/shine_2_exclude_row1 = false
+shader_parameter/shine_2_exclude_row2 = true
+shader_parameter/shine_2_exclude_rung = true
+shader_parameter/enable_helix_blur = false
+shader_parameter/helix_blur_amount = 0.25
+shader_parameter/helix_blur_energy_retention = 0.75
+shader_parameter/helix_blur_affect_nodes = true
+shader_parameter/helix_blur_affect_rungs = true
+shader_parameter/enable_edge_blur = true
+shader_parameter/edge_blur_amount = 2.0
+shader_parameter/edge_blur_reach = 12.777000559407501
+shader_parameter/edge_blur_falloff = 5.0
+shader_parameter/edge_blur_edge_offset = 0.0
+shader_parameter/edge_blur_energy_retention = 0.350000016625
+shader_parameter/edge_blur_affect_nodes = true
+shader_parameter/edge_blur_affect_rungs = true
+shader_parameter/corner_radii = Vector4(10, 10, 10, 10)
+shader_parameter/use_beveled_corners = false
+shader_parameter/enable_outline = true
+shader_parameter/outline_width = 5.0000002375
+shader_parameter/outline_blur = 0.0
+shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_frvfp")
+shader_parameter/outline_gradient_type = 0
+shader_parameter/outline_gradient_rotation_degrees = 0.0
+shader_parameter/outline_gradient_scale = 1.0
+shader_parameter/outline_gradient_smoothing = 0.5
+shader_parameter/outline_gradient_offset = 0.0
+shader_parameter/outline_repeat_gradient = false
+
+[node name="implant_type_animated" type="Control" unique_id=1174457224]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1496.0
+offset_bottom = -914.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="type_biohack" type="ColorRect" parent="." unique_id=1555287089]
+material = SubResource("ShaderMaterial_a7lv4")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -25.0
+offset_right = 50.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
