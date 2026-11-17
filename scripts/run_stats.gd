@@ -59,11 +59,8 @@ func connect_signals() -> void:
 	EventBus.battle_ended.connect(next_battle)
 
 func next_battle(arg) -> void:
-	if current_battle < 3:
-		current_battle += 1
-	else:
-		current_battle = 1
-		#current_turn = 0
+	current_battle += 1
+	if (current_battle % 3) == 1:
 		current_firewall += 1
 
 func set_variables() -> void:
