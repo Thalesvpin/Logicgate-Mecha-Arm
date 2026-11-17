@@ -7,6 +7,8 @@ extends Control
 @onready var right_enemy_container: VBoxContainer = $SubViewportContainer/SubViewport/PanelContainer/TopPanels/EnemiesSection/RightEnemyContainer
 @onready var enemy_name_bar: Control = $SubViewportContainer/SubViewport/PanelContainer/MidBottomPanels/EnemyNameBar
 @onready var red_dmg_flash: PanelContainer = $RedDmgFlash
+@onready var enemies_section: HBoxContainer = $SubViewportContainer/SubViewport/PanelContainer/TopPanels/EnemiesSection
+@onready var mid_bottom_panels: VBoxContainer = $SubViewportContainer/SubViewport/PanelContainer/MidBottomPanels
 
 var enemy_l: Control
 var enemy_c: Control
@@ -24,7 +26,8 @@ func _ready() -> void:
 	Global.combat_screen = self
 	start_battle()
 	connect_signals()
-	sub_viewport_container.custom_minimum_size = panel_container.get_combined_minimum_size()
+	#sub_viewport_container.custom_minimum_size = panel_container.get_combined_minimum_size()
+	sub_viewport_container.custom_minimum_size = Vector2(panel_container.get_combined_minimum_size().x, enemies_section.size.y+mid_bottom_panels.size.y)
 
 func start_battle() -> void:
 	if is_first_battle:

@@ -163,11 +163,66 @@ shader_parameter/outline_color_brightness = 0.0
 shader_parameter/outline_color_contrast = 1.0
 shader_parameter/outline_color_saturation = 1.0
 shader_parameter/outline_color_hue_shift_speed = 0.0
+shader_parameter/enable_scanlines = false
 shader_parameter/scanline_base_only = false
-shader_parameter/scanline_rotation = 0.0
-shader_parameter/scanline_speed = 0.0
+shader_parameter/scanline_blend_mode = 0
+shader_parameter/scanline_color = Color(0, 0, 0, 1)
 shader_parameter/scanline_density = 0.0
+shader_parameter/scanline_thickness = 0.5
+shader_parameter/scanline_softness = 1.0
+shader_parameter/scanline_rotation = 0.0
+shader_parameter/scanline_offset = 0.0
+shader_parameter/scanline_speed = 0.0
+shader_parameter/scanline_curvature = 0.0
+shader_parameter/scanline_flicker_speed = 0.0
+shader_parameter/scanline_flicker_intensity = 0.0
+shader_parameter/scanline_use_gradient = false
+shader_parameter/scanline_gradient_type = 0
+shader_parameter/scanline_gradient_rotation_degrees = 0.0
+shader_parameter/scanline_gradient_scale = 1.0
+shader_parameter/scanline_gradient_smoothing = 0.5
+shader_parameter/scanline_gradient_offset = 0.0
+shader_parameter/scanline_repeat_gradient = false
 shader_parameter/scanline_opacity = 0.0
+shader_parameter/scanline_enable_opacity_map = false
+shader_parameter/scanline_opacity_type = 2
+shader_parameter/scanline_opacity_rotation_degrees = 0.0
+shader_parameter/scanline_opacity_scale = 1.0
+shader_parameter/scanline_opacity_smoothing = 0.5
+shader_parameter/scanline_opacity_offset = 0.0
+shader_parameter/scanline_opacity_repeat = false
+shader_parameter/enable_liquid_stripes = false
+shader_parameter/liquid_stripes_base_only = false
+shader_parameter/liquid_stripes_blend_mode = 0
+shader_parameter/liquid_stripes_color = Color(0.59, 0.98, 0.69, 1)
+shader_parameter/liquid_stripes_bg_color = Color(0, 0, 0, 0)
+shader_parameter/liquid_stripes_rotation = 0.0
+shader_parameter/liquid_stripes_speed = 1.0
+shader_parameter/liquid_stripes_sway = 1.0
+shader_parameter/liquid_stripes_density = 4.82
+shader_parameter/liquid_stripes_thickness = 0.45
+shader_parameter/liquid_stripes_softness = 0.05
+shader_parameter/liquid_stripes_warp = 1.0
+shader_parameter/liquid_stripes_warp_origin = -0.5
+shader_parameter/liquid_stripes_warp_falloff = 0.0
+shader_parameter/liquid_stripes_warp_direction = 0.0
+shader_parameter/liquid_stripes_warp_frequency = 15.0
+shader_parameter/liquid_stripes_warp_flow = 2.0
+shader_parameter/liquid_stripes_use_gradient = false
+shader_parameter/liquid_stripes_gradient_type = 0
+shader_parameter/liquid_stripes_gradient_rotation_degrees = 0.0
+shader_parameter/liquid_stripes_gradient_scale = 1.0
+shader_parameter/liquid_stripes_gradient_smoothing = 0.5
+shader_parameter/liquid_stripes_gradient_offset = 0.0
+shader_parameter/liquid_stripes_repeat_gradient = false
+shader_parameter/liquid_stripes_opacity = 0.5
+shader_parameter/liquid_stripes_enable_opacity_map = false
+shader_parameter/liquid_stripes_opacity_type = 2
+shader_parameter/liquid_stripes_opacity_rotation_degrees = 0.0
+shader_parameter/liquid_stripes_opacity_scale = 1.0
+shader_parameter/liquid_stripes_opacity_smoothing = 0.5
+shader_parameter/liquid_stripes_opacity_offset = 0.0
+shader_parameter/liquid_stripes_opacity_repeat = false
 shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
 
@@ -371,6 +426,7 @@ shader_parameter/cross_rotation_speed = -0.20499953473749952
 shader_parameter/cross_base_angle = 0.0
 
 [node name="CombatScreen" type="PanelContainer" unique_id=982127176]
+custom_minimum_size = Vector2(0, 300)
 clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -382,12 +438,13 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_lvmae")
 
 [node name="SubViewportContainer2" type="SubViewportContainer" parent="." unique_id=1976268048]
+visible = false
 layout_mode = 2
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer2" unique_id=1930583407]
 own_world_3d = true
 handle_input_locally = false
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer2/SubViewport" unique_id=1393624379]
 environment = SubResource("Environment_mjyp6")
@@ -504,6 +561,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_civbc")
 
 [node name="RedDmgFlash" type="PanelContainer" parent="." unique_id=683888803]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")

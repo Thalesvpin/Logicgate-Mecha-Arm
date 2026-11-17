@@ -17,6 +17,8 @@ extends Control
 @export var shop_tween_speed: float = 0.8
 var last_top_h_split_offsets: PackedInt32Array
 var last_v_split_offsets: PackedInt32Array
+const SHOP_H_OFFSETS: Array[int] = [350, -350]
+const SHOP_V_OFFSETS: Array[int] = [0]
 
 func _ready() -> void:
 	Global.game_board = self
@@ -77,84 +79,79 @@ func tween_handler(object: Object, property: NodePath, final_val: Variant, durat
 	if callback != null:
 		tween.tween_callback(callback)
 
+func tween_offsets(split: SplitContainer, target: PackedInt32Array, tween: Tween) -> void:
+	var from = split.split_offsets.duplicate()
+	var to = fit(target, from.size())
+	tween.tween_method(
+		func(t: float):
+			var arr := PackedInt32Array()
+			for i in from.size():
+				arr.append(roundi(lerpf(from[i], to[i], t)))
+			split.split_offsets = arr,
+		0.0, 1.0, shop_tween_speed
+	)
+
+func fit(arr: PackedInt32Array, size: int) -> PackedInt32Array:
+	var out := arr.duplicate()
+	while out.size() < size:
+		out.append(out[out.size() - 1] if out.size() > 0 else 0)
+	out.resize(size)
+	return out
+
 func open_shop() -> void:
-	last_top_h_split_offsets = top_h_split.split_offsets
-	last_v_split_offsets = v_split.split_offsets
+	last_top_h_split_offsets = top_h_split.split_offsets.duplicate()
+	last_v_split_offsets = v_split.split_offsets.duplicate()
 	v_split.dragging_enabled = false
 	top_h_split.dragging_enabled = false
+	
 	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_parallel(true)
-	
-	var h_from := float(top_h_split.split_offsets[0])
-	tween.tween_method(
-		func(v: float):
-			top_h_split.split_offsets = [roundi(v), -roundi(v)],
-		h_from, 350.0, shop_tween_speed
-	)
-	var v_from := float(v_split.split_offsets[0])
-	tween.tween_method(
-		func(v: float):
-			v_split.split_offsets = [roundi(v)],
-		v_from, 0.0, shop_tween_speed
-	)
-	
+	tween_offsets(top_h_split, SHOP_H_OFFSETS, tween)
+	tween_offsets(v_split, SHOP_V_OFFSETS, tween)
 	tween.set_parallel(false)
 	tween.tween_callback(
 		func():
-			EventBus.open_shop.emit()
-			stats_viewport.show()
-			stats_viewport.glow()
 			close_battle()
+			stats_viewport.show()
+			EventBus.open_shop.emit()
+			stats_viewport.glow()
+			await get_tree().process_frame
+			top_h_split.split_offsets = fit(SHOP_H_OFFSETS, top_h_split.split_offsets.size())
+			v_split.split_offsets = fit(SHOP_V_OFFSETS, v_split.split_offsets.size())
 	)
 
 func close_shop() -> void:
 	shop.hide()
 	stats_viewport.hide()
+	open_battle()
+	EventBus.close_shop.emit()
+	
+	await get_tree().process_frame
+	top_h_split.split_offsets = fit(SHOP_H_OFFSETS, top_h_split.split_offsets.size())
+	v_split.split_offsets = fit(SHOP_V_OFFSETS, v_split.split_offsets.size())
 	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_parallel(true)
 	
-	var h_from := float(top_h_split.split_offsets[0])
-	tween.tween_method(
-		func(v: float):
-			top_h_split.split_offsets = [roundi(v), -roundi(v)],
-		h_from, last_top_h_split_offsets, shop_tween_speed
-	)
-	var v_from := float(v_split.split_offsets[0])
-	tween.tween_method(
-		func(v: float):
-			v_split.split_offsets = [roundi(v)],
-		v_from, last_v_split_offsets, shop_tween_speed
-	)
+	tween_offsets(top_h_split, last_top_h_split_offsets, tween)
+	tween_offsets(v_split, last_v_split_offsets, tween)
 	
 	tween.set_parallel(false)
 	tween.tween_callback(
 		func():
-			EventBus.close_shop.emit()
-			stats_viewport.hide()
-			open_battle()
+			v_split.dragging_enabled = true
+			top_h_split.dragging_enabled = true
 	)
 
 func open_battle() -> void:
-	v_split.dragging_enabled = false
-	top_h_split.dragging_enabled = false
-	#tween_handler(top_h_split, "split_offsets", last_top_h_split_offsets, shop_tween_speed, Tween.EASE_OUT, true, _open_battle)
-	#tween_handler(v_split, "split_offsets", last_v_split_offsets, shop_tween_speed, Tween.EASE_OUT, true, _open_battle)
-	v_split.split_offsets = last_v_split_offsets
-	top_h_split.split_offsets = last_top_h_split_offsets
-
-#func _open_battle() -> void:
-	print('abriu a battle')
 	bot_h_split.show()
 	combat_screen.show()
 	gates_selector.show()
 	circuit_editor.show()
 	execution_panel.show()
-	v_split.dragging_enabled = true
-	top_h_split.dragging_enabled = true
 
 func close_battle() -> void:
 	combat_screen.hide()

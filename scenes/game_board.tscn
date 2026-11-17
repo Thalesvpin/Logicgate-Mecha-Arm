@@ -86,17 +86,12 @@ theme_override_constants/minimum_grab_thickness = 6
 drag_nested_intersections = true
 drag_area_highlight_in_editor = true
 
-[node name="cima" type="Control" parent="GameplayElements/VSplit" unique_id=583631780]
+[node name="cima" type="PanelContainer" parent="GameplayElements/VSplit" unique_id=1746584285]
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="TopHSplit" type="HSplitContainer" parent="GameplayElements/VSplit/cima" unique_id=1487900312]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/separation = 0
 split_offsets = PackedInt32Array(10, -10)
 drag_nested_intersections = true
