@@ -18,3 +18,9 @@ func _on_buy_button_button_up() -> void:
 
 func update_value() -> void:
 	current_value.text = ('%.1f' %(Global.run_stats.player_stats[stat] + Global.implant_manager.extra_stats[stat])).trim_suffix(".0") + '%'
+
+func _on_buy_button_mouse_entered() -> void:
+	show_reward('%')
+
+func _on_buy_button_mouse_exited() -> void:
+	hide_reward()

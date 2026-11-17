@@ -269,24 +269,39 @@ custom_minimum_size = Vector2(0, 36)
 custom_maximum_size = Vector2(-1, 36)
 theme_override_constants/separation = 5
 
-[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1465263440]
+[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="0" unique_id=108223377]
 visible = false
 text = "10/10"
 
-[node name="CurrentValue2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="1" unique_id=1747481202]
+[node name="CurrentValue2" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="1" unique_id=1669715485]
 visible = false
 layout_mode = 2
+bbcode_enabled = true
 text = "10/10"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 
-[node name="CurrentValue3" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="2" unique_id=1190072766]
+[node name="CurrentValue3" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="2" unique_id=239430838]
 visible = false
 layout_mode = 2
+bbcode_enabled = true
 text = "2/10"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 
-[node name="CurrentValue4" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="3" unique_id=170828837]
+[node name="CurrentValue4" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="3" unique_id=242635638]
 visible = false
 layout_mode = 2
+bbcode_enabled = true
 text = "2/10"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Spacer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="4" unique_id=36557124]
+visible = false
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1014529621) index="2" unique_id=1724723559]
 layout_mode = 2
@@ -301,13 +316,30 @@ autowrap_mode = 0
 [node name="MitigationValueLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" index="1" unique_id=121459776]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.89411765, 0.84705883, 0.31764707, 1)
-text = "-30%"
+text = "30%"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Spacer2" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" index="2" unique_id=2058763919]
+custom_minimum_size = Vector2(10, 0)
+custom_maximum_size = Vector2(10, -1)
+layout_mode = 2
+
+[node name="UpgradeValueMitigation" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2" index="3" unique_id=324612968]
+visible = false
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+text = "+3%"
 fit_content = true
 autowrap_mode = 0
 
 [connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer2/MarginContainer/BuyButtonStrength" to="." method="_on_buy_button_strength_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer2/MarginContainer/BuyButtonStrength" to="." method="_on_buy_button_strength_button_up"]
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer2/MarginContainer/BuyButtonStrength" to="." method="_on_buy_button_strength_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer2/MarginContainer/BuyButtonStrength" to="." method="_on_buy_button_strength_mouse_exited"]
 [connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer3/MarginContainer/BuyButtonMitigation" to="." method="_on_buy_button_mitigation_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer3/MarginContainer/BuyButtonMitigation" to="." method="_on_buy_button_mitigation_button_up"]
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer3/MarginContainer/BuyButtonMitigation" to="." method="_on_buy_button_mitigation_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer3/MarginContainer/BuyButtonMitigation" to="." method="_on_buy_button_mitigation_mouse_exited"]
 [connection signal="button_down" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_up"]

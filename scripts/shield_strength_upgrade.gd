@@ -6,6 +6,7 @@ extends StatUpgrade
 @onready var mitigation_price_label: RichTextLabel = $MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer/MitigationPrice
 @onready var buy_button_strength: TextureButton = $MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer2/MarginContainer/BuyButtonStrength
 @onready var buy_button_mitigation: TextureButton = $MarginContainer/HBoxContainer/VBoxContainer2/PanelContainer3/MarginContainer/BuyButtonMitigation
+@onready var upgrade_value_mitigation: RichTextLabel = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/UpgradeValueMitigation
 
 @export var preset_prices_mitigation: Array[int] = []
 @export var action_after_preset_mitigation: PriceAction
@@ -76,7 +77,7 @@ func update_value() -> void:
 		else:
 			labels[i].text = '%d/%d' % [aux, strength] 
 	
-	mitigation_value_label.text = ('-%.1f' % (Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] + Global.implant_manager.extra_stats[Stats.List.MITIGATION_PERCENT])).trim_suffix('.0') + '%'
+	mitigation_value_label.text = ('%.1f' % (Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] + Global.implant_manager.extra_stats[Stats.List.MITIGATION_PERCENT])).trim_suffix('.0') + '%'
 
 func withdraw_money() -> bool:
 	if Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] < choice_price:
@@ -105,3 +106,38 @@ func _on_buy_button_mitigation_button_down() -> void:
 func _on_buy_button_mitigation_button_up() -> void:
 	stop_timer()
 	choice_price = 0
+
+func _on_buy_button_mitigation_mouse_entered() -> void:
+	upgrade_value_mitigation.text = ('+%.1f' % mitigation_increase).trim_suffix('.0')+'%'
+	upgrade_value_mitigation.show()
+	add_space(true)
+
+func _on_buy_button_mitigation_mouse_exited() -> void:
+	upgrade_value_mitigation.hide()
+	add_space(false)
+
+func add_space(positive: bool) -> void:
+	var child = find_child('Arraibmag')
+	if child && !positive:
+		child.get_child(1).custom_minimum_size.x -= 22
+		child.get_child(1).custom_maximum_size.x -= 22
+	if child && positive:
+		child.get_child(1).custom_minimum_size.x += 22
+		child.get_child(1).custom_maximum_size.x += 22
+
+func _on_buy_button_strength_mouse_entered() -> void:
+	var aux = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD]
+	var strength = Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]
+	var labels = current_values_container.get_children()
+	var count = Global.run_stats.player_stats[Stats.List.MAX_SHIELD_COUNT]
+	
+	for i in range(count):
+		labels[i].show()
+		if i < count-1:
+			labels[i].text = '%d/[color=white]%d[/color]' % [strength, strength+1]
+			aux -= strength
+		else:
+			labels[i].text = '%d/[color=white]%d[/color]' % [aux, strength+1] 
+
+func _on_buy_button_strength_mouse_exited() -> void:
+	update_value()

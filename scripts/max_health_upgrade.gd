@@ -29,18 +29,12 @@ func _on_buy_button_button_up() -> void:
 
 func update_value() -> void:
 	var curr = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]
-	var max = Global.run_stats.player_stats[stat] + Global.implant_manager.extra_stats[stat]
-	if Global.implant_manager.extra_stats[stat] > 0:
-		label.show()
-		label_2.show()
-		current_value.show()
-		implant_value.show()
-	else:
-		label.hide()
-		label_2.hide()
-		current_value.hide()
-		implant_value.hide()
+	var _max = Global.run_stats.player_stats[stat] + Global.implant_manager.extra_stats[stat]
 	
-	total_value.text = '%d / %d' % [curr, max]
-	current_value.text = str(Global.run_stats.player_stats[stat])
-	implant_value.text = '+'+str(Global.implant_manager.extra_stats[stat])
+	current_value.text = '%d/%d' % [curr, _max]
+
+func _on_buy_button_mouse_entered() -> void:
+	show_reward()
+
+func _on_buy_button_mouse_exited() -> void:
+	hide_reward()

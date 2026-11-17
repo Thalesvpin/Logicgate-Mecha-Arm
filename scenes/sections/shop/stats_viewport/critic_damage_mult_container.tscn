@@ -129,7 +129,7 @@ text = "Multiplicador de
 Dano Crítico"
 autowrap_mode = 2
 
-[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1186933452) index="0" unique_id=42870293]
+[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1186933452) index="2" unique_id=832257479]
 text = "x1.35"
 
 [node name="Icon" parent="MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(343544579) index="2" unique_id=1551069122]
@@ -140,3 +140,5 @@ material = SubResource("ShaderMaterial_7pnb7")
 
 [connection signal="button_down" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_up"]
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_mouse_exited"]

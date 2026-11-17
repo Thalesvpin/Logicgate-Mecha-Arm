@@ -116,7 +116,7 @@ shader_parameter/direction = 0
 shader_parameter/terminator_color = Color(1, 1, 1, 1)
 shader_parameter/terminator_size_px = 4.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rc080"]
 shader = ExtResource("4_rc080")
 shader_parameter/gamma = 1.0
 shader_parameter/premultiplied_alpha = false
@@ -165,6 +165,72 @@ shader_parameter/final_opacity_gradient_smoothstep = 0.0
 shader_parameter/use_base_overlay = true
 shader_parameter/blend_mode = 0
 shader_parameter/overlay_color = Color(0, 0, 0, 1)
+shader_parameter/overlay_opacity = 1.0
+shader_parameter/use_gradient = false
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_angle = 0.0
+shader_parameter/gradient_offset = Vector2(0, 0)
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothstep = 0.0
+shader_parameter/use_pattern = false
+shader_parameter/pattern_blend_mode = 1
+shader_parameter/pattern_opacity = 1.0
+shader_parameter/pattern_scale = Vector2(1, 1)
+shader_parameter/pattern_angle = 0.0
+shader_parameter/pattern_velocity = Vector2(0, 0)
+shader_parameter/pattern_screen_space = false
+shader_parameter/pattern_frames = Vector2i(1, 1)
+shader_parameter/pattern_frame = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tf3ad"]
+shader = ExtResource("4_rc080")
+shader_parameter/gamma = 1.0
+shader_parameter/premultiplied_alpha = false
+shader_parameter/feather_edges = 0.0
+shader_parameter/dither_strength = 0.0
+shader_parameter/final_opacity = 1.0
+shader_parameter/use_final_opacity_gradient = false
+shader_parameter/final_opacity_gradient_type = 0
+shader_parameter/final_opacity_gradient_angle = 0.0
+shader_parameter/final_opacity_gradient_offset = Vector2(0, 0)
+shader_parameter/final_opacity_gradient_scale = 1.0
+shader_parameter/final_opacity_gradient_smoothstep = 0.0
+shader_parameter/use_base_overlay = true
+shader_parameter/blend_mode = 0
+shader_parameter/overlay_color = Color(0.20392157, 0.9529412, 1, 1)
+shader_parameter/overlay_opacity = 1.0
+shader_parameter/use_gradient = false
+shader_parameter/gradient_type = 0
+shader_parameter/gradient_angle = 0.0
+shader_parameter/gradient_offset = Vector2(0, 0)
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothstep = 0.0
+shader_parameter/use_pattern = false
+shader_parameter/pattern_blend_mode = 1
+shader_parameter/pattern_opacity = 1.0
+shader_parameter/pattern_scale = Vector2(1, 1)
+shader_parameter/pattern_angle = 0.0
+shader_parameter/pattern_velocity = Vector2(0, 0)
+shader_parameter/pattern_screen_space = false
+shader_parameter/pattern_frames = Vector2i(1, 1)
+shader_parameter/pattern_frame = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]
+shader = ExtResource("4_rc080")
+shader_parameter/gamma = 1.0
+shader_parameter/premultiplied_alpha = false
+shader_parameter/feather_edges = 0.0
+shader_parameter/dither_strength = 0.0
+shader_parameter/final_opacity = 1.0
+shader_parameter/use_final_opacity_gradient = false
+shader_parameter/final_opacity_gradient_type = 0
+shader_parameter/final_opacity_gradient_angle = 0.0
+shader_parameter/final_opacity_gradient_offset = Vector2(0, 0)
+shader_parameter/final_opacity_gradient_scale = 1.0
+shader_parameter/final_opacity_gradient_smoothstep = 0.0
+shader_parameter/use_base_overlay = true
+shader_parameter/blend_mode = 0
+shader_parameter/overlay_color = Color(0.20392157, 0.9529412, 1, 1)
 shader_parameter/overlay_opacity = 1.0
 shader_parameter/use_gradient = false
 shader_parameter/gradient_type = 0
@@ -238,11 +304,11 @@ autowrap_mode = 2
 [node name="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1014529621) index="1" unique_id=1768797470]
 theme_override_constants/separation = 2
 
-[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="0" unique_id=1465263440]
+[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="0" unique_id=108223377]
 text = "2 / 3 "
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="1" unique_id=63203400]
-material = SubResource("ShaderMaterial_eofqg")
+[node name="S1" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="1" unique_id=63203400]
+material = SubResource("ShaderMaterial_rc080")
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(0.815, 0.815)
@@ -250,7 +316,7 @@ texture = ExtResource("5_tf3ad")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/TextureRect" index="0" unique_id=526957530]
+[node name="S1Hole" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/S1" index="0" unique_id=526957530]
 visible = false
 material = SubResource("ShaderMaterial_x4gs6")
 layout_mode = 0
@@ -262,8 +328,8 @@ texture = ExtResource("5_tf3ad")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="2" unique_id=1718360791]
-material = SubResource("ShaderMaterial_eofqg")
+[node name="S2" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="2" unique_id=1718360791]
+material = SubResource("ShaderMaterial_tf3ad")
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_scale = Vector2(0.815, 0.815)
@@ -271,7 +337,7 @@ texture = ExtResource("5_tf3ad")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/TextureRect2" index="0" unique_id=454513088]
+[node name="S2Hole" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/S2" index="0" unique_id=454513088]
 visible = false
 material = SubResource("ShaderMaterial_x4gs6")
 layout_mode = 0
@@ -283,7 +349,7 @@ texture = ExtResource("5_tf3ad")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect3" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="3" unique_id=5071944]
+[node name="S3" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="3" unique_id=5071944]
 material = SubResource("ShaderMaterial_eofqg")
 layout_mode = 2
 offset_transform_enabled = true
@@ -292,7 +358,8 @@ texture = ExtResource("5_tf3ad")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/TextureRect3" index="0" unique_id=1388737387]
+[node name="S3Hole" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/S3" index="0" unique_id=1388737387]
+visible = false
 material = SubResource("ShaderMaterial_x4gs6")
 layout_mode = 0
 offset_right = 36.0
@@ -303,7 +370,7 @@ texture = ExtResource("5_tf3ad")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="4" unique_id=1892408878]
+[node name="S4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" index="4" unique_id=1892408878]
 material = SubResource("ShaderMaterial_jsux4")
 layout_mode = 2
 offset_transform_enabled = true
@@ -312,7 +379,8 @@ texture = ExtResource("5_tf3ad")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/TextureRect4" index="0" unique_id=1899831571]
+[node name="S4Hole" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/S4" index="0" unique_id=1899831571]
+visible = false
 material = SubResource("ShaderMaterial_x4gs6")
 layout_mode = 0
 offset_right = 36.0
@@ -325,3 +393,5 @@ stretch_mode = 5
 
 [connection signal="button_down" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_up"]
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_mouse_exited"]

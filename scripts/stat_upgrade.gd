@@ -4,7 +4,8 @@ class_name StatUpgrade
 @onready var _icon: TextureRect = $MarginContainer/HBoxContainer/Icon
 @onready var price: Label = $MarginContainer/HBoxContainer/Price
 @onready var _title: Label = $MarginContainer/HBoxContainer/VBoxContainer/Title
-@onready var current_value: Label = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/CurrentValue
+@onready var current_value: RichTextLabel = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/CurrentValue
+@onready var upgrade_value: RichTextLabel = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/UpgradeValue
 
 @export var stat: Stats.List
 @export_multiline() var title: String
@@ -78,3 +79,11 @@ func stop_timer() -> void:
 
 func ready():
 	pass
+
+func show_reward(suffix: String = ''):
+	upgrade_value.text = ('+%.1f' % amount_per_upgrade).trim_suffix('.0') + suffix
+	upgrade_value.show()
+	print('amount externo: ', amount_per_upgrade)
+
+func hide_reward():
+	upgrade_value.hide()
