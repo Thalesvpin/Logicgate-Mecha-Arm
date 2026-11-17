@@ -16,22 +16,18 @@ func upgrade() -> void:
 		update_value()
 
 func update_value() -> void:
-	if Global.implant_manager.extra_stats[stat] > 0:
-		current_value.show()
-		implant_value.show()
-		label.show()
-		label_2.show()
-		current_value.text = '%d' % Global.run_stats.player_stats[stat]
-		implant_value.text = '%d' % Global.modifier_manager.extra_stats[stat]
-	else:
-		current_value.hide()
-		implant_value.hide()
-		label.hide()
-		label_2.hide()
-	total_value.text = '%d' % (Global.run_stats.player_stats[stat]+Global.implant_manager.extra_stats[stat])
+	current_value.text = '%d' % Global.run_stats.player_stats[stat]
+	current_value.show()
 
 func _on_buy_button_button_down() -> void:
 	start_timer()
 
 func _on_buy_button_button_up() -> void:
 	stop_timer()
+
+func _on_buy_button_mouse_entered() -> void:
+	print('amount interno: ', amount_per_upgrade)
+	show_reward()
+
+func _on_buy_button_mouse_exited() -> void:
+	hide_reward()

@@ -217,6 +217,7 @@ class SHOP:
 	const OUTLINE := Color(0.48235294, 0.18039216, 0.65882355, 1)
 	const PACKOUTLINE := Color(0.6745098, 0.6745098, 0.6745098, 1)
 	const REROLL := Color(0, 0.6, 0.50980395, 1)
+	const BLUESTATS := Color(0.20392157, 0.9529412, 1, 1)
 
 	## Palette name -> color, for lookups by a name held in a variable.
 	## Prefer the constants above: they are checked at compile time.
@@ -224,6 +225,7 @@ class SHOP:
 		"Outline": OUTLINE,
 		"PackOutline": PACKOUTLINE,
 		"Reroll": REROLL,
+		"BlueStats": BLUESTATS,
 	}
 
 	## Variant name -> {name -> color}, for reading a variant you are not on.
@@ -232,6 +234,7 @@ class SHOP:
 			"Outline": Color(0.48235294, 0.18039216, 0.65882355, 1),
 			"PackOutline": Color(0.6745098, 0.6745098, 0.6745098, 1),
 			"Reroll": Color(0, 0.6, 0.50980395, 1),
+			"BlueStats": Color(0.20392157, 0.9529412, 1, 1),
 		},
 	}
 

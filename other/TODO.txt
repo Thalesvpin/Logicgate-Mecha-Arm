@@ -8,7 +8,6 @@ nomes e icones dos implantes
 -LOJA
 -SHADER
 -COMBATE
-vsplit uqebra - add combat screen min height
 abrir e fechar paineis contextuais com clique
 barras de stats psicar branco ao reduzir
 dmg numbers na tela
@@ -16,7 +15,6 @@ bloquear implantes fora do turno
 bloquear inputs e outputs vazios
 -SCRIPT
 os inimigos estão começando sempre iguais
-randomizar os inimigos quando sair da loja
 -TEXTO
 falar q os implantes mudam de preço de acordo com a raridade
 

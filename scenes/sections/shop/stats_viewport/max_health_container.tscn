@@ -130,25 +130,10 @@ texture = ExtResource("3_5iw51")
 [node name="Title" parent="MarginContainer/HBoxContainer/VBoxContainer" parent_id_path=PackedInt32Array(1014529621) index="0" unique_id=724421388]
 text = "Vida Máxima"
 
-[node name="TotalValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="0" unique_id=870095535]
-layout_mode = 2
+[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="0" unique_id=108223377]
 text = "085 / 120"
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="1" unique_id=754438359]
-layout_mode = 2
-text = " ("
-
-[node name="CurrentValue" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="2" unique_id=1465263440]
-text = "100"
-
-[node name="ImplantValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="3" unique_id=1314893026]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.20392157, 0.9529412, 0, 1)
-text = "+20"
-
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" parent_id_path=PackedInt32Array(1768797470) index="4" unique_id=1139033340]
-layout_mode = 2
-text = ")"
 
 [connection signal="button_down" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_down"]
 [connection signal="button_up" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_button_up"]
+[connection signal="mouse_entered" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/HBoxContainer/PanelContainer2/MarginContainer/BuyButton" to="." method="_on_buy_button_mouse_exited"]

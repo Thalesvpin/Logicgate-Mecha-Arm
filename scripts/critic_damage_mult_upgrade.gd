@@ -19,3 +19,9 @@ func _on_buy_button_button_down() -> void:
 
 func _on_buy_button_button_up() -> void:
 	stop_timer()
+
+func _on_buy_button_mouse_entered() -> void:
+	show_reward()
+
+func _on_buy_button_mouse_exited() -> void:
+	hide_reward()

@@ -197,9 +197,28 @@ text = "Dano Base"
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="CurrentValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1465263440]
+[node name="CurrentValue" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=108223377]
 layout_mode = 2
-text = "(120"
+bbcode_enabled = true
+text = "120"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=36557124]
+custom_minimum_size = Vector2(10, 0)
+custom_maximum_size = Vector2(10, -1)
+layout_mode = 2
+
+[node name="UpgradeValue" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1891440526]
+visible = false
+layout_mode = 2
+offset_transform_position = Vector2(10, 0)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+text = "+20"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=1234283984]
 copy_mode = 2

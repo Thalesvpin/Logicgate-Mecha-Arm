@@ -155,9 +155,27 @@ layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 2
 
-[node name="CurrentValue" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=42870293]
+[node name="UpgradeValue" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=1928469765]
+visible = false
 layout_mode = 2
-text = "(120"
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+text = "+20"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=532173439]
+custom_minimum_size = Vector2(10, 0)
+custom_maximum_size = Vector2(10, -1)
+layout_mode = 2
+
+[node name="CurrentValue" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer" unique_id=832257479]
+layout_mode = 2
+bbcode_enabled = true
+text = "120"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 
 [node name="Spacer2" type="Control" parent="MarginContainer/HBoxContainer" unique_id=484904937]
 custom_minimum_size = Vector2(4, 0)

@@ -22,5 +22,11 @@ entries = Array[Dictionary]([{
 },
 "id": "cqbp4",
 "name": "Reroll"
+}, {
+"colors": {
+"Default": Color(0.20392157, 0.9529412, 1, 1)
+},
+"id": "exkw8",
+"name": "BlueStats"
 }])
 variants = PackedStringArray("Default")
