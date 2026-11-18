@@ -21,6 +21,8 @@ var health_aux: int
 @onready var shield_horizontal_l_bar: TextureProgressBar = $Shield/ShieldHorizontalLBar
 @onready var shield_horizontal_r_bar: TextureProgressBar = $Shield/ShieldHorizontalRBar
 @onready var shield_counter: RichTextLabel = $Shield/ShieldCounter
+@onready var turn_index_label: RichTextLabel = $Control/TurnIndex/Control/PanelContainer3/TurnIndexLabel
+@onready var actions_per_turn_label: RichTextLabel = $Control/ActionsPerTurn/Control/PanelContainer3/ActionsPerTurnLabel
 
 @export var max_shield: int = 100
 ##Must be converted to % in the graph display
@@ -51,6 +53,7 @@ var stats
 var config: EnemyConfig
 
 func _ready() -> void:
+	EventBus.enemy_defeated.connect(update_turn)
 	original_position = position
 	#EventBus.enemy_defeated.connect(defeated)
 	background.texture = background_texture
@@ -65,6 +68,8 @@ func _ready() -> void:
 func setup() -> void:
 	health_bar_placeholder.value = 100
 	health_counter.text = str(config.health)
+	actions_per_turn_label.text = str(config.actions_per_turn)
+	update_turn()
 
 func update(animate: bool = false) -> void:
 	stats = enemy.stats
@@ -73,6 +78,12 @@ func update(animate: bool = false) -> void:
 	
 	#set_afflicted_element(stats[Stats.List.CURRENT_AFFLICTED_ELEMENT], enemy['afflicted_count'])
 	#set_elemental(stats[Stats.List.CURRENT_ELEMENTALS], enemy['elemental_lvl'])
+
+func update_turn(_arg = null) -> void:
+	await get_tree().create_timer(1).timeout
+	var turn_idx = Global.turn_manager.get_turn_index(enemy)
+	print('aeo: ', turn_idx)
+	turn_index_label.text = str(turn_idx if turn_idx > 0 else '-')
 
 func enemy_swap() -> void:
 	var tween = create_tween()
@@ -201,3 +212,6 @@ func revive(who) -> void:
 			child.show()
 		else:
 			child.texture = background_texture
+
+func _on_mouse_entered() -> void:
+	print('turn: ', Global.turn_manager.get_turn_index(enemy))

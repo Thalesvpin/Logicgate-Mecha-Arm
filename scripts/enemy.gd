@@ -3,6 +3,7 @@ extends Control
 #@onready var texture_rect: TextureRect = $TextureRect
 @onready var texture_rect: TextureRect = $CanvasGroup/TextureRect
 @onready var turn_indicator: TextureRect = $TurnIndicator
+@onready var canvas_group: CanvasGroup = $CanvasGroup
 
 @export var config: EnemyConfig
 var max_heatlh: int
@@ -74,6 +75,9 @@ func take_damage(value: float, target: Node = null) -> void:
 	
 	if stats[Stats.List.CURRENT_HEALTH] == 0:
 		print('ENEMY signal defeat')
+		texture_rect.self_modulate = Color('#272727')
+		#var mat = canvas_group.material as ShaderMaterial
+		#mat.set_shader_parameter()
 		EventBus.enemy_defeated.emit(self)
 
 func self_damage() -> void:
@@ -203,6 +207,8 @@ func swap():
 		get_parent().owner.center_enemy(self)
 
 func _on_mouse_entered() -> void:
+	if stats[Stats.List.CURRENT_HEALTH] == 0:
+		return
 	var shader := texture_rect.material as ShaderMaterial
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)

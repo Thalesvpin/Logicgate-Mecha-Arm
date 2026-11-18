@@ -1,138 +1,10 @@
 [gd_scene format=3 uid="uid://6y2k6pdfjohj"]
 
-[ext_resource type="Shader" uid="uid://cqafv60pywcrq" path="res://shaders/test.gdshader" id="1_6e57c"]
 [ext_resource type="Script" uid="uid://uxyo2f0d6x2v" path="res://scripts/enemy.gd" id="1_6w5ur"]
 [ext_resource type="Texture2D" uid="uid://tdm62mawpb5d" path="res://assets/skeleton.png" id="1_87g8f"]
 [ext_resource type="Shader" uid="uid://d03k1q5p363w6" path="res://shaders/outline.gdshader" id="3_18xkl"]
 [ext_resource type="Shader" uid="uid://dh3mmqwwbao10" path="res://shaders/ultimate_outerglow.gdshader" id="3_ct5v2"]
 [ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="6_lclxg"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_18xkl"]
-shader = ExtResource("1_6e57c")
-shader_parameter/original_texture_size = Vector2(64, 64)
-shader_parameter/glow_color = Color(0, 1, 1, 1)
-shader_parameter/glow_size = 301.8310143369725
-shader_parameter/glow_intensity = 1.0
-shader_parameter/glow_opacity = 1.0
-shader_parameter/glow_softness = 0.5
-shader_parameter/glow_blend_mode = 0
-shader_parameter/use_gradient_mapping = false
-shader_parameter/gradient_scroll_speed = 0.0
-shader_parameter/mask_core_texture = false
-shader_parameter/boundary_fade_margin = 0.05
-shader_parameter/use_soft_clip = false
-shader_parameter/glow_hdr_threshold = 1.0
-shader_parameter/glow_direction_falloff = Vector2(1, 1)
-shader_parameter/glow_rim_margin = 0.0
-shader_parameter/glow_rim_feather = 0.05
-shader_parameter/glow_rim_eccentricity = 0.0
-shader_parameter/glow_rim_pulse_frequency = 0.0
-shader_parameter/use_sharp_steps = false
-shader_parameter/glow_step_count = 3.0
-shader_parameter/use_color_banding_palette = false
-shader_parameter/step_outline_thickness = 0.0
-shader_parameter/step_outline_color = Color(0, 0, 0, 1)
-shader_parameter/use_contour_outline = false
-shader_parameter/contour_color_a = Color(1, 0.85, 0, 1)
-shader_parameter/contour_color_b = Color(1, 0.4, 0, 1)
-shader_parameter/contour_thickness = 2.0
-shader_parameter/contour_mix_with_glow = false
-shader_parameter/contour_pixel_snap = false
-shader_parameter/animate_glow = false
-shader_parameter/pulse_speed = 2.0
-shader_parameter/min_pulse_scale = 0.5
-shader_parameter/max_pulse_scale = 1.0
-shader_parameter/change_color_over_time = false
-shader_parameter/starting_color = Color(1, 0, 0, 1)
-shader_parameter/ending_color = Color(0, 0, 1, 1)
-shader_parameter/sync_color_with_pulse_speed = true
-shader_parameter/color_change_speed = 2.0
-shader_parameter/color_animation_ping_pong = false
-shader_parameter/animate_glow_opacity = false
-shader_parameter/opacity_pulse_speed = 2.0
-shader_parameter/min_opacity_scale = 0.2
-shader_parameter/max_opacity_scale = 1.0
-shader_parameter/static_angle = 0.0
-shader_parameter/animate_rotation = false
-shader_parameter/rotation_speed = 1.0
-shader_parameter/rotation_pivot_offset = Vector2(0, 0)
-shader_parameter/use_pattern_texture = false
-shader_parameter/pattern_scale = Vector2(1, 1)
-shader_parameter/pattern_pan_speed = Vector2(0.1, 0)
-shader_parameter/pattern_influence = 0.5
-shader_parameter/pattern_fresnel_modulation = false
-shader_parameter/use_god_rays = false
-shader_parameter/ray_direction = Vector2(0.5, -0.5)
-shader_parameter/ray_length = 2.0
-shader_parameter/dither_interlaced_scanlines = 0.0
-shader_parameter/use_inner_glow = false
-shader_parameter/inner_glow_color = Color(1, 1, 1, 1)
-shader_parameter/inner_glow_size = 5.0
-shader_parameter/inner_glow_opacity = 0.5
-shader_parameter/inner_glow_falloff = 1.0
-shader_parameter/inner_glow_ignore_distortion = false
-shader_parameter/animate_inner_glow = false
-shader_parameter/inner_pulse_speed = 2.0
-shader_parameter/min_inner_pulse_scale = 0.5
-shader_parameter/max_inner_pulse_scale = 1.0
-shader_parameter/change_inner_color_over_time = false
-shader_parameter/starting_inner_color = Color(1, 1, 1, 1)
-shader_parameter/ending_inner_color = Color(1, 1, 0, 1)
-shader_parameter/sync_inner_color_with_pulse = true
-shader_parameter/inner_color_change_speed = 2.0
-shader_parameter/animate_inner_glow_opacity = false
-shader_parameter/inner_opacity_pulse_speed = 2.0
-shader_parameter/min_inner_opacity_scale = 0.2
-shader_parameter/max_inner_opacity_scale = 1.0
-shader_parameter/inner_static_angle = 0.0
-shader_parameter/animate_inner_rotation = false
-shader_parameter/inner_rotation_speed = 1.0
-shader_parameter/use_inner_pattern_texture = false
-shader_parameter/inner_pattern_scale = Vector2(1, 1)
-shader_parameter/inner_pattern_pan_speed = Vector2(0.1, 0)
-shader_parameter/inner_pattern_influence = 0.5
-shader_parameter/use_hue_shift_mapping = false
-shader_parameter/hue_shift_intensity = 0.3
-shader_parameter/use_ordered_dither = false
-shader_parameter/dither_strength = 0.5
-shader_parameter/dither_scale = 1.0
-shader_parameter/dither_bit_depth = 64.0
-shader_parameter/dither_animate = false
-shader_parameter/dither_use_luminance = false
-shader_parameter/dither_threshold_bias = 0.0
-shader_parameter/dither_color_bleeding = 0.0
-shader_parameter/dither_animation_speed = 12.0
-shader_parameter/dither_noise_bleeding_tint = Color(1, 0, 0, 1)
-shader_parameter/use_dissolve = false
-shader_parameter/dissolve_amount = 0.0
-shader_parameter/d_noise_scale = Vector2(1, 1)
-shader_parameter/mask_dissolve = false
-shader_parameter/animate_dissolve = false
-shader_parameter/dissolve_speed = 2.0
-shader_parameter/dissolve_use_ease = false
-shader_parameter/refraction_dispersion = 0.0
-shader_parameter/enable_dithering = true
-shader_parameter/dither_strength_noise = 0.03
-shader_parameter/use_pixelate_glow = false
-shader_parameter/pixelate_size = 4.0
-shader_parameter/pixelate_heat_fluid_fluid = false
-shader_parameter/pixelate_heat_fluid_static = false
-shader_parameter/use_distortion = false
-shader_parameter/distortion_strength = 0.02
-shader_parameter/distortion_speed = Vector2(0, -0.2)
-shader_parameter/distort_texture_as_well = false
-shader_parameter/heat_asymmetric_rise = false
-shader_parameter/heat_top_heavy_factor = 2.5
-shader_parameter/use_convection_fluid = false
-shader_parameter/convection_vortex_twist = 1.0
-shader_parameter/convection_bubble_frequency = 2.0
-shader_parameter/convection_speed = 1.0
-shader_parameter/convection_wave_amplitude = 1.0
-shader_parameter/distortion_chromatic_aberration = 0.0
-shader_parameter/heat_wind_shear = 0.0
-shader_parameter/heat_distance_fade = 0.0
-shader_parameter/distortion_multi_frequency = false
-shader_parameter/heat_plasma_caustics = false
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_gtatl"]
 noise_type = 2
@@ -313,7 +185,6 @@ shader_parameter/atlas_region_size = Vector2(1, 1)
 shader_parameter/draw_size = Vector2(1, 1)
 
 [node name="Enemy" type="Control" unique_id=708486463]
-material = SubResource("ShaderMaterial_18xkl")
 layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5

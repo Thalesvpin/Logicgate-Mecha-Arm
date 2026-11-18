@@ -35,13 +35,16 @@ func pause_game(value: bool) -> void:
 	else:
 		v_split.process_mode = Node.PROCESS_MODE_INHERIT
 
-func randomize_binaries() -> void:
+func randomize_binaries(arg = null) -> void:
+	if !(arg is String):
+		return
 	execution_panel.generate_execution_sequence()
 	circuit_editor.generate_action_list()
 
 func connect_signals() -> void:
 	#combat_screen.connect_action_signals(circuit_editor)
 	EventBus.battle_ended.connect(battle_ended)
+	EventBus.turn_started.connect(randomize_binaries)
 
 func is_last_firewall() -> bool:
 	return false

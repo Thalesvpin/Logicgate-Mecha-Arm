@@ -1,8 +1,8 @@
 -PRA FICAR JOGAVEL
-	-resetar mostrador de energia binario dos inputs/outputs
 	-pacote corrompido nem sempre vem corrompido
 	-checar se escudo esta funcionando como deveria player e inimigo
 	-checar mitigação esta funcionando como deveria player e inimigo
+	-fazer limpar todas as conexões funcionar com input e output ligados direto
 
 feedback de ação (jogador e inimigo)
 
