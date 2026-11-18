@@ -6,7 +6,9 @@ class_name AddMaxShieldCountEffect
 
 func apply(_context = null) -> void:
 	add_to_player_stats(Stats.List.MAX_SHIELD_COUNT, amount, lesser, 0)
+	Global.player_stats_bar.update()
 
 func revert() -> void:
 	if !is_permanent:
 		add_to_player_stats(Stats.List.MAX_SHIELD_COUNT, -amount, lesser, 0)
+		Global.player_stats_bar.update()

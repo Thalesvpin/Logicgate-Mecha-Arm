@@ -26,6 +26,10 @@ func _process(delta: float) -> void:
 	if connected_gate:
 		owner.output = connected_gate.is_active
 		input.text = str(int(connected_gate.is_active))
+		return
+	owner.output = false
+	input.text = '0'
+	
 
 func _on_mouse_entered() -> void:
 	sprite.scale = Vector2(0.02,0.02)

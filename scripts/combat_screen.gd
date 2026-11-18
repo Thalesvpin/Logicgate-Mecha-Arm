@@ -148,7 +148,7 @@ func get_random_enemies(amount:int, unique:bool = true, boss:bool = false, attem
 		if boss:
 			enemy = Global.boss_enemies[chance%Global.boss_enemies.size()]
 		else:
-			match Global.run_stats.current_battle:
+			match Global.run_stats.current_battle % 3:
 				1:
 					if Global.run_stats.current_firewall == 1:
 						chance = chance % Global.weak_enemies.size()
@@ -167,7 +167,7 @@ func get_random_enemies(amount:int, unique:bool = true, boss:bool = false, attem
 						enemy = Global.medium_enemies[chance%Global.medium_enemies.size()]
 					else:
 						enemy = Global.strong_enemies[chance%Global.strong_enemies.size()]
-				3:
+				0:
 					chance = chance % 100
 					if chance < 40:
 						enemy = Global.weak_enemies[chance%Global.weak_enemies.size()]

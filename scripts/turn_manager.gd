@@ -9,6 +9,7 @@ func _ready() -> void:
 	EventBus.turn_ended.connect(handle_next_turn)
 	EventBus.battle_ended.connect(battle_ended)
 	EventBus.battle_started.connect(battle_started)
+	EventBus.enemy_defeated.connect(remove_from_sequence)
 
 func battle_ended(result) -> void:
 	is_shop_open = true
@@ -31,3 +32,9 @@ func add_to_turn_sequence(who) -> void:
 func reset_turn_sequence() -> void:
 	turn_sequence = ['player']
 	turn_idx = 0
+
+func remove_from_sequence(who) -> void:
+	turn_sequence.erase(who)
+
+func get_turn_index(who) -> int:
+	return turn_sequence.find(who)

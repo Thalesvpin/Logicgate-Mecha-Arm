@@ -8,6 +8,7 @@ extends PanelContainer
 
 func _ready() -> void:
 	EventBus.battle_ended.connect(update_battle)
+	EventBus.close_shop.connect(update_battle)
 
 func _process(delta: float) -> void:
 	var time = Time.get_time_dict_from_system() 
@@ -18,21 +19,22 @@ func _process(delta: float) -> void:
 	clock.add_text(" %02d:%02d" % [time.hour, time.minute])
 	fps.text = ' | FPS: %d  ' % Engine.get_frames_per_second()
 
-func update_battle(arg) -> void:
-	await get_tree().create_timer(0.1).timeout
-	print('current_battle: ', Global.run_stats.current_battle)
+func update_battle(arg=null) -> void:
+	await get_tree().create_timer(0.3).timeout
 	var fire_wall = Global.run_stats.current_firewall
-	firewall_counter.text = str(fire_wall)
 	
 	var curr_battle = Global.run_stats.current_battle
-	var curr_turn = Global.run_stats.current_turn
 	var text
-	match curr_battle:
-		1:
-			text = 'FÁCIL'
-		2:
-			text = 'MÉDIO'
-		3:
-			text = 'DIFÍCIL'
-	text += ' (%d)' % curr_turn
+	if Global.turn_manager.is_shop_open:
+		text = 'LOJA (%d)' % (curr_battle-1)
+	else:
+		firewall_counter.text = str(fire_wall)
+		match curr_battle % 3:
+			1:
+				text = 'BATALHA FÁCIL'
+			2:
+				text = 'BATALHA DIFÍCIL'
+			0:
+				text = 'BATALHA CONTRA CHEFE'
+		text += ' (%d)' % curr_battle
 	dificulty_label.text = text

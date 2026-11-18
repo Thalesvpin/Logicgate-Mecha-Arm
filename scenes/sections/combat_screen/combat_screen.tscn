@@ -520,6 +520,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 
+[node name="LeftBottomPanels" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1617303371]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="ElementalPanel" parent="SubViewportContainer/SubViewport/PanelContainer/LeftBottomPanels" unique_id=337277702 instance=ExtResource("5_lobgv")]
+layout_mode = 2
+size_flags_horizontal = 0
+charged_offset = 125
+
 [node name="MidBottomPanels" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=845414275]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -529,6 +539,7 @@ theme_override_constants/separation = 21
 [node name="EnemyNameBar" parent="SubViewportContainer/SubViewport/PanelContainer/MidBottomPanels" unique_id=1251090961 instance=ExtResource("6_rn7nk")]
 layout_mode = 2
 size_flags_horizontal = 4
+offset_transform_enabled = true
 
 [node name="PlayerStatusBar" parent="SubViewportContainer/SubViewport/PanelContainer/MidBottomPanels" unique_id=1684298736 instance=ExtResource("3_n1e1p")]
 layout_mode = 2
@@ -544,16 +555,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_8ur3c")
 
 [node name="HeavyAttackPanel" parent="SubViewportContainer/SubViewport/PanelContainer/RightBottomPanels" unique_id=1885342446 instance=ExtResource("4_iibci")]
 layout_mode = 2
-
-[node name="LeftBottomPanels" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1617303371]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-
-[node name="ElementalPanel" parent="SubViewportContainer/SubViewport/PanelContainer/LeftBottomPanels" unique_id=337277702 instance=ExtResource("5_lobgv")]
-layout_mode = 2
-size_flags_horizontal = 0
-charged_offset = 125
 
 [node name="Border" type="PanelContainer" parent="." unique_id=542381246]
 layout_mode = 2

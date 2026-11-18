@@ -25,6 +25,23 @@ func _ready() -> void:
 		collapsed_position = Vector2(-panel_container.size.x + elemental_offset, panel_container.position.y)
 	
 	panel_container.position = collapsed_position
+	gui_input.connect(_on_gui_input)
+	
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT:
+			var tween = create_tween().set_parallel()
+			tween.set_ease(Tween.EASE_OUT)
+			tween.set_trans(Tween.TRANS_CUBIC)
+			if is_collapsed:
+				is_collapsed = false
+				turn_off(true)
+				tween.tween_property(panel_container, "position", expanded_position, duration)
+				tween.tween_callback(turn_on)
+			else:
+				is_collapsed = true
+				tween.tween_property(panel_container, "position", collapsed_position, duration)
+				turn_off()
 
 func _input(event: InputEvent) -> void:
 	input()

@@ -32,13 +32,15 @@ func _process(delta: float) -> void:
 
 func handle_radial_menu_selection(id: String, position: Vector2):
 	match id:
-		'idx_0':	#Clear wiring
+		'idx_0':	#Clear all wires
 			var gate_layer = Global.circuit_editor.gate_layer
 			for gate in gate_layer.get_children():
 				gate.disconnect_wires()
+			for wire in Global.circuit_editor.wire_layer.get_children():
+				wire.self_delete()
 		'idx_1':	#Info/Help
 			pass
-		'idx_2':	#Sell gate
+		'idx_2':	#Sell all gates
 			var gate_layer = Global.circuit_editor.gate_layer
 			for gate in gate_layer.get_children():
 				gate.delete_gate()

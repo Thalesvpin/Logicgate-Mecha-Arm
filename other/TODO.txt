@@ -1,14 +1,17 @@
 -PRA FICAR JOGAVEL
 	-pacote corrompido nem sempre vem corrompido
+	-checar se dano no escudo esta funcionando como deveria player e inimigo
+	-checar mitigação esta funcionando como deveria player e inimigo
 
 feedback de ação (jogador e inimigo)
 
-THALES:
+
+
+
 nomes e icones dos implantes
 -LOJA
 -SHADER
 -COMBATE
-abrir e fechar paineis contextuais com clique
 barras de stats psicar branco ao reduzir
 dmg numbers na tela
 bloquear implantes fora do turno
@@ -35,56 +38,3 @@ mini TM - barato
 big TM - caro
 min BH - barato
 big BH - caro
-
- _ FIREWALL 1 - BATALHA FÁCIL (1)
- _ FIREWALL 1 - LOJA (1)
- _ FIREWALL 1 - BATALHA DIFÍCIL (2)
- _ FIREWALL 1 - LOJA (2)
- _ FIREWALL 1 - BATALHA CONTRA CHEFE (3)
- _ FIREWALL 1 - LOJA (3)
-
- _ FIREWALL 2 - BATALHA FÁCIL (4)
-
-
-STATS VIEWPORT
-retirar valores relativos aos jokers e aparecer o quanto o upgrade melhora em branco
-
-
-
-
-
-
-
-
-LUCA:
-definir fontes
-exportar mini icones de implantes e tokens
--LOJA
-exportar icones de melhorias de atributos
-raio x do braço
-exportar icones de raridade
-exportar icone de reroll
-exportar btns da loja
-exportar icones dos pacotes
-exportar frame do dinheiro
--COMBATE
-substituição dos 4 elementais
-exportar sprite de vida dos inimigos (sem elemntais)
-exportar btns do painel de execução (run, info, pause)
-exportar luzes do painel de execução
-fazer barra de input da sandbox
-definir info dos paineis contextuais
-shaders dos paineis contextuais
-substituir e exportar o icone do ataque especial pelo do pesado
-shader do fundo da area de combate
-sprites das portas logicas
-exportar sprites de dano
-concept do bloqueio da sandbox durante turno do inimigo
-info da porta logica
-
-DEIVE:
--LOJA
-sprite do braço raio x
--COMBATE
-sprite do personagem principal
-sprite do boss q falta

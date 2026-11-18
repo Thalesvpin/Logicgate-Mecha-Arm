@@ -11,6 +11,7 @@ var point_a: Node2D
 var point_b: Node2D
 var point_c: Node2D
 const LINE_POINT_C = preload("uid://d3cka70ni1duu")
+var deleting: bool = false
 
 ## O quanto a curva "estica" para os lados, em fração da distância entre os
 ## pontos (0 = linha reta, 0.5 = curva bem pronunciada, como no Blueprint).
@@ -79,12 +80,14 @@ func handle_drag() -> void:
 				point.owner.get_parent().owner.connected_wires.append(self)
 			else:
 				point.connected_wires.append(self)
-	
-	if !point_c:
+	#print('deleting: ', deleting)
+	if !point_c && !deleting:
 		if point_a && point_b == null:
+			print('teu cu ', self)
 			set_point_c()
 			point_b = point_c
 		if point_b && point_a == null:
+			print('teu cu 2 ', self)
 			set_point_c()
 			point_a = point_c
 
@@ -109,7 +112,8 @@ func set_point_b(node: Node2D):
 
 func set_point_c(reset: bool = false):
 	if reset:
-		point_c.queue_free()
+		if point_c:
+			point_c.queue_free()
 		point_c = null
 		return
 	point_c = LINE_POINT_C.instantiate()
@@ -189,6 +193,9 @@ func set_active(value: bool):
 	is_active = value
 
 func self_delete():
+	deleting = true
+	print('vou me deletar... morri')
+	print('mas o deleteing ta ', deleting, ' - ', self)
 	if point_b != point_c:
 		point_b.connected_gate = null
 		if point_b.owner is Area2D:

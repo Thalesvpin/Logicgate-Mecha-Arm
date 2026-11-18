@@ -10,7 +10,6 @@ func apply(_context = null) -> void:
 	add_to_player_stats(Stats.List.CURRENT_HEALTH, -(amount-mitigation), lesser, 0)
 	
 	Global.player_stats_bar.take_damage(amount-mitigation)
-	#EventBus.damage_taken.emit(amount)
 
 func revert() -> void:
 	pass

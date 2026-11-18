@@ -14,9 +14,7 @@ func apply(_context = null) -> void:
 	#var result
 	if amount == 0:
 		amount = Global.run_stats.player_stats[Stats.List.BASE_HEAL]
-		print('no')
 	else:
-		print('yes')
 		match mode:
 			Mode.FLAT:
 				amount = int(amount)

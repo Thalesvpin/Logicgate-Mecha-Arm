@@ -34,7 +34,7 @@ autowrap_mode = 0
 [node name="RichTextLabel3" type="RichTextLabel" parent="HBoxContainer" unique_id=1750485696]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 20
-text = "- BATALHA "
+text = "- "
 fit_content = true
 autowrap_mode = 0
 

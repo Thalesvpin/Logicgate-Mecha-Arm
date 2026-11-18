@@ -1,6 +1,5 @@
 extends Camera2D
 @onready var circuit_editor: PanelContainer = $"../../../.."
-@onready var wall: PanelContainer = $Area2D/CollisionShape2D/Wall
 @onready var texture_rect: TextureRect = $Area2D/CollisionShape2D/Wall/TextureRect
 
 @onready var area_2d: Area2D = $Area2D
@@ -85,6 +84,3 @@ func update_shape_to_viewport() -> void:
 	var visible_size := viewport_size / zoom
 	collision_shape_2d.shape.size = visible_size
 	collision_shape_2d.position = Vector2.ZERO
-	wall.position.y = collision_shape_2d.shape.size.y/2
-	if owner.block_up:
-		wall.offset_transform_position.y = -collision_shape_2d.shape.size.y

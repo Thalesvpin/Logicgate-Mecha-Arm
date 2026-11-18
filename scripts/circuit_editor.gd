@@ -4,7 +4,6 @@ extends PanelContainer
 @onready var drag_layer: Node2D = $SubViewportContainer/SubViewport/Sandbox/DragLayer
 @onready var circuit_camera: Camera2D = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera
 @onready var sandbox: Node2D = $SubViewportContainer/SubViewport/Sandbox
-@onready var wall: PanelContainer = $SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D/CollisionShape2D/Wall
 @onready var sub_viewport: SubViewport = $SubViewportContainer/SubViewport
 @onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
 @onready var block_input: PanelContainer = $SubViewportContainer/SubViewport/Control2/BlockInput
@@ -13,6 +12,7 @@ extends PanelContainer
 @onready var attack_container: Control = $Control/Attack
 @onready var self_damage_container: Control = $Control/SelfDamage
 @onready var actions_panel_sandbox: PanelContainer = $Control/ActionsPanelSandbox
+@onready var wall: ColorRect = $Wall
 
 var execution_sequence: Array
 var all_gate_inputs: Array
@@ -34,10 +34,12 @@ func _ready() -> void:
 	EventBus.turn_started.connect(turn_start)
 	EventBus.turn_ended.connect(block_sandbox)
 	EventBus.submit_circuit.connect(lock_sandbox)
+	wall.show()
+	wall.offset_transform_position.y = wall.get_viewport_rect().size.y
 
 #func _process(delta: float) -> void:
 	#if block_up:
-		#wall.offset_transform_position.y = -circuit_camera.collision_shape_2d.shape.size.y
+		#wall_old.offset_transform_position.y = -circuit_camera.collision_shape_2d.shape.size.y
 
 func generate_action_list() -> void:
 	var list: Array[int] = Global.unique_random_list(action_list.size(), 4)
@@ -79,12 +81,12 @@ func block_sandbox(who: String) -> void:
 	if who != 'player':
 		return
 	var tween = create_tween().set_parallel(false)
-	tween.tween_property(wall, 'offset_transform_position', Vector2(0, -circuit_camera.collision_shape_2d.shape.size.y), 0.8)
+	tween.tween_property(wall, 'offset_transform_position:y', 0.0, 0.8)
 	tween.tween_callback(func(): block_up = true)
 
 func unblock_sandbox() -> void:
 	var tween = create_tween().set_parallel(false)
-	tween.tween_property(wall, 'offset_transform_position', Vector2.ZERO, 0.8)
+	tween.tween_property(wall, 'offset_transform_position:y', wall.get_viewport_rect().size.y, 0.8)
 	block_up = false
 
 func lock_sandbox() -> void:

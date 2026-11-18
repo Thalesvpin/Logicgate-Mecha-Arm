@@ -201,20 +201,8 @@ func apply_gate_logic(_input_values: Array) -> bool:
 	return false
 
 func disconnect_wires() -> void:
-	for wire in connected_wires:
-		wire.point_b.connected_gate = null
-		if wire.point_b.owner is Area2D:
-			wire.point_b.owner.connected_wires = wire.point_b.owner.connected_wires.filter(func(element): return element != wire)
-		else:
-			wire.point_b.connected_wires = wire.point_b.connected_wires.filter(func(element): return element != wire)
-
-		if wire.point_a.owner is Area2D:
-			wire.point_a.owner.connected_wires = wire.point_a.owner.connected_wires.filter(func(element): return element != wire)
-		else:
-			wire.point_a.connected_wires = wire.point_a.connected_wires.filter(func(element): return element != wire)
-			wire.point_a.connected_gate = wire.point_a.connected_gate.filter(func(element): return element != wire)
-		wire.queue_free()
-	connected_wires = []
+	while connected_wires.size() != 0:
+		connected_wires[0].self_delete()
 
 func delete_gate() -> void:
 	disconnect_wires()

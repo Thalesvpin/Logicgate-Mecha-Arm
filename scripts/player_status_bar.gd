@@ -22,7 +22,7 @@ var shield_labels: Array[RichTextLabel]
 func _ready() -> void:
 	Global.player_stats_bar = self
 	config_vars()
-	set_values()
+	update()
 
 func config_vars() -> void:
 	shield_bars = [shield_bar_1, shield_bar_2, shield_bar_3, shield_bar_4, shield_bar_5]
@@ -51,15 +51,8 @@ func take_damage(amount: int):
 	#health_label.text = str(result)
 
 func heal(amount: int):
-	var result
-	if healthbar.value + amount <= Global.run_stats.player_stats[Stats.List.MAX_HEALTH]:
-		result = healthbar.value + amount
-	else:
-		result = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
-	
+	var result = min(healthbar.value + amount, Global.run_stats.player_stats[Stats.List.MAX_HEALTH])
 	animate_health(result)
-	#healthbar.value = result
-	#health_label.text = str(result)
 
 func repair_shield(amount: int) -> void:
 	var curr_shield = Stats.List.CURRENT_SHIELD
@@ -67,9 +60,6 @@ func repair_shield(amount: int) -> void:
 	var shield_strength = Stats.List.SHIELD_STRENGTH
 	var max_shield_count = Stats.List.MAX_SHIELD_COUNT
 	var new_value = Global.run_stats.player_stats[curr_shield] + amount
-	
-	print('??????? ', Global.run_stats.player_stats[curr_shield])
-	print('??????? ', amount)
 	
 	
 	if new_value > Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[curr_shield_count]:
@@ -93,7 +83,8 @@ func repair_shield(amount: int) -> void:
 		Global.run_stats.player_stats[curr_shield] = new_value
 	adjust_shield()
 
-func set_values() -> void:
+func update() -> void:
+	healthbar.max_value = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
 	healthbar.value = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]
 	health_label.text = str(Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
 	adjust_shield()
@@ -103,6 +94,12 @@ func adjust_shield():
 	var shield_count = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT]
 	var curr_shield = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD]
 	var shield_size = Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]
+	
+	print('SHIELD DUMP ----------------------')
+	print('max_shield_count: ', max_shield_count)
+	print('shield_count: ', shield_count)
+	print('curr_shield: ', curr_shield)
+	print('shield_size: ', shield_size)
 	
 	var curr_shield_percent: float = 0.0
 	if shield_count > 0:
@@ -129,13 +126,14 @@ func adjust_shield():
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_parallel(true)
-	
-	match max_shield_count:
+	print('aqui né?')
+	match int(max_shield_count):
 		0:
 			return
 		1, 2, 3:
 			var bar = [null, shield_bar_1, shield_bar_2, shield_bar_3][max_shield_count]
 			bar.show()
+			print('BARRA: ', bar)
 			tween.tween_property(bar.material, 'shader_parameter/pour_fill_amount', curr_shield_percent, tween_duration)
 			for i in max_shield_count:
 				_tween_label(tween, shield_labels[i], label_targets[i])
