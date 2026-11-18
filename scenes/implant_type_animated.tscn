@@ -205,35 +205,22 @@ shader_parameter/outline_gradient_smoothing = 0.5
 shader_parameter/outline_gradient_offset = 0.0
 shader_parameter/outline_repeat_gradient = false
 
-[node name="implant_type_animated" type="Control" unique_id=1174457224]
-layout_mode = 3
+[node name="ImplantTypeAnimated" type="PanelContainer" unique_id=227737294]
+custom_minimum_size = Vector2(100, 50)
+custom_maximum_size = Vector2(100, 50)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1496.0
-offset_bottom = -914.0
+offset_right = -1820.0
+offset_bottom = -1030.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="type_biohack" type="ColorRect" parent="." unique_id=1555287089]
 material = SubResource("ShaderMaterial_a7lv4")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -25.0
-offset_right = 50.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="type_techmod" type="ColorRect" parent="." unique_id=276799817]
+visible = false
 material = SubResource("ShaderMaterial_gtatl")
-layout_mode = 0
-offset_left = 162.0
-offset_top = 130.47
-offset_right = 262.0
-offset_bottom = 180.47003
+layout_mode = 2
