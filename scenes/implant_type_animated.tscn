@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cti7mt7x4b6bt"]
 
 [ext_resource type="Shader" uid="uid://nm2i2alfos4u" path="res://shaders/dna_helix.gdshader" id="1_jms2c"]
+[ext_resource type="Shader" uid="uid://bmbtfwi6pcjg2" path="res://shaders/circuit_lines.gdshader" id="2_odwct"]
 
 [sub_resource type="Gradient" id="Gradient_nvjen"]
 interpolation_mode = 2
@@ -111,6 +112,99 @@ shader_parameter/outline_gradient_smoothing = 0.5
 shader_parameter/outline_gradient_offset = 0.0
 shader_parameter/outline_repeat_gradient = false
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gtatl"]
+shader = ExtResource("2_odwct")
+shader_parameter/circuit_color = Color(0.15, 0.95, 0.35, 1)
+shader_parameter/background_mode = 0
+shader_parameter/background_color = Color(0, 0, 0, 1)
+shader_parameter/background_tint = Color(1, 1, 1, 1)
+shader_parameter/bg_gradient_type = 0
+shader_parameter/bg_gradient_smoothing = 0.5
+shader_parameter/bg_scale = Vector2(1, 1)
+shader_parameter/bg_offset = Vector2(0, 0)
+shader_parameter/bg_rotation_degrees = 0.0
+shader_parameter/bg_enable_scroll = false
+shader_parameter/bg_scroll_speed = Vector2(0.1, 0)
+shader_parameter/bg_repeat = true
+shader_parameter/use_individual_colors = false
+shader_parameter/line1_color = Color(0.15, 0.95, 0.35, 1)
+shader_parameter/line2_color = Color(0.15, 0.95, 0.35, 1)
+shader_parameter/flow_angle_degrees = 0.0
+shader_parameter/trail_fade_power = 1.6
+shader_parameter/line1_speed = 0.954000045315
+shader_parameter/line1_y_offset = 0.3
+shader_parameter/line1_bend_pos = -0.15
+shader_parameter/line1_bend_shift = -0.35
+shader_parameter/line1_trail_length = 1.4
+shader_parameter/line1_time_offset = 0.0
+shader_parameter/line1_interval = 0.25
+shader_parameter/line2_speed = 0.75
+shader_parameter/line2_y_offset = -0.35
+shader_parameter/line2_bend_pos = 0.05
+shader_parameter/line2_bend_shift = 0.4
+shader_parameter/line2_trail_length = 1.3
+shader_parameter/line2_time_offset = 1.1
+shader_parameter/line2_interval = 0.35
+shader_parameter/line1_shape = 0
+shader_parameter/line2_shape = 0
+shader_parameter/line1_radius = 0.06700000283324001
+shader_parameter/line2_radius = 0.07400000316574
+shader_parameter/trail_thickness = 8.9950004035125
+shader_parameter/trail_sharpness = 1.0
+shader_parameter/spin_line1_node = false
+shader_parameter/line1_spin_speed = 2.0
+shader_parameter/spin_line2_node = false
+shader_parameter/line2_spin_speed = 2.0
+shader_parameter/enable_shine_1 = false
+shader_parameter/shine_1_blend_mode = 0
+shader_parameter/shine_1_color = Color(1, 1, 1, 1)
+shader_parameter/shine_1_intensity = 1.5
+shader_parameter/shine_1_speed = 0.6
+shader_parameter/shine_1_width = 1.2
+shader_parameter/shine_1_softness = 0.7
+shader_parameter/shine_1_slant = 0.35
+shader_parameter/shine_1_interval = 0.5
+shader_parameter/shine_1_exclude_line1 = false
+shader_parameter/shine_1_exclude_line2 = false
+shader_parameter/shine_1_exclude_trail = false
+shader_parameter/enable_shine_2 = false
+shader_parameter/shine_2_blend_mode = 0
+shader_parameter/shine_2_color = Color(1, 1, 1, 1)
+shader_parameter/shine_2_intensity = 1.5
+shader_parameter/shine_2_speed = 0.6
+shader_parameter/shine_2_width = 1.2
+shader_parameter/shine_2_softness = 0.7
+shader_parameter/shine_2_slant = 0.35
+shader_parameter/shine_2_interval = 0.5
+shader_parameter/shine_2_exclude_line1 = false
+shader_parameter/shine_2_exclude_line2 = false
+shader_parameter/shine_2_exclude_trail = false
+shader_parameter/enable_circuit_blur = false
+shader_parameter/circuit_blur_amount = 0.25
+shader_parameter/circuit_blur_energy_retention = 0.75
+shader_parameter/circuit_blur_affect_nodes = true
+shader_parameter/circuit_blur_affect_trails = true
+shader_parameter/enable_edge_blur = false
+shader_parameter/edge_blur_amount = 0.45
+shader_parameter/edge_blur_reach = 80.0
+shader_parameter/edge_blur_falloff = 1.5
+shader_parameter/edge_blur_edge_offset = 0.0
+shader_parameter/edge_blur_energy_retention = 0.75
+shader_parameter/edge_blur_affect_nodes = true
+shader_parameter/edge_blur_affect_trails = true
+shader_parameter/corner_radii = Vector4(15, 15, 15, 15)
+shader_parameter/use_beveled_corners = true
+shader_parameter/enable_outline = true
+shader_parameter/outline_width = 5.0000002375
+shader_parameter/outline_blur = 0.0
+shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_frvfp")
+shader_parameter/outline_gradient_type = 0
+shader_parameter/outline_gradient_rotation_degrees = 0.0
+shader_parameter/outline_gradient_scale = 1.0
+shader_parameter/outline_gradient_smoothing = 0.5
+shader_parameter/outline_gradient_offset = 0.0
+shader_parameter/outline_repeat_gradient = false
+
 [node name="implant_type_animated" type="Control" unique_id=1174457224]
 layout_mode = 3
 anchors_preset = 15
@@ -135,3 +229,11 @@ offset_right = 50.0
 offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="type_techmod" type="ColorRect" parent="." unique_id=276799817]
+material = SubResource("ShaderMaterial_gtatl")
+layout_mode = 0
+offset_left = 162.0
+offset_top = 130.47
+offset_right = 262.0
+offset_bottom = 180.47003
