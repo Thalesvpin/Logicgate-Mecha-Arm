@@ -6,6 +6,7 @@
 bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
 border_width_left = 4
 border_width_top = 4
+border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0, 0, 0, 1)
 metadata/_live_palette_bindings = {
@@ -85,6 +86,7 @@ label_settings = SubResource("LabelSettings_gulup")
 horizontal_alignment = 1
 
 [node name="ActionsCounter" type="PanelContainer" parent="." unique_id=1735449272]
+visible = false
 layout_mode = 1
 offset_left = 136.0
 offset_top = -22.0

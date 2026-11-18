@@ -1,5 +1,8 @@
 -PRA FICAR JOGAVEL
+	-resetar mostrador de energia binario dos inputs/outputs
 	-pacote corrompido nem sempre vem corrompido
+	-checar se escudo esta funcionando como deveria player e inimigo
+	-checar mitigação esta funcionando como deveria player e inimigo
 
 feedback de ação (jogador e inimigo)
 
@@ -10,7 +13,6 @@ nomes e icones dos implantes
 -LOJA
 -SHADER
 -COMBATE
-abrir e fechar paineis contextuais com clique
 barras de stats psicar branco ao reduzir
 dmg numbers na tela
 bloquear implantes fora do turno

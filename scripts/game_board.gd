@@ -173,7 +173,9 @@ const BH_7 = preload("uid://c24lfewwtgac8")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Y"):
-		print('Curr: ',Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT])
+		var ef = RepairShieldEffect.new()
+		ef.amount = 1
+		ef.apply()
 		pass
 	if event.is_action_pressed("H"):
 		var ef = ChargeHeavyAttackEffect.new()

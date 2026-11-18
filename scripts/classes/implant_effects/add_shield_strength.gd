@@ -5,10 +5,10 @@ class_name AddShieldStrengthEffect
 @export var amount: int
 
 func apply(_context = null) -> void:
-	var result = add_to_player_stats(Stats.List.SHIELD_STRENGTH, amount, lesser, 0)
-	#EventBus.stat_changed.emit(Stats.List.SHIELD_STRENGTH , result)
+	add_to_player_stats(Stats.List.SHIELD_STRENGTH, amount, lesser, 0)
+	Global.player_stats_bar.update()
 
 func revert() -> void:
 	if !is_permanent:
-		var result = add_to_player_stats(Stats.List.SHIELD_STRENGTH, -amount, lesser, 0)
-		#EventBus.stat_changed.emit(Stats.List.SHIELD_STRENGTH , result)
+		add_to_player_stats(Stats.List.SHIELD_STRENGTH, -amount, lesser, 0)
+		Global.player_stats_bar.update()
