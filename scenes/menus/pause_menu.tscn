@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://e736fy4hsxec"]
+
+[ext_resource type="Script" uid="uid://civgdkgas7cut" path="res://scripts/pause_menu.gd" id="1_7unhi"]
+[ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_gsnt3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
+bg_color = Color(0, 0, 0, 0.5176471)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.12591082, 0.12591085, 0.12591076, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[node name="PauseMenu" type="PanelContainer" unique_id=1725882964]
+z_index = 10
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
+script = ExtResource("1_7unhi")
+
+[node name="Background" type="PanelContainer" parent="." unique_id=1949773670]
+custom_minimum_size = Vector2(475, 520)
+custom_maximum_size = Vector2(475, 520)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background" unique_id=1632577515]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Background/VBoxContainer" unique_id=2109571516]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+text = "Jogo
+Pausado"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/VBoxContainer" unique_id=218515735]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ContinueBtn" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1505107572]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Continar partida"
+texture_normal = ExtResource("2_gsnt3")
+
+[node name="CopySeed" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1497742757]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Copiar Semente da Partida"
+texture_normal = ExtResource("2_gsnt3")
+
+[node name="MainMenu" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1363683987]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Voltar para o Menu"
+texture_normal = ExtResource("2_gsnt3")
+
+[node name="ConfirmMainMenu" type="PanelContainer" parent="." unique_id=1848116988]
+visible = false
+layout_mode = 2
+
+[connection signal="button_up" from="Background/VBoxContainer/VBoxContainer/ContinueBtn" to="." method="_on_continue_btn_button_up"]
+[connection signal="button_up" from="Background/VBoxContainer/VBoxContainer/CopySeed" to="." method="_on_copy_seed_button_up"]
+[connection signal="button_up" from="Background/VBoxContainer/VBoxContainer/MainMenu" to="." method="_on_main_menu_button_up"]

@@ -2,8 +2,9 @@ extends PanelContainer
 
 @onready var background: ColorRect = $Mask/Background
 @onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
-@onready var implant_type_icon: TextureRect = $MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/ImplantTypeIcon
-@onready var implant_type_icon_2: TextureRect = $MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/MarginContainer/ImplantTypeIcon2
+@onready var implant_type_animated: PanelContainer = $MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/ImplantTypeAnimated
+@onready var bio_hack_main: ColorRect = $PanelContainer/BioHackMain
+@onready var tech_mod_main: ColorRect = $PanelContainer/TechModMain
 
 const ICON_MINI_BIOHACKS = preload("uid://byrpiwaihcjtv")
 const ICON_MINI_TECHMODS = preload("uid://s0uva87wtgws")
@@ -18,11 +19,13 @@ func load_implant(implant: Implant) -> void:
 	implant_card.resource = implant
 	implant_card.load_resource()
 	if implant.type == Implant.Type.TECH_MOD:
-		implant_type_icon.texture = ICON_MINI_TECHMODS
-		implant_type_icon_2.texture = ICON_MINI_TECHMODS
+		implant_type_animated.set_techmod()
+		bio_hack_main.visible = false
+		tech_mod_main.visible = true
 	if implant.type == Implant.Type.BIO_HACK:
-		implant_type_icon.texture = ICON_MINI_BIOHACKS
-		implant_type_icon_2.texture = ICON_MINI_BIOHACKS
+		implant_type_animated.set_biohack()
+		bio_hack_main.visible = true
+		tech_mod_main.visible = false
 
 func set_rarity(rarity) -> void:
 	var style: StyleBoxFlat = get_theme_stylebox('panel').duplicate()

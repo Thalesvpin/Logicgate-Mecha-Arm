@@ -1,12 +1,9 @@
 extends PanelContainer
 
+const MAIN_MENU = preload("uid://gjnsre4vgni8")
+
 func open() -> void:
-	var x = get_parent().size.x * 0.4
-	var y = get_parent().size.y * 0.8
-	size = Vector2(x, y)
 	show()
-	set_anchors_preset(Control.PRESET_CENTER)
-	position = (get_parent_control().size - size) / 2
 
 func close() -> void:
 	Global.pause_game(false)
@@ -14,3 +11,9 @@ func close() -> void:
 
 func _on_continue_btn_button_up() -> void:
 	close()
+
+func _on_copy_seed_button_up() -> void:
+	DisplayServer.clipboard_set(str(Global._seed))
+
+func _on_main_menu_button_up() -> void:
+	get_tree().change_scene_to_packed(MAIN_MENU)

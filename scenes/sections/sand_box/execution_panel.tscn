@@ -90,6 +90,7 @@ texture_normal = ExtResource("1_pmrxt")
 texture_disabled = ExtResource("5_7ogem")
 
 [node name="InfoBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=2133727861]
+visible = false
 layout_mode = 2
 texture_normal = ExtResource("1_pmrxt")
 

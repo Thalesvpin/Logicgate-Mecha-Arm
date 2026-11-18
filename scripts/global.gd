@@ -118,11 +118,11 @@ var inventory_options = [
 	},
 ]
 var implant_options = [
-	{
-		'texture': INFO,
-		'title': 'Ajuda',
-		'id': 'idx_0'
-	},
+	#{
+		#'texture': INFO,
+		#'title': 'Ajuda',
+		#'id': 'idx_0'
+	#},
 	{
 		'texture': SELL,
 		'title': 'Vender',

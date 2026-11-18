@@ -110,6 +110,7 @@ func open_radial_menu() -> void:
 	if is_owned:
 		radial_menu.set_items(Global.implant_options)
 	else:
+		return
 		radial_menu.set_items(Global.shop_implant_options)
 	radial_menu.set_center_ring_text(Gates.Type.keys()[type])
 	radial_menu.item_selected.connect(handle_radial_menu_selection)
@@ -136,7 +137,6 @@ func get_sell_value() -> int:
 	return 100
 
 func sell() -> void:
-	print('vendeu')
 	var ef = AddMoneyEffect.new()
 	ef.amount = get_sell_value()
 	ef.apply()

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cti7mt7x4b6bt"]
 
 [ext_resource type="Shader" uid="uid://nm2i2alfos4u" path="res://shaders/dna_helix.gdshader" id="1_jms2c"]
+[ext_resource type="Script" uid="uid://dj407a0nh3f8c" path="res://scripts/implant_type_animated.gd" id="1_nvjen"]
 [ext_resource type="Shader" uid="uid://bmbtfwi6pcjg2" path="res://shaders/circuit_lines.gdshader" id="2_odwct"]
 
 [sub_resource type="Gradient" id="Gradient_nvjen"]
@@ -215,12 +216,13 @@ offset_right = -1820.0
 offset_bottom = -1030.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_nvjen")
 
-[node name="type_biohack" type="ColorRect" parent="." unique_id=1555287089]
+[node name="TypeBiohack" type="ColorRect" parent="." unique_id=1555287089]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 2
 
-[node name="type_techmod" type="ColorRect" parent="." unique_id=276799817]
+[node name="TypeTechmod" type="ColorRect" parent="." unique_id=276799817]
 visible = false
 material = SubResource("ShaderMaterial_gtatl")
 layout_mode = 2
