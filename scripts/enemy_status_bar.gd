@@ -212,6 +212,3 @@ func revive(who) -> void:
 			child.show()
 		else:
 			child.texture = background_texture
-
-func _on_mouse_entered() -> void:
-	print('turn: ', Global.turn_manager.get_turn_index(enemy))

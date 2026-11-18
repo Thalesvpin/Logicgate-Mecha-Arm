@@ -176,9 +176,7 @@ const BH_7 = preload("uid://c24lfewwtgac8")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Y"):
-		var ef = RepairShieldEffect.new()
-		ef.amount = 1
-		ef.apply()
+		print('\n\n\n\n\n\n\n')
 		pass
 	if event.is_action_pressed("H"):
 		var ef = ChargeHeavyAttackEffect.new()
