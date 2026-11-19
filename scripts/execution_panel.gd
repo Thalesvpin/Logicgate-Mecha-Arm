@@ -23,8 +23,6 @@ func _process(delta: float) -> void:
 		submit()
 
 func submit() -> void:
-	if !Global.circuit_editor.sandbox.check_submit_requirements():
-		return
 	EventBus.submit_circuit.emit()
 	EventBus.pulse.emit(0)
 	await get_tree().create_timer(4).timeout
@@ -61,7 +59,8 @@ func unlock_submit() -> void:
 	run_btn.disabled = false
 
 func _on_run_btn_button_down() -> void:
-	start_timer()
+	if Global.circuit_editor.sandbox.check_submit_requirements():
+		start_timer()
 
 func _on_run_btn_button_up() -> void:
 	stop_timer()

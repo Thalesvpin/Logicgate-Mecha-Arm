@@ -2,34 +2,35 @@
 
 [ext_resource type="Script" uid="uid://bdro5q0p2jmfu" path="res://scripts/game_over_screen.gd" id="1_nr15l"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
+
 [node name="GameOverScreen" type="PanelContainer" unique_id=611490337]
 visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -46.0
-offset_top = -11.5
-offset_right = 46.0
-offset_bottom = 11.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
 script = ExtResource("1_nr15l")
 
-[node name="GameOverLabel" type="Label" parent="." unique_id=690417722]
+[node name="GameOverLabel" type="RichTextLabel" parent="." unique_id=1552376069]
 layout_mode = 2
-size_flags_vertical = 1
-text = "GAME OVER"
+text = "GAME OVER
+perdeu mané"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VitoryLabel" type="Label" parent="." unique_id=661697723]
+[node name="VitoryLabel" type="RichTextLabel" parent="." unique_id=742911189]
 layout_mode = 2
-size_flags_vertical = 1
-text = "VITÓRIA!"
+text = "VITÓRIA!
+Parabéns CHAMPS"
 horizontal_alignment = 1
 vertical_alignment = 1
 

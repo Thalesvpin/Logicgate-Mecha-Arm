@@ -52,7 +52,6 @@ func _ready() -> void:
 
 ##Undone
 func take_damage(value: float, target: Node = null) -> void:
-	print('take_damage ENEMY')
 	shake_anim()
 	#if !is_the_signal_for_me(target):
 		#return
@@ -74,7 +73,6 @@ func take_damage(value: float, target: Node = null) -> void:
 	status_bar.update(true)
 	
 	if stats[Stats.List.CURRENT_HEALTH] == 0:
-		print('ENEMY signal defeat')
 		texture_rect.self_modulate = Color('#272727')
 		#var mat = canvas_group.material as ShaderMaterial
 		#mat.set_shader_parameter()
@@ -154,14 +152,12 @@ func turn_start(who):
 			action = actions_list[random_action()]
 			match action:
 				Enemy.Actions.ATTACK:
-					print('enemy attack')
 					attack()
 				Enemy.Actions.SELF_DAMAGE:
 					self_damage()
 				Enemy.Actions.HEAL:
 					heal()
 				Enemy.Actions.REPAIR_SHIELD:
-					print('enemy repair shield')
 					repair_shield()
 			await get_tree().create_timer(between_actions_delay).timeout
 		turn_indicator.hide()

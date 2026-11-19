@@ -35,9 +35,6 @@ corner_radius_top_right = 34
 corner_radius_bottom_right = 34
 corner_radius_bottom_left = 34
 
-[sub_resource type="LabelSettings" id="LabelSettings_4p1xl"]
-font_color = Color(0.98039216, 0.6901961, 0, 1)
-
 [sub_resource type="Environment" id="Environment_eofqg"]
 background_mode = 3
 glow_enabled = true
@@ -657,18 +654,33 @@ offset_right = 108.0
 offset_bottom = 30.0
 mouse_filter = 2
 
-[node name="Label" type="Label" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG/Control" unique_id=1757116833]
-custom_maximum_size = Vector2(245.925, -1)
+[node name="BaseDmgLabel" type="RichTextLabel" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG/Control" unique_id=246650137]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 17.0
-offset_right = 205.0
-offset_bottom = 104.0
-text = "Ataque Carregado
-Elemental: Nostalgia
-Lvl. 3"
-label_settings = SubResource("LabelSettings_4p1xl")
-autowrap_mode = 2
+offset_left = 2.0
+offset_top = -11.0
+offset_right = 183.0
+offset_bottom = 81.0
+theme_override_colors/default_color = Color(0.98039216, 0.6901961, 0, 1)
+bbcode_enabled = true
+text = "Dano Base - 100"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
+[node name="CritChanceLabel" type="RichTextLabel" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG/Control" unique_id=1973781355]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 27.0
+offset_right = 182.0
+offset_bottom = 119.0
+theme_override_colors/default_color = Color(0.98039216, 0.6901961, 0, 1)
+bbcode_enabled = true
+text = "Chance de Crítico - 10%"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport" unique_id=247240757]
 environment = SubResource("Environment_eofqg")

@@ -2,6 +2,7 @@ extends CollapsablePanel
 
 @onready var charges_bar: ColorRect = $PanelContainer/Control/ChargesBar
 @onready var crt_1: ColorRect = $PanelContainer/Control/PanelContainer2/Mask/CRT1
+@onready var percentage: RichTextLabel = $PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG/Control/Percentage
 
 var _material: ShaderMaterial
 
@@ -11,6 +12,7 @@ func ready() -> void:
 	_material = charges_bar.material as ShaderMaterial
 	shader = crt_1.material as ShaderMaterial
 	shader.set_shader_parameter('power_state', 0)
+	update_contextual_panel()
 
 func fill_charges() -> void:
 	_material.set_shader_parameter("pour_fill_amount", 1)
@@ -28,9 +30,12 @@ func add_charges() -> void:
 		_material.set_shader_parameter('filled_color', LivePalette.GLOBAL.HEAVYATTKYELLOW)
 	else:
 		_material.set_shader_parameter('filled_color', LivePalette.GLOBAL.HEAVYATTKGREEN)
-	print('current: ', current)
-	print('_max: ', _max)
-	print('percent: ', percent)
+	update_contextual_panel()
+
+func update_contextual_panel() -> void:
+	var curr = Global.run_stats.player_stats[Stats.List.CURRENT_HEAVY_ATTACK_CHARGES]
+	var _max = Global.run_stats.player_stats[Stats.List.MAX_HEAVY_ATTACK_CHARGES]
+	percentage.text = str(int(curr * (100 / _max))) + '%'
 
 func deplete_charges() -> void:
 	_material.set_shader_parameter("pour_fill_amount", 0.0)

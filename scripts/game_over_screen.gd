@@ -1,7 +1,7 @@
 extends PanelContainer
 
-@onready var game_over_label: Label = $GameOverLabel
-@onready var vitory_label: Label = $VitoryLabel
+@onready var game_over_label: RichTextLabel = $GameOverLabel
+@onready var vitory_label: RichTextLabel = $VitoryLabel
 
 var is_victory: Variant = null
 

@@ -18,6 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://veggqm6h70t8" path="res://assets/top_r_bg.png" id="11_wgtne"]
 [ext_resource type="FontFile" uid="uid://blq7eikhycrm5" path="res://fonts/arial_black.ttf" id="12_bfrdx"]
 [ext_resource type="Texture2D" uid="uid://ng23448efa4" path="res://assets/bot_r_bg.png" id="14_t30n1"]
+[ext_resource type="Script" uid="uid://boi1jcaucfao8" path="res://scripts/apply_custom_tooltip.gd" id="19_t30n1"]
+[ext_resource type="PackedScene" uid="uid://d0grgfgwevser" path="res://scenes/simple_tooltip.tscn" id="20_awvy4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rgupk"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -1160,6 +1162,8 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("19_t30n1")
+tooltip_scene = ExtResource("20_awvy4")
 
 [node name="ActionsPerTurn" type="PanelContainer" parent="Control" unique_id=749354943]
 custom_minimum_size = Vector2(60, 60)
@@ -1206,3 +1210,5 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("19_t30n1")
+tooltip_scene = ExtResource("20_awvy4")

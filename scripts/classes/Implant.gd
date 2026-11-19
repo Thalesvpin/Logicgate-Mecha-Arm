@@ -23,18 +23,20 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 #@export var custom_effect: bool = false
 ##All conditions must be met to execute
 @export var conditions: Array[ImplantCondition]
-
 @export var config: Array[ImplantExecutionConfig]
 
+const PRICES: Dictionary[Global.Rarity, int] = {
+	Global.Rarity.COMMON: 300,
+	Global.Rarity.RARE: 400,
+	Global.Rarity.ULTRA_RARE: 500,
+	Global.Rarity.LEGENDARY: 600,
+}
 
 func connect_triggers() -> void:
-	print('opa!')
 	if consumable:
 		return
 	for module in config:
 		for ef in module.effect:
-			print('trigger: ', Trigger.Type.keys()[module.trigger])
-			#print('trigger: ', module.)
 			EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
 
 func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
@@ -44,9 +46,7 @@ func check_condition(context = null, module: ImplantExecutionConfig = null) -> v
 			counter += 1
 	if module.conditions.size() == counter:
 		for ef in module.effect:
-			print('aplicando o feito: ', ef.get_script().get_global_name())
 			ef.apply(context)
-	print('\n')
 
 func revert() -> void:
 	for module in config:

@@ -134,7 +134,7 @@ func handle_radial_menu_selection(id: String, position: Vector2):
 			pass
 
 func get_sell_value() -> int:
-	return 100
+	return Implant.PRICES[resource.rarity]*0.4
 
 func sell() -> void:
 	var ef = AddMoneyEffect.new()
