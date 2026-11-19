@@ -51,6 +51,10 @@ uniform float line1_speed : hint_range(0.0, 5.0) = 0.85;
 uniform float line1_y_offset : hint_range(-1.0, 1.0) = 0.3;
 uniform float line1_bend_pos : hint_range(-0.8, 0.8) = -0.15;
 uniform float line1_bend_shift : hint_range(-1.0, 1.0) = -0.35;
+uniform int line1_bend_count : hint_range(0, 8) = 1;
+uniform bool line1_random_bends = false;
+uniform int line1_min_bends : hint_range(0, 8) = 1;
+uniform int line1_max_bends : hint_range(0, 8) = 3;
 uniform float line1_trail_length : hint_range(0.05, 4.0) = 1.4;
 uniform float line1_time_offset : hint_range(0.0, 10.0) = 0.0;
 uniform float line1_interval : hint_range(0.0, 5.0) = 0.25;
@@ -61,6 +65,10 @@ uniform float line2_speed : hint_range(0.0, 5.0) = 0.75;
 uniform float line2_y_offset : hint_range(-1.0, 1.0) = -0.35;
 uniform float line2_bend_pos : hint_range(-0.8, 0.8) = 0.05;
 uniform float line2_bend_shift : hint_range(-1.0, 1.0) = 0.4;
+uniform int line2_bend_count : hint_range(0, 8) = 1;
+uniform bool line2_random_bends = false;
+uniform int line2_min_bends : hint_range(0, 8) = 1;
+uniform int line2_max_bends : hint_range(0, 8) = 3;
 uniform float line2_trail_length : hint_range(0.05, 4.0) = 1.3;
 uniform float line2_time_offset : hint_range(0.0, 10.0) = 1.1;
 uniform float line2_interval : hint_range(0.0, 5.0) = 0.35;
@@ -151,6 +159,8 @@ uniform float outline_gradient_offset : hint_range(-2.0, 2.0) = 0.0;
 uniform bool outline_repeat_gradient = false;
 group_uniforms;
 
+const int MAX_CIRCUIT_BENDS = 8;
+
 // Tightly packed highp interpolators with 48-bit double-single travel values for infinite-runtime precision
 varying highp vec2 v_local_pos;
 varying flat highp vec2 v_flow_trig;     // xy = cos/sin(flow_angle)
@@ -197,6 +207,28 @@ highp float ds_mod(highp vec2 x, highp float y) {
 		r -= y;
 	}
 	return r;
+}
+
+highp float ds_div_mod(highp vec2 x, highp float y, out highp float q_out) {
+	highp float x_val = x.x + x.y;
+	highp float q = floor(x_val / y);
+	highp vec2 rem = ds_sub(x, ds_mul(q, y));
+	highp float r = rem.x + rem.y;
+	if (r < 0.0) {
+		r += y;
+		q -= 1.0;
+	} else if (r >= y) {
+		r -= y;
+		q += 1.0;
+	}
+	q_out = q;
+	return r;
+}
+
+// Deterministic per-sweep hash in [0.0, 1.0) bounded modulo 4096 sweeps for long-uptime stability
+float hash_sweep(highp float sweep_idx, float seed) {
+	highp float n = mod(sweep_idx, 4096.0) * 127.1 + seed * 311.7;
+	return fract(sin(n) * 43758.5453123);
 }
 
 // Returns circumradius bounding multiplier for Circle (0), Square (1), Hexagon (2), or Triangle (3)
@@ -311,69 +343,191 @@ vec3 apply_shine_blend(vec3 base, vec3 blend_col, float strength, int mode) {
 	return mix(base, res, t);
 }
 
-// Evaluates a single moving PCB circuit line (3-segment 45-degree routed path + fading trail + leading node)
+// Evaluates a moving PCB circuit line with 0..8 proportional 45-degree position changes + fading trail + leading node
 void eval_circuit_line(
 	vec2 p, float span_u, float span_v,
-	highp vec2 travel_ds,
-	float y_norm, float bend_norm, float shift_norm, float trail_len, float interval_pause,
+	highp vec2 travel_ds, float line_seed,
+	float y_norm, float bend_norm, float shift_norm,
+	int bend_count_manual, bool use_random_bends, int min_bends_in, int max_bends_in,
+	float trail_len, float interval_pause,
 	float node_radius, float node_ext_mult, int node_shape, bool do_spin, vec2 spin_trig,
 	vec4 base_node_col, bool exclude_node_s1, bool exclude_node_s2,
 	float pixel_size, float blur_half_w, float inner_trail_w, float trail_blur_atten,
 	float node_edge_soft, float node_blur, float node_blur_85, float node_retention,
 	float s1_str, float s2_str, inout vec3 accum_rgb, inout float accum_a
 ) {
-	// Map normalized [-1..1] lane & bend controls into aspect-aware flow space
-	float y_start = y_norm * span_v;
-	float dy = shift_norm * span_v;
-	float dx_diag = abs(dy);
-
 	// Pure zoom-independent entry/exit padding so path cycle length never shifts with camera zoom
 	float entry_pad = node_radius * node_ext_mult + node_blur + 0.02;
 	float u_min = -span_u - entry_pad;
 	float u_max = span_u + entry_pad;
+	float total_u = max(u_max - u_min, 1e-4);
 
-	float u_b1 = clamp(bend_norm * span_u, u_min, max(u_max - dx_diag, u_min));
-	float u_b2 = min(u_b1 + dx_diag, u_max);
-	float actual_dx = u_b2 - u_b1;
-	float actual_dy = (actual_dx < dx_diag && dx_diag > 1e-5) ? (dy * (actual_dx / dx_diag)) : dy;
-	float y_end = y_start + actual_dy;
+	// Determine bend range for this line (manual count vs. per-sweep random range)
+	int b_lo = clamp(bend_count_manual, 0, MAX_CIRCUIT_BENDS);
+	int b_hi = b_lo;
+	if (use_random_bends) {
+		int r_min = clamp(min_bends_in, 0, MAX_CIRCUIT_BENDS);
+		int r_max = clamp(max_bends_in, 0, MAX_CIRCUIT_BENDS);
+		b_lo = min(r_min, r_max);
+		b_hi = max(r_min, r_max);
+	}
 
-	// Exact polyline segment lengths (L2 is true Euclidean 45-degree length for uniform node velocity)
-	float l1 = max(u_b1 - u_min, 0.0);
-	float l2 = sqrt(actual_dx * actual_dx + actual_dy * actual_dy);
-	float l3 = max(u_max - u_b2, 0.0);
-	float l_total = l1 + l2 + l3;
+	float y_start = y_norm * span_v;
+	float raw_dy = shift_norm * span_v;
 
-	highp float full_span = l_total + trail_len;
-	highp float cycle_len = full_span + interval_pause;
-	if (cycle_len <= 1e-5) {
+	// Compute constant sweep slot length using max possible bends so sweep_index never jumps mid-sweep
+	float max_dx_diag = abs(raw_dy);
+	if (b_hi > 0 && float(b_hi) * max_dx_diag > total_u * 0.85) {
+		max_dx_diag = (total_u * 0.85) / float(b_hi);
+	}
+	highp float max_l_total = total_u + float(b_hi) * 0.41421356 * max_dx_diag;
+	highp float slot_cycle_len = max_l_total + trail_len + interval_pause;
+	if (slot_cycle_len <= 1e-5) {
 		return;
 	}
 
-	// 48-bit double-single modular reduction prevents precision drift even after days of uptime
-	highp float s_head = ds_mod(travel_ds, cycle_len);
+	// 48-bit double-single division & remainder yields a sweep-locked index and sub-pixel head position
+	highp float sweep_idx = 0.0;
+	highp float s_head = ds_div_mod(travel_ds, slot_cycle_len, sweep_idx);
+
+	int active_bends = b_lo;
+	if (use_random_bends && b_hi > b_lo) {
+		float h = hash_sweep(sweep_idx, line_seed);
+		active_bends = clamp(b_lo + int(floor(h * float(b_hi - b_lo + 1))), b_lo, b_hi);
+	}
+
+	// Scale step height only if N diagonals would otherwise exceed 85% of total horizontal span
+	float step_dy = raw_dy;
+	if (active_bends > 0 && float(active_bends) * abs(step_dy) > total_u * 0.85) {
+		step_dy *= (total_u * 0.85) / (float(active_bends) * abs(step_dy));
+	}
+
+	// Vertical bounds across all alternating lanes (N=1 preserves exact original shift; N>=2 stays inside box)
+	float y_alt = (active_bends == 1)
+		? (y_start + step_dy)
+		: clamp(y_start + step_dy, -span_v * 0.96, span_v * 0.96);
+	float band_pad = max(node_radius * node_ext_mult + node_edge_soft, blur_half_w);
+	float y_lo = min(y_start, y_alt) - band_pad;
+	float y_hi = max(y_start, y_alt) + band_pad;
+
+	// Quick reject before walking segments when pixel is outside vertical band or head is far past exit
+	if (p.y < y_lo || p.y > y_hi || s_head > max_l_total + trail_len) {
+		return;
+	}
+
+	// Walk the multi-bend PCB polyline in a single pass to locate head_pos and closest trail SDF
+	float curr_u = u_min;
+	float curr_y = y_start;
+	float s_acc = 0.0;
+	vec2 head_pos = vec2(u_min, y_start);
+	bool head_found = false;
+
+	highp float best_dist_sq = 1e9;
+	float best_s = 0.0;
+
+	float min_gap = (active_bends > 1) ? min(0.02, (total_u * 0.12) / float(active_bends)) : 0.0;
+	float offset_scale = (active_bends > 0) ? (span_u / float(active_bends)) : 0.0;
+
+	for (int i = 0; i < MAX_CIRCUIT_BENDS; i++) {
+		if (i >= active_bends) {
+			break;
+		}
+
+		// Alternating zig-zag direction for multi-bends (i=0 matches single-bend direction)
+		float dir_sign = (mod(float(i), 2.0) < 0.5) ? 1.0 : -1.0;
+		float target_y = y_start + ((dir_sign > 0.0) ? step_dy : 0.0);
+		if (active_bends > 1) {
+			target_y = clamp(target_y, -span_v * 0.96, span_v * 0.96);
+		}
+		float actual_dy = target_y - curr_y;
+		float dx_diag = abs(actual_dy);
+
+		// Proportional horizontal placement: f_i = (i + 1) / (N + 1)
+		// N=1 -> f=0.5 (midpoint); N=2 -> f=1/3 (left) & 2/3 (right); etc.
+		float frac_pos = float(i + 1) / float(active_bends + 1);
+		float anchor_u = (-1.0 + 2.0 * frac_pos) * span_u + bend_norm * offset_scale;
+
+		int rem_bends_after = active_bends - 1 - i;
+		float rem_diag_budget = float(rem_bends_after) * (dx_diag + min_gap);
+		float min_u_b1 = (i == 0) ? u_min : (curr_u + min_gap);
+		float max_u_b1 = max(u_max - dx_diag - rem_diag_budget, min_u_b1);
+
+		float u_b1 = clamp(anchor_u, min_u_b1, max_u_b1);
+		float u_b2 = min(u_b1 + dx_diag, u_max);
+		float actual_dx = u_b2 - u_b1;
+		if (actual_dx < dx_diag && dx_diag > 1e-5) {
+			actual_dy *= (actual_dx / dx_diag);
+		}
+		float next_y = curr_y + actual_dy;
+
+		// 1. Horizontal straight segment leading into bend i: (curr_u, curr_y) -> (u_b1, curr_y)
+		float l_h = max(u_b1 - curr_u, 0.0);
+		if (l_h > 1e-5) {
+			if (!head_found && s_head <= s_acc + l_h) {
+				head_pos = vec2(curr_u + (s_head - s_acc), curr_y);
+				head_found = true;
+			}
+			float xh = clamp(p.x, curr_u, u_b1);
+			float dxh = p.x - xh;
+			float dyh = p.y - curr_y;
+			float dh_sq = dxh * dxh + dyh * dyh;
+			if (dh_sq < best_dist_sq) {
+				best_dist_sq = dh_sq;
+				best_s = s_acc + (xh - curr_u);
+			}
+			s_acc += l_h;
+		}
+
+		// 2. 45-degree diagonal bend segment i: (u_b1, curr_y) -> (u_b2, next_y)
+		float l_d = sqrt(actual_dx * actual_dx + actual_dy * actual_dy);
+		if (l_d > 1e-5) {
+			if (!head_found && s_head <= s_acc + l_d) {
+				float f = (s_head - s_acc) / l_d;
+				head_pos = vec2(u_b1 + actual_dx * f, curr_y + actual_dy * f);
+				head_found = true;
+			}
+			vec2 pa = p - vec2(u_b1, curr_y);
+			vec2 ba = vec2(actual_dx, actual_dy);
+			float h_proj = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+			vec2 diff_d = pa - ba * h_proj;
+			float dd_sq = dot(diff_d, diff_d);
+			if (dd_sq < best_dist_sq) {
+				best_dist_sq = dd_sq;
+				best_s = s_acc + h_proj * l_d;
+			}
+			s_acc += l_d;
+		}
+
+		curr_u = u_b2;
+		curr_y = next_y;
+	}
+
+	// 3. Final horizontal exit run: (curr_u, curr_y) -> (u_max, curr_y)
+	float l_exit = max(u_max - curr_u, 0.0);
+	if (l_exit > 1e-5) {
+		if (!head_found && s_head <= s_acc + l_exit) {
+			head_pos = vec2(curr_u + (s_head - s_acc), curr_y);
+			head_found = true;
+		}
+		float xe = clamp(p.x, curr_u, u_max);
+		float dxe = p.x - xe;
+		float dye = p.y - curr_y;
+		float de_sq = dxe * dxe + dye * dye;
+		if (de_sq < best_dist_sq) {
+			best_dist_sq = de_sq;
+			best_s = s_acc + (xe - curr_u);
+		}
+		s_acc += l_exit;
+	}
+
+	highp float full_span = s_acc + trail_len;
 	if (s_head > full_span) {
 		// Line is currently in its off-screen interval pause
 		return;
 	}
 
-	// Quick vertical band rejection before projecting onto the 3 PCB segments
-	float band_pad = max(node_radius * node_ext_mult + node_edge_soft, blur_half_w);
-	float y_lo = min(y_start, y_end) - band_pad;
-	float y_hi = max(y_start, y_end) + band_pad;
-	if (p.y < y_lo || p.y > y_hi) {
-		return;
-	}
-
-	// Compute exact leading Node position along the 3-segment PCB polyline
-	vec2 head_pos = vec2(u_min, y_start);
-	if (s_head <= l1) {
-		head_pos = vec2(u_min + s_head, y_start);
-	} else if (s_head <= l1 + l2 && l2 > 1e-5) {
-		float f = (s_head - l1) / l2;
-		head_pos = vec2(u_b1 + actual_dx * f, y_start + actual_dy * f);
-	} else {
-		head_pos = vec2(u_b2 + (s_head - l1 - l2), y_end);
+	if (!head_found) {
+		head_pos = vec2(u_max, curr_y);
 	}
 
 	// Evaluate leading Node coverage
@@ -382,44 +536,6 @@ void eval_circuit_line(
 		node_edge_soft, node_blur, node_blur_85, node_retention,
 		node_shape, do_spin, spin_trig
 	);
-
-	// Project pixel onto the 3 PCB segments (Entry Straight -> 45-deg Diagonal -> Exit Straight)
-	highp float best_dist_sq = 1e9;
-	float best_s = 0.0;
-
-	// Segment 1: Horizontal entry run (u_min..u_b1, y_start)
-	if (l1 > 1e-5) {
-		float x1 = clamp(p.x, u_min, u_b1);
-		float dx1 = p.x - x1;
-		float dy1 = p.y - y_start;
-		best_dist_sq = dx1 * dx1 + dy1 * dy1;
-		best_s = x1 - u_min;
-	}
-
-	// Segment 2: 45-degree PCB bend ((u_b1, y_start) -> (u_b2, y_end))
-	if (l2 > 1e-5) {
-		vec2 pa2 = p - vec2(u_b1, y_start);
-		vec2 ba2 = vec2(actual_dx, actual_dy);
-		float h2 = clamp(dot(pa2, ba2) / dot(ba2, ba2), 0.0, 1.0);
-		vec2 diff2 = pa2 - ba2 * h2;
-		float d2_sq = dot(diff2, diff2);
-		if (d2_sq < best_dist_sq) {
-			best_dist_sq = d2_sq;
-			best_s = l1 + h2 * l2;
-		}
-	}
-
-	// Segment 3: Horizontal exit run (u_b2..u_max, y_end)
-	if (l3 > 1e-5) {
-		float x3 = clamp(p.x, u_b2, u_max);
-		float dx3 = p.x - x3;
-		float dy3 = p.y - y_end;
-		float d3_sq = dx3 * dx3 + dy3 * dy3;
-		if (d3_sq < best_dist_sq) {
-			best_dist_sq = d3_sq;
-			best_s = l1 + l2 + (x3 - u_b2);
-		}
-	}
 
 	// Evaluate Trail width SDF and arc-length fade behind the moving head node (never poking ahead of s_head)
 	float behind = s_head - best_s;
@@ -804,11 +920,13 @@ void fragment() {
 				vec4 col1 = use_individual_colors ? line1_color : circuit_color;
 				vec4 col2 = use_individual_colors ? line2_color : circuit_color;
 
-				// Circuit Line 1 (Node + 45-degree routed fading Trail)
+				// Circuit Line 1 (Node + Multi-Bend 45-degree routed fading Trail)
 				eval_circuit_line(
 					flow_uv, span_u, span_v,
-					v_travel_ds.xy,
-					line1_y_offset, line1_bend_pos, line1_bend_shift, line1_trail_length, line1_interval,
+					v_travel_ds.xy, 1.0,
+					line1_y_offset, line1_bend_pos, line1_bend_shift,
+					line1_bend_count, line1_random_bends, line1_min_bends, line1_max_bends,
+					line1_trail_length, line1_interval,
 					line1_radius, v_precomp_2.x, line1_shape, v_precomp_2.z > 0.5, v_node_spins.xy,
 					col1, shine_1_exclude_line1, shine_2_exclude_line1,
 					pixel_size, blur_half_w, inner_trail_w, trail_blur_atten,
@@ -816,11 +934,13 @@ void fragment() {
 					s1_str, s2_str, accum_rgb, accum_a
 				);
 
-				// Circuit Line 2 (Node + 45-degree routed fading Trail)
+				// Circuit Line 2 (Node + Multi-Bend 45-degree routed fading Trail)
 				eval_circuit_line(
 					flow_uv, span_u, span_v,
-					v_travel_ds.zw,
-					line2_y_offset, line2_bend_pos, line2_bend_shift, line2_trail_length, line2_interval,
+					v_travel_ds.zw, 2.0,
+					line2_y_offset, line2_bend_pos, line2_bend_shift,
+					line2_bend_count, line2_random_bends, line2_min_bends, line2_max_bends,
+					line2_trail_length, line2_interval,
 					line2_radius, v_precomp_2.y, line2_shape, v_precomp_2.w > 0.5, v_node_spins.zw,
 					col2, shine_1_exclude_line2, shine_2_exclude_line2,
 					pixel_size, blur_half_w, inner_trail_w, trail_blur_atten,
