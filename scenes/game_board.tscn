@@ -139,12 +139,8 @@ script = ExtResource("12_w5uqb")
 [node name="GameOverScreen" parent="." unique_id=611490337 instance=ExtResource("14_axant")]
 layout_mode = 0
 anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 92.0
 offset_bottom = 23.0
 grow_horizontal = 1
