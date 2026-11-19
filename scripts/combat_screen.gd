@@ -67,7 +67,6 @@ func center_enemy(enemy):
 	var side_container = left_enemy_container if old_slot == EnemyPosition.Position.LEFT else right_enemy_container
 	var side_status_bar = left_enemy_status_bar if old_slot == EnemyPosition.Position.LEFT else right_enemy_status_bar
 
-	# reparent tudo de uma vez
 	center_enemy_container.remove_child(front_enemy)
 	side_container.remove_child(enemy)
 	side_container.add_child(front_enemy)
@@ -83,12 +82,7 @@ func center_enemy(enemy):
 	center_enemy_status_bar.enemy_swap()
 	enemy._position = EnemyPosition.Position.CENTER
 	enemy_name_bar.set_display_name(enemy.enemy_name)
-
-	#await get_tree().process_frame
-	#await get_tree().process_frame
-
-	print('novo enemy: ', enemy.global_position, ' | novo front: ', front_enemy.global_position)
-
+	
 	enemy.move(old_pos_enemy)
 	front_enemy.move(old_pos_front)
 	show_enemy_name(enemy)

@@ -27,6 +27,8 @@ bg_color = Color(0.11119685, 0.11119684, 0.11119684, 1)
 [node name="GameInput" type="Control" unique_id=1380455050]
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 2
+mouse_default_cursor_shape = 6
 script = ExtResource("1_e4ut6")
 
 [node name="TextureButton" type="TextureButton" parent="." unique_id=1829391352]
@@ -56,6 +58,24 @@ shape = SubResource("CircleShape2D_eofqg")
 scale = Vector2(0.007, 0.007)
 texture = ExtResource("5_rhxyq")
 
+[node name="CursorControl" type="Control" parent="Area2D" unique_id=1743531236]
+custom_minimum_size = Vector2(20, 20)
+custom_maximum_size = Vector2(20, 20)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=306301313]
 custom_minimum_size = Vector2(10, 0)
 custom_maximum_size = Vector2(31, -1)
@@ -64,6 +84,7 @@ offset_left = -45.0
 offset_top = -21.0
 offset_right = -14.0
 offset_bottom = 21.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
 [node name="Input" type="Label" parent="PanelContainer" unique_id=563311194]
@@ -80,6 +101,7 @@ size_flags_vertical = 8
 offset_transform_enabled = true
 offset_transform_position = Vector2(-1.06, 1.645)
 offset_transform_scale = Vector2(1.22, 1)
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 
 [connection signal="button_up" from="TextureButton" to="Area2D" method="_on_texture_button_button_up"]

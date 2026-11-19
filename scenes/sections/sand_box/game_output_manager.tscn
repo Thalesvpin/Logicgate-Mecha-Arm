@@ -31,25 +31,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1mcfq")
 
-[node name="Spacer" type="Control" parent="." unique_id=2031533346]
-layout_mode = 2
-
-[node name="FinalOutput" parent="." unique_id=704266001 instance=ExtResource("2_7gfb1")]
-z_index = 1
-layout_mode = 2
-
-[node name="FinalOutput2" parent="." unique_id=300974725 instance=ExtResource("2_7gfb1")]
-z_index = 1
-layout_mode = 2
-
-[node name="FinalOutput3" parent="." unique_id=1586215514 instance=ExtResource("2_7gfb1")]
-z_index = 1
-layout_mode = 2
-
-[node name="FinalOutput4" parent="." unique_id=1985145479 instance=ExtResource("2_7gfb1")]
-z_index = 1
-layout_mode = 2
-
 [node name="DragArea" type="Area2D" parent="." unique_id=872200294]
 position = Vector2(0, 201)
 
@@ -68,6 +49,27 @@ offset_top = -242.0
 offset_right = 68.0
 offset_bottom = 158.0
 mouse_filter = 1
+mouse_default_cursor_shape = 6
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[node name="Spacer" type="Control" parent="." unique_id=2031533346]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="FinalOutput" parent="." unique_id=704266001 instance=ExtResource("2_7gfb1")]
+z_index = 1
+layout_mode = 2
+
+[node name="FinalOutput2" parent="." unique_id=300974725 instance=ExtResource("2_7gfb1")]
+z_index = 1
+layout_mode = 2
+
+[node name="FinalOutput3" parent="." unique_id=1586215514 instance=ExtResource("2_7gfb1")]
+z_index = 1
+layout_mode = 2
+
+[node name="FinalOutput4" parent="." unique_id=1985145479 instance=ExtResource("2_7gfb1")]
+z_index = 1
+layout_mode = 2
 
 [connection signal="input_event" from="DragArea" to="." method="_on_drag_area_input_event"]

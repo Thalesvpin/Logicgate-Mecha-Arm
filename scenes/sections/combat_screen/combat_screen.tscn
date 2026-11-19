@@ -504,6 +504,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CenterEnemyContainer" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer/TopPanels/EnemiesSection" unique_id=1861981230]
+z_index = 1
 layout_mode = 2
 theme_override_constants/separation = 26
 
@@ -521,6 +522,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 
 [node name="MidBottomPanels" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=845414275]
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -535,9 +537,11 @@ offset_transform_enabled = true
 layout_mode = 2
 
 [node name="LeftBottomPanels" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1617303371]
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
+mouse_filter = 2
 
 [node name="ElementalPanel" parent="SubViewportContainer/SubViewport/PanelContainer/LeftBottomPanels" unique_id=337277702 instance=ExtResource("5_lobgv")]
 layout_mode = 2
@@ -545,9 +549,11 @@ size_flags_horizontal = 0
 charged_offset = 125
 
 [node name="RightBottomPanels" type="VBoxContainer" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=1776525834]
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
+mouse_filter = 2
 
 [node name="CombatMoneyPanel" parent="SubViewportContainer/SubViewport/PanelContainer/RightBottomPanels" unique_id=866452766 instance=ExtResource("4_nwxw2")]
 layout_mode = 2

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://6y2k6pdfjohj"]
 
 [ext_resource type="Script" uid="uid://uxyo2f0d6x2v" path="res://scripts/enemy.gd" id="1_6w5ur"]
-[ext_resource type="Texture2D" uid="uid://tdm62mawpb5d" path="res://assets/skeleton.png" id="1_87g8f"]
 [ext_resource type="Shader" uid="uid://d03k1q5p363w6" path="res://shaders/outline.gdshader" id="3_18xkl"]
 [ext_resource type="Shader" uid="uid://dh3mmqwwbao10" path="res://shaders/ultimate_outerglow.gdshader" id="3_ct5v2"]
+[ext_resource type="Texture2D" uid="uid://c3hikrn434n32" path="res://assets/SARGENTOCORONELGENERAL.png" id="4_ct5v2"]
 [ext_resource type="Texture2D" uid="uid://dcn52vt4f5wjq" path="res://assets/texture.png" id="6_lclxg"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_gtatl"]
@@ -212,7 +212,7 @@ offset_bottom = 1000.0
 scale = Vector2(0.5, 0.5)
 offset_transform_enabled = true
 tooltip_text = "aaaaaaaaaaaaaaaaaaa"
-texture = ExtResource("1_87g8f")
+texture = ExtResource("4_ct5v2")
 
 [node name="TurnIndicator" type="TextureRect" parent="." unique_id=2041767468]
 visible = false

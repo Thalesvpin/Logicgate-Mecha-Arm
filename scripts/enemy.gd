@@ -124,6 +124,8 @@ func set_stats() -> void:
 	texture_rect.texture = config.texture
 	actions_list = config.actions_list
 	actions_weight = config.actions_weight
+	if config.is_boss:
+		texture_rect.offset_transform_scale.x = 1.7
 
 func apply_firewall_difficulty() -> void:
 	stats[Stats.List.MAX_HEALTH] *= Enemy.difficulty_progression**Global.run_stats.current_firewall

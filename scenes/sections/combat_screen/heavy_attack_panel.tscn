@@ -677,13 +677,15 @@ shader_parameter/pattern_frame = 0
 [node name="HeavyAttackPanel" type="Control" unique_id=1918303625]
 custom_minimum_size = Vector2(370, 150)
 custom_maximum_size = Vector2(370, 150)
-clip_contents = true
 layout_mode = 3
 anchors_preset = 0
 offset_right = 370.0
 offset_bottom = 150.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_visual_only = false
+mouse_filter = 2
 script = ExtResource("1_angqt")
 charged_offset = 155
 elemental_offset = 155
@@ -697,12 +699,11 @@ offset_right = 370.0
 offset_bottom = 150.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
-mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
 [node name="Control" type="Control" parent="PanelContainer" unique_id=941147724]
 layout_mode = 2
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="PanelContainer2" type="PanelContainer" parent="PanelContainer/Control" unique_id=2061478362]
 custom_minimum_size = Vector2(200, 122)
@@ -713,18 +714,19 @@ offset_top = 8.0
 offset_right = 350.0
 offset_bottom = 130.0
 size_flags_horizontal = 8
-mouse_filter = 1
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
 [node name="Mask" type="PanelContainer" parent="PanelContainer/Control/PanelContainer2" unique_id=770659935]
 clip_children = 1
 layout_mode = 2
 offset_transform_enabled = true
-mouse_filter = 1
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2pjy5")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="PanelContainer/Control/PanelContainer2/Mask" unique_id=619611460]
 layout_mode = 2
+mouse_filter = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer" unique_id=735094224]
@@ -739,7 +741,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
+mouse_filter = 2
 color = Color(0, 0.18, 0, 1)
 
 [node name="Control" type="Control" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG" unique_id=1806823322]
@@ -748,7 +750,7 @@ offset_left = 400.0
 offset_top = 400.0
 offset_right = -212.0
 offset_bottom = -290.0
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="Text" type="Label" parent="PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport/ContextPanelBG/Control" unique_id=38195934]
 custom_maximum_size = Vector2(245.925, -1)
@@ -757,7 +759,6 @@ offset_left = -388.0
 offset_top = -395.0
 offset_right = -221.0
 offset_bottom = -338.0
-mouse_filter = 1
 text = "Carga Do
 Ataque Pesado"
 label_settings = SubResource("LabelSettings_eofqg")
@@ -770,7 +771,6 @@ offset_left = -348.0
 offset_top = -341.0
 offset_right = -262.0
 offset_bottom = -282.0
-mouse_filter = 1
 text = "25%"
 label_settings = SubResource("LabelSettings_2a2wo")
 horizontal_alignment = 1
@@ -823,5 +823,3 @@ offset_bottom = 97.0
 mouse_filter = 2
 texture = ExtResource("5_5yha0")
 expand_mode = 1
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

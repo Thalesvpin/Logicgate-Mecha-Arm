@@ -4,15 +4,61 @@
 [ext_resource type="PackedScene" uid="uid://blg1fesb54byg" path="res://scenes/sections/sand_box/game_input.tscn" id="2_qe8nc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eofqg"]
-size = Vector2(50, 400)
+size = Vector2(200, 400)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.20392157, 0.20392157, 0.20392157, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+metadata/_live_palette_bindings = {
+"bg_color": "7cls6"
+}
 
 [node name="GameInputManager" type="VBoxContainer" unique_id=1991601480]
+custom_minimum_size = Vector2(0, 400)
+custom_maximum_size = Vector2(-1, 400)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -680.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_uesrh")
+
+[node name="DragArea" type="Area2D" parent="." unique_id=831361855]
+position = Vector2(0, 158)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DragArea" unique_id=1434011058]
+position = Vector2(-76.99, -0.015)
+shape = SubResource("RectangleShape2D_eofqg")
+debug_color = Color(0.96168846, 1.540184e-06, 0.51167804, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="DragArea" unique_id=104446370]
+
+[node name="Background" type="PanelContainer" parent="DragArea" unique_id=1153053983]
+custom_minimum_size = Vector2(200, 400)
+custom_maximum_size = Vector2(200, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -177.0
+offset_top = -200.0
+offset_right = 23.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 
 [node name="Spacer" type="Control" parent="." unique_id=77675322]
 layout_mode = 2
@@ -28,14 +74,5 @@ layout_mode = 2
 
 [node name="GameInput4" parent="." unique_id=431762415 instance=ExtResource("2_qe8nc")]
 layout_mode = 2
-
-[node name="DragArea" type="Area2D" parent="." unique_id=831361855]
-position = Vector2(0, 201)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DragArea" unique_id=1434011058]
-shape = SubResource("RectangleShape2D_eofqg")
-debug_color = Color(0.96168846, 1.540184e-06, 0.51167804, 0.41960785)
-
-[node name="Sprite2D" type="Sprite2D" parent="DragArea" unique_id=104446370]
 
 [connection signal="input_event" from="DragArea" to="." method="_on_drag_area_input_event"]
