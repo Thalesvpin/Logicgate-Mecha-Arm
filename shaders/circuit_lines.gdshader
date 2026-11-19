@@ -76,11 +76,13 @@ group_uniforms;
 
 group_uniforms Shapes;
 uniform int line1_shape : hint_enum("Circle", "Square", "Hexagon", "Triangle") = 0;
-uniform int line2_shape : hint_enum("Circle", "Square", "Hexagon", "Triangle") = 0;
 uniform float line1_radius : hint_range(0.005, 0.25) = 0.035;
+uniform float line1_trail_thickness : hint_range(0.5, 12.0) = 2.5;
+uniform float line1_trail_sharpness : hint_range(0.0, 1.0) = 0.2;
+uniform int line2_shape : hint_enum("Circle", "Square", "Hexagon", "Triangle") = 0;
 uniform float line2_radius : hint_range(0.005, 0.25) = 0.035;
-uniform float trail_thickness : hint_range(0.5, 12.0) = 2.5;
-uniform float trail_sharpness : hint_range(0.0, 1.0) = 0.2;
+uniform float line2_trail_thickness : hint_range(0.5, 12.0) = 2.5;
+uniform float line2_trail_sharpness : hint_range(0.0, 1.0) = 0.2;
 // [UNUSED FROM DNA HELIX] Fake-3D perspective node scaling:
 // uniform float node_depth_scale : hint_range(0.0, 0.3) = 0.1;
 group_uniforms;
@@ -90,6 +92,52 @@ uniform bool spin_line1_node = false;
 uniform float line1_spin_speed : hint_range(-10.0, 10.0) = 2.0;
 uniform bool spin_line2_node = false;
 uniform float line2_spin_speed : hint_range(-10.0, 10.0) = 2.0;
+group_uniforms;
+
+group_uniforms Procedural_Bus_1;
+uniform bool enable_bus_1 = false;
+uniform int bus1_line_count : hint_range(1, 16) = 6;
+uniform float bus1_seed : hint_range(0.0, 100.0) = 1.0;
+uniform bool bus1_use_custom_color = false;
+uniform vec4 bus1_color : source_color = vec4(0.15, 0.95, 0.35, 0.85);
+uniform vec2 bus1_y_range = vec2(-0.8, 0.8);
+uniform vec2 bus1_speed_range = vec2(0.45, 1.15);
+uniform vec2 bus1_bend_shift_range = vec2(-0.35, 0.35);
+uniform int bus1_min_bends : hint_range(0, 8) = 1;
+uniform int bus1_max_bends : hint_range(0, 8) = 3;
+uniform vec2 bus1_trail_length_range = vec2(0.8, 1.6);
+uniform vec2 bus1_interval_range = vec2(0.2, 1.2);
+uniform float bus1_trail_thickness : hint_range(0.5, 12.0) = 2.5;
+uniform float bus1_trail_sharpness : hint_range(0.0, 1.0) = 0.2;
+uniform int bus1_shape_mode : hint_enum("Circle", "Square", "Hexagon", "Triangle", "Random Mix") = 0;
+uniform vec2 bus1_radius_range = vec2(0.02, 0.035);
+uniform bool bus1_spin_nodes = false;
+uniform float bus1_spin_speed : hint_range(-10.0, 10.0) = 2.0;
+uniform bool bus1_exclude_shine_1 = false;
+uniform bool bus1_exclude_shine_2 = false;
+group_uniforms;
+
+group_uniforms Procedural_Bus_2;
+uniform bool enable_bus_2 = false;
+uniform int bus2_line_count : hint_range(1, 16) = 6;
+uniform float bus2_seed : hint_range(0.0, 100.0) = 2.0;
+uniform bool bus2_use_custom_color = false;
+uniform vec4 bus2_color : source_color = vec4(0.15, 0.95, 0.35, 0.85);
+uniform vec2 bus2_y_range = vec2(-0.8, 0.8);
+uniform vec2 bus2_speed_range = vec2(0.45, 1.15);
+uniform vec2 bus2_bend_shift_range = vec2(-0.35, 0.35);
+uniform int bus2_min_bends : hint_range(0, 8) = 1;
+uniform int bus2_max_bends : hint_range(0, 8) = 3;
+uniform vec2 bus2_trail_length_range = vec2(0.8, 1.6);
+uniform vec2 bus2_interval_range = vec2(0.2, 1.2);
+uniform float bus2_trail_thickness : hint_range(0.5, 12.0) = 2.5;
+uniform float bus2_trail_sharpness : hint_range(0.0, 1.0) = 0.2;
+uniform int bus2_shape_mode : hint_enum("Circle", "Square", "Hexagon", "Triangle", "Random Mix") = 0;
+uniform vec2 bus2_radius_range = vec2(0.02, 0.035);
+uniform bool bus2_spin_nodes = false;
+uniform float bus2_spin_speed : hint_range(-10.0, 10.0) = 2.0;
+uniform bool bus2_exclude_shine_1 = false;
+uniform bool bus2_exclude_shine_2 = false;
 group_uniforms;
 
 group_uniforms Shine_1;
@@ -160,12 +208,14 @@ uniform bool outline_repeat_gradient = false;
 group_uniforms;
 
 const int MAX_CIRCUIT_BENDS = 8;
+const int MAX_BUS_LINES = 16;
 
-// Tightly packed highp interpolators with 48-bit double-single travel values for infinite-runtime precision
+// Tightly packed highp interpolators (11 slots total, well within mobile/integrated GPU limits)
 varying highp vec2 v_local_pos;
-varying flat highp vec2 v_flow_trig;     // xy = cos/sin(flow_angle)
+varying flat highp vec3 v_flow_time;     // xy = cos/sin(flow_angle), z = TIME
 varying flat highp vec4 v_travel_ds;     // xy = 48-bit (hi, lo) travel for line1, zw = 48-bit (hi, lo) travel for line2
 varying flat highp vec4 v_node_spins;    // xy = spin1 (cos, sin), zw = spin2 (cos, sin)
+varying flat vec4 v_bus_spins;           // xy = bus1 spin (cos, sin), zw = bus2 spin (cos, sin)
 varying flat highp vec4 v_shine_params;  // x = shine_1_signed_t [-1..1], y = shine_2_signed_t [-1..1], z = shine_1_gain, w = shine_2_gain
 varying flat vec4 v_precomp_1;           // x = s1_inner, y = s2_inner, z = g_node_blur, w = g_trail_blur
 varying flat vec4 v_precomp_2;           // x = line1_ext_mult, y = line2_ext_mult, z = line1_spin_active, w = line2_spin_active
@@ -231,12 +281,35 @@ float hash_sweep(highp float sweep_idx, float seed) {
 	return fract(sin(n) * 43758.5453123);
 }
 
+// Deterministic per-bus-line parameter hash in [0.0, 1.0)
+float hash_bus(float idx, float channel, float seed) {
+	vec2 p = vec2(idx * 17.13 + seed * 31.7, channel * 43.29 + seed * 19.3);
+	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+}
+
 // Returns circumradius bounding multiplier for Circle (0), Square (1), Hexagon (2), or Triangle (3)
 float get_shape_extent_mult(int shape, bool is_spinning) {
 	if (shape == 0) return 1.0;
 	if (shape == 1) return is_spinning ? 1.42 : 1.0;
 	if (shape == 2) return 1.16;
 	return 1.62;
+}
+
+// Computes zoom-consistent trail width & blur attenuation for a given thickness & sharpness
+void calc_trail_params(
+	float thickness, float sharpness, float pixel_size, float trail_blur, float trail_retention,
+	out float blur_half_w, out float inner_trail_w, out float trail_blur_atten
+) {
+	float geom_half_w = thickness * 0.004;
+	float half_trail_w = max(geom_half_w, pixel_size * 0.5);
+	float subpixel_trail_atten = geom_half_w / half_trail_w;
+
+	blur_half_w = half_trail_w + trail_blur;
+	float raw_inner_trail_w = max(half_trail_w - pixel_size * 0.5, 0.0) * sharpness;
+	inner_trail_w = raw_inner_trail_w * (1.0 - clamp(trail_blur * 10.0, 0.0, 1.0)) - trail_blur;
+	trail_blur_atten = subpixel_trail_atten * ((trail_blur > 0.0)
+		? mix(half_trail_w / max(blur_half_w, 1e-5), 1.0, trail_retention)
+		: 1.0);
 }
 
 // Returns anti-aliased & energy-conserving blurred coverage for Circle (0), Square (1), Hexagon (2), or Triangle (3)
@@ -356,6 +429,17 @@ void eval_circuit_line(
 	float node_edge_soft, float node_blur, float node_blur_85, float node_retention,
 	float s1_str, float s2_str, inout vec3 accum_rgb, inout float accum_a
 ) {
+	// 1. Immediate vertical band early-out BEFORE any 48-bit division, hash, or segment math
+	float y_start = y_norm * span_v;
+	float raw_dy = shift_norm * span_v;
+	float y_clamped = clamp(y_start, -span_v * 0.96, span_v * 0.96);
+	float band_pad = max(node_radius * node_ext_mult + node_edge_soft, blur_half_w);
+	float y_bound_lo = min(min(y_start, y_start + raw_dy), y_clamped) - band_pad;
+	float y_bound_hi = max(max(y_start, y_start + raw_dy), y_clamped) + band_pad;
+	if (p.y < y_bound_lo || p.y > y_bound_hi) {
+		return;
+	}
+
 	// Pure zoom-independent entry/exit padding so path cycle length never shifts with camera zoom
 	float entry_pad = node_radius * node_ext_mult + node_blur + 0.02;
 	float u_min = -span_u - entry_pad;
@@ -372,9 +456,6 @@ void eval_circuit_line(
 		b_hi = max(r_min, r_max);
 	}
 
-	float y_start = y_norm * span_v;
-	float raw_dy = shift_norm * span_v;
-
 	// Compute constant sweep slot length using max possible bends so sweep_index never jumps mid-sweep
 	float max_dx_diag = abs(raw_dy);
 	if (b_hi > 0 && float(b_hi) * max_dx_diag > total_u * 0.85) {
@@ -389,6 +470,9 @@ void eval_circuit_line(
 	// 48-bit double-single division & remainder yields a sweep-locked index and sub-pixel head position
 	highp float sweep_idx = 0.0;
 	highp float s_head = ds_div_mod(travel_ds, slot_cycle_len, sweep_idx);
+	if (s_head > max_l_total + trail_len) {
+		return;
+	}
 
 	int active_bends = b_lo;
 	if (use_random_bends && b_hi > b_lo) {
@@ -400,19 +484,6 @@ void eval_circuit_line(
 	float step_dy = raw_dy;
 	if (active_bends > 0 && float(active_bends) * abs(step_dy) > total_u * 0.85) {
 		step_dy *= (total_u * 0.85) / (float(active_bends) * abs(step_dy));
-	}
-
-	// Vertical bounds across all alternating lanes (N=1 preserves exact original shift; N>=2 stays inside box)
-	float y_alt = (active_bends == 1)
-		? (y_start + step_dy)
-		: clamp(y_start + step_dy, -span_v * 0.96, span_v * 0.96);
-	float band_pad = max(node_radius * node_ext_mult + node_edge_soft, blur_half_w);
-	float y_lo = min(y_start, y_alt) - band_pad;
-	float y_hi = max(y_start, y_alt) + band_pad;
-
-	// Quick reject before walking segments when pixel is outside vertical band or head is far past exit
-	if (p.y < y_lo || p.y > y_hi || s_head > max_l_total + trail_len) {
-		return;
 	}
 
 	// Walk the multi-bend PCB polyline in a single pass to locate head_pos and closest trail SDF
@@ -587,6 +658,96 @@ void eval_circuit_line(
 	}
 }
 
+// Evaluates a procedural multi-line bus (up to 16 stratified lanes with bus-wide vertical pre-culling)
+void eval_procedural_bus(
+	bool enable_bus, int line_count, float seed, float seed_base,
+	vec4 bus_col, vec2 y_range, vec2 speed_range, vec2 bend_shift_range,
+	int min_bends, int max_bends, vec2 trail_length_range, vec2 interval_range,
+	float trail_thickness_val, float trail_sharpness_val,
+	int shape_mode, vec2 radius_range, bool spin_nodes, float spin_speed, vec2 spin_trig,
+	bool excl_s1, bool excl_s2,
+	vec2 flow_uv, float span_u, float span_v, highp float time_val,
+	float pixel_size, float trail_blur, float trail_retention,
+	float node_edge_soft, float node_blur, float node_blur_85, float node_retention,
+	float s1_str, float s2_str, inout vec3 accum_rgb, inout float accum_a
+) {
+	if (!enable_bus || line_count <= 0 || bus_col.a <= 0.0 || accum_a >= 0.999) {
+		return;
+	}
+
+	float b_blur_half_w = 0.0;
+	float b_inner_trail_w = 0.0;
+	float b_trail_blur_atten = 1.0;
+	calc_trail_params(
+		trail_thickness_val, trail_sharpness_val, pixel_size, trail_blur, trail_retention,
+		b_blur_half_w, b_inner_trail_w, b_trail_blur_atten
+	);
+
+	float y_min_norm = min(y_range.x, y_range.y);
+	float y_max_norm = max(y_range.x, y_range.y);
+	float sh_min_norm = min(bend_shift_range.x, bend_shift_range.y);
+	float sh_max_norm = max(bend_shift_range.x, bend_shift_range.y);
+	float r_min = max(min(radius_range.x, radius_range.y), 0.002);
+	float r_max = max(max(radius_range.x, radius_range.y), r_min);
+
+	// Bus-wide vertical pre-cull skips the entire loop on pixels outside the bus band
+	float max_bus_pad = max(r_max * 1.62 + node_edge_soft, b_blur_half_w);
+	float bus_v_lo = min(y_min_norm, y_min_norm + sh_min_norm) * span_v - max_bus_pad;
+	float bus_v_hi = max(y_max_norm, y_max_norm + sh_max_norm) * span_v + max_bus_pad;
+	if (flow_uv.y < bus_v_lo || flow_uv.y > bus_v_hi) {
+		return;
+	}
+
+	float spd_min = max(min(speed_range.x, speed_range.y), 0.0);
+	float spd_max = max(max(speed_range.x, speed_range.y), spd_min);
+	float tl_min = max(min(trail_length_range.x, trail_length_range.y), 0.02);
+	float tl_max = max(max(trail_length_range.x, trail_length_range.y), tl_min);
+	float int_min = max(min(interval_range.x, interval_range.y), 0.0);
+	float int_max = max(max(interval_range.x, interval_range.y), int_min);
+
+	bool bus_rand_bends = (min_bends != max_bends);
+	bool bus_spin_on = spin_nodes && spin_speed != 0.0;
+	float inv_count = 1.0 / float(line_count);
+
+	for (int i = 0; i < MAX_BUS_LINES; i++) {
+		if (i >= line_count || accum_a >= 0.999) {
+			break;
+		}
+
+		float fi = float(i);
+		float lane_t = (fi + 0.15 + 0.7 * hash_bus(fi, 0.0, seed)) * inv_count;
+		float b_y_norm = mix(y_min_norm, y_max_norm, lane_t);
+		float b_shift = mix(sh_min_norm, sh_max_norm, hash_bus(fi, 1.0, seed));
+		float b_bend_pos = mix(-0.35, 0.35, hash_bus(fi, 2.0, seed));
+		float b_speed = mix(spd_min, spd_max, hash_bus(fi, 3.0, seed));
+		float b_trail = mix(tl_min, tl_max, hash_bus(fi, 4.0, seed));
+		float b_interval = mix(int_min, int_max, hash_bus(fi, 5.0, seed));
+		float b_toff = hash_bus(fi, 6.0, seed) * 7.5;
+		float b_radius = mix(r_min, r_max, hash_bus(fi, 7.0, seed));
+
+		int b_shape = shape_mode;
+		if (shape_mode == 4) {
+			b_shape = clamp(int(floor(hash_bus(fi, 8.0, seed) * 4.0)), 0, 3);
+		}
+		bool b_do_spin = bus_spin_on && b_shape != 0;
+		float b_ext = get_shape_extent_mult(b_shape, b_do_spin);
+
+		highp vec2 b_travel_ds = ds_mul(time_val + b_toff, b_speed);
+		eval_circuit_line(
+			flow_uv, span_u, span_v,
+			b_travel_ds, seed_base + fi + seed * 0.13,
+			b_y_norm, b_bend_pos, b_shift,
+			min_bends, bus_rand_bends, min_bends, max_bends,
+			b_trail, b_interval,
+			b_radius, b_ext, b_shape, b_do_spin, spin_trig,
+			bus_col, excl_s1, excl_s2,
+			pixel_size, b_blur_half_w, b_inner_trail_w, b_trail_blur_atten,
+			node_edge_soft, node_blur, node_blur_85, node_retention,
+			s1_str, s2_str, accum_rgb, accum_a
+		);
+	}
+}
+
 // [UNUSED FROM DNA HELIX] Periodic dual-row helical column evaluator:
 // void eval_helix_cell(
 // 	float cell_index, float dx, float uv_y, float col_y_pad, float pixel_size,
@@ -713,9 +874,9 @@ void vertex() {
 	float outer_limit = outline_active ? (outline_width + outline_blur + 1.5) : 1.5;
 	v_bg_misc = vec4(bg_inv_scale, inv_edge_reach, outer_limit);
 
-	// Compute 48-bit double-single travel distances in vertex() so fragment() modulo never drifts
+	// Compute 48-bit double-single travel distances for Hero Lines 1 & 2 and pass TIME for Procedural Buses
 	highp float flow_rad = radians(flow_angle_degrees);
-	v_flow_trig = vec2(cos(flow_rad), sin(flow_rad));
+	v_flow_time = vec3(cos(flow_rad), sin(flow_rad), TIME);
 	highp vec2 travel1_ds = ds_mul(TIME + line1_time_offset, line1_speed);
 	highp vec2 travel2_ds = ds_mul(TIME + line2_time_offset, line2_speed);
 	v_travel_ds = vec4(travel1_ds, travel2_ds);
@@ -735,6 +896,19 @@ void vertex() {
 		spin2 = vec2(cos(spin2_angle), sin(spin2_angle));
 	}
 	v_node_spins = vec4(spin1, spin2);
+
+	vec2 bus1_spin = vec2(1.0, 0.0);
+	if (enable_bus_1 && bus1_spin_nodes && bus1_spin_speed != 0.0 && bus1_shape_mode != 0) {
+		highp float bus1_spin_angle = ds_mod(ds_mul(TIME, bus1_spin_speed), TAU_VAL);
+		bus1_spin = vec2(cos(bus1_spin_angle), sin(bus1_spin_angle));
+	}
+
+	vec2 bus2_spin = vec2(1.0, 0.0);
+	if (enable_bus_2 && bus2_spin_nodes && bus2_spin_speed != 0.0 && bus2_shape_mode != 0) {
+		highp float bus2_spin_angle = ds_mod(ds_mul(TIME, bus2_spin_speed), TAU_VAL);
+		bus2_spin = vec2(cos(bus2_spin_angle), sin(bus2_spin_angle));
+	}
+	v_bus_spins = vec4(bus1_spin, bus2_spin);
 
 	// Encode shine progress into signed [-1..1] space (-2.0 = inactive) using 48-bit ds_mod
 	highp float s1_signed_t = -2.0;
@@ -835,14 +1009,24 @@ void fragment() {
 			vec3 accum_rgb = vec3(0.0);
 			float accum_a = 0.0;
 
-			// Skip all circuit math when global circuit color is fully transparent
-			if (use_individual_colors || circuit_color.a > 0.0) {
+			// Resolve line & bus colors (buses inherit their parent line's color unless overridden)
+			vec4 col1 = use_individual_colors ? line1_color : circuit_color;
+			vec4 col2 = use_individual_colors ? line2_color : circuit_color;
+			vec4 bus1_col = bus1_use_custom_color ? bus1_color : col1;
+			vec4 bus2_col = bus2_use_custom_color ? bus2_color : col2;
+
+			// Skip all circuit math when every active circuit layer is fully transparent
+			bool any_circuit_visible = col1.a > 0.0 || col2.a > 0.0
+				|| (enable_bus_1 && bus1_line_count > 0 && bus1_col.a > 0.0)
+				|| (enable_bus_2 && bus2_line_count > 0 && bus2_col.a > 0.0);
+
+			if (any_circuit_visible) {
 				float uv_scale = 2.0 * inv_rect_size.y;
 				float pixel_size = uv_grad.y * (rect_size.y + v_out_grad.w) * uv_scale;
 				vec2 uv = pixel_pos * vec2(uv_scale, -uv_scale);
 
 				// Rotate into circuit flow space (u = travel direction, v = lateral offset)
-				vec2 rot = v_flow_trig;
+				vec2 rot = v_flow_time.xy;
 				vec2 flow_uv = vec2(
 					uv.x * rot.x + uv.y * rot.y,
 					uv.y * rot.x - uv.x * rot.y
@@ -902,48 +1086,79 @@ void fragment() {
 					}
 				}
 
-				// Scale trail width in local UV space (consistent across zooms) with sub-pixel AA coverage preservation
-				float geom_half_w = trail_thickness * 0.004;
-				float half_trail_w = max(geom_half_w, pixel_size * 0.5);
-				float subpixel_trail_atten = geom_half_w / half_trail_w;
-
-				float blur_half_w = half_trail_w + trail_blur;
-				float raw_inner_trail_w = max(half_trail_w - pixel_size * 0.5, 0.0) * trail_sharpness;
-				float inner_trail_w = raw_inner_trail_w * (1.0 - clamp(trail_blur * 10.0, 0.0, 1.0)) - trail_blur;
-				float trail_blur_atten = subpixel_trail_atten * ((trail_blur > 0.0)
-					? mix(half_trail_w / max(blur_half_w, 1e-5), 1.0, trail_retention)
-					: 1.0);
-
 				float node_edge_soft = pixel_size * 0.5 + node_blur;
 				float node_blur_85 = node_blur * 0.85;
 
-				vec4 col1 = use_individual_colors ? line1_color : circuit_color;
-				vec4 col2 = use_individual_colors ? line2_color : circuit_color;
+				// Hero Circuit Line 1 (Individual Trail Thickness & Sharpness + Multi-Bend 45-degree Path)
+				if (col1.a > 0.0) {
+					float l1_blur_half_w = 0.0;
+					float l1_inner_trail_w = 0.0;
+					float l1_trail_blur_atten = 1.0;
+					calc_trail_params(
+						line1_trail_thickness, line1_trail_sharpness, pixel_size, trail_blur, trail_retention,
+						l1_blur_half_w, l1_inner_trail_w, l1_trail_blur_atten
+					);
+					eval_circuit_line(
+						flow_uv, span_u, span_v,
+						v_travel_ds.xy, 1.0,
+						line1_y_offset, line1_bend_pos, line1_bend_shift,
+						line1_bend_count, line1_random_bends, line1_min_bends, line1_max_bends,
+						line1_trail_length, line1_interval,
+						line1_radius, v_precomp_2.x, line1_shape, v_precomp_2.z > 0.5, v_node_spins.xy,
+						col1, shine_1_exclude_line1, shine_2_exclude_line1,
+						pixel_size, l1_blur_half_w, l1_inner_trail_w, l1_trail_blur_atten,
+						node_edge_soft, node_blur, node_blur_85, node_retention,
+						s1_str, s2_str, accum_rgb, accum_a
+					);
+				}
 
-				// Circuit Line 1 (Node + Multi-Bend 45-degree routed fading Trail)
-				eval_circuit_line(
-					flow_uv, span_u, span_v,
-					v_travel_ds.xy, 1.0,
-					line1_y_offset, line1_bend_pos, line1_bend_shift,
-					line1_bend_count, line1_random_bends, line1_min_bends, line1_max_bends,
-					line1_trail_length, line1_interval,
-					line1_radius, v_precomp_2.x, line1_shape, v_precomp_2.z > 0.5, v_node_spins.xy,
-					col1, shine_1_exclude_line1, shine_2_exclude_line1,
-					pixel_size, blur_half_w, inner_trail_w, trail_blur_atten,
+				// Hero Circuit Line 2 (Individual Trail Thickness & Sharpness + Multi-Bend 45-degree Path)
+				if (col2.a > 0.0) {
+					float l2_blur_half_w = 0.0;
+					float l2_inner_trail_w = 0.0;
+					float l2_trail_blur_atten = 1.0;
+					calc_trail_params(
+						line2_trail_thickness, line2_trail_sharpness, pixel_size, trail_blur, trail_retention,
+						l2_blur_half_w, l2_inner_trail_w, l2_trail_blur_atten
+					);
+					eval_circuit_line(
+						flow_uv, span_u, span_v,
+						v_travel_ds.zw, 2.0,
+						line2_y_offset, line2_bend_pos, line2_bend_shift,
+						line2_bend_count, line2_random_bends, line2_min_bends, line2_max_bends,
+						line2_trail_length, line2_interval,
+						line2_radius, v_precomp_2.y, line2_shape, v_precomp_2.w > 0.5, v_node_spins.zw,
+						col2, shine_1_exclude_line2, shine_2_exclude_line2,
+						pixel_size, l2_blur_half_w, l2_inner_trail_w, l2_trail_blur_atten,
+						node_edge_soft, node_blur, node_blur_85, node_retention,
+						s1_str, s2_str, accum_rgb, accum_a
+					);
+				}
+
+				// Procedural Multi-Line Bus 1 (Tied to Line 1)
+				eval_procedural_bus(
+					enable_bus_1, bus1_line_count, bus1_seed, 10.0,
+					bus1_col, bus1_y_range, bus1_speed_range, bus1_bend_shift_range,
+					bus1_min_bends, bus1_max_bends, bus1_trail_length_range, bus1_interval_range,
+					bus1_trail_thickness, bus1_trail_sharpness,
+					bus1_shape_mode, bus1_radius_range, bus1_spin_nodes, bus1_spin_speed, v_bus_spins.xy,
+					bus1_exclude_shine_1, bus1_exclude_shine_2,
+					flow_uv, span_u, span_v, v_flow_time.z,
+					pixel_size, trail_blur, trail_retention,
 					node_edge_soft, node_blur, node_blur_85, node_retention,
 					s1_str, s2_str, accum_rgb, accum_a
 				);
 
-				// Circuit Line 2 (Node + Multi-Bend 45-degree routed fading Trail)
-				eval_circuit_line(
-					flow_uv, span_u, span_v,
-					v_travel_ds.zw, 2.0,
-					line2_y_offset, line2_bend_pos, line2_bend_shift,
-					line2_bend_count, line2_random_bends, line2_min_bends, line2_max_bends,
-					line2_trail_length, line2_interval,
-					line2_radius, v_precomp_2.y, line2_shape, v_precomp_2.w > 0.5, v_node_spins.zw,
-					col2, shine_1_exclude_line2, shine_2_exclude_line2,
-					pixel_size, blur_half_w, inner_trail_w, trail_blur_atten,
+				// Procedural Multi-Line Bus 2 (Tied to Line 2)
+				eval_procedural_bus(
+					enable_bus_2, bus2_line_count, bus2_seed, 200.0,
+					bus2_col, bus2_y_range, bus2_speed_range, bus2_bend_shift_range,
+					bus2_min_bends, bus2_max_bends, bus2_trail_length_range, bus2_interval_range,
+					bus2_trail_thickness, bus2_trail_sharpness,
+					bus2_shape_mode, bus2_radius_range, bus2_spin_nodes, bus2_spin_speed, v_bus_spins.zw,
+					bus2_exclude_shine_1, bus2_exclude_shine_2,
+					flow_uv, span_u, span_v, v_flow_time.z,
+					pixel_size, trail_blur, trail_retention,
 					node_edge_soft, node_blur, node_blur_85, node_retention,
 					s1_str, s2_str, accum_rgb, accum_a
 				);
