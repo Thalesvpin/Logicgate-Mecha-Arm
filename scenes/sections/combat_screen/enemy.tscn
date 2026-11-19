@@ -28,7 +28,9 @@ gradient = SubResource("Gradient_sl4bm")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lclxg"]
 shader = ExtResource("3_ct5v2")
+shader_parameter/shader_enabled = true
 shader_parameter/original_texture_size = Vector2(3000, 3000)
+shader_parameter/enable_outer_glow = true
 shader_parameter/smooth_poisson_distribution = true
 shader_parameter/max_sampling_limit = 1
 shader_parameter/glow_color = Color(0, 1, 1, 1)
@@ -127,6 +129,7 @@ shader_parameter/dissolve_speed = 2.0
 shader_parameter/dissolve_use_ease = false
 shader_parameter/enable_dithering = true
 shader_parameter/dither_strength_noise = 0.03
+shader_parameter/enable_retro_effects = true
 shader_parameter/use_ordered_dither = false
 shader_parameter/dither_strength = 0.5
 shader_parameter/dither_scale = 1.0
@@ -141,6 +144,7 @@ shader_parameter/use_pixelate_glow = false
 shader_parameter/pixelate_size = 4.0
 shader_parameter/pixelate_heat_fluid_fluid = false
 shader_parameter/pixelate_heat_fluid_static = false
+shader_parameter/enable_distortion_and_heat = true
 shader_parameter/use_distortion = true
 shader_parameter/distortion_noise = SubResource("NoiseTexture2D_a7lv4")
 shader_parameter/distortion_strength = 0.10000000149012
