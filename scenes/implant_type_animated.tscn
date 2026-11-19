@@ -146,8 +146,8 @@ shader_parameter/line2_bend_shift = 0.4
 shader_parameter/line2_trail_length = 1.3
 shader_parameter/line2_time_offset = 1.1
 shader_parameter/line2_interval = 0.35
-shader_parameter/line1_shape = 0
-shader_parameter/line2_shape = 0
+shader_parameter/line1_shape = 1
+shader_parameter/line2_shape = 1
 shader_parameter/line1_radius = 0.06700000283324001
 shader_parameter/line2_radius = 0.07400000316574
 shader_parameter/trail_thickness = 8.9950004035125
@@ -219,10 +219,10 @@ grow_vertical = 2
 script = ExtResource("1_nvjen")
 
 [node name="TypeBiohack" type="ColorRect" parent="." unique_id=1555287089]
+visible = false
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 2
 
 [node name="TypeTechmod" type="ColorRect" parent="." unique_id=276799817]
-visible = false
 material = SubResource("ShaderMaterial_gtatl")
 layout_mode = 2

@@ -215,14 +215,18 @@ float eval_shape_alpha(vec2 p, float radius, float extent_mult, float pixel_size
 		return 0.0;
 	}
 
+	// Sub-pixel area energy preservation prevents tiny zoomed-out shapes from bloating to 1px minimum width
+	float sub_ratio = min(radius / max(pixel_size * 0.5, 1e-5), 1.0);
+	float sub_energy = sub_ratio * sub_ratio;
+
 	if (shape == 0) {
 		if (blur_radius <= 0.0) {
-			float r_min = max(radius - pixel_size, 0.0);
-			float r_max = radius + pixel_size;
-			return smoothstep(r_max * r_max, r_min * r_min, dot(p, p));
+			float r_min = max(radius - pixel_size * 0.5, 0.0);
+			float r_max = radius + pixel_size * 0.5;
+			return smoothstep(r_max * r_max, r_min * r_min, dot(p, p)) * sub_energy;
 		}
 		float spread_ratio = radius / max(radius + blur_85, 1e-5);
-		float energy_scale = mix(spread_ratio * spread_ratio, 1.0, energy_retention);
+		float energy_scale = mix(spread_ratio * spread_ratio, 1.0, energy_retention) * sub_energy;
 		return smoothstep(radius + edge_soft, radius - edge_soft, length(p)) * energy_scale;
 	}
 
@@ -263,6 +267,7 @@ float eval_shape_alpha(vec2 p, float radius, float extent_mult, float pixel_size
 		}
 	}
 
+	alpha *= sub_energy;
 	if (blur_radius > 0.0) {
 		float spread_ratio = radius / max(radius + blur_85, 1e-5);
 		alpha *= mix(spread_ratio * spread_ratio, 1.0, energy_retention);
@@ -322,7 +327,8 @@ void eval_circuit_line(
 	float dy = shift_norm * span_v;
 	float dx_diag = abs(dy);
 
-	float entry_pad = node_radius * node_ext_mult + node_blur + pixel_size * 2.0;
+	// Pure zoom-independent entry/exit padding so path cycle length never shifts with camera zoom
+	float entry_pad = node_radius * node_ext_mult + node_blur + 0.02;
 	float u_min = -span_u - entry_pad;
 	float u_max = span_u + entry_pad;
 
@@ -415,12 +421,13 @@ void eval_circuit_line(
 		}
 	}
 
-	// Evaluate Trail width SDF and arc-length fade behind the moving head node
+	// Evaluate Trail width SDF and arc-length fade behind the moving head node (never poking ahead of s_head)
 	float behind = s_head - best_s;
-	if (best_dist_sq < blur_half_w * blur_half_w && behind > -pixel_size && behind < trail_len) {
+	if (best_dist_sq < blur_half_w * blur_half_w && behind > 0.0 && behind < trail_len) {
 		float trail_dist = sqrt(best_dist_sq);
 		float line_profile = smoothstep(blur_half_w, inner_trail_w, trail_dist) * trail_blur_atten;
-		float head_clip = smoothstep(-pixel_size, pixel_size, behind);
+		float clip_soft = min(pixel_size, max(node_radius * 0.5, 1e-4));
+		float head_clip = smoothstep(0.0, clip_soft, behind);
 		float trail_t = clamp(behind / max(trail_len, 1e-4), 0.0, 1.0);
 		float tail_fade = pow(max(1.0 - trail_t, 0.0), trail_fade_power);
 		float trail_cov = line_profile * head_clip * tail_fade;
@@ -651,20 +658,28 @@ void vertex() {
 
 void fragment() {
 	highp vec2 uv_cen = UV - 0.5;
-	highp vec2 uv_deriv = max(fwidth(UV), vec2(1e-6));
-	highp vec2 local_fwidth = fwidth(v_local_pos);
 
-	// Zoom-invariant local ColorRect size
-	highp vec2 expanded_size = local_fwidth / uv_deriv;
-	highp vec2 rect_size = max(expanded_size - v_out_grad.w, vec2(0.001));
+	// Rotation-invariant Euclidean gradients cancel out node canvas position while preserving exact rect_size
+	highp vec2 uv_grad = vec2(
+		length(vec2(dFdx(UV.x), dFdy(UV.x))),
+		length(vec2(dFdx(UV.y), dFdy(UV.y)))
+	);
+	highp vec2 pos_grad = vec2(
+		length(vec2(dFdx(v_local_pos.x), dFdy(v_local_pos.x))),
+		length(vec2(dFdx(v_local_pos.y), dFdy(v_local_pos.y)))
+	);
+	highp vec2 expanded_size = pos_grad / max(uv_grad, vec2(1e-7));
+	highp vec2 raw_rect_size = max(expanded_size - v_out_grad.w, vec2(0.001));
+	// Snap sub-half-pixel 2x2 derivative noise so every pixel shares the exact same constant rect_size across all zooms
+	highp vec2 rect_size = max(round(raw_rect_size * 2.0) * 0.5, vec2(0.5));
 	highp vec2 inv_rect_size = 1.0 / rect_size;
-	highp vec2 pixel_pos = uv_cen * expanded_size;
+	highp vec2 pixel_pos = uv_cen * (rect_size + v_out_grad.w);
 
 	// Compute background texture derivatives in uniform control flow only when Texture mode is active
 	vec2 bg_uv_dx = vec2(0.0);
 	vec2 bg_uv_dy = vec2(0.0);
 	if (background_mode == 2) {
-		vec2 uv_to_rect = expanded_size * inv_rect_size;
+		vec2 uv_to_rect = (rect_size + v_out_grad.w) * inv_rect_size;
 		bg_uv_dx = dFdx(UV) * uv_to_rect;
 		bg_uv_dy = dFdy(UV) * uv_to_rect;
 	}
@@ -707,7 +722,7 @@ void fragment() {
 			// Skip all circuit math when global circuit color is fully transparent
 			if (use_individual_colors || circuit_color.a > 0.0) {
 				float uv_scale = 2.0 * inv_rect_size.y;
-				float pixel_size = local_fwidth.y * uv_scale;
+				float pixel_size = uv_grad.y * (rect_size.y + v_out_grad.w) * uv_scale;
 				vec2 uv = pixel_pos * vec2(uv_scale, -uv_scale);
 
 				// Rotate into circuit flow space (u = travel direction, v = lateral offset)
@@ -771,16 +786,19 @@ void fragment() {
 					}
 				}
 
-				// Precompute shared node & trail parameters once for both circuit lines
-				float half_trail_w = pixel_size * trail_thickness * 0.5;
+				// Scale trail width in local UV space (consistent across zooms) with sub-pixel AA coverage preservation
+				float geom_half_w = trail_thickness * 0.004;
+				float half_trail_w = max(geom_half_w, pixel_size * 0.5);
+				float subpixel_trail_atten = geom_half_w / half_trail_w;
+
 				float blur_half_w = half_trail_w + trail_blur;
 				float raw_inner_trail_w = max(half_trail_w - pixel_size * 0.5, 0.0) * trail_sharpness;
 				float inner_trail_w = raw_inner_trail_w * (1.0 - clamp(trail_blur * 10.0, 0.0, 1.0)) - trail_blur;
-				float trail_blur_atten = (trail_blur > 0.0)
+				float trail_blur_atten = subpixel_trail_atten * ((trail_blur > 0.0)
 					? mix(half_trail_w / max(blur_half_w, 1e-5), 1.0, trail_retention)
-					: 1.0;
+					: 1.0);
 
-				float node_edge_soft = pixel_size + node_blur;
+				float node_edge_soft = pixel_size * 0.5 + node_blur;
 				float node_blur_85 = node_blur * 0.85;
 
 				vec4 col1 = use_individual_colors ? line1_color : circuit_color;
