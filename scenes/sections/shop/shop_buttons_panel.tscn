@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="1_a7046"]
 [ext_resource type="Script" uid="uid://cslyi5amaspr2" path="res://scripts/shop_buttons_panel.gd" id="1_ipg35"]
+[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="2_3twxq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipg35"]
 content_margin_left = 0.0
@@ -71,7 +72,35 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 layout_mode = 2
 mouse_filter = 2
 
-[node name="InfoBtn" type="TextureButton" parent="Control" unique_id=1206417515]
+[node name="InfoBtn" parent="Control" unique_id=1797500818 instance=ExtResource("2_3twxq")]
+custom_minimum_size = Vector2(84, 37)
+custom_maximum_size = Vector2(84, 37)
+layout_mode = 1
+offset_left = 30.0
+offset_top = 62.0
+offset_right = -366.0
+offset_bottom = -21.0
+
+[node name="NextBattleBtn" parent="Control" unique_id=1879065629 instance=ExtResource("2_3twxq")]
+custom_minimum_size = Vector2(84, 37)
+custom_maximum_size = Vector2(84, 37)
+layout_mode = 1
+offset_left = 198.0
+offset_top = 50.0
+offset_right = -198.0
+offset_bottom = -33.0
+
+[node name="PauseBtn" parent="Control" unique_id=913668172 instance=ExtResource("2_3twxq")]
+custom_minimum_size = Vector2(84, 37)
+custom_maximum_size = Vector2(84, 37)
+layout_mode = 1
+offset_left = 368.0
+offset_top = 65.0
+offset_right = -28.0
+offset_bottom = -18.0
+
+[node name="InfoBtn2" type="TextureButton" parent="Control" unique_id=1206417515]
+visible = false
 layout_mode = 0
 offset_left = 30.0
 offset_top = 62.0
@@ -79,7 +108,8 @@ offset_right = 114.0
 offset_bottom = 99.0
 texture_normal = ExtResource("1_a7046")
 
-[node name="NextBattleBtn" type="TextureButton" parent="Control" unique_id=1765641669]
+[node name="NextBattleBtn2" type="TextureButton" parent="Control" unique_id=1765641669]
+visible = false
 layout_mode = 0
 offset_left = 198.0
 offset_top = 50.0
@@ -87,7 +117,8 @@ offset_right = 282.0
 offset_bottom = 87.0
 texture_normal = ExtResource("1_a7046")
 
-[node name="PauseBtn" type="TextureButton" parent="Control" unique_id=938866839]
+[node name="PauseBtn2" type="TextureButton" parent="Control" unique_id=938866839]
+visible = false
 layout_mode = 0
 offset_left = 369.0
 offset_top = 65.0

@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://b0un6bhbjsfmo" path="res://scripts/shop_bio_hack_item.gd" id="1_2ypd2"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="2_h754m"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="3_6acjl"]
+[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="5_kjigr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mdhfq"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -294,8 +295,14 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BuyBtn" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=635772459]
+[node name="BuyBtn2" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=635772459]
+visible = false
 layout_mode = 2
 texture_normal = ExtResource("3_6acjl")
+
+[node name="BuyBtn" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1797500818 instance=ExtResource("5_kjigr")]
+custom_minimum_size = Vector2(104, 53)
+custom_maximum_size = Vector2(104, 53)
+layout_mode = 2
 
 [connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/BuyBtn" to="." method="_on_buy_btn_button_up"]

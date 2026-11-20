@@ -1,8 +1,8 @@
 extends PanelContainer
 
-@onready var info_btn: TextureButton = $Control/InfoBtn
-@onready var next_battle_btn: TextureButton = $Control/NextBattleBtn
-@onready var pause_btn: TextureButton = $Control/PauseBtn
+@onready var info_btn: Button = $Control/InfoBtn
+@onready var next_battle_btn: Button = $Control/NextBattleBtn
+@onready var pause_btn: Button = $Control/PauseBtn
 @onready var combat_screen: PanelContainer = $"."
 
 

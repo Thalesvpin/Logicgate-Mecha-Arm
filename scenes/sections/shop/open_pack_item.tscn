@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_lhu5f"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="2_m4ylp"]
 [ext_resource type="Texture2D" uid="uid://3dcqftonh2pd" path="res://assets/info.png" id="4_0tatm"]
+[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="7_3j0t4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0, 0, 0, 0)
@@ -449,7 +450,8 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ChooseBtn" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=164201110]
+[node name="ChooseBtn2" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=164201110]
+visible = false
 custom_minimum_size = Vector2(324.9, 0)
 custom_maximum_size = Vector2(134.21, -1)
 layout_mode = 2
@@ -457,5 +459,10 @@ size_flags_horizontal = 4
 texture_normal = ExtResource("2_lhu5f")
 texture_hover = ExtResource("4_0tatm")
 stretch_mode = 0
+
+[node name="ChooseBtn" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1797500818 instance=ExtResource("7_3j0t4")]
+custom_minimum_size = Vector2(134.21, 50)
+custom_maximum_size = Vector2(134.21, 50)
+layout_mode = 2
 
 [connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/ChooseBtn" to="." method="_on_choose_btn_button_up"]

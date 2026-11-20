@@ -1,7 +1,7 @@
 extends PanelContainer
 
 @onready var price_container: PanelContainer = $MarginContainer/VBoxContainer/HBoxContainer/PriceContainer
-@onready var buy_btn: TextureButton = $MarginContainer/VBoxContainer/HBoxContainer/BuyBtn
+@onready var buy_btn: Button = $MarginContainer/VBoxContainer/HBoxContainer/BuyBtn
 @onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
 @onready var price_label: RichTextLabel = $MarginContainer/VBoxContainer/HBoxContainer/PriceContainer/MarginContainer/Price
 @onready var background: PanelContainer = $Control/Background

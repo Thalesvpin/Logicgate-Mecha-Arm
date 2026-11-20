@@ -25,7 +25,7 @@ func fib(n: int) -> int:
 		b = tmp
 	return a
 
-func _on_texture_button_button_up() -> void:
+func _on_buy_btn_button_up() -> void:
 	if Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] >= price:
 		var ef = AddMoneyEffect.new()
 		ef.amount -= price

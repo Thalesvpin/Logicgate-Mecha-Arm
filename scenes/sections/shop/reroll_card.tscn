@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bmfeyay8onxrk" path="res://scripts/reroll.gd" id="1_f6yic"]
 [ext_resource type="Texture2D" uid="uid://bj62b4fw5kt8w" path="res://assets/TCC_icon_shop_reroll.png" id="1_kfjrl"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_f6yic"]
+[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="3_huhil"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -138,7 +139,13 @@ texture = ExtResource("1_kfjrl")
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=979949122]
+[node name="BuyBtn" parent="MarginContainer/VBoxContainer" unique_id=1797500818 instance=ExtResource("3_huhil")]
+custom_minimum_size = Vector2(100, 50)
+custom_maximum_size = Vector2(100, 50)
+layout_mode = 2
+
+[node name="TextureButton2" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=979949122]
+visible = false
 custom_minimum_size = Vector2(100, 50)
 custom_maximum_size = Vector2(100, 50)
 layout_mode = 2
@@ -146,4 +153,4 @@ size_flags_horizontal = 4
 texture_normal = ExtResource("2_f6yic")
 stretch_mode = 0
 
-[connection signal="button_up" from="MarginContainer/VBoxContainer/TextureButton" to="." method="_on_texture_button_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/BuyBtn" to="." method="_on_buy_btn_button_up"]

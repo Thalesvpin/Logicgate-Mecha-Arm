@@ -6,7 +6,7 @@ extends PanelContainer
 @onready var rarity_texture: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder/RarityTexture
 @onready var corrupted_texture: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder/CorruptedTexture
 @onready var activation_uses: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivationUses
-@onready var activator_btn: TextureButton = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivatorBtn
+@onready var activator_btn: Button = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivatorBtn
 @onready var compact_version: GridContainer = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion
 @onready var extended_versions: VBoxContainer = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions
 @onready var rarity_outline: PanelContainer = $MarginContainer/RarityOutline
@@ -16,11 +16,12 @@ extends PanelContainer
 @onready var corrupted_texture_compact: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/CorruptedTextureCompact
 @onready var activation_uses_compact: TextureRect = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact
 @onready var activation_count_compact_label: RichTextLabel = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact/ActivationCountCompact
-@onready var activator_btn_compact: TextureButton = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivatorBtnCompact
+@onready var activator_btn_compact: Button = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivatorBtnCompact
 @onready var sell_overlay: PanelContainer = $SellOverlay
-@onready var confirm_btn: TextureButton = $SellOverlay/VBoxContainer/HBoxContainer/ConfirmBtn
-@onready var cancel_btn: TextureButton = $SellOverlay/VBoxContainer/HBoxContainer/CancelBtn
+@onready var confirm_btn: Button = $SellOverlay/VBoxContainer/HBoxContainer/ConfirmBtn
+@onready var cancel_btn: Button = $SellOverlay/VBoxContainer/HBoxContainer/CancelBtn
 @onready var confirm_sell_label: RichTextLabel = $SellOverlay/VBoxContainer/HBoxContainer2/ConfirmSellLabel
+@onready var activation_count_compact: RichTextLabel = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact/ActivationCountCompact
 
 const BIOHACK_BG_STYLEBOX_FLAT = preload("uid://dm33npd24kf11")
 const TECHMOD_BG_STYLEBOX_FLAT = preload("uid://dlegihcropccf")
@@ -94,11 +95,9 @@ func rarity_stylebox() -> StyleBox:
 
 func set_template(template: int):
 	if template == 1:
-		activator_btn.texture_normal = ACTIVATOR
 		compact_version.hide()
 		extended_versions.show()
 	if template == 2:
-		activator_btn.texture_normal = RARITY_PLACEHOLDER
 		compact_version.hide()
 		extended_versions.show()
 	if template == 3:
@@ -145,6 +144,20 @@ func sell() -> void:
 	if type == Type.BIO_HACK:
 		Global.implant_manager.remove_bio_hack(self)
 
+func activate() -> void:
+	if uses_amount > 0:
+		uses_amount -= 1
+		activation_count.text = str(uses_amount)
+		activation_count_compact.text = str(uses_amount)
+		for module in resource.config:
+			for effect in module.effect:
+				effect.apply()
+	if uses_amount == 0:
+		if type == Type.TECH_MOD:
+			Global.implant_manager.remove_tech_mod(self)
+		if type == Type.BIO_HACK:
+			Global.implant_manager.remove_bio_hack(self)
+
 func _make_custom_tooltip(for_text: String) -> Object:
 	var _tooltip = tooltip.instantiate()
 	_tooltip.config(for_text)
@@ -160,17 +173,7 @@ func _on_resized() -> void:
 			set_template(3)
 
 func _on_activator_btn_button_up() -> void:
-	if uses_amount > 0:
-		uses_amount -= 1
-		activation_count.text = str(uses_amount)
-		for module in resource.config:
-			for effect in module.effect:
-				effect.apply()
-	if uses_amount == 0:
-		if type == Type.TECH_MOD:
-			Global.implant_manager.remove_tech_mod(self)
-		if type == Type.BIO_HACK:
-			Global.implant_manager.remove_bio_hack(self)
+	activate()
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -182,3 +185,6 @@ func _on_confirm_btn_button_up() -> void:
 
 func _on_cancel_btn_button_up() -> void:
 	sell_overlay.hide()
+
+func _on_activator_btn_compact_button_up() -> void:
+	activate()

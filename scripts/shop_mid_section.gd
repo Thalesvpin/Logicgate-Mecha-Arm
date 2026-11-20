@@ -47,7 +47,7 @@ func chose_pack(pack) -> void:
 	var fade_list = fade_list2.duplicate()
 	chosen_pack = pack
 	chosen_packs.append(pack)
-	choices_left = pack.choices_amount
+	choices_left = pack.choices_amount[pack._theme]
 	fade_list.erase(pack)
 	var size = fade_list.size()
 	var i = 0
@@ -90,8 +90,8 @@ func open_pack(pack: PanelContainer) -> void:
 		var item = OPEN_PACK_ITEM.instantiate()
 		pack_items.add_child(item)
 		item.load_implant(pack.drawn[i])
-	instruction.text = 'Escolha até %d Implante' % pack.choices_amount
-	if pack.choices_amount > 1:
+	instruction.text = 'Escolha até %d Implante' % pack.choices_amount[pack._theme]
+	if pack.choices_amount[pack._theme] > 1:
 		instruction.text += 's'
 
 func close_pack() -> void:

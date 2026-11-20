@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://fyw37f608gmu" path="res://scripts/pack_card.gd" id="1_q8owf"]
 [ext_resource type="PackedScene" uid="uid://0ysjvolv0vqk" path="res://scenes/sections/shop/pack_icon_template.tscn" id="2_pfw6h"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_ypclj"]
+[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="4_q8owf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -192,7 +193,13 @@ fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BuyBtn" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=819162156]
+[node name="BuyBtn" parent="MarginContainer/VBoxContainer" unique_id=1797500818 instance=ExtResource("4_q8owf")]
+custom_minimum_size = Vector2(134, 60)
+custom_maximum_size = Vector2(134, 60)
+layout_mode = 2
+
+[node name="BuyBtn2" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=819162156]
+visible = false
 custom_minimum_size = Vector2(134, 60)
 custom_maximum_size = Vector2(134, 60)
 layout_mode = 2

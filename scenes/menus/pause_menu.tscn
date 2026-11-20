@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://e736fy4hsxec"]
 
 [ext_resource type="Script" uid="uid://civgdkgas7cut" path="res://scripts/pause_menu.gd" id="1_7unhi"]
+[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="2_2wrho"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_gsnt3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
@@ -50,21 +51,39 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ContinueBtn" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1505107572]
+[node name="ContinueBtn" parent="Background/VBoxContainer/VBoxContainer" unique_id=1797500818 instance=ExtResource("2_2wrho")]
+custom_minimum_size = Vector2(84, 37)
+custom_maximum_size = Vector2(84, 37)
+layout_mode = 2
+
+[node name="CopySeed" parent="Background/VBoxContainer/VBoxContainer" unique_id=1480534752 instance=ExtResource("2_2wrho")]
+custom_minimum_size = Vector2(84, 37)
+custom_maximum_size = Vector2(84, 37)
+layout_mode = 2
+
+[node name="MainMenu" parent="Background/VBoxContainer/VBoxContainer" unique_id=1428896820 instance=ExtResource("2_2wrho")]
+custom_minimum_size = Vector2(84, 37)
+custom_maximum_size = Vector2(84, 37)
+layout_mode = 2
+
+[node name="ContinueBtn2" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1505107572]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "Continar partida"
 texture_normal = ExtResource("2_gsnt3")
 
-[node name="CopySeed" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1497742757]
+[node name="CopySeed2" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1497742757]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tooltip_text = "Copiar Semente da Partida"
 texture_normal = ExtResource("2_gsnt3")
 
-[node name="MainMenu" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1363683987]
+[node name="MainMenu2" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1363683987]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4

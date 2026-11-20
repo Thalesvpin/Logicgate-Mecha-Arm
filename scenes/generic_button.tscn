@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://du5nn3tvuuxhx"]
+
+[ext_resource type="Script" uid="uid://dj7rummrj4f2e" path="res://scripts/generic_button.gd" id="1_048u1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eetg5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0vipy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_esiv2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_veuwc"]
+
+[node name="GenericButton" type="Button" unique_id=1797500818]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mjyp6")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_eetg5")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_0vipy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_esiv2")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_veuwc")
+script = ExtResource("1_048u1")
+
+[node name="Normal" type="Control" parent="." unique_id=849061061]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="Normal" unique_id=19184309]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Normal" unique_id=754161398]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="Hover" type="Control" parent="." unique_id=1507307454]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="Hover" unique_id=1203349769]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Hover" unique_id=517343348]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="Pressed" type="Control" parent="." unique_id=1815691316]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="Pressed" unique_id=130513743]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Pressed" unique_id=788436688]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
