@@ -13,6 +13,8 @@ const PACK_ICON_TEMPLATE = "uid://0ysjvolv0vqk"
 @export var choices_amount: Dictionary[Type2, int]
 @export var pack_title: Dictionary[Type2, String]
 @export var pack_name: Dictionary[Type2, String]
+@export var pack_icon: Dictionary[Type2, PackedScene]
+@export var pack_background: Dictionary[Type2, PackedScene]
 
 enum Content {ANY, TECH_MOD, BIO_HACK, CORRUPTED}
 enum Type {BIG, MINI, CORRUPTED}
@@ -33,36 +35,20 @@ func _ready() -> void:
 
 func randomize_pack2() -> void:
 	var chance = Global.random.next() % 100
-	var loaded_bg
-	var loaded_icon
 	if chance:
 		_theme = Type2.MINI_MIX
-		#loaded_bg = preload()
-		#loaded_icon = preload()
 	elif chance:
 		_theme = Type2.BIG_MIX
-		#loaded_bg = preload()
-		#loaded_icon = preload()
 	elif chance:
 		_theme = Type2.CORRUPTED_MIX
-		#loaded_bg = preload()
-		#loaded_icon = preload()
 	elif chance:
 		_theme = Type2.MINI_TM
-		#loaded_bg = preload()
-		#loaded_icon = preload()
 	elif chance:
 		_theme = Type2.BIG_TM
-		#loaded_bg = preload()
-		#loaded_icon = preload()
 	elif chance:
 		_theme = Type2.MINI_BH
-		#loaded_bg = preload()
-		#loaded_icon = preload()
 	elif chance:
 		_theme = Type2.BIG_BH
-		#loaded_bg = preload()
-		#loaded_icon = preload()
 	
 	price = packs_price[_theme]
 	items_amount = implants_amount[_theme]
@@ -70,7 +56,8 @@ func randomize_pack2() -> void:
 	title.text = pack_title[_theme]
 	name_label.text = pack_name[_theme]
 	price_label.text = '$%d' % price
-	background.add_child(loaded_bg)
+	background.add_child(pack_background[_theme].instantiate())
+	icon_holder.add_child(pack_icon[_theme].instantiate())
 
 func randomize_pack() -> void:
 	var chance = Global.random.next() % 100
@@ -83,7 +70,7 @@ func randomize_pack() -> void:
 		title.add_theme_color_override('default_color', Color.BLACK)
 		name_label.text = 'minipack\n.zip'
 		price_label.text = '$%d' % price
-		bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
+		#bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
 		var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
 		style.border_color = LivePalette.SHOP.PACKOUTLINE
 		add_theme_stylebox_override("panel", style)
@@ -96,7 +83,7 @@ func randomize_pack() -> void:
 		title.add_theme_color_override('default_color', Color.BLACK)
 		name_label.text = 'megapack\n.zip'
 		price_label.text = '$%d' % price
-		bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
+		#bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
 		var border_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
 		border_style.border_color = LivePalette.SHOP.PACKOUTLINE
 		add_theme_stylebox_override("panel", border_style)
@@ -109,7 +96,7 @@ func randomize_pack() -> void:
 		title.add_theme_color_override('default_color', LivePalette.GLOBAL.REDDARK)
 		name_label.text = 'pack_corrompido'
 		price_label.text = '$%d' % price
-		bg_shader.set_shader_parameter('start_color', LivePalette.GLOBAL.REDHEALTH)
+		#bg_shader.set_shader_parameter('start_color', LivePalette.GLOBAL.REDHEALTH)
 		var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
 		style.border_color = LivePalette.GLOBAL.REDDARK
 		add_theme_stylebox_override("panel", style)

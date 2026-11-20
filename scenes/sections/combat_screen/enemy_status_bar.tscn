@@ -815,9 +815,6 @@ corner_radius_top_left = 500
 corner_radius_top_right = 500
 corner_radius_bottom_right = 500
 corner_radius_bottom_left = 500
-metadata/_live_palette_bindings = {
-"bg_color": "cqbp4"
-}
 
 [node name="EnemyStatusBar" type="PanelContainer" unique_id=1067671728]
 z_index = 1
