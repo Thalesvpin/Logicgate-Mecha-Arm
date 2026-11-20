@@ -795,6 +795,20 @@ corner_radius_top_right = 28
 corner_radius_bottom_right = 28
 corner_radius_bottom_left = 28
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_awvy4"]
+bg_color = Color(0.75216264, 0.24335039, 0.83927757, 1)
+corner_radius_top_left = 500
+corner_radius_top_right = 500
+corner_radius_bottom_right = 500
+corner_radius_bottom_left = 500
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfrdx"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 500
+corner_radius_top_right = 500
+corner_radius_bottom_right = 500
+corner_radius_bottom_left = 500
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ifu1"]
 bg_color = Color(0, 0.6, 0.50980395, 1)
 corner_radius_top_left = 500
@@ -804,13 +818,6 @@ corner_radius_bottom_left = 500
 metadata/_live_palette_bindings = {
 "bg_color": "cqbp4"
 }
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfrdx"]
-bg_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 500
-corner_radius_top_right = 500
-corner_radius_bottom_right = 500
-corner_radius_bottom_left = 500
 
 [node name="EnemyStatusBar" type="PanelContainer" unique_id=1067671728]
 z_index = 1
@@ -1132,7 +1139,7 @@ offset_bottom = 66.0
 offset_transform_enabled = true
 offset_transform_scale = Vector2(0.95, 0.95)
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_3ifu1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_awvy4")
 
 [node name="Control" type="Control" parent="Control/TurnIndex" unique_id=1606290786]
 layout_mode = 2

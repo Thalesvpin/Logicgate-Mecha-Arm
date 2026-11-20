@@ -27,8 +27,9 @@ var _theme
 var bg_shader: ShaderMaterial
 
 func _ready() -> void:
-	bg_shader = background.material.duplicate() as ShaderMaterial
-	background.material = bg_shader
+	#bg_shader = background.material.duplicate() as ShaderMaterial
+	#background.material = bg_shader
+	pass
 
 func randomize_pack2() -> void:
 	var chance = Global.random.next() % 100

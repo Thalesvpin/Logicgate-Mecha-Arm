@@ -33,12 +33,3 @@ dano do ataque = dano base * mult de ataque
 ============================
 centralizar os inimigos verticalmente
 separar techmods e biohacks em seus respectivos lados dentro de um pacote
-
-PACOTES
-mini mix - barato
-big mix - caro
-corrupted mix - barato
-mini TM - barato
-big TM - caro
-min BH - barato
-big BH - caro

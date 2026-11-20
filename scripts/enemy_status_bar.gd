@@ -82,7 +82,6 @@ func update(animate: bool = false) -> void:
 func update_turn(_arg = null) -> void:
 	await get_tree().create_timer(1).timeout
 	var turn_idx = Global.turn_manager.get_turn_index(enemy)
-	print('aeo: ', turn_idx)
 	turn_index_label.text = str(turn_idx if turn_idx > 0 else '-')
 
 func enemy_swap() -> void:
