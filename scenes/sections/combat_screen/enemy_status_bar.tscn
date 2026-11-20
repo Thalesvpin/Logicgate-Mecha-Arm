@@ -16,8 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://b84t21kgtuq2e" path="res://assets/right_bot.png" id="8_kcuf8"]
 [ext_resource type="Texture2D" uid="uid://cy24wwjdhjytb" path="res://assets/bot_l_bg.png" id="9_jfivo"]
 [ext_resource type="Texture2D" uid="uid://veggqm6h70t8" path="res://assets/top_r_bg.png" id="11_wgtne"]
-[ext_resource type="FontFile" uid="uid://blq7eikhycrm5" path="res://fonts/arial_black.ttf" id="12_bfrdx"]
 [ext_resource type="Texture2D" uid="uid://ng23448efa4" path="res://assets/bot_r_bg.png" id="14_t30n1"]
+[ext_resource type="FontFile" uid="uid://dgymnmcm6pcfu" path="res://fonts/Chivo/Chivo-Black.woff2" id="18_awvy4"]
 [ext_resource type="Script" uid="uid://boi1jcaucfao8" path="res://scripts/apply_custom_tooltip.gd" id="19_t30n1"]
 [ext_resource type="PackedScene" uid="uid://d0grgfgwevser" path="res://scenes/simple_tooltip.tscn" id="20_awvy4"]
 
@@ -758,6 +758,10 @@ cache/0/28/0/scale = 1.0
 font = SubResource("FontFile_a7lv4")
 font_size = 28
 
+[sub_resource type="FontVariation" id="FontVariation_a4jf8"]
+base_font = ExtResource("18_awvy4")
+spacing_glyph = 2
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ryokx"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 2
@@ -1036,9 +1040,9 @@ grow_horizontal = 2
 grow_vertical = 2
 tooltip_text = "ngnfg"
 theme_override_colors/default_color = Color(1, 0.88235295, 0.7176471, 1)
-theme_override_constants/outline_size = 10
-theme_override_fonts/normal_font = ExtResource("12_bfrdx")
-theme_override_font_sizes/normal_font_size = 26
+theme_override_constants/outline_size = 16
+theme_override_fonts/normal_font = SubResource("FontVariation_a4jf8")
+theme_override_font_sizes/normal_font_size = 30
 text = "5645"
 horizontal_alignment = 1
 vertical_alignment = 1
