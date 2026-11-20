@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://d2v4gydixspon"]
 
 [ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_isg8p"]
-[ext_resource type="Texture2D" uid="uid://b32cwmg64bvym" path="res://assets/xnor_gate.png" id="2_isg8p"]
+[ext_resource type="Texture2D" uid="uid://bvl6rtioslg0u" path="res://assets/logic_gates/gate_XNOR_outline.png" id="2_fry2m"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="4_7v58i"]
 [ext_resource type="Script" uid="uid://c6ivqjlx2f15x" path="res://scripts/output.gd" id="5_o7kfd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sw6uh"]
-size = Vector2(128, 128)
+size = Vector2(128, 64)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eofqg"]
 
@@ -15,8 +15,8 @@ script = ExtResource("1_isg8p")
 type = 6
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
-scale = Vector2(0.69571745, -1.7472013)
-texture = ExtResource("2_isg8p")
+scale = Vector2(0.257, 0.257)
+texture = ExtResource("2_fry2m")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=283406698]
 shape = SubResource("RectangleShape2D_sw6uh")

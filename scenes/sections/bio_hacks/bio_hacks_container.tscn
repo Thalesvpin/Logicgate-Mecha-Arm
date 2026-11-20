@@ -4,8 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://byrpiwaihcjtv" path="res://assets/icon_mini_biohacks.png" id="2_unovg"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="3_3a434"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="4_snh1h"]
-[ext_resource type="Shader" uid="uid://chr5yh64fe4ws" path="res://shaders/CRTpass2.gdshader" id="5_x5458"]
-[ext_resource type="Script" uid="uid://cqb2mhqkx5vxd" path="res://scenes/sections/shop/CRTpass2_shadercontroller.gd" id="6_unovg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0, 0, 0, 1)
@@ -33,7 +31,6 @@ font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Environment" id="Environment_mjyp6"]
 background_mode = 3
-glow_enabled = true
 glow_intensity = 2.19
 glow_bloom = 0.29
 
@@ -557,54 +554,6 @@ shader_parameter/degauss_hue_shift_amount = 3.14159
 shader_parameter/degauss_invert_strength = 0.3
 shader_parameter/degauss_ripple_strength = 0.05
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
-shader = ExtResource("5_x5458")
-shader_parameter/sec_use_curve = false
-shader_parameter/sec_curve = 0.0
-shader_parameter/sec_mask_pattern = 0
-shader_parameter/sec_mask_scale = 20.0
-shader_parameter/sec_mask_smoothness = 0.1
-shader_parameter/sec_mask_invert = false
-shader_parameter/rect_aspect = 0.0
-shader_parameter/sec_mask_decouple_aspect = true
-shader_parameter/sec_mask_custom_aspect = 1.0
-shader_parameter/sec_hue_shift = 0.0
-shader_parameter/sec_saturation = 1.0
-shader_parameter/sec_brightness = 1.586000075335
-shader_parameter/sec_contrast = 1.0
-shader_parameter/sec_use_sharpness = false
-shader_parameter/sec_sharpness = 1.0
-shader_parameter/sec_use_wobble = false
-shader_parameter/sec_wobble_strength = 1.0
-shader_parameter/sec_wobble_speed = 1.0
-shader_parameter/sec_use_sweep = false
-shader_parameter/sec_sweep_width = 0.15
-shader_parameter/sec_sweep_speed = 0.15
-shader_parameter/sec_sweep_interval = 3.0
-shader_parameter/sec_sweep_offset = 0.0
-shader_parameter/sec_sweep_angle = 0.0
-shader_parameter/sec_sweep_hue = 1.57
-shader_parameter/sec_sweep_saturation = 1.2
-shader_parameter/sec_sweep_brightness = 1.2
-shader_parameter/sec_use_echo = false
-shader_parameter/sec_echo_strength = 0.5
-shader_parameter/sec_echo_offset = 0.015
-shader_parameter/sec_use_dot_crawl = false
-shader_parameter/sec_dot_crawl_strength = 0.5
-shader_parameter/sec_dot_crawl_speed = 15.0
-shader_parameter/sec_use_interlaced_flicker = false
-shader_parameter/sec_interlaced_strength = 0.5
-shader_parameter/sec_use_interlaced_jitter = false
-shader_parameter/sec_jitter_strength = 0.005
-shader_parameter/sec_jitter_speed = 10.0
-shader_parameter/sec_use_roll = false
-shader_parameter/sec_roll_strength = 0.1
-shader_parameter/sec_roll_speed = 2.0
-shader_parameter/sec_roll_size = 15.0
-shader_parameter/sec_use_noise = false
-shader_parameter/sec_noise_strength = 0.1
-shader_parameter/sec_chroma_noise = false
-
 [node name="BioHacksContainer" type="PanelContainer" unique_id=1296857636]
 anchors_preset = 15
 anchor_right = 1.0
@@ -709,16 +658,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="CRT Shader" type="ColorRect" parent="." unique_id=152339030]
+visible = false
 material = SubResource("ShaderMaterial_eetg5")
 layout_mode = 2
 mouse_filter = 2
-
-[node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=1170154525]
-copy_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1861333695]
-visible = false
-material = SubResource("ShaderMaterial_0vipy")
-layout_mode = 2
-mouse_filter = 2
-script = ExtResource("6_unovg")

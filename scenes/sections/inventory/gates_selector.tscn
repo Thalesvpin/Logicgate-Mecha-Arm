@@ -5,8 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="2_3e3yi"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="4_abqy0"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="5_vwx3o"]
-[ext_resource type="Shader" uid="uid://chr5yh64fe4ws" path="res://shaders/CRTpass2.gdshader" id="6_ev4s2"]
-[ext_resource type="Script" uid="uid://cqb2mhqkx5vxd" path="res://scenes/sections/shop/CRTpass2_shadercontroller.gd" id="7_1wme1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.09019608, 0.05882353, 0, 1)
@@ -38,7 +36,6 @@ font_color = Color(0.7137255, 1, 0.6901961, 1)
 
 [sub_resource type="Environment" id="Environment_mjyp6"]
 background_mode = 3
-glow_enabled = true
 glow_bloom = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jnc7b"]
@@ -561,54 +558,6 @@ shader_parameter/degauss_hue_shift_amount = 3.14159
 shader_parameter/degauss_invert_strength = 0.3
 shader_parameter/degauss_ripple_strength = 0.05
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_eetg5"]
-shader = ExtResource("6_ev4s2")
-shader_parameter/sec_use_curve = false
-shader_parameter/sec_curve = 0.0
-shader_parameter/sec_mask_pattern = 0
-shader_parameter/sec_mask_scale = 20.0
-shader_parameter/sec_mask_smoothness = 0.1
-shader_parameter/sec_mask_invert = false
-shader_parameter/rect_aspect = 0.0
-shader_parameter/sec_mask_decouple_aspect = true
-shader_parameter/sec_mask_custom_aspect = 1.0
-shader_parameter/sec_hue_shift = 0.0
-shader_parameter/sec_saturation = 1.0
-shader_parameter/sec_brightness = 2.4910001183225
-shader_parameter/sec_contrast = 1.0
-shader_parameter/sec_use_sharpness = false
-shader_parameter/sec_sharpness = 1.0
-shader_parameter/sec_use_wobble = false
-shader_parameter/sec_wobble_strength = 1.0
-shader_parameter/sec_wobble_speed = 1.0
-shader_parameter/sec_use_sweep = false
-shader_parameter/sec_sweep_width = 0.15
-shader_parameter/sec_sweep_speed = 0.15
-shader_parameter/sec_sweep_interval = 3.0
-shader_parameter/sec_sweep_offset = 0.0
-shader_parameter/sec_sweep_angle = 0.0
-shader_parameter/sec_sweep_hue = 1.57
-shader_parameter/sec_sweep_saturation = 1.2
-shader_parameter/sec_sweep_brightness = 1.2
-shader_parameter/sec_use_echo = false
-shader_parameter/sec_echo_strength = 0.5
-shader_parameter/sec_echo_offset = 0.015
-shader_parameter/sec_use_dot_crawl = false
-shader_parameter/sec_dot_crawl_strength = 0.5
-shader_parameter/sec_dot_crawl_speed = 15.0
-shader_parameter/sec_use_interlaced_flicker = false
-shader_parameter/sec_interlaced_strength = 0.5
-shader_parameter/sec_use_interlaced_jitter = false
-shader_parameter/sec_jitter_strength = 0.005
-shader_parameter/sec_jitter_speed = 10.0
-shader_parameter/sec_use_roll = false
-shader_parameter/sec_roll_strength = 0.1
-shader_parameter/sec_roll_speed = 2.0
-shader_parameter/sec_roll_size = 15.0
-shader_parameter/sec_use_noise = false
-shader_parameter/sec_noise_strength = 0.1
-shader_parameter/sec_chroma_noise = false
-
 [node name="GatesSelector" type="PanelContainer" unique_id=1904067160]
 anchors_preset = 15
 anchor_right = 1.0
@@ -777,16 +726,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="CRT Shader" type="ColorRect" parent="." unique_id=1511101606]
+visible = false
 material = SubResource("ShaderMaterial_mjyp6")
 layout_mode = 2
 mouse_filter = 2
-
-[node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=1987508057]
-copy_mode = 2
-
-[node name="CRTpass2 Shader" type="ColorRect" parent="." unique_id=990830919]
-visible = false
-material = SubResource("ShaderMaterial_eetg5")
-layout_mode = 2
-mouse_filter = 2
-script = ExtResource("7_1wme1")
