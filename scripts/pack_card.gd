@@ -5,13 +5,22 @@ class_name Pack
 @onready var title: RichTextLabel = $MarginContainer/VBoxContainer/PanelContainer/Title
 @onready var name_label: RichTextLabel = $MarginContainer/VBoxContainer/Name
 @onready var background: PanelContainer = $Background
+@onready var icon_holder: PanelContainer = $MarginContainer/VBoxContainer/IconHolder
+const PACK_BACKGROUND_TEMPLATE = "uid://baptggk6ejtp7"
+const PACK_ICON_TEMPLATE = "uid://0ysjvolv0vqk"
+@export var packs_price: Dictionary[Type2, int]
+@export var implants_amount: Dictionary[Type2, int]
+@export var choices_amount: Dictionary[Type2, int]
+@export var pack_title: Dictionary[Type2, String]
+@export var pack_name: Dictionary[Type2, String]
 
 enum Content {ANY, TECH_MOD, BIO_HACK, CORRUPTED}
 enum Type {BIG, MINI, CORRUPTED}
+enum Type2 {MINI_MIX, BIG_MIX, CORRUPTED_MIX, MINI_TM, BIG_TM, MINI_BH, BIG_BH}
 
 var price: int
 var items_amount: int = 3
-var choices_amount: int = 1
+var _choices_amount: int = 1
 var content: Content
 var drawn: Array[Implant]
 var _theme
@@ -21,13 +30,54 @@ func _ready() -> void:
 	bg_shader = background.material.duplicate() as ShaderMaterial
 	background.material = bg_shader
 
+func randomize_pack2() -> void:
+	var chance = Global.random.next() % 100
+	var loaded_bg
+	var loaded_icon
+	if chance:
+		_theme = Type2.MINI_MIX
+		#loaded_bg = preload()
+		#loaded_icon = preload()
+	elif chance:
+		_theme = Type2.BIG_MIX
+		#loaded_bg = preload()
+		#loaded_icon = preload()
+	elif chance:
+		_theme = Type2.CORRUPTED_MIX
+		#loaded_bg = preload()
+		#loaded_icon = preload()
+	elif chance:
+		_theme = Type2.MINI_TM
+		#loaded_bg = preload()
+		#loaded_icon = preload()
+	elif chance:
+		_theme = Type2.BIG_TM
+		#loaded_bg = preload()
+		#loaded_icon = preload()
+	elif chance:
+		_theme = Type2.MINI_BH
+		#loaded_bg = preload()
+		#loaded_icon = preload()
+	elif chance:
+		_theme = Type2.BIG_BH
+		#loaded_bg = preload()
+		#loaded_icon = preload()
+	
+	price = packs_price[_theme]
+	items_amount = implants_amount[_theme]
+	_choices_amount = choices_amount[_theme]
+	title.text = pack_title[_theme]
+	name_label.text = pack_name[_theme]
+	price_label.text = '$%d' % price
+	background.add_child(loaded_bg)
+
 func randomize_pack() -> void:
 	var chance = Global.random.next() % 100
 	if chance < 45:
 		_theme = Type.MINI
 		price = 200
 		items_amount = 2
-		choices_amount = 1
+		_choices_amount = 1
 		title.text = 'PACOTE'
 		title.add_theme_color_override('default_color', Color.BLACK)
 		name_label.text = 'minipack\n.zip'
@@ -40,7 +90,7 @@ func randomize_pack() -> void:
 		_theme = Type.BIG
 		price = 300
 		items_amount = 5
-		choices_amount = 2
+		_choices_amount = 2
 		title.text = 'PACOTÃO'
 		title.add_theme_color_override('default_color', Color.BLACK)
 		name_label.text = 'megapack\n.zip'
@@ -53,7 +103,7 @@ func randomize_pack() -> void:
 		_theme = Type.CORRUPTED
 		price = 300
 		items_amount = 3
-		choices_amount = 1
+		_choices_amount = 1
 		title.text = 'P̴͉̘̞̃̓̀Ą̴̛̯͈̋̌͑̈C̵̮͓̣̭̋̽̔̕ͅO̷̜̟̓̔́T̶̛̰͓̦͂̏Ę̷͎̎́'
 		title.add_theme_color_override('default_color', LivePalette.GLOBAL.REDDARK)
 		name_label.text = 'pack_corrompido'

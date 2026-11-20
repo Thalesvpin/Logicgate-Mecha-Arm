@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_bycc7"]
 [ext_resource type="Script" uid="uid://fyw37f608gmu" path="res://scripts/pack_card.gd" id="1_q8owf"]
+[ext_resource type="PackedScene" uid="uid://0ysjvolv0vqk" path="res://scenes/sections/shop/pack_icon_template.tscn" id="2_pfw6h"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_ypclj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
@@ -17,65 +18,6 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 metadata/_live_palette_bindings = {
 "border_color": "2pjy5"
-}
-
-[sub_resource type="Shader" id="Shader_pfw6h"]
-code = "shader_type canvas_item;
-render_mode unshaded;
-
-
-uniform vec2 direction = vec2(0.0, -1.0);
-uniform vec4 start_color : source_color;
-uniform vec4 end_color : source_color;
-
-
-float vmax(vec4 vec) {
-	return max(vec.x, max(vec.y, max(vec.z, vec.w)));
-}
-
-
-float random(vec2 seed, float pmin, float pmax) {
-	return pmin + fract(sin(dot(seed.xy, vec2(12.9898, 78.233))) * 43758.5453123) * (pmax - pmin);
-}
-
-
-float get_color_count(float range) {
-	return ceil(clamp(range, 0.0, 1.0) * 255.0);
-}
-
-
-float get_delta(vec2 uv) {
-	vec2 dir = normalize(direction);
-	return (dir.x < 0.0 ? (1.0 - uv.x) : uv.x) * dir.x * dir.x + (dir.y < 0.0 ? (1.0 - uv.y) : uv.y) * dir.y * dir.y;
-}
-
-
-void fragment() {
-	if (start_color == end_color) {
-		COLOR = start_color;
-	}
-	else {
-		float color_count = get_color_count(vmax(abs(end_color - start_color)));
-		float inv_color_count = 1.0 / color_count;
-
-
-		float color_index = floor(get_delta(UV) * color_count);
-		vec4 color1 = mix(start_color, end_color, color_index / color_count);
-		vec4 color2 = mix(start_color, end_color, (color_index + 1.0) / color_count);
-
-
-		float ratio = clamp(mod(get_delta(UV), inv_color_count) * color_count + random(UV, -0.5, 0.5), 0.0, 1.0);
-		COLOR = color1 * (1.0 - ratio) + color2 * ratio;
-	}
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_q8owf"]
-shader = SubResource("Shader_pfw6h")
-shader_parameter/direction = Vector2(0, -1)
-shader_parameter/start_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
-shader_parameter/end_color = Color(0, 0, 0, 1)
-metadata/_live_palette_bindings = {
-"shader_parameter/start_color": "2pjy5"
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdl66"]
@@ -103,6 +45,8 @@ metadata/_live_palette_bindings = {
 "bg_color": "2pjy5"
 }
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a7lv4"]
+
 [node name="PackCard" type="PanelContainer" unique_id=1952346557]
 custom_minimum_size = Vector2(200, 365)
 custom_maximum_size = Vector2(200, 365)
@@ -116,9 +60,48 @@ offset_transform_enabled = true
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 script = ExtResource("1_q8owf")
+packs_price = Dictionary[int, int]({
+0: 300,
+1: 600,
+2: 400,
+3: 300,
+4: 600,
+5: 300
+})
+implants_amount = Dictionary[int, int]({
+0: 2,
+1: 5,
+2: 3,
+3: 2,
+4: 5,
+5: 2
+})
+choices_amount = Dictionary[int, int]({
+0: 1,
+1: 2,
+2: 1,
+3: 1,
+4: 2,
+5: 1
+})
+pack_title = Dictionary[int, String]({
+0: "",
+1: "",
+2: "",
+3: "",
+4: "",
+5: ""
+})
+pack_name = Dictionary[int, String]({
+0: "minipack\\n.zip",
+1: "megapack\\n.zip",
+2: "",
+3: "minitechpack\\n.zip",
+4: "megatechpack\\n.zip",
+5: "minibiopack\\n.zip"
+})
 
 [node name="Background" type="PanelContainer" parent="." unique_id=627834542]
-material = SubResource("ShaderMaterial_q8owf")
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jdl66")
 
@@ -160,7 +143,17 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="IconHolder" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=210651699]
+custom_minimum_size = Vector2(0, 92)
+custom_maximum_size = Vector2(-1, 92)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_a7lv4")
+
+[node name="PackIconTemplate" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1594143323 instance=ExtResource("2_pfw6h")]
+layout_mode = 2
+
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=633118401]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("1_bycc7")

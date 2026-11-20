@@ -5,6 +5,10 @@
 
 feedback de ação (jogador e inimigo)
 
+IMPORTANTES MAS NÃO URGENTES
+resolve tempo de ligar paineis contextuais
+acender luzes no painel de execução
+mudar cor do contador de vez dos inimigos
 
 
 

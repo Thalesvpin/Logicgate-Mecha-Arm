@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://0ysjvolv0vqk"]
+
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_x7rhq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
+
+[node name="PackIconTemplate" type="PanelContainer" unique_id=1594143323]
+custom_minimum_size = Vector2(194, 92)
+custom_maximum_size = Vector2(194, 92)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=882542395]
+layout_mode = 2
+texture = ExtResource("1_x7rhq")
+stretch_mode = 5
