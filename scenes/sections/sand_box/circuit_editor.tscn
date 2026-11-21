@@ -9,8 +9,14 @@
 [ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/sections/sand_box/game_input_manager.tscn" id="6_lwkx8"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="8_kaha7"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="8_psau8"]
-[ext_resource type="Texture2D" uid="uid://yiixgalslpim" path="res://assets/ENFERMEIRA.png" id="8_rsy7x"]
+[ext_resource type="Texture2D" uid="uid://rnuwmvofspcs" path="res://assets/Circuit Wall/cornerL.png" id="11_28udb"]
 [ext_resource type="PackedScene" uid="uid://chjmp8lbsyviq" path="res://scenes/sections/sand_box/actions_panel_sandbox.tscn" id="11_pvlru"]
+[ext_resource type="Texture2D" uid="uid://cpplx5sp6mv0j" path="res://assets/Circuit Wall/tooth.png" id="11_yybyw"]
+[ext_resource type="Texture2D" uid="uid://dpy6b7ev5cbbn" path="res://assets/Circuit Wall/middletop.png" id="12_pl7wn"]
+[ext_resource type="Texture2D" uid="uid://bpakvsrjoeden" path="res://assets/Circuit Wall/cornerR.png" id="13_yybyw"]
+[ext_resource type="Texture2D" uid="uid://cns3isdku5l7o" path="res://assets/Circuit Wall/middleleft.png" id="15_ofdve"]
+[ext_resource type="Texture2D" uid="uid://bsce866hyd2h7" path="res://assets/Circuit Wall/middle.png" id="16_7e8s2"]
+[ext_resource type="Texture2D" uid="uid://clwy3o47pll6" path="res://assets/Circuit Wall/middleright.png" id="17_6k8el"]
 
 [sub_resource type="Gradient" id="Gradient_psau8"]
 offsets = PackedFloat32Array(0, 0.328125, 1)
@@ -59,7 +65,7 @@ shader_parameter/repulsion_pinch_amount = -2.0
 shader_parameter/repulsion_wave_freq = 5.0
 shader_parameter/hole_punch_radius = 0.0
 shader_parameter/mouse_global_pos = Vector2(-100000, -100000)
-shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
+shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 518.16547, 0, 0.37067363, -100000, 427.23566, 0, 0.36934698, -100000, 545.8073, 0, 0.37095454, -100000, 722.0564, 0, 0.36803997, -100000, 619.97345, 0, 0.37095454, -100000, 389.01385, 0, 0.36839703, -100000, 403.29504, 0, 0.3709277, -100000, 507.6098, 0, 0.37088284)
 shader_parameter/active_click_repulsion_count = 0
 shader_parameter/use_ripple = true
 shader_parameter/ripple_ring_count = 1
@@ -70,7 +76,7 @@ shader_parameter/ripple_decay = 1.0
 shader_parameter/ripple_grid_distortion = 0.0
 shader_parameter/use_ripple_custom_color = true
 shader_parameter/ripple_custom_color = Color(0.3, 1, 0.96500003, 1)
-shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
+shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 518.16547, 0, 0.3030221, -100000, 427.23566, 0, 0.30215415, -100000, 545.8073, 0, 0.303208, -100000, 722.0564, 0, 0.3015071, -100000, 619.97345, 0, 0.3032058, -100000, 389.01385, 0, 0.30151483, -100000, 403.29504, 0, 0.30318826, -100000, 507.6098, 0, 0.3031589)
 shader_parameter/active_ripple_count = 0
 shader_parameter/main_grid_style = 0
 shader_parameter/main_line_thickness = 0.5
@@ -772,24 +778,151 @@ offset_top = 13.0
 offset_right = 1046.0
 offset_bottom = 103.0
 
-[node name="Wall" type="ColorRect" parent="." unique_id=282604720]
-visible = false
+[node name="Wall" type="Control" parent="." unique_id=200799278]
 layout_mode = 2
-offset_transform_enabled = true
 offset_transform_visual_only = false
 
-[node name="TextureRect" type="TextureRect" parent="Wall" unique_id=1669181094]
-z_index = 2
+[node name="Teeth" type="HBoxContainer" parent="Wall" unique_id=738224618]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-texture = ExtResource("8_rsy7x")
+offset_transform_enabled = true
+offset_transform_position_ratio = Vector2(0, -0.16)
+alignment = 1
+
+[node name="Spacer" type="Control" parent="Wall/Teeth" unique_id=1660212947]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+
+[node name="Tooth1" type="TextureRect" parent="Wall/Teeth" unique_id=1437700929]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Tooth2" type="TextureRect" parent="Wall/Teeth" unique_id=2051688523]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Tooth3" type="TextureRect" parent="Wall/Teeth" unique_id=1544095363]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Tooth4" type="TextureRect" parent="Wall/Teeth" unique_id=540183809]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Tooth5" type="TextureRect" parent="Wall/Teeth" unique_id=428486269]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Spacer2" type="Control" parent="Wall/Teeth" unique_id=185656353]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Wall" unique_id=1329507618]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 909.0
+grow_horizontal = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Wall/VBoxContainer" unique_id=91169789]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer" unique_id=720245097]
+custom_minimum_size = Vector2(250, 250)
+custom_maximum_size = Vector2(250, 250)
+layout_mode = 2
+texture = ExtResource("11_28udb")
 expand_mode = 2
+stretch_mode = 4
+
+[node name="TextureRect3" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer" unique_id=538115624]
+custom_minimum_size = Vector2(0, 250)
+custom_maximum_size = Vector2(-1, 250)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.017, 1)
+texture = ExtResource("12_pl7wn")
+expand_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer" unique_id=1788993411]
+custom_minimum_size = Vector2(250, 250)
+custom_maximum_size = Vector2(250, 250)
+layout_mode = 2
+size_flags_horizontal = 8
+texture = ExtResource("13_yybyw")
+expand_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Wall/VBoxContainer" unique_id=2073171583]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer2" unique_id=2115871694]
+custom_minimum_size = Vector2(250, 840)
+custom_maximum_size = Vector2(250, 840)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1, 1.052)
+texture = ExtResource("15_ofdve")
+
+[node name="TextureRect3" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer2" unique_id=1330223626]
+custom_minimum_size = Vector2(0, 840)
+custom_maximum_size = Vector2(-1, 840)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.017, 1.052)
+texture = ExtResource("16_7e8s2")
+expand_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer2" unique_id=1265839059]
+custom_minimum_size = Vector2(250, 840)
+custom_maximum_size = Vector2(250, 840)
+layout_mode = 2
+size_flags_horizontal = 8
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1, 1.052)
+texture = ExtResource("17_6k8el")
 
 [connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
 [connection signal="mouse_entered" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]

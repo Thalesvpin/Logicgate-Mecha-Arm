@@ -12,7 +12,7 @@ extends PanelContainer
 @onready var attack_container: Control = $Control/Attack
 @onready var self_damage_container: Control = $Control/SelfDamage
 @onready var actions_panel_sandbox: PanelContainer = $Control/ActionsPanelSandbox
-@onready var wall: ColorRect = $Wall
+@onready var wall: Control = $Wall
 
 var execution_sequence: Array
 var all_gate_inputs: Array
