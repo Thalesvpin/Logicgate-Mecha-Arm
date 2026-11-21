@@ -18,6 +18,13 @@ pulse_index = 2
 chance = 20.0
 metadata/_custom_type_script = "uid://o1nr0uqt4xgo"
 
+[sub_resource type="Resource" id="Resource_e4srk"]
+script = ExtResource("3_rpkav")
+trigger = 8
+effect = Array[ExtResource("2_he5js")]([SubResource("Resource_dn7y0")])
+conditions = Array[ExtResource("1_4wr83")]([SubResource("Resource_wmg6f")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
 [resource]
 script = ExtResource("3_avt0q")
 id = 3
@@ -28,4 +35,5 @@ rarity = 3
 trigger = 8
 effect = Array[ExtResource("2_he5js")]([SubResource("Resource_dn7y0")])
 conditions = Array[ExtResource("1_4wr83")]([SubResource("Resource_wmg6f")])
+config = Array[ExtResource("3_rpkav")]([SubResource("Resource_e4srk")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

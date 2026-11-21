@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CopyModifierEffect" format=3 uid="uid://c3awft40p0nmk"]
+
+[ext_resource type="Script" uid="uid://ub337iqrvjxy" path="res://scripts/classes/implant_effects/copy_modifier.gd" id="1_1unpv"]
+
+[resource]
+script = ExtResource("1_1unpv")
+metadata/_custom_type_script = "uid://ub337iqrvjxy"

@@ -10,7 +10,7 @@ class_name ConsecutiveTurnsCondition
 var count: int = 0
 var last_turn: int = 0
 
-func is_met(context = null) -> bool:
+func is_met(_context = null) -> bool:
 	var turn = Global.run_stats.current_turn
 	if last_turn == turn:
 		return false
@@ -24,4 +24,5 @@ func is_met(context = null) -> bool:
 	else:
 		count = 1
 		last_turn = turn
+		abort.emit()
 	return false

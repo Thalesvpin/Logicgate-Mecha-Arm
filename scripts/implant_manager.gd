@@ -18,14 +18,6 @@ func _ready() -> void:
 	Global.implant_manager = self
 	EventBus.tech_mod_added.connect(add_tech_mod)
 	EventBus.bio_hack_added.connect(add_bio_hack)
-	#EventBus.submit_circuit.connect()
-	
-	#EventBus.damage_taken.connect(a)
-	#EventBus.battle_started.connect(_on_battle_start)
-	#EventBus.enemy_defeated.connect(a)
-	#EventBus.critical_hit.connect(nova)
-	#EventBus.enemy_defeated.connect(tet)
-
 
 func add_tech_mod(implant: Implant):
 	print('implant_manager add tech mod')
@@ -47,3 +39,17 @@ func remove_bio_hack(implant: Node):
 	implant.resource.revert()
 	active_bio_hacks.erase(implant.resource)
 	Global.bio_hacks_container.remove_implant(implant)
+
+func get_random_owned_implant_config(type: Implant.Type, prevent_consumable: bool = true) -> Array[ImplantExecutionConfig]:
+	var chance = Global.random.next()
+	if type == Implant.Type.TECH_MOD:
+		if prevent_consumable:
+			while active_tech_mods[chance % active_tech_mods.size()].consumable:
+				chance = Global.random.next()
+		return active_tech_mods[chance % active_tech_mods.size()].config
+	if type == Implant.Type.BIO_HACK:
+		if prevent_consumable:
+			while active_bio_hacks[chance % active_bio_hacks.size()].consumable:
+				chance = Global.random.next()
+		return active_bio_hacks[chance % active_bio_hacks.size()].config
+	return []

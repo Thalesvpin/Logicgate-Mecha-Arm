@@ -6,15 +6,17 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_7x6ty"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_6h528"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_f086j"]
+[ext_resource type="Resource" uid="uid://d4m73aywnrlow" path="res://resources/implants/effects/add_damage_percent.tres" id="5_hqcdk"]
 
 [sub_resource type="Resource" id="Resource_6h528"]
 script = ExtResource("2_7x6ty")
+progressive = true
 metadata/_custom_type_script = "uid://c5rrromtmqep4"
 
 [sub_resource type="Resource" id="Resource_7x6ty"]
 script = ExtResource("2_f086j")
 trigger = 3
-effect = Array[ExtResource("3_7x6ty")]([null])
+effect = Array[ExtResource("3_7x6ty")]([ExtResource("5_hqcdk")])
 conditions = Array[ExtResource("1_wkcuc")]([SubResource("Resource_6h528")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 

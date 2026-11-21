@@ -33,13 +33,17 @@ const PRICES: Dictionary[Global.Rarity, int] = {
 }
 
 func connect_triggers() -> void:
+	for item in config:
+		for condition in item.conditions:
+			for ef in item.effect:
+				condition.abort.connect(ef.revert)
 	if consumable:
 		return
 	for module in config:
 		for ef in module.effect:
 			EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
 
-func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
+static func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
 	var counter = 0
 	for con in module.conditions:
 		if con.is_met(context):

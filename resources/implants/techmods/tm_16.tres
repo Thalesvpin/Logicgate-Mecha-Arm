@@ -6,13 +6,20 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_63pdk"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_pgmkf"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_fihxu"]
+[ext_resource type="Script" uid="uid://ub337iqrvjxy" path="res://scripts/classes/implant_effects/copy_modifier.gd" id="5_tqi3j"]
 
 [sub_resource type="Resource" id="Resource_pgmkf"]
 script = ExtResource("2_63pdk")
 metadata/_custom_type_script = "uid://cvla25wgnutm8"
 
+[sub_resource type="Resource" id="Resource_mdoam"]
+script = ExtResource("5_tqi3j")
+metadata/_custom_type_script = "uid://ub337iqrvjxy"
+
 [sub_resource type="Resource" id="Resource_alu4x"]
 script = ExtResource("2_fihxu")
+trigger = 7
+effect = Array[ExtResource("3_63pdk")]([SubResource("Resource_mdoam")])
 conditions = Array[ExtResource("1_ynbvg")]([SubResource("Resource_pgmkf")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
@@ -23,6 +30,7 @@ name = "tech mod 16"
 description = "em cada Turno, este Tech Mod copia e executa os efeitos de outro Tech Mod não-consumível aleatório no Inventário."
 texture = ExtResource("5_fihxu")
 rarity = 2
+effect = Array[ExtResource("3_63pdk")]([SubResource("Resource_mdoam")])
 conditions = Array[ExtResource("1_ynbvg")]([SubResource("Resource_pgmkf")])
 config = Array[ExtResource("2_fihxu")]([SubResource("Resource_alu4x")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"
