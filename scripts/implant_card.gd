@@ -49,6 +49,12 @@ func _ready() -> void:
 	#apply_resource()
 	_on_resized()
 
+func _process(delta: float) -> void:
+	if resource && resource.disabled:
+		disable()
+	else:
+		enable()
+
 func load_resource() -> void:
 	type = resource.type
 	modifier_name = resource.name
@@ -174,10 +180,6 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	return _tooltip
 
 func _on_resized() -> void:
-	if resource.disabled:
-		disable()
-	else:
-		enable()
 	if is_loaded:
 		if size.x > 325:
 			set_template(1)
