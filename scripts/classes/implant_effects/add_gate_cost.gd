@@ -26,7 +26,6 @@ func apply(_context = null) -> void:
 			return
 		is_applied = true
 
-
 func revert() -> void:
 	if !is_permanent:
 		Global.run_stats.gates_price[gate] -= amount

@@ -7,7 +7,8 @@ const gate_scene := preload("uid://vyyk4mr2crhe")
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 ##Not ideal, but circuit_gate can only be created as a Sandbox's grandchild
 @onready var sandbox: Node2D = $"./../.."
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var outline_sprite: Sprite2D = $Outline
+@onready var fill_sprite: Sprite2D = $Fill
 const INPUT_TERMINAL = preload("uid://dp56i4t15i1de")
 @export var input_terminals: int = 4
 
@@ -27,6 +28,9 @@ var original_scale: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	add_terminals()
 	EventBus.gate_added_to_sandbox.emit(type)
+	#if check_submit_requirements():
+		#outline_sprite.texture = 
+		#fill_sprite.Fill
 
 func _process(delta):
 	output.set_active(calculate_output())

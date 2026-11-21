@@ -38,3 +38,10 @@ func remove_from_sequence(who) -> void:
 
 func get_turn_index(who) -> int:
 	return turn_sequence.find(who)
+
+##It will never skip player's turn
+func skip_turn(amount: int) -> void:
+	turn_idx += amount
+	if turn_idx > turn_sequence.size()-1:
+		turn_idx = 0
+	EventBus.turn_started.emit(turn_sequence[turn_idx])

@@ -1,8 +1,10 @@
 extends ImplantEffect
-class_name SkipEnemyTurn
+class_name SkipEnemyTurnEffect
+
+@export var amount: int = 1
 
 func apply(_context = null) -> void:
-	pass
+	Global.turn_manager.skip_turn(amount)
 
 func revert() -> void:
 	pass

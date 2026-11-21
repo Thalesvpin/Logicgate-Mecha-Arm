@@ -2,6 +2,7 @@
 	-pacote corrompido nem sempre vem corrompido
 	-checar se dano no escudo esta funcionando como deveria player e inimigo
 	-checar mitigação esta funcionando como deveria player e inimigo
+	-verificar se adição de stats é removido de forma correta (ex: TM_26)
 
 feedback de ação (jogador e inimigo)
 

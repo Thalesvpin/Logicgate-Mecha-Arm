@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d2v4gydixspon"]
 
 [ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_isg8p"]
-[ext_resource type="Texture2D" uid="uid://bvl6rtioslg0u" path="res://assets/logic_gates/gate_XNOR_outline.png" id="2_fry2m"]
+[ext_resource type="Texture2D" uid="uid://qaky8j5n40jg" path="res://assets/logic_gates/gate_AND_outline.png" id="2_fry2m"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="4_7v58i"]
 [ext_resource type="Script" uid="uid://c6ivqjlx2f15x" path="res://scripts/output.gd" id="5_o7kfd"]
 
@@ -13,8 +13,13 @@ size = Vector2(128, 64)
 [node name="XnorGate" type="Area2D" unique_id=798829331]
 script = ExtResource("1_isg8p")
 type = 6
+input_terminals = null
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
+[node name="Outline" type="Sprite2D" parent="." unique_id=1940770621]
+scale = Vector2(0.257, 0.257)
+texture = ExtResource("2_fry2m")
+
+[node name="Fill" type="Sprite2D" parent="." unique_id=311792602]
 scale = Vector2(0.257, 0.257)
 texture = ExtResource("2_fry2m")
 

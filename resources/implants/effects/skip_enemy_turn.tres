@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="SkipEnemyTurnEffect" format=3 uid="uid://b52b7v0vexybf"]
+
+[ext_resource type="Script" uid="uid://cv8hcf7ki7b8t" path="res://scripts/classes/implant_effects/undone/skip_enemy_turn.gd" id="1_7tw60"]
+
+[resource]
+script = ExtResource("1_7tw60")
+amount = 3
+metadata/_custom_type_script = "uid://cv8hcf7ki7b8t"

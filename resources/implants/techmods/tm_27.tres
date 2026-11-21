@@ -6,15 +6,26 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_yk1fk"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_hvmgd"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_lakwm"]
+[ext_resource type="Script" uid="uid://cv8hcf7ki7b8t" path="res://scripts/classes/implant_effects/undone/skip_enemy_turn.gd" id="5_t1i6w"]
 
 [sub_resource type="Resource" id="Resource_hvmgd"]
 script = ExtResource("2_yk1fk")
 metadata/_custom_type_script = "uid://cvla25wgnutm8"
 
-[sub_resource type="Resource" id="Resource_ggov6"]
+[sub_resource type="Resource" id="Resource_rh7xh"]
+script = ExtResource("2_yk1fk")
+metadata/_custom_type_script = "uid://cvla25wgnutm8"
+
+[sub_resource type="Resource" id="Resource_sf0g4"]
+script = ExtResource("5_t1i6w")
+amount = 3
+metadata/_custom_type_script = "uid://cv8hcf7ki7b8t"
+
+[sub_resource type="Resource" id="Resource_022oj"]
 script = ExtResource("2_lakwm")
-trigger = 5
-conditions = Array[ExtResource("1_32flp")]([SubResource("Resource_hvmgd")])
+trigger = 6
+effect = Array[ExtResource("3_yk1fk")]([SubResource("Resource_sf0g4")])
+conditions = Array[ExtResource("1_32flp")]([SubResource("Resource_rh7xh")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
 [resource]
@@ -26,5 +37,5 @@ texture = ExtResource("5_lakwm")
 rarity = 3
 trigger = 5
 conditions = Array[ExtResource("1_32flp")]([SubResource("Resource_hvmgd")])
-config = Array[ExtResource("2_lakwm")]([SubResource("Resource_ggov6")])
+config = Array[ExtResource("2_lakwm")]([SubResource("Resource_022oj")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

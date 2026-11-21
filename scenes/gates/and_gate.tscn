@@ -12,8 +12,14 @@ size = Vector2(108, 64)
 
 [node name="AndGate" type="Area2D" unique_id=798829331]
 script = ExtResource("1_pwm32")
+type = null
+input_terminals = null
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=650620062]
+[node name="Outline" type="Sprite2D" parent="." unique_id=650620062]
+scale = Vector2(0.257, 0.257)
+texture = ExtResource("2_wom5d")
+
+[node name="Fill" type="Sprite2D" parent="." unique_id=70518810]
 scale = Vector2(0.257, 0.257)
 texture = ExtResource("2_wom5d")
 

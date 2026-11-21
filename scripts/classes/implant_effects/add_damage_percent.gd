@@ -5,14 +5,14 @@ class_name AddDamagePercentEffect
 @export_custom(PROPERTY_HINT_NONE, 'suffix:%') var amount: float
 #@export var who: Variant
 var percent: float
+var total_added: int = 0
 
 func apply(_context = null) -> void:
-	percent = get_player_stat(Stats.List.BASE_ATTACK_DAMAGE) * (amount/100)
-	var result = add_to_extra_stats(Stats.List.BASE_ATTACK_DAMAGE, percent, lesser, 0)
-	EventBus.stat_changed.emit(Stats.List.BASE_ATTACK_DAMAGE, result)
+	#percent = get_player_stat(Stats.List.BASE_ATTACK_DAMAGE) * (amount/100)
+	add_to_extra_stats(Stats.List.BASE_ATTACK_DAMAGE_MULT, amount, lesser, 0)
+	total_added += amount
 
 func revert() -> void:
 	if !is_permanent:
-		var result = add_to_player_stats(Stats.List.BASE_ATTACK_DAMAGE, -percent, lesser, 0)
-		EventBus.stat_changed.emit(Stats.List.BASE_ATTACK_DAMAGE, result)
-		
+		add_to_extra_stats(Stats.List.BASE_ATTACK_DAMAGE_MULT, -total_added, lesser, 0)
+	
