@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DisableImplantEffect" format=3 uid="uid://dq2cljq75mjg4"]
+
+[ext_resource type="Script" uid="uid://b2qby0xm3cgwk" path="res://scripts/classes/implant_effects/disable_implant.gd" id="1_wcgbi"]
+
+[resource]
+script = ExtResource("1_wcgbi")
+type = 1
+metadata/_custom_type_script = "uid://b2qby0xm3cgwk"
