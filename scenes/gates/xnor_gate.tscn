@@ -1,51 +1,66 @@
 [gd_scene format=3 uid="uid://d2v4gydixspon"]
 
 [ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_isg8p"]
-[ext_resource type="Texture2D" uid="uid://qaky8j5n40jg" path="res://assets/logic_gates/gate_AND_outline.png" id="2_fry2m"]
+[ext_resource type="Texture2D" uid="uid://bobi7y1qqpcr4" path="res://assets/logic_gates/gate_XNOR_outline.png" id="2_5tvk6"]
+[ext_resource type="PackedScene" uid="uid://dp56i4t15i1de" path="res://scenes/gates/input_terminal.tscn" id="3_isg8p"]
+[ext_resource type="Texture2D" uid="uid://buqka71qgbmyn" path="res://assets/logic_gates/gate_XNOR_fill.png" id="3_rqprv"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="4_7v58i"]
 [ext_resource type="Script" uid="uid://c6ivqjlx2f15x" path="res://scripts/output.gd" id="5_o7kfd"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sw6uh"]
-size = Vector2(128, 64)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5tvk6"]
+size = Vector2(177, 94)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_eofqg"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_rqprv"]
 
 [node name="XnorGate" type="Area2D" unique_id=798829331]
 script = ExtResource("1_isg8p")
 type = 6
 input_terminals = null
 
-[node name="Outline" type="Sprite2D" parent="." unique_id=1940770621]
+[node name="Outline" type="Sprite2D" parent="." unique_id=43219085]
 scale = Vector2(0.257, 0.257)
-texture = ExtResource("2_fry2m")
+texture = ExtResource("2_5tvk6")
 
-[node name="Fill" type="Sprite2D" parent="." unique_id=311792602]
+[node name="Fill" type="Sprite2D" parent="." unique_id=1689751518]
 scale = Vector2(0.257, 0.257)
-texture = ExtResource("2_fry2m")
+texture = ExtResource("3_rqprv")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=283406698]
-shape = SubResource("RectangleShape2D_sw6uh")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=687397926]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_5tvk6")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1744309605]
-custom_minimum_size = Vector2(0, 128)
-custom_maximum_size = Vector2(-1, 128)
-offset_left = -74.0
-offset_top = -64.0
-offset_right = -74.0
-offset_bottom = 64.0
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1185274810]
+custom_minimum_size = Vector2(0, 117)
+custom_maximum_size = Vector2(-1, 117)
+offset_left = -99.26
+offset_top = -59.985
+offset_right = -99.26
+offset_bottom = 57.015
 
-[node name="Spacing" type="Control" parent="VBoxContainer" unique_id=1917199605]
+[node name="Spacing" type="Control" parent="VBoxContainer" unique_id=1922282090]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Output" type="Area2D" parent="." unique_id=1664330507]
-position = Vector2(73, 0)
+[node name="InputTerminal" parent="VBoxContainer" unique_id=1083377440 instance=ExtResource("3_isg8p")]
+layout_mode = 2
+
+[node name="InputTerminal2" parent="VBoxContainer" unique_id=22240750 instance=ExtResource("3_isg8p")]
+layout_mode = 2
+
+[node name="InputTerminal3" parent="VBoxContainer" unique_id=2007991971 instance=ExtResource("3_isg8p")]
+layout_mode = 2
+
+[node name="InputTerminal4" parent="VBoxContainer" unique_id=877099190 instance=ExtResource("3_isg8p")]
+layout_mode = 2
+
+[node name="Output" type="Area2D" parent="." unique_id=730748128]
+position = Vector2(98.03, 0)
 script = ExtResource("5_o7kfd")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Output" unique_id=327915693]
-shape = SubResource("CircleShape2D_eofqg")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Output" unique_id=1918116805]
+shape = SubResource("CircleShape2D_rqprv")
 
-[node name="Sprite2D" type="Sprite2D" parent="Output" unique_id=1309416252]
+[node name="Sprite2D" type="Sprite2D" parent="Output" unique_id=162424418]
 scale = Vector2(0.0066406247, 0.0066406247)
 texture = ExtResource("4_7v58i")
 
