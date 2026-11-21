@@ -1,8 +1,5 @@
--AGR
-shader dos inimigos
-fill/outline dos gates
-
 -PRA FICAR JOGAVEL
+	-dar dinheiro e cura ao fim da batalha (voltar no BH_72 e bloquear cura)
 	-pacote corrompido nem sempre vem corrompido
 	-checar se dano no escudo esta funcionando como deveria player e inimigo
 	-checar mitigação esta funcionando como deveria player e inimigo
@@ -13,6 +10,7 @@ feedback de ação (jogador e inimigo)
 IMPORTANTES MAS NÃO URGENTES
 resolve tempo de ligar paineis contextuais
 acender luzes no painel de execução
+fazer remove_tech_mod_2 no techmod container e implant manager
 
 
 

@@ -25,6 +25,12 @@ func remove_implant(implant) -> void:
 	implants_holder.remove_child(implant)
 	
 	update_counter()
+	
+func remove_implant_2(implant: Implant) -> void:
+	for bh in implants_holder:
+		if bh.resource == implant:
+			implants_holder.remove_child(bh)
+			update_counter()
 
 func update_counter() -> void:
 	implant_count.text = str(Global.implant_manager.active_bio_hacks.size())+'/5'

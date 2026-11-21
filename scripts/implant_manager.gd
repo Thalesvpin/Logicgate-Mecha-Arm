@@ -41,6 +41,11 @@ func remove_bio_hack(implant: Node):
 	active_bio_hacks.erase(implant.resource)
 	Global.bio_hacks_container.remove_implant(implant)
 
+func remove_bio_hack_2(implant: Implant) -> void:
+	implant.revert()
+	active_bio_hacks.erase(implant)
+	Global.bio_hacks_container.remove_implant_2(implant)
+
 func get_random_owned_implant_config(type: Implant.Type, prevent_consumable: bool = true) -> Array[ImplantExecutionConfig]:
 	var chance = Global.random.next()
 	if type == Implant.Type.TECH_MOD:
@@ -54,3 +59,28 @@ func get_random_owned_implant_config(type: Implant.Type, prevent_consumable: boo
 				chance = Global.random.next()
 		return active_bio_hacks[chance % active_bio_hacks.size()].config
 	return []
+
+func get_random_owned_implant(type: Implant.Type, prevent_consumable: bool = true) -> Implant:
+	var chance = Global.random.next()
+	if type == Implant.Type.TECH_MOD:
+		if prevent_consumable:
+			while active_tech_mods[chance % active_tech_mods.size()].consumable:
+				chance = Global.random.next()
+		return active_tech_mods[chance % active_tech_mods.size()]
+	if type == Implant.Type.BIO_HACK:
+		if prevent_consumable:
+			while active_bio_hacks[chance % active_bio_hacks.size()].consumable:
+				chance = Global.random.next()
+		return active_bio_hacks[chance % active_bio_hacks.size()]
+	return null
+
+func get_owned_implant_by_id(type: Implant.Type, id: int) -> Implant:
+	if type == Implant.Type.TECH_MOD:
+		for implant in active_tech_mods:
+			if implant.id == id:
+				return implant
+	if type == Implant.Type.BIO_HACK:
+		for implant in active_bio_hacks:
+			if implant.id == id:
+				return implant
+	return null

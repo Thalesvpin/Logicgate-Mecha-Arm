@@ -158,12 +158,26 @@ func activate() -> void:
 		if type == Type.BIO_HACK:
 			Global.implant_manager.remove_bio_hack(self)
 
+func disable() -> void:
+	modulate = Color('#353535')
+	activator_btn.disabled = true
+	activator_btn_compact.disabled = true
+
+func enable() -> void:
+	modulate = Color('#ffffff')
+	activator_btn.disabled = false
+	activator_btn_compact.disabled = false
+
 func _make_custom_tooltip(for_text: String) -> Object:
 	var _tooltip = tooltip.instantiate()
 	_tooltip.config("\t"+for_text)
 	return _tooltip
 
 func _on_resized() -> void:
+	if resource.disabled:
+		disable()
+	else:
+		enable()
 	if is_loaded:
 		if size.x > 325:
 			set_template(1)

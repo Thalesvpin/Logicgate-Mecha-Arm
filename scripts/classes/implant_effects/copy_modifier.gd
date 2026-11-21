@@ -3,10 +3,16 @@ class_name CopyModifierEffect
 
 @export var type: Implant.Type
 var config: Array[ImplantExecutionConfig]
-@export var prevent_consumable: bool = true
+@export var prevent_consumable: bool = false
+@export var prevent_disabled: bool = false
+var implant: Implant
 
 func apply(_context = null) -> void:
-	config = Global.implant_manager.get_random_owned_implant_config(type, prevent_consumable)
+	implant = Global.implant_manager.get_random_owned_implant(type, prevent_consumable)
+	if prevent_disabled:
+		while implant.disabled:
+			implant = Global.implant_manager.get_random_owned_implant(type, prevent_consumable)
+	config = implant.config
 	connect_triggers()
 
 func revert() -> void:

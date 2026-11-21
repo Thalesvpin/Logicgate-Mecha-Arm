@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="Implant" format=3 uid="uid://bn6hkf2voidul"]
+
+[ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_b500a"]
+[ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_o66do"]
+[ext_resource type="Resource" uid="uid://bmxyhk5fk4fbb" path="res://resources/implants/conditions/none.tres" id="3_hqkxr"]
+[ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_uvqsk"]
+[ext_resource type="Resource" uid="uid://dq2cljq75mjg4" path="res://resources/implants/effects/disable_implant.tres" id="5_dvqth"]
+[ext_resource type="Script" uid="uid://ub337iqrvjxy" path="res://scripts/classes/implant_effects/copy_modifier.gd" id="6_qdlny"]
+[ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="7_0hfd6"]
+
+[sub_resource type="Resource" id="Resource_a0c0t"]
+script = ExtResource("6_qdlny")
+type = 1
+prevent_disabled = true
+metadata/_custom_type_script = "uid://ub337iqrvjxy"
+
+[sub_resource type="Resource" id="Resource_6mlmt"]
+script = ExtResource("2_o66do")
+effect = Array[ExtResource("4_uvqsk")]([ExtResource("5_dvqth"), SubResource("Resource_a0c0t")])
+conditions = Array[ExtResource("1_b500a")]([ExtResource("3_hqkxr")])
+metadata/_custom_type_script = "uid://bkcbldakg52tc"
+
+[resource]
+script = ExtResource("7_0hfd6")
+id = 64
+description = "No início de cada Batalha, um Bio Hack aleatório é desabilitado, e um outro Bio Hack aleatório tem seu efeito dobrado, até o final da Batalha. Este Bio Hack pode ser vendido a qualquer momento durante uma Batalha para remover este efeito, fazendo com que os dois Bio Hacks afetados voltem ao normal."
+type = 1
+rarity = 3
+corrupted = true
+config = Array[ExtResource("2_o66do")]([SubResource("Resource_6mlmt")])
+metadata/_custom_type_script = "uid://bljex6smxx3gr"

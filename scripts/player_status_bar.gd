@@ -18,6 +18,7 @@ extends PanelContainer
 
 var shield_bars: Array[ColorRect]
 var shield_labels: Array[RichTextLabel]
+var tween
 
 func _ready() -> void:
 	Global.player_stats_bar = self
@@ -33,11 +34,13 @@ func check_health() -> void:
 		EventBus.battle_ended.emit(false)
 
 func animate_health(value: int) -> void:
-	var tween = create_tween().set_parallel(true)
+	if tween and tween.is_valid():
+		tween.kill()
+	tween = create_tween().set_parallel(true)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(healthbar, 'value', value, tween_duration)
 	tween.tween_method(func(v): health_label.text = str(int(v)), int(health_label.text), value, tween_duration)
-	tween.tween_callback(check_health)
+	tween.chain().tween_callback(check_health)
 
 func take_damage(amount: int):
 	var result
@@ -45,6 +48,7 @@ func take_damage(amount: int):
 		result = healthbar.value - amount
 	else:
 		result = 0
+		EventBus.player_defeated.emit()
 	
 	animate_health(result)
 	#healthbar.value = result

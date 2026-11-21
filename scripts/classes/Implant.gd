@@ -24,6 +24,7 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 ##All conditions must be met to execute
 @export var conditions: Array[ImplantCondition]
 @export var config: Array[ImplantExecutionConfig]
+static var disabled: bool = false
 
 const PRICES: Dictionary[Global.Rarity, int] = {
 	Global.Rarity.COMMON: 300,
@@ -44,6 +45,8 @@ func connect_triggers() -> void:
 			EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
 
 static func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
+	if disabled:
+		return
 	var counter = 0
 	for con in module.conditions:
 		if con.is_met(context):
@@ -75,3 +78,6 @@ func revert() -> void:
 #func revert2() -> void:
 	#for ef in effect:
 		#ef.revert()
+
+func disable(value: bool = true) -> void:
+	disabled = value
