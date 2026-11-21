@@ -15,6 +15,14 @@
 [ext_resource type="Texture2D" uid="uid://dsglhlwiij2cb" path="res://assets/Circuit Wall/bolt.png" id="13_7e8s2"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="13_ran5t"]
 [ext_resource type="Shader" uid="uid://bp1bhku15or35" path="res://shaders/basic_color_overlay.gdshader" id="15_awojy"]
+[ext_resource type="Texture2D" uid="uid://b60ue7ypupwfx" path="res://assets/Circuit Wall/backlayer.png" id="16_s4pbu"]
+[ext_resource type="Texture2D" uid="uid://ctfnmpw3ue2x1" path="res://assets/Circuit Wall/gratemask.png" id="17_ofdve"]
+[ext_resource type="Texture2D" uid="uid://rrjx4hlebp7w" path="res://assets/Circuit Wall/gear4.png" id="18_7e8s2"]
+[ext_resource type="Texture2D" uid="uid://bt8rdbw0rkwab" path="res://assets/Circuit Wall/gear1.png" id="19_8s6xd"]
+[ext_resource type="Texture2D" uid="uid://c420exib15g0n" path="res://assets/Circuit Wall/gear2.png" id="20_qg84j"]
+[ext_resource type="Texture2D" uid="uid://46iveynfn7ok" path="res://assets/Circuit Wall/gear3.png" id="21_swglj"]
+[ext_resource type="Texture2D" uid="uid://bw17ulr3xtksd" path="res://assets/Circuit Wall/gear5.png" id="22_61v2t"]
+[ext_resource type="Texture2D" uid="uid://bpiurdfwfej8q" path="res://assets/Circuit Wall/gratecountermask.png" id="23_qg84j"]
 
 [sub_resource type="Gradient" id="Gradient_psau8"]
 offsets = PackedFloat32Array(0, 0.328125, 1)
@@ -62,8 +70,8 @@ shader_parameter/repulsion_swirl_angle = 2.0
 shader_parameter/repulsion_pinch_amount = -2.0
 shader_parameter/repulsion_wave_freq = 5.0
 shader_parameter/hole_punch_radius = 0.0
-shader_parameter/mouse_global_pos = Vector2(790.8214, 22.573362)
-shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 321.42975, 0, 0.37089032, -100000, 269.91553, 0, 0.37095454, 790.8214, 22.573362, 149.25244, 0.86135167, -100000, 456.67432, 0, 0.36792195, -100000, 556.23315, 0, 0.36923307, -100000, 556.23315, 0, 0.36928537, -100000, 575.2665, 0, 0.36788234, -100000, 582.587, 0, 0.3678815)
+shader_parameter/mouse_global_pos = Vector2(578.8324, 90.434456)
+shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 197.86407, 0, 0.37075502, 578.8324, 90.434456, 120.81667, 0.88619643, -100000, 202.41452, 0, 0.37095454, -100000, 202.41452, 0, 0.37095454, -100000, 98.94179, 0, 0.39459643, -100000, 148.2051, 0, 0.3695911, -100000, 147.21587, 0, 0.37094042, -100000, 175.50763, 0, 0.36971858)
 shader_parameter/active_click_repulsion_count = 1
 shader_parameter/use_ripple = true
 shader_parameter/ripple_ring_count = 1
@@ -74,8 +82,8 @@ shader_parameter/ripple_decay = 1.0
 shader_parameter/ripple_grid_distortion = 0.0
 shader_parameter/use_ripple_custom_color = true
 shader_parameter/ripple_custom_color = Color(0.3, 1, 0.96500003, 1)
-shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 321.42975, 0, 0.30312946, 868.3082, 269.91553, 1166.071, 0.31158876, 790.8214, 22.573362, 119.40394, 0.88744926, -100000, 456.67432, 0, 0.30320162, -100000, 556.23315, 0, 0.30207962, -100000, 556.23315, 0, 0.30211383, -100000, 575.2665, 0, 0.30119604, -100000, 582.587, 0, 0.30119517)
-shader_parameter/active_ripple_count = 2
+shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 197.86407, 0, 0.3030753, 578.8324, 90.434456, 96.655334, 0.90786886, -100000, 202.41452, 0, 0.3032058, -100000, 202.41452, 0, 0.3032058, -100000, 98.94179, 0, 0.32073835, -100000, 148.2051, 0, 0.30231196, -100000, 147.21587, 0, 0.30319363, -100000, 175.50763, 0, 0.30238155)
+shader_parameter/active_ripple_count = 1
 shader_parameter/main_grid_style = 0
 shader_parameter/main_line_thickness = 0.5
 shader_parameter/main_dot_cross_size = 4.0
@@ -1032,6 +1040,180 @@ shader_parameter/pattern_screen_space = false
 shader_parameter/pattern_frames = Vector2i(1, 1)
 shader_parameter/pattern_frame = 0
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wxs7s"]
+
+[sub_resource type="Gradient" id="Gradient_s4pbu"]
+offsets = PackedFloat32Array(0, 0.78402364)
+colors = PackedColorArray(0.59607846, 0.67058825, 0.5176471, 0, 0.75686276, 0.84705883, 0.69803923, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mo0oj"]
+gradient = SubResource("Gradient_s4pbu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aaut4"]
+shader = ExtResource("13_ran5t")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_mo0oj")
+shader_parameter/gradient_type = 1
+shader_parameter/gradient_rotation_degrees = 0.0
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothing = 0.5
+shader_parameter/gradient_offset = 0.0
+shader_parameter/repeat_gradient = false
+shader_parameter/enable_pulsation = false
+shader_parameter/animation_speed = 1.0
+shader_parameter/pulse_spatial_frequency = 0.0
+shader_parameter/pulse_min_offset = -0.5
+shader_parameter/pulse_max_offset = 0.5
+shader_parameter/distortion_strength = 0.0
+shader_parameter/distortion_speed = Vector2(0.1, 0.1)
+shader_parameter/base_color_steps = 0.0
+shader_parameter/base_color_brightness = 0.0
+shader_parameter/base_color_contrast = 1.0
+shader_parameter/base_color_saturation = 1.0
+shader_parameter/base_color_hue_shift_speed = 0.0
+shader_parameter/enable_overlay = false
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_gradient_type = 2
+shader_parameter/overlay_gradient_rotation_degrees = 0.0
+shader_parameter/overlay_gradient_scale = 1.0
+shader_parameter/overlay_gradient_smoothing = 0.5
+shader_parameter/overlay_gradient_offset = 0.0
+shader_parameter/overlay_repeat_gradient = false
+shader_parameter/overlay_enable_pulsation = false
+shader_parameter/overlay_animation_speed = 1.0
+shader_parameter/overlay_pulse_spatial_frequency = 0.0
+shader_parameter/overlay_pulse_min_offset = -0.5
+shader_parameter/overlay_pulse_max_offset = 0.5
+shader_parameter/enable_overlay_opacity = false
+shader_parameter/overlay_opacity_type = 2
+shader_parameter/overlay_opacity_rotation_degrees = 0.0
+shader_parameter/overlay_opacity_scale = 1.0
+shader_parameter/overlay_opacity_smoothing = 0.5
+shader_parameter/overlay_opacity_offset = 0.0
+shader_parameter/overlay_opacity_repeat = false
+shader_parameter/overlay_opacity_enable_pulsation = false
+shader_parameter/overlay_opacity_animation_speed = 1.0
+shader_parameter/overlay_opacity_pulse_spatial_frequency = 0.0
+shader_parameter/overlay_opacity_pulse_min_offset = -0.5
+shader_parameter/overlay_opacity_pulse_max_offset = 0.5
+shader_parameter/corner_radii = Vector4(0, 0, 0, 0)
+shader_parameter/use_beveled_corners = false
+shader_parameter/enable_outline = false
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_blur = 0.0
+shader_parameter/outline_path_seam_offset = 0.0
+shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_gradient_rotation_degrees = 0.0
+shader_parameter/outline_gradient_scale = 1.0
+shader_parameter/outline_gradient_smoothing = 0.5
+shader_parameter/outline_gradient_offset = 0.0
+shader_parameter/outline_repeat_gradient = false
+shader_parameter/use_path_lut = false
+shader_parameter/enable_wobble = false
+shader_parameter/outline_wobble_amplitude = 0.0
+shader_parameter/outline_wobble_frequency = 10.0
+shader_parameter/outline_wobble_speed = 1.0
+shader_parameter/enable_dash = false
+shader_parameter/outline_dash_style = 1
+shader_parameter/outline_pattern = 0
+shader_parameter/outline_dash_count = 0.0
+shader_parameter/outline_dash_speed = 0.0
+shader_parameter/outline_fade_angle = 0.0
+shader_parameter/outline_fade_intensity = 0.0
+shader_parameter/outline_enable_pulsation = false
+shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_spatial_frequency = 0.0
+shader_parameter/outline_pulse_min_offset = -0.5
+shader_parameter/outline_pulse_max_offset = 0.5
+shader_parameter/outline_enable_shine = false
+shader_parameter/outline_shine_style = 1
+shader_parameter/outline_shine_half_sweep = false
+shader_parameter/outline_shine_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_intensity = 1.0
+shader_parameter/outline_shine_speed = 1.0
+shader_parameter/outline_shine_delay = 2.0
+shader_parameter/outline_shine_width = 0.15
+shader_parameter/outline_shine_softness = 0.5
+shader_parameter/outline_shine_angle = 45.0
+shader_parameter/outline_shine_reverse = false
+shader_parameter/outline_enable_shine_2 = false
+shader_parameter/outline_shine_2_style = 1
+shader_parameter/outline_shine_2_half_sweep = false
+shader_parameter/outline_shine_2_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_2_intensity = 1.0
+shader_parameter/outline_shine_2_speed = 1.0
+shader_parameter/outline_shine_2_delay = 2.0
+shader_parameter/outline_shine_2_width = 0.15
+shader_parameter/outline_shine_2_softness = 0.5
+shader_parameter/outline_shine_2_angle = 135.0
+shader_parameter/outline_shine_2_reverse = false
+shader_parameter/outline_color_steps = 0.0
+shader_parameter/outline_color_brightness = 0.0
+shader_parameter/outline_color_contrast = 1.0
+shader_parameter/outline_color_saturation = 1.0
+shader_parameter/outline_color_hue_shift_speed = 0.0
+shader_parameter/enable_scanlines = false
+shader_parameter/scanline_base_only = false
+shader_parameter/scanline_blend_mode = 0
+shader_parameter/scanline_color = Color(0, 0, 0, 1)
+shader_parameter/scanline_density = 0.0
+shader_parameter/scanline_thickness = 0.5
+shader_parameter/scanline_softness = 1.0
+shader_parameter/scanline_rotation = 0.0
+shader_parameter/scanline_offset = 0.0
+shader_parameter/scanline_speed = 0.0
+shader_parameter/scanline_curvature = 0.0
+shader_parameter/scanline_flicker_speed = 0.0
+shader_parameter/scanline_flicker_intensity = 0.0
+shader_parameter/scanline_use_gradient = false
+shader_parameter/scanline_gradient_type = 0
+shader_parameter/scanline_gradient_rotation_degrees = 0.0
+shader_parameter/scanline_gradient_scale = 1.0
+shader_parameter/scanline_gradient_smoothing = 0.5
+shader_parameter/scanline_gradient_offset = 0.0
+shader_parameter/scanline_repeat_gradient = false
+shader_parameter/scanline_opacity = 0.0
+shader_parameter/scanline_enable_opacity_map = false
+shader_parameter/scanline_opacity_type = 2
+shader_parameter/scanline_opacity_rotation_degrees = 0.0
+shader_parameter/scanline_opacity_scale = 1.0
+shader_parameter/scanline_opacity_smoothing = 0.5
+shader_parameter/scanline_opacity_offset = 0.0
+shader_parameter/scanline_opacity_repeat = false
+shader_parameter/enable_liquid_stripes = false
+shader_parameter/liquid_stripes_base_only = false
+shader_parameter/liquid_stripes_blend_mode = 0
+shader_parameter/liquid_stripes_color = Color(0.59, 0.98, 0.69, 1)
+shader_parameter/liquid_stripes_bg_color = Color(0, 0, 0, 0)
+shader_parameter/liquid_stripes_rotation = 0.0
+shader_parameter/liquid_stripes_speed = 1.0
+shader_parameter/liquid_stripes_sway = 1.0
+shader_parameter/liquid_stripes_density = 4.82
+shader_parameter/liquid_stripes_thickness = 0.45
+shader_parameter/liquid_stripes_softness = 0.05
+shader_parameter/liquid_stripes_warp = 1.0
+shader_parameter/liquid_stripes_warp_origin = -0.5
+shader_parameter/liquid_stripes_warp_falloff = 0.0
+shader_parameter/liquid_stripes_warp_direction = 0.0
+shader_parameter/liquid_stripes_warp_frequency = 15.0
+shader_parameter/liquid_stripes_warp_flow = 2.0
+shader_parameter/liquid_stripes_use_gradient = false
+shader_parameter/liquid_stripes_gradient_type = 0
+shader_parameter/liquid_stripes_gradient_rotation_degrees = 0.0
+shader_parameter/liquid_stripes_gradient_scale = 1.0
+shader_parameter/liquid_stripes_gradient_smoothing = 0.5
+shader_parameter/liquid_stripes_gradient_offset = 0.0
+shader_parameter/liquid_stripes_repeat_gradient = false
+shader_parameter/liquid_stripes_opacity = 0.5
+shader_parameter/liquid_stripes_enable_opacity_map = false
+shader_parameter/liquid_stripes_opacity_type = 2
+shader_parameter/liquid_stripes_opacity_rotation_degrees = 0.0
+shader_parameter/liquid_stripes_opacity_scale = 1.0
+shader_parameter/liquid_stripes_opacity_smoothing = 0.5
+shader_parameter/liquid_stripes_opacity_offset = 0.0
+shader_parameter/liquid_stripes_opacity_repeat = false
+shader_parameter/gamma_correction = 1.0
+shader_parameter/enable_dithering = true
+
 [node name="CircuitEditor" type="PanelContainer" unique_id=1639356317]
 clip_contents = true
 anchors_preset = 15
@@ -1317,6 +1499,26 @@ scale = Vector2(0.45, 0.45)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("13_7e8s2")
 
+[node name="Control" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopLeftCorner" unique_id=1245822858]
+visible = false
+propagate_maximum_size = true
+anchors_preset = 0
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 450.0
+offset_bottom = 426.0
+
+[node name="TextureRect" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopLeftCorner/Control" unique_id=666484984]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_s4pbu")
+expand_mode = 2
+stretch_mode = 5
+
 [node name="TopMiddle" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge" unique_id=1551583418]
 custom_minimum_size = Vector2(0, 250)
 custom_maximum_size = Vector2(-1, 250)
@@ -1334,11 +1536,198 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0.2)
 
+[node name="HBoxContainer" type="HBoxContainer" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle" unique_id=1819475495]
+custom_minimum_size = Vector2(0, 1055)
+custom_maximum_size = Vector2(-1, 1055)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 805.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Spacer" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=1974613477]
+layout_mode = 2
+
+[node name="Internals" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=855601878]
+custom_minimum_size = Vector2(350, 0)
+custom_maximum_size = Vector2(1070, -1)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect2" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals" unique_id=1365970016]
+clip_children = 1
+layout_mode = 0
+offset_left = -4.0
+offset_top = 100.375
+offset_right = 319.0
+offset_bottom = 423.375
+texture = ExtResource("17_ofdve")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="TextureRect" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2" unique_id=1988650692]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -12.0
+offset_top = 23.69
+offset_right = 12.0
+offset_bottom = 47.690002
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.996, 0.996)
+texture = ExtResource("16_s4pbu")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=476870741]
+modulate = Color(0, 0, 0, 0.13725491)
+layout_mode = 0
+offset_left = -16.0
+offset_top = -26.065002
+offset_right = 188.76471
+offset_bottom = 75.935
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.133, 1.213)
+texture = ExtResource("18_7e8s2")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="ColorRect2" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=1536239216]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 11.934998
+offset_right = 330.0
+offset_bottom = 37.934998
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1, 1.391)
+color = Color(0, 0, 0, 0.09803922)
+
+[node name="ColorRect" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=1597990223]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 11.934998
+offset_right = 330.0
+offset_bottom = 37.934998
+color = Color(0.5019608, 0.5882353, 0.58431375, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=1535043598]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -26.065002
+offset_right = 188.76471
+offset_bottom = 75.935
+texture = ExtResource("18_7e8s2")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="MetalGears" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=1638889119]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.45, 0.45)
+
+[node name="TextureRect2" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect/MetalGears" unique_id=559631429]
+layout_mode = 0
+offset_left = 439.5
+offset_top = 87.3375
+offset_right = 889.5
+offset_bottom = 537.3375
+texture = ExtResource("19_8s6xd")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect/MetalGears" unique_id=1203457703]
+layout_mode = 0
+offset_left = 365.5
+offset_top = 419.3375
+offset_right = 950.5
+offset_bottom = 1004.3375
+texture = ExtResource("20_qg84j")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect/MetalGears" unique_id=1285810372]
+layout_mode = 0
+offset_left = 233.5
+offset_top = 127.3375
+offset_right = 543.5
+offset_bottom = 437.3375
+texture = ExtResource("21_swglj")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect/MetalGears" unique_id=1430789427]
+layout_mode = 0
+offset_left = 37.5
+offset_top = 355.3375
+offset_right = 447.5
+offset_bottom = 765.3375
+texture = ExtResource("22_61v2t")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2" unique_id=773484937]
+modulate = Color(1, 1, 1, 0.30980393)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 10.625
+offset_right = 18.0
+offset_bottom = 10.625
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.301, 1.301)
+texture = ExtResource("23_qg84j")
+expand_mode = 2
+
+[node name="Spacer2" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=826539906]
+custom_minimum_size = Vector2(26.705, 0)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=792012658]
+custom_minimum_size = Vector2(50, 0)
+custom_maximum_size = Vector2(50, -1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_wxs7s")
+
+[node name="ColorRect" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/PanelContainer" unique_id=1277429219]
+material = SubResource("ShaderMaterial_aaut4")
+layout_mode = 2
+
+[node name="Spacer3" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=203124806]
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+
+[node name="PanelContainer2" type="PanelContainer" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=670447626]
+custom_minimum_size = Vector2(130, 0)
+custom_maximum_size = Vector2(130, -1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_wxs7s")
+
+[node name="ColorRect" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/PanelContainer2" unique_id=1279362360]
+material = SubResource("ShaderMaterial_aaut4")
+layout_mode = 2
+
+[node name="Spacer4" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=246107010]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
 [node name="TopRightCorner" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge" unique_id=1862589535]
 custom_minimum_size = Vector2(250, 250)
 custom_maximum_size = Vector2(250, 250)
+propagate_maximum_size = true
 layout_mode = 2
-size_flags_horizontal = 8
 
 [node name="BoltHousing" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopRightCorner" unique_id=1168020212]
 material = SubResource("ShaderMaterial_bv6uq")
