@@ -608,14 +608,16 @@ label_settings = ExtResource("1_7qnlp")
 uppercase = true
 
 [node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=359532344]
-custom_minimum_size = Vector2(25, 25)
-custom_maximum_size = Vector2(25, 25)
+custom_minimum_size = Vector2(65, 25)
+custom_maximum_size = Vector2(65, 25)
 layout_mode = 2
 size_flags_vertical = 4
 offset_transform_enabled = true
+offset_transform_position = Vector2(9.91, 1.045)
+offset_transform_scale = Vector2(1.576, 1.711)
 offset_transform_rotation = -1.5707964
 texture = ExtResource("3_pkk5a")
-expand_mode = 5
+expand_mode = 2
 stretch_mode = 5
 
 [node name="ImplantCount" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1917093783]
