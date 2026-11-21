@@ -160,7 +160,7 @@ func activate() -> void:
 
 func _make_custom_tooltip(for_text: String) -> Object:
 	var _tooltip = tooltip.instantiate()
-	_tooltip.config(for_text)
+	_tooltip.config("\t"+for_text)
 	return _tooltip
 
 func _on_resized() -> void:
