@@ -14,6 +14,7 @@ enum WhoExcept {NONE, CENTER, LEFT, RIGHT}
 func apply(_context = null) -> void:
 	print('deal_damage.gd apply()')
 	var dmg = Global.run_stats.player_stats[Stats.List.BASE_ATTACK_DAMAGE] + Global.implant_manager.extra_stats[Stats.List.BASE_ATTACK_DAMAGE]
+	dmg *= Global.implant_manager.extra_stats[Stats.List.BASE_ATTACK_DAMAGE_MULT]
 	var pos
 	
 	if amount == 0:

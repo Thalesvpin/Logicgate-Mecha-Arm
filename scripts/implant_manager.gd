@@ -11,6 +11,7 @@ var extra_stats: Dictionary[Stats.List, Variant] = {
 	Stats.List.CRITIC_MULTIPLIER: 0,
 	Stats.List.MITIGATION_PERCENT: 0,
 	Stats.List.BASE_SHIELD_REPAIR: 0,
+	Stats.List.BASE_ATTACK_DAMAGE_MULT: 1
 }
 
 

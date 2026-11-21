@@ -28,13 +28,16 @@ var original_scale: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	add_terminals()
 	EventBus.gate_added_to_sandbox.emit(type)
-	#if check_submit_requirements():
-		#outline_sprite.texture = 
-		#fill_sprite.Fill
 
 func _process(delta):
 	output.set_active(calculate_output())
 	handle_drag()
+	if check_submit_requirements():
+		outline_sprite.hide() 
+		fill_sprite.show()
+	else:
+		outline_sprite.show() 
+		fill_sprite.hide()
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:

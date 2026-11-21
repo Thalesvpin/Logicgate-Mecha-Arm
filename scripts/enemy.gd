@@ -74,8 +74,8 @@ func take_damage(value: float, target: Node = null) -> void:
 	
 	if stats[Stats.List.CURRENT_HEALTH] == 0:
 		texture_rect.self_modulate = Color('#272727')
-		#var mat = canvas_group.material as ShaderMaterial
-		#mat.set_shader_parameter()
+		var mat = canvas_group.material as ShaderMaterial
+		mat.set_shader_parameter('shader_enabled', false)
 		EventBus.enemy_defeated.emit(self)
 
 func self_damage() -> void:

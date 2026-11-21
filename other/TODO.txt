@@ -1,3 +1,7 @@
+-AGR
+shader dos inimigos
+fill/outline dos gates
+
 -PRA FICAR JOGAVEL
 	-pacote corrompido nem sempre vem corrompido
 	-checar se dano no escudo esta funcionando como deveria player e inimigo
@@ -33,3 +37,6 @@ dano do ataque = dano base * mult de ataque
 ============================
 centralizar os inimigos verticalmente
 separar techmods e biohacks em seus respectivos lados dentro de um pacote
+
+POS TCC
+garantir q os effects alterem os stats da lista certa (player_stats/extra_stats)

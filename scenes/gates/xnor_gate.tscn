@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dxt8xxeq0umnw" path="res://scripts/circuit_gate.gd" id="1_isg8p"]
 [ext_resource type="Texture2D" uid="uid://bobi7y1qqpcr4" path="res://assets/logic_gates/gate_XNOR_outline.png" id="2_5tvk6"]
 [ext_resource type="FontFile" uid="uid://7xj8130yq3bq" path="res://fonts/Oswald/Oswald-VariableFont_wght.ttf" id="3_7v58i"]
-[ext_resource type="PackedScene" uid="uid://dp56i4t15i1de" path="res://scenes/gates/input_terminal.tscn" id="3_isg8p"]
 [ext_resource type="Texture2D" uid="uid://buqka71qgbmyn" path="res://assets/logic_gates/gate_XNOR_fill.png" id="3_rqprv"]
 [ext_resource type="Texture2D" uid="uid://csmvgvmqq0svb" path="res://assets/Red-dot.svg.png" id="4_7v58i"]
 [ext_resource type="Script" uid="uid://c6ivqjlx2f15x" path="res://scripts/output.gd" id="5_o7kfd"]
@@ -72,18 +71,6 @@ offset_bottom = 57.015
 [node name="Spacing" type="Control" parent="VBoxContainer" unique_id=1922282090]
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="InputTerminal" parent="VBoxContainer" unique_id=1083377440 instance=ExtResource("3_isg8p")]
-layout_mode = 2
-
-[node name="InputTerminal2" parent="VBoxContainer" unique_id=22240750 instance=ExtResource("3_isg8p")]
-layout_mode = 2
-
-[node name="InputTerminal3" parent="VBoxContainer" unique_id=2007991971 instance=ExtResource("3_isg8p")]
-layout_mode = 2
-
-[node name="InputTerminal4" parent="VBoxContainer" unique_id=877099190 instance=ExtResource("3_isg8p")]
-layout_mode = 2
 
 [node name="Output" type="Area2D" parent="." unique_id=730748128]
 position = Vector2(98.03, 0)

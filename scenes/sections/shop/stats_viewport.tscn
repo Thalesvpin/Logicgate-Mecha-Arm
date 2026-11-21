@@ -4960,7 +4960,9 @@ draw_center = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_esiv2"]
 shader = ExtResource("21_mdhfq")
+shader_parameter/shader_enabled = true
 shader_parameter/original_texture_size = Vector2(3000, 3000)
+shader_parameter/enable_outer_glow = true
 shader_parameter/smooth_poisson_distribution = true
 shader_parameter/max_sampling_limit = 0
 shader_parameter/glow_color = Color(0, 1, 1, 1)
@@ -5057,6 +5059,7 @@ shader_parameter/dissolve_speed = 2.0
 shader_parameter/dissolve_use_ease = false
 shader_parameter/enable_dithering = true
 shader_parameter/dither_strength_noise = 0.03
+shader_parameter/enable_retro_effects = true
 shader_parameter/use_ordered_dither = false
 shader_parameter/dither_strength = 0.5
 shader_parameter/dither_scale = 1.0
@@ -5071,6 +5074,7 @@ shader_parameter/use_pixelate_glow = false
 shader_parameter/pixelate_size = 4.0
 shader_parameter/pixelate_heat_fluid_fluid = false
 shader_parameter/pixelate_heat_fluid_static = false
+shader_parameter/enable_distortion_and_heat = true
 shader_parameter/use_distortion = false
 shader_parameter/distortion_strength = 0.02
 shader_parameter/distortion_speed = Vector2(0, -0.2)
@@ -6102,7 +6106,7 @@ mouse_filter = 1
 [node name="BackBufferCopy" type="BackBufferCopy" parent="SubViewportContainer/SubViewport" unique_id=70675939]
 copy_mode = 2
 
-[node name="ColorToGradient Remapper" type="ColorRect" parent="SubViewportContainer/SubViewport" unique_id=1367994825]
+[node name="ColorToGradientRemapper" type="ColorRect" parent="SubViewportContainer/SubViewport" unique_id=1367994825]
 material = SubResource("ShaderMaterial_mjyp6")
 anchors_preset = 15
 anchor_right = 1.0
@@ -6149,7 +6153,7 @@ environment = SubResource("Environment_eofqg")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport" unique_id=1891368767]
 
-[node name="Color PostProcess Adjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=1892088844]
+[node name="ColorPostProcessAdjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=1892088844]
 material = SubResource("ShaderMaterial_eetg5")
 anchors_preset = 15
 anchor_right = 1.0
@@ -6158,7 +6162,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="CRT Shader" type="ColorRect" parent="." unique_id=1402205985 node_paths=PackedStringArray("game_viewport")]
+[node name="CRTShader" type="ColorRect" parent="." unique_id=1402205985 node_paths=PackedStringArray("game_viewport")]
 material = SubResource("ShaderMaterial_0vipy")
 layout_mode = 2
 mouse_filter = 2
@@ -6173,7 +6177,7 @@ power_duration = 0.5
 [node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=90532760]
 copy_mode = 2
 
-[node name="CRTpass2 Shader" type="ColorRect" parent="." unique_id=741939067]
+[node name="CRTpass2Shader" type="ColorRect" parent="." unique_id=741939067]
 visible = false
 material = SubResource("ShaderMaterial_veuwc")
 layout_mode = 2

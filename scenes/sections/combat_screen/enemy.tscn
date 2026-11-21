@@ -27,6 +27,7 @@ colors = PackedColorArray(1, 1, 1, 1, 0.65012825, 0.6501283, 0.65012825, 1)
 gradient = SubResource("Gradient_sl4bm")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lclxg"]
+resource_local_to_scene = true
 shader = ExtResource("3_ct5v2")
 shader_parameter/shader_enabled = true
 shader_parameter/original_texture_size = Vector2(3000, 3000)
