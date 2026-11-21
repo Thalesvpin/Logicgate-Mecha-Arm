@@ -70,9 +70,9 @@ shader_parameter/repulsion_swirl_angle = 2.0
 shader_parameter/repulsion_pinch_amount = -2.0
 shader_parameter/repulsion_wave_freq = 5.0
 shader_parameter/hole_punch_radius = 0.0
-shader_parameter/mouse_global_pos = Vector2(578.8324, 90.434456)
-shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 197.86407, 0, 0.37075502, 578.8324, 90.434456, 120.81667, 0.88619643, -100000, 202.41452, 0, 0.37095454, -100000, 202.41452, 0, 0.37095454, -100000, 98.94179, 0, 0.39459643, -100000, 148.2051, 0, 0.3695911, -100000, 147.21587, 0, 0.37094042, -100000, 175.50763, 0, 0.36971858)
-shader_parameter/active_click_repulsion_count = 1
+shader_parameter/mouse_global_pos = Vector2(281.245, 367.98703)
+shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 301.4467, 0, 0.37084097, -100000, 278.1213, 0, 0.3693616, -100000, 334.77203, 0, 0.3682633, -100000, 383.55197, 0, 0.37088725, -100000, 99.915535, 0, 0.39984578, -100000, 459.12616, 0, 0.3679942, -100000, 322.906, 0, 0.37040582, -100000, 457.72662, 0, 0.36800885)
+shader_parameter/active_click_repulsion_count = 0
 shader_parameter/use_ripple = true
 shader_parameter/ripple_ring_count = 1
 shader_parameter/ripple_ring_spacing = 20.0
@@ -82,8 +82,8 @@ shader_parameter/ripple_decay = 1.0
 shader_parameter/ripple_grid_distortion = 0.0
 shader_parameter/use_ripple_custom_color = true
 shader_parameter/ripple_custom_color = Color(0.3, 1, 0.96500003, 1)
-shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 197.86407, 0, 0.3030753, 578.8324, 90.434456, 96.655334, 0.90786886, -100000, 202.41452, 0, 0.3032058, -100000, 202.41452, 0, 0.3032058, -100000, 98.94179, 0, 0.32073835, -100000, 148.2051, 0, 0.30231196, -100000, 147.21587, 0, 0.30319363, -100000, 175.50763, 0, 0.30238155)
-shader_parameter/active_ripple_count = 1
+shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 301.4467, 0, 0.30312642, -100000, 278.1213, 0, 0.30216378, -100000, 334.77203, 0, 0.3014451, -100000, 383.55197, 0, 0.30316183, -100000, 99.915535, 0, 0.32355848, -100000, 459.12616, 0, 0.3012657, -100000, 322.906, 0, 0.30284694, -100000, 457.72662, 0, 0.30127805)
+shader_parameter/active_ripple_count = 0
 shader_parameter/main_grid_style = 0
 shader_parameter/main_line_thickness = 0.5
 shader_parameter/main_dot_cross_size = 4.0
@@ -1359,85 +1359,7 @@ layout_mode = 2
 offset_transform_enabled = true
 offset_transform_visual_only = false
 
-[node name="TeethPanel" type="PanelContainer" parent="Wall" unique_id=642947994]
-custom_minimum_size = Vector2(0, 200)
-custom_maximum_size = Vector2(-1, 200)
-layout_mode = 0
-offset_top = -97.19
-offset_right = 1920.0
-offset_bottom = 102.81
-theme_override_styles/panel = SubResource("StyleBoxEmpty_a7lv4")
-
-[node name="TeethHBoxContainer" type="HBoxContainer" parent="Wall/TeethPanel" unique_id=738224618]
-layout_mode = 2
-offset_transform_enabled = true
-offset_transform_position_ratio = Vector2(0, -0.16)
-alignment = 1
-
-[node name="Spacer" type="Control" parent="Wall/TeethPanel/TeethHBoxContainer" unique_id=1660212947]
-custom_minimum_size = Vector2(35, 0)
-layout_mode = 2
-
-[node name="Tooth1" type="TextureRect" parent="Wall/TeethPanel/TeethHBoxContainer" unique_id=1437700929]
-custom_minimum_size = Vector2(0, 200)
-custom_maximum_size = Vector2(-1, 200)
-layout_mode = 2
-size_flags_horizontal = 3
-offset_transform_enabled = true
-offset_transform_scale = Vector2(0.805, 1)
-texture = ExtResource("11_yybyw")
-expand_mode = 5
-stretch_mode = 5
-
-[node name="Tooth2" type="TextureRect" parent="Wall/TeethPanel/TeethHBoxContainer" unique_id=2051688523]
-custom_minimum_size = Vector2(0, 200)
-custom_maximum_size = Vector2(-1, 200)
-layout_mode = 2
-size_flags_horizontal = 3
-offset_transform_enabled = true
-offset_transform_scale = Vector2(0.805, 1)
-texture = ExtResource("11_yybyw")
-expand_mode = 5
-stretch_mode = 5
-
-[node name="Tooth3" type="TextureRect" parent="Wall/TeethPanel/TeethHBoxContainer" unique_id=1544095363]
-custom_minimum_size = Vector2(0, 200)
-custom_maximum_size = Vector2(-1, 200)
-layout_mode = 2
-size_flags_horizontal = 3
-offset_transform_enabled = true
-offset_transform_scale = Vector2(0.805, 1)
-texture = ExtResource("11_yybyw")
-expand_mode = 5
-stretch_mode = 5
-
-[node name="Tooth4" type="TextureRect" parent="Wall/TeethPanel/TeethHBoxContainer" unique_id=540183809]
-custom_minimum_size = Vector2(0, 200)
-custom_maximum_size = Vector2(-1, 200)
-layout_mode = 2
-size_flags_horizontal = 3
-offset_transform_enabled = true
-offset_transform_scale = Vector2(0.805, 1)
-texture = ExtResource("11_yybyw")
-expand_mode = 5
-stretch_mode = 5
-
-[node name="Tooth5" type="TextureRect" parent="Wall/TeethPanel/TeethHBoxContainer" unique_id=428486269]
-custom_minimum_size = Vector2(0, 200)
-custom_maximum_size = Vector2(-1, 200)
-layout_mode = 2
-size_flags_horizontal = 3
-offset_transform_enabled = true
-offset_transform_scale = Vector2(0.805, 1)
-texture = ExtResource("11_yybyw")
-expand_mode = 5
-stretch_mode = 5
-
-[node name="Spacer2" type="Control" parent="Wall/TeethPanel/TeethHBoxContainer" unique_id=185656353]
-custom_minimum_size = Vector2(35, 0)
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="Wall" unique_id=1748104669]
+[node name="MainWallPanel" type="PanelContainer" parent="Wall" unique_id=1748104669]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1445,30 +1367,100 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="Wall/PanelContainer" unique_id=1031902725]
+[node name="TeethPanel" type="PanelContainer" parent="Wall/MainWallPanel" unique_id=642947994]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_a7lv4")
+
+[node name="TeethHBoxContainer" type="HBoxContainer" parent="Wall/MainWallPanel/TeethPanel" unique_id=738224618]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -133.475)
+alignment = 1
+
+[node name="Spacer" type="Control" parent="Wall/MainWallPanel/TeethPanel/TeethHBoxContainer" unique_id=1660212947]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="Tooth1" type="TextureRect" parent="Wall/MainWallPanel/TeethPanel/TeethHBoxContainer" unique_id=1437700929]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Tooth2" type="TextureRect" parent="Wall/MainWallPanel/TeethPanel/TeethHBoxContainer" unique_id=2051688523]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Tooth3" type="TextureRect" parent="Wall/MainWallPanel/TeethPanel/TeethHBoxContainer" unique_id=1544095363]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Tooth4" type="TextureRect" parent="Wall/MainWallPanel/TeethPanel/TeethHBoxContainer" unique_id=540183809]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Tooth5" type="TextureRect" parent="Wall/MainWallPanel/TeethPanel/TeethHBoxContainer" unique_id=428486269]
+custom_minimum_size = Vector2(0, 200)
+custom_maximum_size = Vector2(-1, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+offset_transform_scale = Vector2(0.805, 1)
+texture = ExtResource("11_yybyw")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="Spacer2" type="Control" parent="Wall/MainWallPanel/TeethPanel/TeethHBoxContainer" unique_id=185656353]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Wall/MainWallPanel" unique_id=1031902725]
 layout_mode = 2
 theme_override_constants/margin_left = 32
 theme_override_constants/margin_top = 32
 theme_override_constants/margin_right = 32
 theme_override_constants/margin_bottom = 0
 
-[node name="Background" type="ColorRect" parent="Wall/PanelContainer/MarginContainer" unique_id=476477044]
+[node name="Background" type="ColorRect" parent="Wall/MainWallPanel/MarginContainer" unique_id=476477044]
 material = SubResource("ShaderMaterial_pae1i")
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Wall/PanelContainer/MarginContainer" unique_id=1584949237]
+[node name="VBoxContainer" type="VBoxContainer" parent="Wall/MainWallPanel/MarginContainer" unique_id=1584949237]
 layout_mode = 2
 
-[node name="TopEdge" type="HBoxContainer" parent="Wall/PanelContainer/MarginContainer/VBoxContainer" unique_id=91169789]
+[node name="TopLevel" type="HBoxContainer" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer" unique_id=91169789]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="TopLeftCorner" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge" unique_id=448495448]
+[node name="TopLeftCorner" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel" unique_id=448495448]
 custom_minimum_size = Vector2(250, 250)
 custom_maximum_size = Vector2(250, 250)
 layout_mode = 2
 
-[node name="BoltHousing" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopLeftCorner" unique_id=79210273]
+[node name="BoltHousing" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopLeftCorner" unique_id=79210273]
 material = SubResource("ShaderMaterial_bv6uq")
 layout_mode = 0
 offset_left = 20.0
@@ -1480,7 +1472,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("13_6k8el")
 expand_mode = 1
 
-[node name="Bolt" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopLeftCorner/BoltHousing" unique_id=190597106]
+[node name="Bolt" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopLeftCorner/BoltHousing" unique_id=190597106]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 1
 anchors_preset = 8
@@ -1499,44 +1491,14 @@ scale = Vector2(0.45, 0.45)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("13_7e8s2")
 
-[node name="Control" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopLeftCorner" unique_id=1245822858]
-visible = false
-propagate_maximum_size = true
-anchors_preset = 0
-offset_left = 100.0
-offset_top = 100.0
-offset_right = 450.0
-offset_bottom = 426.0
-
-[node name="TextureRect" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopLeftCorner/Control" unique_id=666484984]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("16_s4pbu")
-expand_mode = 2
-stretch_mode = 5
-
-[node name="TopMiddle" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge" unique_id=1551583418]
+[node name="TopMiddle" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel" unique_id=1551583418]
 custom_minimum_size = Vector2(0, 250)
 custom_maximum_size = Vector2(-1, 250)
 layout_mode = 2
 size_flags_horizontal = 3
 offset_transform_scale = Vector2(1.017, 1)
 
-[node name="ColorRect" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle" unique_id=1372895128]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 1, 1, 0.2)
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle" unique_id=1819475495]
+[node name="HBoxContainer" type="HBoxContainer" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle" unique_id=1819475495]
 custom_minimum_size = Vector2(0, 1055)
 custom_maximum_size = Vector2(-1, 1055)
 layout_mode = 1
@@ -1547,16 +1509,16 @@ offset_bottom = 805.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Spacer" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=1974613477]
+[node name="Spacer" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer" unique_id=1974613477]
 layout_mode = 2
 
-[node name="Internals" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=855601878]
+[node name="Internals" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer" unique_id=855601878]
 custom_minimum_size = Vector2(350, 0)
 custom_maximum_size = Vector2(1070, -1)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect2" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals" unique_id=1365970016]
+[node name="GrateMask" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals" unique_id=1365970016]
 clip_children = 1
 layout_mode = 0
 offset_left = -4.0
@@ -1567,7 +1529,7 @@ texture = ExtResource("17_ofdve")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="TextureRect" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2" unique_id=1988650692]
+[node name="MainInternalPanel" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask" unique_id=1988650692]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1584,7 +1546,7 @@ texture = ExtResource("16_s4pbu")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=476870741]
+[node name="TubeShadow" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel" unique_id=476870741]
 modulate = Color(0, 0, 0, 0.13725491)
 layout_mode = 0
 offset_left = -16.0
@@ -1597,7 +1559,7 @@ texture = ExtResource("18_7e8s2")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="ColorRect2" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=1536239216]
+[node name="WireHousingShadow" type="ColorRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel" unique_id=1536239216]
 layout_mode = 0
 offset_left = 17.0
 offset_top = 11.934998
@@ -1607,7 +1569,7 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(1, 1.391)
 color = Color(0, 0, 0, 0.09803922)
 
-[node name="ColorRect" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=1597990223]
+[node name="WireHousing" type="ColorRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel" unique_id=1597990223]
 layout_mode = 0
 offset_left = 17.0
 offset_top = 11.934998
@@ -1615,7 +1577,7 @@ offset_right = 330.0
 offset_bottom = 37.934998
 color = Color(0.5019608, 0.5882353, 0.58431375, 1)
 
-[node name="TextureRect" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=1535043598]
+[node name="Tube" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel" unique_id=1535043598]
 layout_mode = 0
 offset_left = -16.0
 offset_top = -26.065002
@@ -1625,7 +1587,7 @@ texture = ExtResource("18_7e8s2")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="MetalGears" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect" unique_id=1638889119]
+[node name="MetalGears" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel" unique_id=1638889119]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1634,7 +1596,18 @@ grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.45, 0.45)
 
-[node name="TextureRect2" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect/MetalGears" unique_id=559631429]
+[node name="Gear1Shadow" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel/MetalGears" unique_id=2085192796]
+modulate = Color(0, 0, 0, 0.4509804)
+layout_mode = 0
+offset_left = 461.72192
+offset_top = 109.55974
+offset_right = 911.722
+offset_bottom = 559.55975
+texture = ExtResource("19_8s6xd")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Gear1" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel/MetalGears" unique_id=559631429]
 layout_mode = 0
 offset_left = 439.5
 offset_top = 87.3375
@@ -1644,7 +1617,18 @@ texture = ExtResource("19_8s6xd")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect3" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect/MetalGears" unique_id=1203457703]
+[node name="Gear2Shadow" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel/MetalGears" unique_id=1291420504]
+modulate = Color(0, 0, 0, 0.4509804)
+layout_mode = 0
+offset_left = 387.7223
+offset_top = 441.5595
+offset_right = 972.7223
+offset_bottom = 1026.5596
+texture = ExtResource("20_qg84j")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Gear2" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel/MetalGears" unique_id=1203457703]
 layout_mode = 0
 offset_left = 365.5
 offset_top = 419.3375
@@ -1654,7 +1638,18 @@ texture = ExtResource("20_qg84j")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect/MetalGears" unique_id=1285810372]
+[node name="Gear3Shadow" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel/MetalGears" unique_id=2041627564]
+modulate = Color(0, 0, 0, 0.4509804)
+layout_mode = 0
+offset_left = 255.72229
+offset_top = 149.55975
+offset_right = 565.7223
+offset_bottom = 459.55975
+texture = ExtResource("21_swglj")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Gear3" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel/MetalGears" unique_id=1285810372]
 layout_mode = 0
 offset_left = 233.5
 offset_top = 127.3375
@@ -1664,7 +1659,18 @@ texture = ExtResource("21_swglj")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect5" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2/TextureRect/MetalGears" unique_id=1430789427]
+[node name="Gear4Shadow" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel/MetalGears" unique_id=849241922]
+modulate = Color(0, 0, 0, 0.4509804)
+layout_mode = 0
+offset_left = 59.72229
+offset_top = 377.55975
+offset_right = 469.72232
+offset_bottom = 787.55975
+texture = ExtResource("22_61v2t")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Gear4" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask/MainInternalPanel/MetalGears" unique_id=1430789427]
 layout_mode = 0
 offset_left = 37.5
 offset_top = 355.3375
@@ -1674,7 +1680,7 @@ texture = ExtResource("22_61v2t")
 expand_mode = 2
 stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/Internals/TextureRect2" unique_id=773484937]
+[node name="GrateShadow" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/Internals/GrateMask" unique_id=773484937]
 modulate = Color(1, 1, 1, 0.30980393)
 layout_mode = 1
 anchors_preset = 15
@@ -1691,45 +1697,45 @@ offset_transform_scale = Vector2(1.301, 1.301)
 texture = ExtResource("23_qg84j")
 expand_mode = 2
 
-[node name="Spacer2" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=826539906]
+[node name="Spacer2" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer" unique_id=826539906]
 custom_minimum_size = Vector2(26.705, 0)
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=792012658]
+[node name="GradientStripe1" type="PanelContainer" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer" unique_id=792012658]
 custom_minimum_size = Vector2(50, 0)
 custom_maximum_size = Vector2(50, -1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_wxs7s")
 
-[node name="ColorRect" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/PanelContainer" unique_id=1277429219]
+[node name="ColorRect" type="ColorRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/GradientStripe1" unique_id=1277429219]
 material = SubResource("ShaderMaterial_aaut4")
 layout_mode = 2
 
-[node name="Spacer3" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=203124806]
+[node name="Spacer3" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer" unique_id=203124806]
 custom_minimum_size = Vector2(55, 0)
 layout_mode = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=670447626]
+[node name="GradientStripe2" type="PanelContainer" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer" unique_id=670447626]
 custom_minimum_size = Vector2(130, 0)
 custom_maximum_size = Vector2(130, -1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_wxs7s")
 
-[node name="ColorRect" type="ColorRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer/PanelContainer2" unique_id=1279362360]
+[node name="ColorRect" type="ColorRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer/GradientStripe2" unique_id=1279362360]
 material = SubResource("ShaderMaterial_aaut4")
 layout_mode = 2
 
-[node name="Spacer4" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopMiddle/HBoxContainer" unique_id=246107010]
+[node name="Spacer4" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopMiddle/HBoxContainer" unique_id=246107010]
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
 
-[node name="TopRightCorner" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge" unique_id=1862589535]
+[node name="TopRightCorner" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel" unique_id=1862589535]
 custom_minimum_size = Vector2(250, 250)
 custom_maximum_size = Vector2(250, 250)
 propagate_maximum_size = true
 layout_mode = 2
 
-[node name="BoltHousing" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopRightCorner" unique_id=1168020212]
+[node name="BoltHousing" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopRightCorner" unique_id=1168020212]
 material = SubResource("ShaderMaterial_bv6uq")
 layout_mode = 0
 offset_left = 141.0
@@ -1741,7 +1747,7 @@ pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("13_6k8el")
 expand_mode = 1
 
-[node name="Bolt" type="TextureRect" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/TopEdge/TopRightCorner/BoltHousing" unique_id=643913865]
+[node name="Bolt" type="TextureRect" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/TopLevel/TopRightCorner/BoltHousing" unique_id=643913865]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 1
 anchors_preset = 8
@@ -1760,20 +1766,20 @@ scale = Vector2(0.45, 0.45)
 pivot_offset_ratio = Vector2(0.5, 0.5)
 texture = ExtResource("13_7e8s2")
 
-[node name="MainBody" type="HBoxContainer" parent="Wall/PanelContainer/MarginContainer/VBoxContainer" unique_id=1026104481]
+[node name="MainBody" type="HBoxContainer" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer" unique_id=1026104481]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="LeftSide" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/MainBody" unique_id=510932829]
+[node name="LeftSide" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/MainBody" unique_id=510932829]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Middle" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/MainBody" unique_id=2083139808]
+[node name="Middle" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/MainBody" unique_id=2083139808]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RightSide" type="Control" parent="Wall/PanelContainer/MarginContainer/VBoxContainer/MainBody" unique_id=1623748964]
+[node name="RightSide" type="Control" parent="Wall/MainWallPanel/MarginContainer/VBoxContainer/MainBody" unique_id=1623748964]
 layout_mode = 2
 size_flags_horizontal = 3
 
