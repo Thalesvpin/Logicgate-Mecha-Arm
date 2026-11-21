@@ -65,7 +65,7 @@ shader_parameter/repulsion_pinch_amount = -2.0
 shader_parameter/repulsion_wave_freq = 5.0
 shader_parameter/hole_punch_radius = 0.0
 shader_parameter/mouse_global_pos = Vector2(-100000, -100000)
-shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 518.16547, 0, 0.37067363, -100000, 427.23566, 0, 0.36934698, -100000, 545.8073, 0, 0.37095454, -100000, 722.0564, 0, 0.36803997, -100000, 619.97345, 0, 0.37095454, -100000, 389.01385, 0, 0.36839703, -100000, 403.29504, 0, 0.3709277, -100000, 507.6098, 0, 0.37088284)
+shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 125.41498, 0, 0.36815378, -100000, 222.09088, 0, 0.36794183, -100000, 396.57904, 0, 0.3700894, -100000, 114.5025, 0, 0.36831614, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
 shader_parameter/active_click_repulsion_count = 0
 shader_parameter/use_ripple = true
 shader_parameter/ripple_ring_count = 1
@@ -76,7 +76,7 @@ shader_parameter/ripple_decay = 1.0
 shader_parameter/ripple_grid_distortion = 0.0
 shader_parameter/use_ripple_custom_color = true
 shader_parameter/ripple_custom_color = Color(0.3, 1, 0.96500003, 1)
-shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 518.16547, 0, 0.3030221, -100000, 427.23566, 0, 0.30215415, -100000, 545.8073, 0, 0.303208, -100000, 722.0564, 0, 0.3015071, -100000, 619.97345, 0, 0.3032058, -100000, 389.01385, 0, 0.30151483, -100000, 403.29504, 0, 0.30318826, -100000, 507.6098, 0, 0.3031589)
+shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 125.41498, 0, 0.30291736, -100000, 222.09088, 0, 0.30131587, -100000, 396.57904, 0, 0.30245662, -100000, 114.5025, 0, 0.30147928, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
 shader_parameter/active_ripple_count = 0
 shader_parameter/main_grid_style = 0
 shader_parameter/main_line_thickness = 0.5
@@ -873,17 +873,15 @@ custom_maximum_size = Vector2(250, 250)
 layout_mode = 2
 texture = ExtResource("11_28udb")
 expand_mode = 2
-stretch_mode = 4
 
 [node name="TextureRect3" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer" unique_id=538115624]
 custom_minimum_size = Vector2(0, 250)
 custom_maximum_size = Vector2(-1, 250)
 layout_mode = 2
 size_flags_horizontal = 3
-offset_transform_enabled = true
 offset_transform_scale = Vector2(1.017, 1)
 texture = ExtResource("12_pl7wn")
-expand_mode = 2
+expand_mode = 4
 
 [node name="TextureRect2" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer" unique_id=1788993411]
 custom_minimum_size = Vector2(250, 250)
@@ -901,28 +899,27 @@ size_flags_vertical = 3
 custom_minimum_size = Vector2(250, 840)
 custom_maximum_size = Vector2(250, 840)
 layout_mode = 2
-offset_transform_enabled = true
 offset_transform_scale = Vector2(1, 1.052)
 texture = ExtResource("15_ofdve")
+expand_mode = 2
 
 [node name="TextureRect3" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer2" unique_id=1330223626]
 custom_minimum_size = Vector2(0, 840)
 custom_maximum_size = Vector2(-1, 840)
 layout_mode = 2
 size_flags_horizontal = 3
-offset_transform_enabled = true
 offset_transform_scale = Vector2(1.017, 1.052)
 texture = ExtResource("16_7e8s2")
-expand_mode = 2
+expand_mode = 4
 
 [node name="TextureRect2" type="TextureRect" parent="Wall/VBoxContainer/HBoxContainer2" unique_id=1265839059]
 custom_minimum_size = Vector2(250, 840)
 custom_maximum_size = Vector2(250, 840)
 layout_mode = 2
 size_flags_horizontal = 8
-offset_transform_enabled = true
 offset_transform_scale = Vector2(1, 1.052)
 texture = ExtResource("17_6k8el")
+expand_mode = 2
 
 [connection signal="child_entered_tree" from="SubViewportContainer/SubViewport/Sandbox/GateLayer" to="SubViewportContainer/SubViewport/Sandbox" method="_on_gate_layer_child_entered_tree"]
 [connection signal="mouse_entered" from="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" to="SubViewportContainer/SubViewport/Sandbox" method="_on_area_2d_mouse_entered"]
