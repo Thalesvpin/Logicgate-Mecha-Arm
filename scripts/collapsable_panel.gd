@@ -66,7 +66,7 @@ func turn_off(fast: bool = false) -> void:
 		tween.tween_property(shader, 'shader_parameter/power_state', 0.0, turn_off_speed)
 
 func _on_mouse_entered() -> void:
-	var tween = create_tween()
+	var tween = create_tween().set_parallel()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_CUBIC)
 	is_collapsed = false
@@ -75,7 +75,7 @@ func _on_mouse_entered() -> void:
 	tween.tween_callback(turn_on)
 
 func _on_mouse_exited() -> void:
-	var tween = create_tween()
+	var tween = create_tween().set_parallel()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_CUBIC)
 	is_collapsed = true
