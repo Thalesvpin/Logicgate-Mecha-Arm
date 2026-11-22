@@ -25,9 +25,9 @@ func submit(queue_idx: int) -> void:
 	output = result
 	print('output: ', output)
 	Global.change_wires_color(Color('purple'))
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(Global.action_duration).timeout
 	Global.circuit_editor.compare_output(output)
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(Global.action_duration).timeout
 	Global.reset_wires_color()
 	EventBus.tick.emit()
 	if queue_idx == 2:

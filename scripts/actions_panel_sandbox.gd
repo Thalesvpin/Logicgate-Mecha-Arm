@@ -13,6 +13,9 @@ extends PanelContainer
 @onready var charge_heavy_attack_label: RichTextLabel = $MarginContainer/HBoxContainer/ChargeHeavyAttack/PanelContainer5/ChargeHeavyAttackLabel
 @onready var heavy_attack_label: RichTextLabel = $MarginContainer/HBoxContainer/HeavyAttack/PanelContainer6/HeavyAttackLabel
 
+func _ready() -> void:
+	Global.actions_panel_sandbox = self
+
 func set_attack(value: int) -> void:
 	attack_label.text = '%04d' % value
 
@@ -30,3 +33,46 @@ func set_charge_heavy_attack(value: int) -> void:
 
 func set_heavy_attack(value: int) -> void:
 	heavy_attack_label.text = '%04d' % value
+
+func light_up_attack() -> void:
+	attack.find_child('BinaryOn').show()
+	attack.find_child('BinaryOff').hide()
+	await get_tree().create_timer(Global.action_duration).timeout
+	attack.find_child('BinaryOff').show()
+	attack.find_child('BinaryOn').hide()
+		
+func light_up_heal() -> void:
+	heal.find_child('BinaryOn').show()
+	heal.find_child('BinaryOff').hide()
+	await get_tree().create_timer(Global.action_duration).timeout
+	heal.find_child('BinaryOff').show()
+	heal.find_child('BinaryOn').hide()
+		
+func light_up_shield_regen() -> void:
+	shield_regen.find_child('BinaryOn').show()
+	shield_regen.find_child('BinaryOff').hide()
+	await get_tree().create_timer(Global.action_duration).timeout
+	shield_regen.find_child('BinaryOff').show()
+	shield_regen.find_child('BinaryOn').hide()
+		
+func light_up_self_damage() -> void:
+	self_damage.find_child('BinaryOn').show()
+	self_damage.find_child('BinaryOff').hide()
+	await get_tree().create_timer(Global.action_duration).timeout
+	self_damage.find_child('BinaryOff').show()
+	self_damage.find_child('BinaryOn').hide()
+		
+func light_up_charge_heavy_attack() -> void:
+	charge_heavy_attack.find_child('BinaryOn').show()
+	charge_heavy_attack.find_child('BinaryOff').hide()
+	await get_tree().create_timer(Global.action_duration).timeout
+	charge_heavy_attack.find_child('BinaryOff').show()
+	charge_heavy_attack.find_child('BinaryOn').hide()
+		
+func light_up_heavy_attack() -> void:
+	heavy_attack.find_child('BinaryOn').show()
+	heavy_attack.find_child('BinaryOff').hide()
+	await get_tree().create_timer(Global.action_duration).timeout
+	heavy_attack.find_child('BinaryOff').show()
+	heavy_attack.find_child('BinaryOn').hide()
+		

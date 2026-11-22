@@ -190,10 +190,10 @@ shader_parameter/enable_dithering = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e6qwf"]
 shader = ExtResource("4_tosqn")
-shader_parameter/progress = 0.1390000066025
+shader_parameter/progress = 0.366000017385
 shader_parameter/direction_angle = 0.0
 shader_parameter/saturation = 0.2
-shader_parameter/lightness = 0.0
+shader_parameter/lightness = 0.4
 shader_parameter/terminator_color = Color(1, 1, 1, 1)
 shader_parameter/terminator_size_px = 0.0
 

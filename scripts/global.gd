@@ -31,6 +31,7 @@ var combat_money_panel
 var shop_money_panel
 var turn_manager
 var shop
+var actions_panel_sandbox
 #endregion
 
 #control variables
@@ -43,6 +44,7 @@ var commom_rarity: int = 40
 var rare_rarity: int = 30
 var ultra_rare_rarity: int = 20
 var legendary_rarity: int = 10
+var action_duration: float = 1.0
 #signal _null
 
 #region IMPLANT LISTS

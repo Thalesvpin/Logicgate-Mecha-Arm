@@ -16,12 +16,15 @@ func _ready() -> void:
 	EventBus.submit_circuit.connect(lock_submit)
 
 func _process(delta: float) -> void:
-	if timer > 0:
-		timer -= delta
-		progress_shader.material.set_shader_parameter("progress", 1 - timer/hold_run_duration)
-	if holding_run && timer <= 0:
+	print('timer: ', timer/hold_run_duration)
+	if holding_run && timer < hold_run_duration:
+		timer += delta
+	elif holding_run && timer >= hold_run_duration:
 		stop_timer()
 		submit()
+	elif timer > 0:
+		timer -= delta
+	progress_shader.material.set_shader_parameter("progress", timer/hold_run_duration)
 
 func submit() -> void:
 	EventBus.submit_circuit.emit()
@@ -45,12 +48,11 @@ func start_turn(who) -> void:
 
 ##Duration in seconds
 func start_timer() -> void:
-	timer = hold_run_duration
 	holding_run = true
 
 func stop_timer() -> void:
-	timer = 0.0
-	holding_run = false
+	if holding_run:
+		timer = 0.0
 	var shader = progress_shader.material as ShaderMaterial
 	#var tween = create_tween()
 	#tween.tween_property(shader, "shader_parameter/progress", 0, 1.0)
@@ -67,6 +69,7 @@ func _on_run_btn_button_down() -> void:
 		start_timer()
 
 func _on_run_btn_button_up() -> void:
+	holding_run = false
 	stop_timer()
 
 func _on_pause_btn_button_up() -> void:
