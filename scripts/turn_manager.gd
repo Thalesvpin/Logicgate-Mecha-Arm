@@ -18,6 +18,7 @@ func battle_started(a = null) -> void:
 	is_shop_open = false
 
 func handle_next_turn(who) -> void:
+	print('handle_next_turn')
 	turn_idx = turn_sequence.find(who)
 	if turn_idx == turn_sequence.size()-1:
 		turn_idx = 0

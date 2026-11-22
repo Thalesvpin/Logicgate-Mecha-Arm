@@ -236,12 +236,12 @@ layout_mode = 2
 [node name="ExecutionContainer1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=857185412]
 layout_mode = 2
 
-[node name="TCCLight1" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1" unique_id=525066664]
+[node name="Light1" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1" unique_id=525066664]
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
 
-[node name="Light1Off" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/TCCLight1" unique_id=50073925]
+[node name="LightOff" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/Light1" unique_id=50073925]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 1
 anchors_preset = 15
@@ -253,7 +253,7 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(0.675, 0.675)
 color = Color(1, 0.3254902, 1, 1)
 
-[node name="Light1On" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/TCCLight1" unique_id=791337539]
+[node name="LightOn" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/Light1" unique_id=791337539]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -297,12 +297,12 @@ vertical_alignment = 1
 [node name="ExecutionContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=1111539442]
 layout_mode = 2
 
-[node name="TCCLight1" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2" unique_id=140104260]
+[node name="Light2" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2" unique_id=140104260]
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
 
-[node name="Light1Off" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/TCCLight1" unique_id=1170707848]
+[node name="LightOff" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/Light2" unique_id=1170707848]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 1
 anchors_preset = 15
@@ -314,7 +314,7 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(0.675, 0.675)
 color = Color(1, 0.3254902, 1, 1)
 
-[node name="Light1On" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/TCCLight1" unique_id=1194637610]
+[node name="LightOn" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/Light2" unique_id=1194637610]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -357,12 +357,12 @@ vertical_alignment = 1
 [node name="ExecutionContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=413857388]
 layout_mode = 2
 
-[node name="TCCLight1" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3" unique_id=1916293737]
+[node name="Light3" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3" unique_id=1916293737]
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
 
-[node name="Light1Off" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/TCCLight1" unique_id=973325540]
+[node name="LightOff" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/Light3" unique_id=973325540]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 1
 anchors_preset = 15
@@ -374,7 +374,7 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(0.675, 0.675)
 color = Color(1, 0.3254902, 1, 1)
 
-[node name="Light1On" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/TCCLight1" unique_id=202534059]
+[node name="LightOn" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/Light3" unique_id=202534059]
 visible = false
 layout_mode = 1
 anchors_preset = 15

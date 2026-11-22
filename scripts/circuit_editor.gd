@@ -31,6 +31,7 @@ var action_list: Dictionary[CombatActions.List, int]={
 
 func _ready() -> void:
 	Global.circuit_editor = self
+	connect_signals()
 	wall.show()
 	wall.offset_transform_position.y = wall.get_viewport_rect().size.y
 
@@ -42,7 +43,6 @@ func connect_signals() -> void:
 	EventBus.turn_started.connect(turn_start)
 	EventBus.turn_ended.connect(block_sandbox)
 	EventBus.submit_circuit.connect(lock_sandbox)
-	EventBus.open_shop.connect(clear_sandbox)
 
 func generate_action_list() -> void:
 	var list: Array[int] = Global.unique_random_list(action_list.size(), 4)
@@ -85,7 +85,11 @@ func block_sandbox(who: String) -> void:
 		return
 	var tween = create_tween().set_parallel(false)
 	tween.tween_property(wall, 'offset_transform_position:y', 0.0, 0.8)
-	tween.tween_callback(func(): block_up = true)
+	tween.tween_callback(
+		func():
+			block_up = true
+			clear_sandbox()
+	)
 
 func unblock_sandbox() -> void:
 	var tween = create_tween().set_parallel(false)
