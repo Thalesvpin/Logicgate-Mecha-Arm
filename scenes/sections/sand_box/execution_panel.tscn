@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b84g2j5iwlbtv" path="res://scripts/execution_panel.gd" id="1_mufj8"]
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_pmrxt"]
+[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="3_e6qwf"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="4_e6qwf"]
 [ext_resource type="Shader" uid="uid://ddtcjrx2hj74g" path="res://shaders/texture_progress.gdshader" id="4_tosqn"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_7ogem"]
@@ -214,23 +215,28 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer" unique_id=487831675]
-layout_mode = 2
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer" unique_id=583125266]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=583125266]
 layout_mode = 2
 
-[node name="ExecutionContainer1" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=857185412]
+[node name="LightsGroup" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1086810345]
 layout_mode = 2
 
-[node name="TCCLight1" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=525066664]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup" unique_id=1349949604]
+layout_mode = 2
+color = Color(0.80327266, 0.37005475, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup" unique_id=433904536]
+layout_mode = 2
+
+[node name="ExecutionContainer1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=857185412]
+layout_mode = 2
+
+[node name="TCCLight1" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1" unique_id=525066664]
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
 
-[node name="Light1Off" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/TCCLight1" unique_id=50073925]
+[node name="Light1Off" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/TCCLight1" unique_id=50073925]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 1
 anchors_preset = 15
@@ -242,7 +248,7 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(0.675, 0.675)
 color = Color(1, 0.3254902, 1, 1)
 
-[node name="Light1On" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/TCCLight1" unique_id=791337539]
+[node name="Light1On" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/TCCLight1" unique_id=791337539]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -252,25 +258,25 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.27664492, 0.73423785, 0.84114033, 1)
 
-[node name="Spacer" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=10953085]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1" unique_id=10953085]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=1169790476]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1" unique_id=1169790476]
 custom_minimum_size = Vector2(80, 0)
 custom_maximum_size = Vector2(80, -1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
-[node name="ColorRect3" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=1878585462]
+[node name="ColorRect3" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=1878585462]
 layout_mode = 2
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
-[node name="ColorRect4" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=977191386]
+[node name="ColorRect4" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=977191386]
 visible = false
 layout_mode = 2
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
-[node name="ExecutionLabel1" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=1134453166]
+[node name="ExecutionLabel1" type="RichTextLabel" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=1134453166]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -1.31)
@@ -283,15 +289,15 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ExecutionContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1111539442]
+[node name="ExecutionContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=1111539442]
 layout_mode = 2
 
-[node name="TCCLight1" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=140104260]
+[node name="TCCLight1" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2" unique_id=140104260]
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
 
-[node name="Light1Off" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/TCCLight1" unique_id=1170707848]
+[node name="Light1Off" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/TCCLight1" unique_id=1170707848]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 1
 anchors_preset = 15
@@ -303,7 +309,7 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(0.675, 0.675)
 color = Color(1, 0.3254902, 1, 1)
 
-[node name="Light1On" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/TCCLight1" unique_id=1194637610]
+[node name="Light1On" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/TCCLight1" unique_id=1194637610]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -313,24 +319,24 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.27664492, 0.73423785, 0.84114033, 1)
 
-[node name="Spacer" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=1696254259]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2" unique_id=1696254259]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=492481140]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2" unique_id=492481140]
 custom_minimum_size = Vector2(80, 0)
 custom_maximum_size = Vector2(80, -1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
-[node name="ColorRect2" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1568131741]
+[node name="ColorRect2" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1568131741]
 layout_mode = 2
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
-[node name="ColorRect3" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1248231026]
+[node name="ColorRect3" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1248231026]
 layout_mode = 2
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
-[node name="ExecutionLabel2" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1946287649]
+[node name="ExecutionLabel2" type="RichTextLabel" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1946287649]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -1.31)
@@ -343,15 +349,15 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ExecutionContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=413857388]
+[node name="ExecutionContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=413857388]
 layout_mode = 2
 
-[node name="TCCLight1" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=1916293737]
+[node name="TCCLight1" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3" unique_id=1916293737]
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
 
-[node name="Light1Off" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/TCCLight1" unique_id=973325540]
+[node name="Light1Off" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/TCCLight1" unique_id=973325540]
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 1
 anchors_preset = 15
@@ -363,7 +369,7 @@ offset_transform_enabled = true
 offset_transform_scale = Vector2(0.675, 0.675)
 color = Color(1, 0.3254902, 1, 1)
 
-[node name="Light1On" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/TCCLight1" unique_id=202534059]
+[node name="Light1On" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/TCCLight1" unique_id=202534059]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -373,25 +379,25 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.27664492, 0.73423785, 0.84114033, 1)
 
-[node name="Spacer" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=1670124120]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3" unique_id=1670124120]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=1704812912]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3" unique_id=1704812912]
 custom_minimum_size = Vector2(80, 0)
 custom_maximum_size = Vector2(80, -1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=335909601]
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=335909601]
 layout_mode = 2
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=2066307540]
+[node name="ColorRect2" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=2066307540]
 visible = false
 layout_mode = 2
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
-[node name="ExecutionLabel3" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=76417346]
+[node name="ExecutionLabel3" type="RichTextLabel" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=76417346]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -1.31)
@@ -404,7 +410,26 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RunBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1424465683]
+[node name="BtnsGroup" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1204245773]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/BtnsGroup" unique_id=1376275835]
+layout_mode = 2
+color = Color(0.3366101, 0.5212322, 1, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BtnsGroup" unique_id=1549310634]
+layout_mode = 2
+
+[node name="RunBtn" parent="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer" unique_id=1797500818 instance=ExtResource("3_e6qwf")]
+layout_mode = 2
+
+[node name="InfoBtn" parent="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer" unique_id=1174500239 instance=ExtResource("3_e6qwf")]
+layout_mode = 2
+
+[node name="PauseBtn" parent="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer" unique_id=293556429 instance=ExtResource("3_e6qwf")]
+layout_mode = 2
+
+[node name="RunBtn" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=1424465683]
 material = SubResource("ShaderMaterial_eijvj")
 layout_mode = 2
 offset_transform_enabled = true
@@ -413,15 +438,14 @@ tooltip_text = "Submit"
 texture_normal = ExtResource("1_pmrxt")
 texture_disabled = ExtResource("5_7ogem")
 
-[node name="InfoBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=2133727861]
-visible = false
+[node name="InfoBtn" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=2133727861]
 layout_mode = 2
 texture_normal = ExtResource("1_pmrxt")
 
-[node name="PauseBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=446604005]
+[node name="PauseBtn" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=446604005]
 layout_mode = 2
 texture_normal = ExtResource("1_pmrxt")
 
-[connection signal="button_down" from="MarginContainer/ScrollContainer/VBoxContainer/RunBtn" to="." method="_on_run_btn_button_down"]
-[connection signal="button_up" from="MarginContainer/ScrollContainer/VBoxContainer/RunBtn" to="." method="_on_run_btn_button_up"]
-[connection signal="button_up" from="MarginContainer/ScrollContainer/VBoxContainer/PauseBtn" to="." method="_on_pause_btn_button_up"]
+[connection signal="button_down" from="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/RunBtn" to="." method="_on_run_btn_button_down"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/RunBtn" to="." method="_on_run_btn_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/PauseBtn" to="." method="_on_pause_btn_button_up"]
