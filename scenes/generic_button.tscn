@@ -68,7 +68,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0.462974, 0.17872599, 1)
+color = Color(0.00020744353, 0.29921234, 0.9006061, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Hover" unique_id=517343348]
 layout_mode = 0
@@ -94,7 +94,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0, 0.462974, 0.17872599, 1)
+color = Color(0.72, 0.63600004, 0, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Pressed" unique_id=788436688]
 layout_mode = 0
@@ -102,6 +102,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="pressed" from="." to="." method="_on_pressed"]

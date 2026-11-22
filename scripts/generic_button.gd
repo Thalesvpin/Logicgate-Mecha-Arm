@@ -14,7 +14,12 @@ func _on_mouse_exited() -> void:
 	hover.hide()
 	_pressed.hide()
 
-func _on_pressed() -> void:
+func _on_button_down() -> void:
 	normal.hide()
 	hover.hide()
 	_pressed.show()
+
+func _on_button_up() -> void:
+	normal.hide()
+	hover.show()
+	_pressed.hide()
