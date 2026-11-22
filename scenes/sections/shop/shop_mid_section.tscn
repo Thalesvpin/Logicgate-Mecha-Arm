@@ -26,6 +26,15 @@ theme_override_constants/separation = 50
 layout_mode = 2
 offset_transform_position = Vector2(0, 13)
 offset_transform_visual_only = false
+pack_name = Dictionary[int, String]({
+0: "minimixpack\\n.zip",
+1: "megamixpack\\n.zip",
+2: "pack_corrompido\\n.zip",
+3: "minitechpack\\n.zip",
+4: "megatechpack\\n.zip",
+5: "minibiopack\\n.zip",
+6: "megabiopack\\n.zip"
+})
 
 [node name="Spacer" type="Control" parent="Packs" unique_id=1577645887]
 visible = false

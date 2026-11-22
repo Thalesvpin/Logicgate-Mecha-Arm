@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bomyx7s38x46f"]
+
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_7k54u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
+
+[node name="BigMixIcon" type="PanelContainer" unique_id=764457910]
+custom_minimum_size = Vector2(194, 92)
+custom_maximum_size = Vector2(194, 92)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=673075385]
+layout_mode = 2
+texture = ExtResource("1_7k54u")
+stretch_mode = 5

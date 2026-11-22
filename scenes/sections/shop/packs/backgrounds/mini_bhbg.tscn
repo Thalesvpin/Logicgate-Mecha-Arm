@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dyyvg0g1cohxd"]
+
+[node name="MiniBHBG" type="ColorRect" unique_id=1374437363]
+offset_right = 194.0
+offset_bottom = 360.0

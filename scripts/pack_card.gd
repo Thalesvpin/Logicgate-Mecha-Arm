@@ -33,22 +33,22 @@ func _ready() -> void:
 	#background.material = bg_shader
 	pass
 
-func randomize_pack2() -> void:
+func randomize_pack() -> void:
 	var chance = Global.random.next() % 100
-	if chance:
+	if chance < 15:
 		_theme = Type2.MINI_MIX
-	elif chance:
-		_theme = Type2.BIG_MIX
-	elif chance:
-		_theme = Type2.CORRUPTED_MIX
-	elif chance:
+	elif chance < 30:
 		_theme = Type2.MINI_TM
-	elif chance:
-		_theme = Type2.BIG_TM
-	elif chance:
+	elif chance < 45:
 		_theme = Type2.MINI_BH
-	elif chance:
+	elif chance < 57:
+		_theme = Type2.BIG_MIX
+	elif chance < 69:
+		_theme = Type2.BIG_TM
+	elif chance < 81:
 		_theme = Type2.BIG_BH
+	else:
+		_theme = Type2.CORRUPTED_MIX
 	
 	price = packs_price[_theme]
 	items_amount = implants_amount[_theme]
@@ -59,7 +59,7 @@ func randomize_pack2() -> void:
 	background.add_child(pack_background[_theme].instantiate())
 	icon_holder.add_child(pack_icon[_theme].instantiate())
 
-func randomize_pack() -> void:
+func randomize_pack2() -> void:
 	var chance = Global.random.next() % 100
 	if chance < 45:
 		_theme = Type.MINI

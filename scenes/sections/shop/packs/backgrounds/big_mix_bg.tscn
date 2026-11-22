@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b1r4hatkdn6jg"]
+
+[node name="BigMixBG" type="ColorRect" unique_id=1105738710]
+offset_right = 194.0
+offset_bottom = 360.0

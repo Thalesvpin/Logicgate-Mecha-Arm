@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://7yl0k2jg4tqn"]
+
+[node name="CorruptedMixBG" type="ColorRect" unique_id=824652736]
+offset_right = 194.0
+offset_bottom = 360.0

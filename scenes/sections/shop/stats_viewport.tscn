@@ -99,6 +99,7 @@ shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = false
 shader_parameter/outline_width = 2.0
 shader_parameter/outline_blur = 0.0
+shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_type = 1
 shader_parameter/outline_gradient_rotation_degrees = 0.0
@@ -6175,6 +6176,7 @@ power_curve = SubResource("Curve_3mfmp")
 power_duration = 0.5
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=90532760]
+visible = false
 copy_mode = 2
 
 [node name="CRTpass2Shader" type="ColorRect" parent="." unique_id=741939067]
