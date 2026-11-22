@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://jdur5fb4brjo"]
+
+[node name="BigTMBG" type="ColorRect" unique_id=2021017595]
+offset_right = 194.0
+offset_bottom = 360.0

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://b0w3xksyb2vyw"]
+
+[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_ebb8d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
+
+[node name="BigBHIcon" type="PanelContainer" unique_id=1602925104]
+custom_minimum_size = Vector2(194, 92)
+custom_maximum_size = Vector2(194, 92)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1759656389]
+layout_mode = 2
+texture = ExtResource("1_ebb8d")
+stretch_mode = 5

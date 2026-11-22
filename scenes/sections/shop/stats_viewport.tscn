@@ -6178,6 +6178,7 @@ power_curve = SubResource("Curve_3mfmp")
 power_duration = 0.5
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=90532760]
+visible = false
 copy_mode = 2
 
 [node name="CRTpass2Shader" type="ColorRect" parent="." unique_id=741939067]

@@ -2,9 +2,23 @@
 
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_bycc7"]
 [ext_resource type="Script" uid="uid://fyw37f608gmu" path="res://scripts/pack_card.gd" id="1_q8owf"]
+[ext_resource type="PackedScene" uid="uid://bjbjquuwsgboe" path="res://scenes/sections/shop/packs/backgrounds/mini_mix_bg.tscn" id="2_apndb"]
 [ext_resource type="PackedScene" uid="uid://0ysjvolv0vqk" path="res://scenes/sections/shop/pack_icon_template.tscn" id="2_pfw6h"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_ypclj"]
+[ext_resource type="PackedScene" uid="uid://n0to1icpi65j" path="res://scenes/sections/shop/packs/backgrounds/mini_tmbg.tscn" id="3_f17gs"]
+[ext_resource type="PackedScene" uid="uid://dyyvg0g1cohxd" path="res://scenes/sections/shop/packs/backgrounds/mini_bhbg.tscn" id="4_51eft"]
 [ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="4_q8owf"]
+[ext_resource type="PackedScene" uid="uid://b1r4hatkdn6jg" path="res://scenes/sections/shop/packs/backgrounds/big_mix_bg.tscn" id="5_gqn2p"]
+[ext_resource type="PackedScene" uid="uid://jdur5fb4brjo" path="res://scenes/sections/shop/packs/backgrounds/big_tmbg.tscn" id="6_f0gy6"]
+[ext_resource type="PackedScene" uid="uid://butgrhxumarmx" path="res://scenes/sections/shop/packs/backgrounds/big_bhbg.tscn" id="7_dol7n"]
+[ext_resource type="PackedScene" uid="uid://7yl0k2jg4tqn" path="res://scenes/sections/shop/packs/backgrounds/corrupted_mix_bg.tscn" id="8_d4gmy"]
+[ext_resource type="PackedScene" uid="uid://2xush7baicog" path="res://scenes/sections/shop/packs/icons/mini_mix_icon.tscn" id="10_2mo74"]
+[ext_resource type="PackedScene" uid="uid://i72ah0lnnipl" path="res://scenes/sections/shop/packs/icons/mini_tm_icon.tscn" id="11_rdwww"]
+[ext_resource type="PackedScene" uid="uid://ueo06koun5gb" path="res://scenes/sections/shop/packs/icons/mini_bh_icon.tscn" id="12_6uq87"]
+[ext_resource type="PackedScene" uid="uid://bomyx7s38x46f" path="res://scenes/sections/shop/packs/icons/big_mix_icon.tscn" id="13_ynrof"]
+[ext_resource type="PackedScene" uid="uid://cjqkwge3hkqt2" path="res://scenes/sections/shop/packs/icons/big_tm_icon.tscn" id="14_ggd2o"]
+[ext_resource type="PackedScene" uid="uid://b0w3xksyb2vyw" path="res://scenes/sections/shop/packs/icons/big_bh_icon.tscn" id="15_78wax"]
+[ext_resource type="PackedScene" uid="uid://bwm0lu08jd05m" path="res://scenes/sections/shop/packs/icons/corrupted_mix_icon.tscn" id="16_rxnwj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -49,8 +63,8 @@ metadata/_live_palette_bindings = {
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a7lv4"]
 
 [node name="PackCard" type="PanelContainer" unique_id=1952346557]
-custom_minimum_size = Vector2(200, 365)
-custom_maximum_size = Vector2(200, 365)
+custom_minimum_size = Vector2(200, 366)
+custom_maximum_size = Vector2(200, 366)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -107,27 +121,48 @@ pack_name = Dictionary[int, String]({
 6: "megabiopack\\n.zip"
 })
 pack_icon = Dictionary[int, PackedScene]({
-0: null,
-1: null,
-2: null,
-3: null,
-4: null,
-5: null,
-6: null
+0: ExtResource("10_2mo74"),
+1: ExtResource("13_ynrof"),
+2: ExtResource("16_rxnwj"),
+3: ExtResource("11_rdwww"),
+4: ExtResource("14_ggd2o"),
+5: ExtResource("12_6uq87"),
+6: ExtResource("15_78wax")
 })
 pack_background = Dictionary[int, PackedScene]({
-0: null,
-1: null,
-2: null,
-3: null,
-4: null,
-5: null,
-6: null
+0: ExtResource("2_apndb"),
+1: ExtResource("5_gqn2p"),
+2: ExtResource("8_d4gmy"),
+3: ExtResource("3_f17gs"),
+4: ExtResource("6_f0gy6"),
+5: ExtResource("4_51eft"),
+6: ExtResource("7_dol7n")
 })
 
 [node name="Background" type="PanelContainer" parent="." unique_id=627834542]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jdl66")
+
+[node name="MiniMixBG" parent="Background" unique_id=1386331461 instance=ExtResource("2_apndb")]
+layout_mode = 2
+
+[node name="MiniTMBG" parent="Background" unique_id=1833758582 instance=ExtResource("3_f17gs")]
+layout_mode = 2
+
+[node name="MiniBHBG" parent="Background" unique_id=1374437363 instance=ExtResource("4_51eft")]
+layout_mode = 2
+
+[node name="BigMixBG" parent="Background" unique_id=1105738710 instance=ExtResource("5_gqn2p")]
+layout_mode = 2
+
+[node name="BigTMBG" parent="Background" unique_id=2021017595 instance=ExtResource("6_f0gy6")]
+layout_mode = 2
+
+[node name="BigBHBG" parent="Background" unique_id=83565309 instance=ExtResource("7_dol7n")]
+layout_mode = 2
+
+[node name="CorruptedMixBG" parent="Background" unique_id=824652736 instance=ExtResource("8_d4gmy")]
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=232244669]
 layout_mode = 2
@@ -174,6 +209,27 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_a7lv4")
 
 [node name="PackIconTemplate" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1594143323 instance=ExtResource("2_pfw6h")]
+layout_mode = 2
+
+[node name="MiniMixIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=11691536 instance=ExtResource("10_2mo74")]
+layout_mode = 2
+
+[node name="MiniTMIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1482645143 instance=ExtResource("11_rdwww")]
+layout_mode = 2
+
+[node name="MiniBHIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=894489568 instance=ExtResource("12_6uq87")]
+layout_mode = 2
+
+[node name="BigMixIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=764457910 instance=ExtResource("13_ynrof")]
+layout_mode = 2
+
+[node name="BigTMIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=402126777 instance=ExtResource("14_ggd2o")]
+layout_mode = 2
+
+[node name="BigBHIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1602925104 instance=ExtResource("15_78wax")]
+layout_mode = 2
+
+[node name="CorruptedMixIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1131481690 instance=ExtResource("16_rxnwj")]
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=633118401]
