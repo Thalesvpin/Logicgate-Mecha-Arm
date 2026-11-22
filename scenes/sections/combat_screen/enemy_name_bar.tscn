@@ -78,18 +78,6 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spacer" type="Control" parent="PanelContainer/HBoxContainer" unique_id=172475944]
-visible = false
-layout_mode = 2
-
-[node name="Name" type="Label" parent="PanelContainer/HBoxContainer" unique_id=1765803442]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-text = "SKELE-TÃO"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="TurnIndex" type="PanelContainer" parent="." unique_id=756270696]
 visible = false
 layout_mode = 1
