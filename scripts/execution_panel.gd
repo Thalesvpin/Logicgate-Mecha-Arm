@@ -1,9 +1,10 @@
 extends PanelContainer
 
+@onready var progress_shader: PanelContainer = $MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/ProgressShader
 @onready var execution_label_1: RichTextLabel = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/PanelContainer/ExecutionLabel1
 @onready var execution_label_2: RichTextLabel = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/PanelContainer/ExecutionLabel2
 @onready var execution_label_3: RichTextLabel = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer/ExecutionLabel3
-@onready var run_btn: TextureButton = $MarginContainer/VBoxContainer/RunBtn
+@onready var run_btn: Button = $MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/ProgressShader/RunBtn
 @onready var execution_labels: Array[RichTextLabel] = [execution_label_1, execution_label_2, execution_label_3]
 ##How much the "Run" btn must be held to submit
 @export_custom(PROPERTY_HINT_NONE, "suffix: s") var hold_run_duration: float = 2.0
@@ -17,7 +18,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if timer > 0:
 		timer -= delta
-		run_btn.material.set_shader_parameter("progress", 1 - timer/hold_run_duration)
+		progress_shader.material.set_shader_parameter("progress", 1 - timer/hold_run_duration)
 	if holding_run && timer <= 0:
 		stop_timer()
 		submit()
@@ -50,7 +51,7 @@ func start_timer() -> void:
 func stop_timer() -> void:
 	timer = 0.0
 	holding_run = false
-	run_btn.material.set_shader_parameter("progress", 1)
+	progress_shader.material.set_shader_parameter("progress", 1)
 
 func lock_submit() -> void:
 	run_btn.disabled = true
