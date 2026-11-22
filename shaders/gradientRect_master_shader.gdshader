@@ -3,10 +3,8 @@ shader_type canvas_item;
 // =============================================================================
 // MATH CONSTANTS
 // =============================================================================
-#define PI 3.14159265358979323846
 #define PI_HALF 1.57079632679489661923
 #define PI_TWO 6.28318530717958647692
-#define PI_THREE_HALF 4.71238898038468985769
 #define INV_PI_TWO 0.15915494309189533576
 
 // =============================================================================
@@ -261,7 +259,7 @@ group_uniforms;
 
 varying vec2 local_pos;
 varying flat vec4 v_misc_flat;     // x = inv_gamma, y = scan_flicker, z = scan_phase, w = ls_time
-varying flat vec3 v_ls_trig;       // xy = liquid stripes rotation sin/cos, z = outer_aa
+varying flat vec4 v_ls_trig;       // xy = ls sin/cos, z = outer_aa, w = cg_flags (1=base, 2=outline)
 varying flat vec4 v_trig_1; 
 varying flat vec4 v_trig_2; 
 varying flat vec4 v_trig_3; 
@@ -368,12 +366,16 @@ void vertex() {
 	}
 	v_trig_4 = vec4(out_fade_sc.x, out_fade_sc.y, scan_rot_sc.x, scan_rot_sc.y);
 
+	bool has_base_cg = (base_color_brightness != 0.0) || (base_color_contrast != 1.0) || (base_color_saturation != 1.0) || (base_color_hue_shift_speed != 0.0);
+	bool has_out_cg = enable_outline && ((outline_color_brightness != 0.0) || (outline_color_contrast != 1.0) || (outline_color_saturation != 1.0) || (outline_color_hue_shift_speed != 0.0));
+	float cg_flags = (has_base_cg ? 1.0 : 0.0) + (has_out_cg ? 2.0 : 0.0);
+
 	float ls_time = 0.0;
 	float ls_warp_amp = 0.0;
 	if (enable_liquid_stripes) {
 		ls_time = TIME * liquid_stripes_speed;
 		float ls_angle = radians(liquid_stripes_rotation) - 0.2 + sin(ls_time) * (0.05 * liquid_stripes_sway);
-		v_ls_trig = vec3(sin(ls_angle), cos(ls_angle), outer_aa);
+		v_ls_trig = vec4(sin(ls_angle), cos(ls_angle), outer_aa, cg_flags);
 		ls_warp_amp = cos(radians(liquid_stripes_warp_direction)) * (0.2 * liquid_stripes_warp);
 		v_trig_6 = vec4(
 			liquid_stripes_use_gradient ? sin(radians(liquid_stripes_gradient_rotation_degrees)) : 0.0,
@@ -382,7 +384,7 @@ void vertex() {
 			liquid_stripes_enable_opacity_map ? cos(radians(liquid_stripes_opacity_rotation_degrees)) : 1.0
 		);
 	} else {
-		v_ls_trig = vec3(0.0, 1.0, outer_aa);
+		v_ls_trig = vec4(0.0, 1.0, outer_aa, cg_flags);
 		v_trig_6 = vec4(0.0, 1.0, 0.0, 1.0);
 	}
 
@@ -437,7 +439,6 @@ void vertex() {
 	float alpha_edge = enable_outline ? outline_width : 0.0;
 	v_edges = vec4(inner_aa, alpha_edge, exp_double, ls_warp_amp);
 
-	bool has_base_cg = (base_color_brightness != 0.0) || (base_color_contrast != 1.0) || (base_color_saturation != 1.0) || (base_color_hue_shift_speed != 0.0);
 	if (has_base_cg) {
 		vec4 r0, r1, r2;
 		get_cg_rows(base_color_brightness, base_color_contrast, base_color_saturation, base_color_hue_shift_speed, r0, r1, r2);
@@ -448,7 +449,6 @@ void vertex() {
 		v_base_cg_2 = vec4(0.0, 0.0, 1.0, 0.0);
 	}
 	
-	bool has_out_cg = enable_outline && ((outline_color_brightness != 0.0) || (outline_color_contrast != 1.0) || (outline_color_saturation != 1.0) || (outline_color_hue_shift_speed != 0.0));
 	if (has_out_cg) {
 		vec4 r0, r1, r2;
 		get_cg_rows(outline_color_brightness, outline_color_contrast, outline_color_saturation, outline_color_hue_shift_speed, r0, r1, r2);
@@ -466,7 +466,10 @@ void vertex() {
 float calculate_smoothed_factor(float factor, float smoothing) {
 	if (smoothing == 0.5) return factor;
 	if (smoothing < 0.5) return mix(step(0.5, factor), factor, smoothing * 2.0);
-	if (smoothing <= 1.0) return mix(factor, smoothstep(0.0, 1.0, factor), (smoothing - 0.5) * 2.0);
+	if (smoothing <= 1.0) {
+		float s = factor * factor * (3.0 - 2.0 * factor);
+		return mix(factor, s, (smoothing - 0.5) * 2.0);
+	}
 	return mix(pow(max(factor, 0.00001), smoothing), 1.0 - pow(max(1.0 - factor, 0.00001), smoothing), factor);
 }
 
@@ -515,7 +518,7 @@ float get_gradient_factor(vec2 normalized_uv, vec2 trig, float inv_scale, int ty
 		factor = dot(normalized_uv, trig);
 	} else if (type == 2) {
 		vec2 uv = vec2(dot(normalized_uv, vec2(trig.y, -trig.x)), dot(normalized_uv, trig));
-		factor = length(uv - 0.5) * 2.0; 
+		factor = distance(uv, vec2(0.5)) * 2.0; 
 	} else {
 		factor = abs(dot(normalized_uv, trig) - 0.5) * 2.0;
 	}
@@ -602,11 +605,11 @@ vec4 evaluate_scanlines(vec2 uv_cen, vec2 normalized_uv, vec2 trig, float flicke
 		scan_y += (scan_x * scan_x) * scanline_curvature;
 	}
 	float raw_wave = sin(scan_y * scanline_density + scan_phase) * 0.5 + 0.5;
-	float center = 1.0 - scanline_thickness;
-	float half_soft = scanline_softness * 0.5;
-	float line_mask = 1.0 - smoothstep(center - half_soft, center + half_soft, raw_wave);
+	float edge_low = (1.0 - scanline_thickness) - scanline_softness * 0.5;
+	float edge_high = edge_low + scanline_softness;
+	if (raw_wave >= edge_high) return vec4(0.0);
 
-	if (line_mask <= 0.0) return vec4(0.0);
+	float line_mask = 1.0 - smoothstep(edge_low, edge_high, raw_wave);
 
 	vec4 sc_col = scanline_use_gradient
 		? sample_mapped_texture(scanline_gradient_texture, normalized_uv, v_trig_5.xy, v_inv_scales_2.x, scanline_gradient_type, scanline_gradient_offset, scanline_repeat_gradient, scanline_gradient_smoothing)
@@ -644,9 +647,12 @@ vec4 evaluate_liquid_stripes(vec2 uv_cen, vec2 normalized_uv, vec2 ls_trig, floa
 	}
 
 	float warped_y = fract(rot_y * liquid_stripes_density);
-	float th = liquid_stripes_thickness * 0.5;
-	float edge_end = 0.5 + liquid_stripes_softness;
-	float mask = smoothstep(0.5, edge_end, warped_y) - smoothstep(0.5 + th, edge_end + th, warped_y);
+	float mask = 0.0;
+	if (warped_y > 0.5) {
+		float th = liquid_stripes_thickness * 0.5;
+		float edge_end = 0.5 + liquid_stripes_softness;
+		mask = smoothstep(0.5, edge_end, warped_y) - smoothstep(0.5 + th, edge_end + th, warped_y);
+	}
 	
 	if (mask <= 0.0 && liquid_stripes_bg_color.a <= 0.0) return vec4(0.0);
 
@@ -726,8 +732,11 @@ void fragment() {
 			}
 		}
 		
-		vec4 base_rgb1 = vec4(final_color.rgb, 1.0);
-		final_color.rgb = vec3(dot(v_base_cg_0, base_rgb1), dot(v_base_cg_1, base_rgb1), dot(v_base_cg_2, base_rgb1));
+		// Skip 3x4 color grading matrix multiply when base color grading is at default
+		if (fract(v_ls_trig.w * 0.5) > 0.25) {
+			vec4 base_rgb1 = vec4(final_color.rgb, 1.0);
+			final_color.rgb = vec3(dot(v_base_cg_0, base_rgb1), dot(v_base_cg_1, base_rgb1), dot(v_base_cg_2, base_rgb1));
+		}
 		
 		vec4 scan_tint = vec4(0.0);
 		int scan_unified_blend = 0;
@@ -835,8 +844,11 @@ void fragment() {
 						out_color.a = clamp(out_color.a + added_shine_alpha, 0.0, 1.0);
 					}
 
-					vec4 out_rgb1 = vec4(out_color.rgb, 1.0);
-					out_color.rgb = vec3(dot(v_out_cg_0, out_rgb1), dot(v_out_cg_1, out_rgb1), dot(v_out_cg_2, out_rgb1));
+					// Skip 3x4 color grading matrix multiply when outline color grading is at default
+					if (v_ls_trig.w > 1.5) {
+						vec4 out_rgb1 = vec4(out_color.rgb, 1.0);
+						out_color.rgb = vec3(dot(v_out_cg_0, out_rgb1), dot(v_out_cg_1, out_rgb1), dot(v_out_cg_2, out_rgb1));
+					}
 
 					float out_blend = outline_mask * out_color.a;
 					final_color.rgb = mix(final_color.rgb, out_color.rgb, out_blend);
