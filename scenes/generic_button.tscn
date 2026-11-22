@@ -42,6 +42,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+color = Color(0, 0.462974, 0.17872599, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Normal" unique_id=754161398]
 layout_mode = 0
@@ -50,6 +51,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="Hover" type="Control" parent="." unique_id=1507307454]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,6 +68,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+color = Color(0, 0.462974, 0.17872599, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Hover" unique_id=517343348]
 layout_mode = 0
@@ -74,6 +77,7 @@ offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="Pressed" type="Control" parent="." unique_id=1815691316]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -90,6 +94,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+color = Color(0, 0.462974, 0.17872599, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Pressed" unique_id=788436688]
 layout_mode = 0
