@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dinaa4hu5artv" path="res://scenes/sections/inventory/inventory_gate.tscn" id="1_llgc5"]
 [ext_resource type="Script" uid="uid://badjj82igaj2l" path="res://scripts/gates_selector.gd" id="1_rn4rn"]
 [ext_resource type="Texture2D" uid="uid://cbtamljd4udtt" path="res://assets/icon_mini_gate_tokens.png" id="2_vwx3o"]
+[ext_resource type="Shader" uid="uid://bji5r4oemxoe5" path="res://scenes/sections/inventory/texpadded_outline.gdshader" id="3_1wme1"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="3_ev4s2"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="4_abqy0"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="5_vwx3o"]
@@ -29,7 +30,7 @@ font_color = Color(1, 0.7490196, 0, 1)
 
 [sub_resource type="Gradient" id="Gradient_ev4s2"]
 offsets = PackedFloat32Array(0, 0.6845071, 0.7183099, 0.8056338, 0.85070425)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+colors = PackedColorArray(1, 0.7490196, 0, 1, 1, 0.7490196, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.7490196, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
 gradient = SubResource("Gradient_ev4s2")
@@ -203,6 +204,22 @@ shader_parameter/liquid_stripes_opacity_offset = 0.0
 shader_parameter/liquid_stripes_opacity_repeat = false
 shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pae1i"]
+shader = ExtResource("3_1wme1")
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_width = 2.0
+shader_parameter/outline_softness = 0.0
+shader_parameter/alpha_threshold = 0.5
+shader_parameter/include_diagonals = true
+shader_parameter/round_corners = false
+shader_parameter/pulse_speed = 0.0
+shader_parameter/pulse_min_alpha = 0.35
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_color = Color(0, 0, 0, 1)
+shader_parameter/overlay_strength = 0.999999977648
+shader_parameter/overlay_mode = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_abqy0"]
 font_size = 24
@@ -801,11 +818,16 @@ size_flags_vertical = 0
 [node name="Label" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1716915267]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
 theme_override_colors/font_color = Color(0.20392157, 1, 0.67058825, 1)
 text = "Tokens"
 label_settings = SubResource("LabelSettings_3e3yi")
+vertical_alignment = 1
 uppercase = true
+
+[node name="Spacer" type="Control" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1987340287]
+custom_minimum_size = Vector2(0, 46)
+custom_maximum_size = Vector2(-1, 46)
+layout_mode = 2
 
 [node name="TokenIcon" type="Control" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=2086941264]
 custom_minimum_size = Vector2(40, 40)
@@ -813,10 +835,10 @@ custom_maximum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/TokenIcon" unique_id=536510830]
+[node name="TokenBg" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/TokenIcon" unique_id=536510830]
 material = SubResource("ShaderMaterial_bv6uq")
-custom_minimum_size = Vector2(36, 36)
-custom_maximum_size = Vector2(36, 36)
+custom_minimum_size = Vector2(34, 34)
+custom_maximum_size = Vector2(34, 34)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -827,9 +849,9 @@ grow_horizontal = 2
 grow_vertical = 2
 offset_transform_enabled = true
 
-[node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/TokenIcon/ColorRect" unique_id=69900819]
-modulate = Color(0, 0, 0, 1)
-custom_maximum_size = Vector2(32, 32)
+[node name="TokenTexture" type="TextureRect" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/TokenIcon/TokenBg" unique_id=69900819]
+material = SubResource("ShaderMaterial_pae1i")
+custom_maximum_size = Vector2(28, 28)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -839,6 +861,10 @@ grow_vertical = 2
 texture = ExtResource("2_vwx3o")
 expand_mode = 4
 stretch_mode = 5
+
+[node name="Spacer2" type="Control" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=790504693]
+visible = false
+layout_mode = 2
 
 [node name="TokensLabel" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=427438005]
 layout_mode = 2

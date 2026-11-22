@@ -627,10 +627,14 @@ texture = ExtResource("2_unovg")
 expand_mode = 2
 stretch_mode = 5
 
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=367512902]
+custom_minimum_size = Vector2(0, 40)
+custom_maximum_size = Vector2(-1, 40)
+layout_mode = 2
+
 [node name="Label" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1180202968]
 layout_mode = 2
 size_flags_horizontal = 10
-size_flags_vertical = 0
 text = "Bio Hacks"
 label_settings = SubResource("LabelSettings_0j75a")
 uppercase = true

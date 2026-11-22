@@ -602,10 +602,14 @@ size_flags_vertical = 0
 [node name="Label" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1210377697]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
 text = "Tech Mods"
 label_settings = ExtResource("1_7qnlp")
 uppercase = true
+
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1727292184]
+custom_minimum_size = Vector2(0, 40)
+custom_maximum_size = Vector2(-1, 40)
+layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=359532344]
 custom_minimum_size = Vector2(65, 25)
