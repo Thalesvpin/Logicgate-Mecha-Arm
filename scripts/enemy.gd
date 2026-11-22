@@ -51,18 +51,14 @@ func _ready() -> void:
 	connect_signals()
 
 ##Undone
-func take_damage(value: float, target: Node = null) -> void:
+func take_damage(value: float, _target: Node = null) -> void:
 	shake_anim()
 	#if !is_the_signal_for_me(target):
 		#return
 	
 	var final_taken_dmg := 0
 	if stats[Stats.List.CURRENT_SHIELD] > 0:
-		#mitigation
-		stats[Stats.List.CURRENT_SHIELD] -= 10
-		final_taken_dmg = int(value*mitigation_percent)
-		final_taken_dmg = 2
-		pass
+		final_taken_dmg = mitigate(int(value))
 	else:
 		final_taken_dmg = int(value)
 	
@@ -77,6 +73,10 @@ func take_damage(value: float, target: Node = null) -> void:
 		var mat = canvas_group.material as ShaderMaterial
 		mat.set_shader_parameter('shader_enabled', false)
 		EventBus.enemy_defeated.emit(self)
+
+func mitigate(incoming_dmg: int) -> int:
+	stats[Stats.List.CURRENT_SHIELD] -= 1
+	return int(incoming_dmg * (1 - (float(stats[Stats.List.MITIGATION_PERCENT])/100)))
 
 func self_damage() -> void:
 	pass
@@ -143,7 +143,6 @@ func link_to_status_bar() -> void:
 			status_bar = child
 
 func turn_start(who):
-	print(who, '   -    ', config._name)
 	if typeof(who) == typeof(Object) && who == self:
 		turn_indicator.show()
 		await get_tree().create_timer(turn_start_delay).timeout
@@ -175,9 +174,7 @@ func random_action() -> int:
 
 func move(dest: Vector2) -> void:
 	offset_transform_enabled = true
-	print('antes g_p: ', global_position)
 	offset_transform_position = dest - global_position
-	print('aqui no meio: ', global_position,'\t ', config._name, '\tdest: ', dest)
 	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_IN_OUT)
