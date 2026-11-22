@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://c1gmf20ahycwb"]
+
+[ext_resource type="Script" uid="uid://civgdkgas7cut" path="res://scripts/pause_menu.gd" id="1_1n12q"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
+bg_color = Color(0, 0, 0, 0.5176471)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
+bg_color = Color(0.12591082, 0.12591085, 0.12591076, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[node name="InfoMenu" type="PanelContainer" unique_id=1725882964]
+z_index = 10
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
+script = ExtResource("1_1n12q")
+
+[node name="Background" type="PanelContainer" parent="." unique_id=1949773670]
+custom_minimum_size = Vector2(475, 520)
+custom_maximum_size = Vector2(475, 520)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background" unique_id=1632577515]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Background/VBoxContainer" unique_id=2109571516]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+text = "Info"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/VBoxContainer" unique_id=218515735]
+layout_mode = 2
+size_flags_vertical = 3
