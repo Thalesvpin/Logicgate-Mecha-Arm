@@ -121,22 +121,22 @@ pack_name = Dictionary[int, String]({
 6: "megabiopack\\n.zip"
 })
 pack_icon = Dictionary[int, PackedScene]({
-0: null,
-1: null,
-2: null,
-3: null,
-4: null,
-5: null,
-6: null
+0: ExtResource("10_2mo74"),
+1: ExtResource("13_ynrof"),
+2: ExtResource("16_rxnwj"),
+3: ExtResource("11_rdwww"),
+4: ExtResource("14_ggd2o"),
+5: ExtResource("12_6uq87"),
+6: ExtResource("15_78wax")
 })
 pack_background = Dictionary[int, PackedScene]({
-0: null,
-1: null,
-2: null,
-3: null,
-4: null,
-5: null,
-6: null
+0: ExtResource("2_apndb"),
+1: ExtResource("5_gqn2p"),
+2: ExtResource("8_d4gmy"),
+3: ExtResource("3_f17gs"),
+4: ExtResource("6_f0gy6"),
+5: ExtResource("4_51eft"),
+6: ExtResource("7_dol7n")
 })
 
 [node name="Background" type="PanelContainer" parent="." unique_id=627834542]
