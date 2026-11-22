@@ -248,6 +248,7 @@ bbcode_enabled = true
 text = "pack_corrompido
 .zip"
 fit_content = true
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 

@@ -55,52 +55,53 @@ func randomize_pack() -> void:
 	_choices_amount = choices_amount[_theme]
 	title.text = pack_title[_theme]
 	name_label.text = pack_name[_theme]
+	print('agr quero ver: ', pack_name[_theme])
 	price_label.text = '$%d' % price
 	background.add_child(pack_background[_theme].instantiate())
 	icon_holder.add_child(pack_icon[_theme].instantiate())
 
-func randomize_pack2() -> void:
-	var chance = Global.random.next() % 100
-	if chance < 45:
-		_theme = Type.MINI
-		price = 200
-		items_amount = 2
-		_choices_amount = 1
-		title.text = 'PACOTE'
-		title.add_theme_color_override('default_color', Color.BLACK)
-		name_label.text = 'minipack\n.zip'
-		price_label.text = '$%d' % price
-		#bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
-		var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
-		style.border_color = LivePalette.SHOP.PACKOUTLINE
-		add_theme_stylebox_override("panel", style)
-	elif chance < 75:
-		_theme = Type.BIG
-		price = 300
-		items_amount = 5
-		_choices_amount = 2
-		title.text = 'PACOTÃO'
-		title.add_theme_color_override('default_color', Color.BLACK)
-		name_label.text = 'megapack\n.zip'
-		price_label.text = '$%d' % price
-		#bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
-		var border_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
-		border_style.border_color = LivePalette.SHOP.PACKOUTLINE
-		add_theme_stylebox_override("panel", border_style)
-	else:
-		_theme = Type.CORRUPTED
-		price = 300
-		items_amount = 3
-		_choices_amount = 1
-		title.text = 'P̴͉̘̞̃̓̀Ą̴̛̯͈̋̌͑̈C̵̮͓̣̭̋̽̔̕ͅO̷̜̟̓̔́T̶̛̰͓̦͂̏Ę̷͎̎́'
-		title.add_theme_color_override('default_color', LivePalette.GLOBAL.REDDARK)
-		name_label.text = 'pack_corrompido'
-		price_label.text = '$%d' % price
-		#bg_shader.set_shader_parameter('start_color', LivePalette.GLOBAL.REDHEALTH)
-		var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
-		style.border_color = LivePalette.GLOBAL.REDDARK
-		add_theme_stylebox_override("panel", style)
-	randomize_options()
+#func randomize_pack2() -> void:
+	#var chance = Global.random.next() % 100
+	#if chance < 45:
+		#_theme = Type.MINI
+		#price = 200
+		#items_amount = 2
+		#_choices_amount = 1
+		#title.text = 'PACOTE'
+		#title.add_theme_color_override('default_color', Color.BLACK)
+		#name_label.text = 'minipack\n.zip'
+		#price_label.text = '$%d' % price
+		##bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
+		#var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
+		#style.border_color = LivePalette.SHOP.PACKOUTLINE
+		#add_theme_stylebox_override("panel", style)
+	#elif chance < 75:
+		#_theme = Type.BIG
+		#price = 300
+		#items_amount = 5
+		#_choices_amount = 2
+		#title.text = 'PACOTÃO'
+		#title.add_theme_color_override('default_color', Color.BLACK)
+		#name_label.text = 'megapack\n.zip'
+		#price_label.text = '$%d' % price
+		##bg_shader.set_shader_parameter('start_color', LivePalette.SHOP.PACKOUTLINE)
+		#var border_style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
+		#border_style.border_color = LivePalette.SHOP.PACKOUTLINE
+		#add_theme_stylebox_override("panel", border_style)
+	#else:
+		#_theme = Type.CORRUPTED
+		#price = 300
+		#items_amount = 3
+		#_choices_amount = 1
+		#title.text = 'P̴͉̘̞̃̓̀Ą̴̛̯͈̋̌͑̈C̵̮͓̣̭̋̽̔̕ͅO̷̜̟̓̔́T̶̛̰͓̦͂̏Ę̷͎̎́'
+		#title.add_theme_color_override('default_color', LivePalette.GLOBAL.REDDARK)
+		#name_label.text = 'pack_corrompido'
+		#price_label.text = '$%d' % price
+		##bg_shader.set_shader_parameter('start_color', LivePalette.GLOBAL.REDHEALTH)
+		#var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
+		#style.border_color = LivePalette.GLOBAL.REDDARK
+		#add_theme_stylebox_override("panel", style)
+	#randomize_options()
 
 func randomize_options() -> void:
 	var implant_count = 0
@@ -117,20 +118,20 @@ func randomize_options() -> void:
 	for i in range(implant_count):
 		drawn.append(Global.get_random_implant(drawn))
 
-func randomize_options2() -> void:
-	var type: Implant.Type
-	drawn = []
-	match type:
-		Content.ANY:
-			type = -1
-		Content.TECH_MOD:
-			type = Implant.Type.TECH_MOD
-		Content.BIO_HACK:
-			type = Implant.Type.BIO_HACK
-		#Content.CORRUPTED:
-			#type = Implant.Type
-	for i in range(items_amount):
-		drawn.append(Global.get_random_implant(drawn, type))
+#func randomize_options2() -> void:
+	#var type: Implant.Type
+	#drawn = []
+	#match type:
+		#Content.ANY:
+			#type = -1
+		#Content.TECH_MOD:
+			#type = Implant.Type.TECH_MOD
+		#Content.BIO_HACK:
+			#type = Implant.Type.BIO_HACK
+		##Content.CORRUPTED:
+			##type = Implant.Type
+	#for i in range(items_amount):
+		#drawn.append(Global.get_random_implant(drawn, type))
 
 func _on_buy_btn_button_up() -> void:
 	if Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] >= price:
