@@ -97,6 +97,7 @@ group_uniforms Outline_Settings;
 uniform bool enable_outline = false;
 uniform float outline_width : hint_range(0.0, 100.0) = 2.0;
 uniform float outline_blur : hint_range(0.0, 20.0) = 0.0;
+uniform float outline_sharpness : hint_range(0.0, 1.0) = 0.5;
 uniform float outline_path_seam_offset : hint_range(0.0, 1.0) = 0.0;
 
 uniform sampler2D outline_gradient_texture : source_color, filter_linear, repeat_disable;
@@ -260,7 +261,7 @@ group_uniforms;
 
 varying vec2 local_pos;
 varying flat vec4 v_misc_flat;     // x = inv_gamma, y = scan_flicker, z = scan_phase, w = ls_time
-varying flat vec2 v_ls_trig;       // xy = liquid stripes rotation sin/cos
+varying flat vec3 v_ls_trig;       // xy = liquid stripes rotation sin/cos, z = outer_aa
 varying flat vec4 v_trig_1; 
 varying flat vec4 v_trig_2; 
 varying flat vec4 v_trig_3; 
@@ -271,7 +272,7 @@ varying flat vec4 v_inv_scales;
 varying flat vec4 v_inv_scales_2;  // x = scan grad, y = scan op, z = ls grad, w = ls op
 varying flat vec4 v_shine_data;    // x = cycle, y = s_origin, z = inv_D, w = soft_w
 varying flat vec4 v_shine_2_data;  // x = cycle, y = s_origin, z = inv_D, w = soft_w
-varying flat vec4 v_edges;         // x = 1 + outline_blur, y = alpha_edge, z = exp_double, w = ls_warp_amp
+varying flat vec4 v_edges;         // x = inner_aa, y = alpha_edge, z = exp_double, w = ls_warp_amp
 
 // Baked Color Grading (Packed mat3 + vec3 into 3 vec4 rows per layer)
 varying flat vec4 v_base_cg_0;
@@ -307,7 +308,11 @@ void get_cg_rows(float bright, float cont, float sat, float hue_speed, out vec4 
 }
 
 void vertex() {
-	float exp = 2.0; 
+	float sharp_scale = enable_outline ? max((1.0 - outline_sharpness) * 2.0, 0.001) : 1.0;
+	float outer_aa = 1.5 * sharp_scale;
+	float inner_aa = enable_outline ? (sharp_scale + outline_blur) : 1.0;
+
+	float exp = max(2.0, outer_aa + 0.5); 
 	if (enable_outline) exp += outline_width + outline_blur;
 	float exp_double = exp * 2.0;
 	
@@ -368,7 +373,7 @@ void vertex() {
 	if (enable_liquid_stripes) {
 		ls_time = TIME * liquid_stripes_speed;
 		float ls_angle = radians(liquid_stripes_rotation) - 0.2 + sin(ls_time) * (0.05 * liquid_stripes_sway);
-		v_ls_trig = vec2(sin(ls_angle), cos(ls_angle));
+		v_ls_trig = vec3(sin(ls_angle), cos(ls_angle), outer_aa);
 		ls_warp_amp = cos(radians(liquid_stripes_warp_direction)) * (0.2 * liquid_stripes_warp);
 		v_trig_6 = vec4(
 			liquid_stripes_use_gradient ? sin(radians(liquid_stripes_gradient_rotation_degrees)) : 0.0,
@@ -377,7 +382,7 @@ void vertex() {
 			liquid_stripes_enable_opacity_map ? cos(radians(liquid_stripes_opacity_rotation_degrees)) : 1.0
 		);
 	} else {
-		v_ls_trig = vec2(0.0, 1.0);
+		v_ls_trig = vec3(0.0, 1.0, outer_aa);
 		v_trig_6 = vec4(0.0, 1.0, 0.0, 1.0);
 	}
 
@@ -430,7 +435,7 @@ void vertex() {
 	}
 	
 	float alpha_edge = enable_outline ? outline_width : 0.0;
-	v_edges = vec4(1.0 + outline_blur, alpha_edge, exp_double, ls_warp_amp);
+	v_edges = vec4(inner_aa, alpha_edge, exp_double, ls_warp_amp);
 
 	bool has_base_cg = (base_color_brightness != 0.0) || (base_color_contrast != 1.0) || (base_color_saturation != 1.0) || (base_color_hue_shift_speed != 0.0);
 	if (has_base_cg) {
@@ -684,7 +689,7 @@ void fragment() {
 	float dist_inner = min(max_q, 0.0) - r;
 	float d = use_beveled_corners ? max(max_q, (max_q_vec.x + max_q_vec.y) * 0.70710678) + dist_inner : length(max_q_vec) + dist_inner;
 
-	float shape_alpha = 1.0 - smoothstep(v_edges.y, v_edges.y + 1.5, d);
+	float shape_alpha = 1.0 - smoothstep(v_edges.y, v_edges.y + v_ls_trig.z, d);
 	if (shape_alpha <= 0.0) {
 		COLOR = vec4(0.0);
 	} else {
@@ -738,7 +743,7 @@ void fragment() {
 		vec4 ls_tint = vec4(0.0);
 		bool active_liquid_stripes = enable_liquid_stripes && liquid_stripes_opacity > 0.0 && (liquid_stripes_thickness > 0.0 || liquid_stripes_bg_color.a > 0.0);
 		if (active_liquid_stripes) {
-			ls_tint = evaluate_liquid_stripes(uv_cen, UV, v_ls_trig, v_misc_flat.w, v_edges.w);
+			ls_tint = evaluate_liquid_stripes(uv_cen, UV, v_ls_trig.xy, v_misc_flat.w, v_edges.w);
 			if (liquid_stripes_base_only) {
 				final_color.rgb = apply_fx_blend(final_color.rgb, ls_tint, liquid_stripes_blend_mode);
 			}
