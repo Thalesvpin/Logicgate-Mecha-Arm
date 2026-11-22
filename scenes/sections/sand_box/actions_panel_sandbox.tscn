@@ -8,6 +8,8 @@ metadata/_live_palette_bindings = {
 "bg_color": "7cls6"
 }
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
+
 [node name="ActionsPanelSandbox" type="PanelContainer" unique_id=801856859]
 offset_right = 40.0
 offset_bottom = 40.0
@@ -29,15 +31,32 @@ theme_override_constants/separation = 34
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Attack" unique_id=1648784174]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Attack" unique_id=1998143619]
 layout_mode = 2
 text = "Ataque"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/Attack" unique_id=14534212]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/Attack" unique_id=1025315031]
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(45, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/HBoxContainer/Attack/PanelContainer" unique_id=1554892161]
+layout_mode = 2
+color = Color(0.86545134, 0.31698743, 0.56834733, 1)
+
+[node name="AttackLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Attack/PanelContainer" unique_id=2135529206]
 layout_mode = 2
 text = "1111"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -45,15 +64,32 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Heal" unique_id=1632156331]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Heal" unique_id=2053778165]
 layout_mode = 2
 text = "Cura"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/Heal" unique_id=940124567]
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/HBoxContainer/Heal" unique_id=1269431004]
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(45, -1)
 layout_mode = 2
-text = "1111"
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="ColorRect2" type="ColorRect" parent="MarginContainer/HBoxContainer/Heal/PanelContainer2" unique_id=329993580]
+layout_mode = 2
+color = Color(0.86545134, 0.31698743, 0.56834733, 1)
+
+[node name="HealLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Heal/PanelContainer2" unique_id=2135839556]
+layout_mode = 2
+text = "0000"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -61,15 +97,32 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=2112245393]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=1094760015]
 layout_mode = 2
 text = "Regen Escudo"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=429961555]
+[node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=642949427]
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(45, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="ColorRect3" type="ColorRect" parent="MarginContainer/HBoxContainer/ShieldRegen/PanelContainer3" unique_id=241575480]
+layout_mode = 2
+color = Color(0.86545134, 0.31698743, 0.56834733, 1)
+
+[node name="ShieldRegenLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ShieldRegen/PanelContainer3" unique_id=414187582]
 layout_mode = 2
 text = "1111"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -77,15 +130,32 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1708250135]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1964060833]
 layout_mode = 2
 text = "Dano próprio"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1224268419]
+[node name="PanelContainer4" type="PanelContainer" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1045995611]
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(45, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="ColorRect4" type="ColorRect" parent="MarginContainer/HBoxContainer/SelfDamage/PanelContainer4" unique_id=1780807982]
+layout_mode = 2
+color = Color(0.86545134, 0.31698743, 0.56834733, 1)
+
+[node name="SelfDamageLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/SelfDamage/PanelContainer4" unique_id=468417687]
 layout_mode = 2
 text = "1111"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -93,16 +163,33 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=1867948516]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=1374541179]
 layout_mode = 2
 text = "Carregar
 Ataque Pesado"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=290642077]
+[node name="PanelContainer5" type="PanelContainer" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=1606791907]
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(45, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="ColorRect5" type="ColorRect" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack/PanelContainer5" unique_id=958245743]
+layout_mode = 2
+color = Color(0.86545134, 0.31698743, 0.56834733, 1)
+
+[node name="ChargeHeavyAttackLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack/PanelContainer5" unique_id=730019438]
 layout_mode = 2
 text = "1111"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -110,14 +197,31 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1521951274]
+[node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1589040611]
 layout_mode = 2
 text = "Ataque Pesado"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1490631013]
+[node name="PanelContainer6" type="PanelContainer" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1008953842]
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(45, -1)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
+
+[node name="ColorRect6" type="ColorRect" parent="MarginContainer/HBoxContainer/HeavyAttack/PanelContainer6" unique_id=1149739136]
+layout_mode = 2
+color = Color(0.86545134, 0.31698743, 0.56834733, 1)
+
+[node name="HeavyAttackLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/HeavyAttack/PanelContainer6" unique_id=620204568]
 layout_mode = 2
 text = "1111"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
