@@ -250,10 +250,3 @@ func check_submit_requirements() -> bool:
 		return sum == 1
 	else:
 		return sum >= 2
-
-
-func _on_mouse_entered() -> void:
-	gate_hover = true
-
-func _on_mouse_exited() -> void:
-	gate_hover = false

@@ -23,8 +23,6 @@
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="24_nwtl1"]
 [ext_resource type="Script" uid="uid://bnt1kahox4rrd" path="res://scripts/CRT1_shaderController.gd" id="25_2ujkr"]
 [ext_resource type="Texture2D" uid="uid://bx74pgmv3n7sm" path="res://scenes/sections/shop/small_empty_room_1_1k.hdr" id="26_3mfmp"]
-[ext_resource type="Shader" uid="uid://chr5yh64fe4ws" path="res://shaders/CRTpass2.gdshader" id="27_cwri3"]
-[ext_resource type="Script" uid="uid://cqb2mhqkx5vxd" path="res://scenes/sections/shop/CRTpass2_shadercontroller.gd" id="28_rvil5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -5337,13 +5335,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_a7lv4"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_mjyp6"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_a7lv4")
+shader_parameter/tex = SubResource("ViewportTexture_mjyp6")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -5728,54 +5726,6 @@ gradient = SubResource("Gradient_2ujkr")
 [sub_resource type="Curve" id="Curve_3mfmp"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_veuwc"]
-shader = ExtResource("27_cwri3")
-shader_parameter/sec_use_curve = false
-shader_parameter/sec_curve = 0.0
-shader_parameter/sec_mask_pattern = 1
-shader_parameter/sec_mask_scale = 100.0
-shader_parameter/sec_mask_smoothness = 0.1
-shader_parameter/sec_mask_invert = false
-shader_parameter/rect_aspect = 0.0
-shader_parameter/sec_mask_decouple_aspect = true
-shader_parameter/sec_mask_custom_aspect = 1.0
-shader_parameter/sec_hue_shift = 2.15600010241
-shader_parameter/sec_saturation = 1.0
-shader_parameter/sec_brightness = 1.0
-shader_parameter/sec_contrast = 1.0
-shader_parameter/sec_use_sharpness = false
-shader_parameter/sec_sharpness = 1.0
-shader_parameter/sec_use_wobble = false
-shader_parameter/sec_wobble_strength = 1.0
-shader_parameter/sec_wobble_speed = 1.0
-shader_parameter/sec_use_sweep = false
-shader_parameter/sec_sweep_width = 0.15
-shader_parameter/sec_sweep_speed = 0.15
-shader_parameter/sec_sweep_interval = 3.0
-shader_parameter/sec_sweep_offset = 0.0
-shader_parameter/sec_sweep_angle = 0.0
-shader_parameter/sec_sweep_hue = 1.57
-shader_parameter/sec_sweep_saturation = 1.2
-shader_parameter/sec_sweep_brightness = 1.2
-shader_parameter/sec_use_echo = false
-shader_parameter/sec_echo_strength = 0.5
-shader_parameter/sec_echo_offset = 0.015
-shader_parameter/sec_use_dot_crawl = false
-shader_parameter/sec_dot_crawl_strength = 0.5
-shader_parameter/sec_dot_crawl_speed = 15.0
-shader_parameter/sec_use_interlaced_flicker = false
-shader_parameter/sec_interlaced_strength = 0.5
-shader_parameter/sec_use_interlaced_jitter = false
-shader_parameter/sec_jitter_strength = 0.005
-shader_parameter/sec_jitter_speed = 10.0
-shader_parameter/sec_use_roll = false
-shader_parameter/sec_roll_strength = 1.0
-shader_parameter/sec_roll_speed = 2.0
-shader_parameter/sec_roll_size = 15.0
-shader_parameter/sec_use_noise = false
-shader_parameter/sec_noise_strength = 0.1
-shader_parameter/sec_chroma_noise = false
 
 [node name="StatsViewport" type="PanelContainer" unique_id=131166221]
 anchors_preset = 15
@@ -6176,17 +6126,6 @@ ghost_threshold = 0.05
 ghost_gradient = SubResource("GradientTexture1D_gtatl")
 power_curve = SubResource("Curve_3mfmp")
 power_duration = 0.5
-
-[node name="BackBufferCopy" type="BackBufferCopy" parent="." unique_id=90532760]
-visible = false
-copy_mode = 2
-
-[node name="CRTpass2Shader" type="ColorRect" parent="." unique_id=741939067]
-visible = false
-material = SubResource("ShaderMaterial_veuwc")
-layout_mode = 2
-mouse_filter = 2
-script = ExtResource("28_rvil5")
 
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn1" to="." method="_on_top_tab_1_pressed"]
 [connection signal="pressed" from="SubViewportContainer/SubViewport/Tabs/MarginContainer/Top/TopTabBtn2" to="." method="_on_top_tab_2_pressed"]

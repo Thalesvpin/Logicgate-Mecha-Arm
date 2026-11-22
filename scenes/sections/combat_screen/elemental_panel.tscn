@@ -202,13 +202,13 @@ shader_parameter/mask_debug_mode = 0
 shader_parameter/show_luminance_heatmap = false
 shader_parameter/channel_isolation = 0
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_bv6uq"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_mjyp6"]
 viewport_path = NodePath("PanelContainer/Control/PanelContainer2/Mask/SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ul2j5"]
 resource_local_to_scene = true
 shader = ExtResource("3_gnih8")
-shader_parameter/tex = SubResource("ViewportTexture_bv6uq")
+shader_parameter/tex = SubResource("ViewportTexture_mjyp6")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
