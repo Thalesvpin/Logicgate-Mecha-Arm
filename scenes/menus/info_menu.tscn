@@ -1,7 +1,5 @@
 [gd_scene format=3 uid="uid://c1gmf20ahycwb"]
 
-[ext_resource type="Script" uid="uid://civgdkgas7cut" path="res://scripts/pause_menu.gd" id="1_1n12q"]
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
 bg_color = Color(0, 0, 0, 0.5176471)
 
@@ -22,7 +20,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
-script = ExtResource("1_1n12q")
 
 [node name="Background" type="PanelContainer" parent="." unique_id=1949773670]
 custom_minimum_size = Vector2(475, 520)
