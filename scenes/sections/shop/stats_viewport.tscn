@@ -6068,7 +6068,6 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Control" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=895439523]
-visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
