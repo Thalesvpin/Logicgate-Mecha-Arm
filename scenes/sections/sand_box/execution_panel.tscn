@@ -14,7 +14,7 @@ gradient = SubResource("Gradient_e6qwf")
 
 [sub_resource type="Gradient" id="Gradient_b3avc"]
 offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(0.26293245, 0.26293245, 0.26293245, 1, 1, 1, 1, 1, 0.26293245, 0.26293245, 0.26293245, 1)
+colors = PackedColorArray(0.3647059, 0.3647059, 0.3647059, 1, 1, 1, 1, 1, 0.3665946, 0.3665946, 0.36659458, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_gtatl"]
 gradient = SubResource("Gradient_b3avc")
@@ -190,14 +190,15 @@ shader_parameter/enable_dithering = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e6qwf"]
 shader = ExtResource("4_tosqn")
-shader_parameter/progress = 0.750000035625
+shader_parameter/progress = 0.1390000066025
+shader_parameter/direction_angle = 0.0
 shader_parameter/saturation = 0.2
-shader_parameter/lightness = 0.4
+shader_parameter/lightness = 0.0
 shader_parameter/terminator_color = Color(1, 1, 1, 1)
 shader_parameter/terminator_size_px = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtatl"]
-bg_color = Color(0.6, 0.6, 0.6, 0.30588236)
+bg_color = Color(0, 0, 0, 0.39215687)
 
 [node name="ExecutionPanel" type="PanelContainer" unique_id=1689072548]
 clip_contents = true

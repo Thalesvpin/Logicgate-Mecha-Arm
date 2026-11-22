@@ -51,7 +51,10 @@ func start_timer() -> void:
 func stop_timer() -> void:
 	timer = 0.0
 	holding_run = false
-	progress_shader.material.set_shader_parameter("progress", 1)
+	var shader = progress_shader.material as ShaderMaterial
+	#var tween = create_tween()
+	#tween.tween_property(shader, "shader_parameter/progress", 0, 1.0)
+	#progress_shader.material.set_shader_parameter("progress", 1)
 
 func lock_submit() -> void:
 	run_btn.disabled = true
