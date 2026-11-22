@@ -54,6 +54,15 @@ text = "Logicgate Mecha Arm v0.0.2  ● "
 fit_content = true
 autowrap_mode = 0
 
+[node name="Seed" type="RichTextLabel" parent="HBoxContainer" unique_id=946752256]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.6156863, 0.6156863, 0.6156863, 1)
+theme_override_font_sizes/normal_font_size = 20
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+vertical_alignment = 1
+
 [node name="RunTime" type="RichTextLabel" parent="HBoxContainer" unique_id=2002666118]
 layout_mode = 2
 theme_override_colors/default_color = Color(0.6156863, 0.6156863, 0.6156863, 1)

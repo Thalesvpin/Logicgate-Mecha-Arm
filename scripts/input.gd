@@ -42,8 +42,10 @@ func set_active(value: bool) -> void:
 func _on_mouse_entered() -> void:
 	sprite.scale = Vector2(0.02,0.02)
 	Global.circuit_editor.hovered_pin = self
+	owner.get_parent().owner.terminal_hover = true
 
 func _on_mouse_exited() -> void:
 	sprite.scale = Vector2(0.007,0.007)
 	if Global.circuit_editor.hovered_pin == self:
 		Global.circuit_editor.hovered_pin = null
+	owner.get_parent().owner.terminal_hover = false

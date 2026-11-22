@@ -32,6 +32,7 @@ var shop_money_panel
 var turn_manager
 var shop
 var actions_panel_sandbox
+var telemetry_bar
 #endregion
 
 #control variables
@@ -220,6 +221,7 @@ func rand_binary(size: int) -> int:
 func set_new_seed():
 	_seed = randi()
 	random.set_seed(_seed)
+	Global.telemetry_bar.set_seed(Global._seed)
 
 func change_wires_color(color: Color) -> void:
 	for child in circuit_editor.wire_layer.get_children():

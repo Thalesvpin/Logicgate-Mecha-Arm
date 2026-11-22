@@ -31,15 +31,18 @@ var action_list: Dictionary[CombatActions.List, int]={
 
 func _ready() -> void:
 	Global.circuit_editor = self
-	EventBus.turn_started.connect(turn_start)
-	EventBus.turn_ended.connect(block_sandbox)
-	EventBus.submit_circuit.connect(lock_sandbox)
 	wall.show()
 	wall.offset_transform_position.y = wall.get_viewport_rect().size.y
 
 #func _process(delta: float) -> void:
 	#if block_up:
 		#wall_old.offset_transform_position.y = -circuit_camera.collision_shape_2d.shape.size.y
+
+func connect_signals() -> void:
+	EventBus.turn_started.connect(turn_start)
+	EventBus.turn_ended.connect(block_sandbox)
+	EventBus.submit_circuit.connect(lock_sandbox)
+	EventBus.open_shop.connect(clear_sandbox)
 
 func generate_action_list() -> void:
 	var list: Array[int] = Global.unique_random_list(action_list.size(), 4)
@@ -97,3 +100,9 @@ func unlock_sandbox() -> void:
 
 func lock_zoom(value: bool) -> void:
 	circuit_camera.lock_zoom = value
+
+func clear_sandbox() -> void:
+	for gate in gate_layer.get_children():
+		gate.delete_gate()
+	for wire in wire_layer.get_children():
+		wire.self_delete()

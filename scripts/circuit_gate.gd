@@ -24,6 +24,8 @@ var connected_wires: Array
 var was_pressed: bool = false
 var cursor_offset: Vector2
 var original_scale: Vector2 = Vector2.ZERO
+var gate_hover: bool = false
+var terminal_hover: bool = false
 
 func _ready() -> void:
 	add_terminals()
@@ -38,6 +40,13 @@ func _process(delta):
 	else:
 		outline_sprite.show() 
 		fill_sprite.hide()
+	
+	#if terminal_hover:
+		#Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+	#elif gate_hover:
+		#Input.set_default_cursor_shape(Input.CURSOR_DRAG)
+	#else:
+		#Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:
@@ -241,3 +250,10 @@ func check_submit_requirements() -> bool:
 		return sum == 1
 	else:
 		return sum >= 2
+
+
+func _on_mouse_entered() -> void:
+	gate_hover = true
+
+func _on_mouse_exited() -> void:
+	gate_hover = false

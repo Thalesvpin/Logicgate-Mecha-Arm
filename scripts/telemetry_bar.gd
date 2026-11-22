@@ -5,8 +5,10 @@ extends PanelContainer
 @onready var run_time: RichTextLabel = $HBoxContainer/RunTime
 @onready var clock: RichTextLabel = $HBoxContainer/Clock
 @onready var fps: RichTextLabel = $HBoxContainer/FPS
+@onready var seed_label: RichTextLabel = $HBoxContainer/Seed
 
 func _ready() -> void:
+	Global.telemetry_bar = self
 	EventBus.battle_ended.connect(update_battle)
 	EventBus.close_shop.connect(update_battle)
 
@@ -18,6 +20,7 @@ func _process(delta: float) -> void:
 	clock.add_image(preload("uid://dtdmncjvb5ehx"), 18, 18)
 	clock.add_text(" %02d:%02d" % [time.hour, time.minute])
 	fps.text = ' | FPS: %d  ' % Engine.get_frames_per_second()
+
 
 func update_battle(arg=null) -> void:
 	await get_tree().create_timer(0.3).timeout
@@ -38,3 +41,6 @@ func update_battle(arg=null) -> void:
 				text = 'BATALHA CONTRA CHEFE'
 		text += ' (%d)' % curr_battle
 	dificulty_label.text = text
+
+func set_seed(seed: int) -> void:
+	seed_label.text = 'Seed: %d ● ' % seed
