@@ -1,6 +1,6 @@
 extends Control
 
-@onready var name_label: Label = $PanelContainer/Name
+@onready var name_label: Label = $PanelContainer/HBoxContainer/Name
 @export var swap_speed: float = 0.4
 
 func set_display_name(_name: String) -> void:
