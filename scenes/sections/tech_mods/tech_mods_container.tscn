@@ -640,6 +640,7 @@ size_flags_vertical = 3
 environment = SubResource("Environment_mjyp6")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport" unique_id=1221981391]
+visible = false
 
 [node name="Color PostProcess Adjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=945323317]
 material = SubResource("ShaderMaterial_mjyp6")

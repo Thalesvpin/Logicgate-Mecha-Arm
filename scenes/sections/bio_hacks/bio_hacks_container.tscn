@@ -652,6 +652,7 @@ mouse_filter = 0
 environment = SubResource("Environment_mjyp6")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="SubViewportContainer/SubViewport" unique_id=1248853954]
+visible = false
 
 [node name="Color PostProcess Adjustments" type="ColorRect" parent="SubViewportContainer/SubViewport/CanvasLayer" unique_id=1070314492]
 material = SubResource("ShaderMaterial_mjyp6")
