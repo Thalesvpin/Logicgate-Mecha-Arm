@@ -103,22 +103,22 @@ choices_amount = Dictionary[int, int]({
 6: 2
 })
 pack_title = Dictionary[int, String]({
-0: "",
-1: "",
-2: "",
-3: "",
-4: "",
-5: "",
-6: ""
+0: "PACOTE MIX",
+1: "PACOTÃO MIX",
+2: "########",
+3: "PACOTE TM",
+4: "PACOTÃO TM",
+5: "PACOTE BH",
+6: "PACOTÃO BH"
 })
 pack_name = Dictionary[int, String]({
-0: "minipack\\n.zip",
-1: "megapack\\n.zip",
-2: "pack_corrompido",
-3: "minitechpack\\n.zip",
-4: "megatechpack\\n.zip",
-5: "minibiopack\\n.zip",
-6: "megabiopack\\n.zip"
+0: "mix_minipack[br].zip",
+1: "mix_megapack[br].zip",
+2: "pack_corrompido[br].zip",
+3: "tech_minipack[br].zip",
+4: "tech_megapack[br].zip",
+5: "bio_minipack[br].zip",
+6: "bio_megapack[br].zip"
 })
 pack_icon = Dictionary[int, PackedScene]({
 0: ExtResource("10_2mo74"),
@@ -244,7 +244,9 @@ custom_minimum_size = Vector2(0, 62)
 custom_maximum_size = Vector2(-1, 62)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 22
-text = "pack_corrompido"
+bbcode_enabled = true
+text = "pack_corrompido
+.zip"
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
