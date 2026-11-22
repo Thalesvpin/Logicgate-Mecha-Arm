@@ -2,9 +2,189 @@
 
 [ext_resource type="Script" uid="uid://b84g2j5iwlbtv" path="res://scripts/execution_panel.gd" id="1_mufj8"]
 [ext_resource type="Texture2D" uid="uid://vc3ys3wma7hg" path="res://icon.svg" id="1_pmrxt"]
-[ext_resource type="LabelSettings" uid="uid://bu1qr5thhtdmy" path="res://ui_elements/ui_execution_list_number.tres" id="2_wvfaq"]
+[ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="4_e6qwf"]
 [ext_resource type="Shader" uid="uid://ddtcjrx2hj74g" path="res://shaders/texture_progress.gdshader" id="4_tosqn"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_7ogem"]
+
+[sub_resource type="Gradient" id="Gradient_e6qwf"]
+offsets = PackedFloat32Array(0, 0.6834319, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.13319641, 0.13319641, 0.13319638, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_e6qwf")
+
+[sub_resource type="Gradient" id="Gradient_b3avc"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.26293245, 0.26293245, 0.26293245, 1, 1, 1, 1, 1, 0.26293245, 0.26293245, 0.26293245, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gtatl"]
+gradient = SubResource("Gradient_b3avc")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7lv4"]
+shader = ExtResource("4_e6qwf")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/gradient_type = 2
+shader_parameter/gradient_rotation_degrees = 0.0
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothing = 0.5
+shader_parameter/gradient_offset = 0.0
+shader_parameter/repeat_gradient = false
+shader_parameter/enable_pulsation = false
+shader_parameter/animation_speed = 1.0
+shader_parameter/pulse_spatial_frequency = 0.0
+shader_parameter/pulse_min_offset = -0.5
+shader_parameter/pulse_max_offset = 0.5
+shader_parameter/distortion_strength = 0.0
+shader_parameter/distortion_speed = Vector2(0.1, 0.1)
+shader_parameter/base_color_steps = 0.0
+shader_parameter/base_color_brightness = 0.0
+shader_parameter/base_color_contrast = 1.0
+shader_parameter/base_color_saturation = 1.0
+shader_parameter/base_color_hue_shift_speed = 0.0
+shader_parameter/enable_overlay = false
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_gradient_type = 2
+shader_parameter/overlay_gradient_rotation_degrees = 0.0
+shader_parameter/overlay_gradient_scale = 1.0
+shader_parameter/overlay_gradient_smoothing = 0.5
+shader_parameter/overlay_gradient_offset = 0.0
+shader_parameter/overlay_repeat_gradient = false
+shader_parameter/overlay_enable_pulsation = false
+shader_parameter/overlay_animation_speed = 1.0
+shader_parameter/overlay_pulse_spatial_frequency = 0.0
+shader_parameter/overlay_pulse_min_offset = -0.5
+shader_parameter/overlay_pulse_max_offset = 0.5
+shader_parameter/enable_overlay_opacity = false
+shader_parameter/overlay_opacity_type = 2
+shader_parameter/overlay_opacity_rotation_degrees = 0.0
+shader_parameter/overlay_opacity_scale = 1.0
+shader_parameter/overlay_opacity_smoothing = 0.5
+shader_parameter/overlay_opacity_offset = 0.0
+shader_parameter/overlay_opacity_repeat = false
+shader_parameter/overlay_opacity_enable_pulsation = false
+shader_parameter/overlay_opacity_animation_speed = 1.0
+shader_parameter/overlay_opacity_pulse_spatial_frequency = 0.0
+shader_parameter/overlay_opacity_pulse_min_offset = -0.5
+shader_parameter/overlay_opacity_pulse_max_offset = 0.5
+shader_parameter/corner_radii = Vector4(100, 100, 100, 100)
+shader_parameter/use_beveled_corners = false
+shader_parameter/enable_outline = true
+shader_parameter/outline_width = 6.000000285
+shader_parameter/outline_blur = 0.0
+shader_parameter/outline_path_seam_offset = 0.0
+shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_gtatl")
+shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_gradient_rotation_degrees = 0.0
+shader_parameter/outline_gradient_scale = 1.0
+shader_parameter/outline_gradient_smoothing = 0.5
+shader_parameter/outline_gradient_offset = 0.0
+shader_parameter/outline_repeat_gradient = false
+shader_parameter/use_path_lut = false
+shader_parameter/enable_wobble = false
+shader_parameter/outline_wobble_amplitude = 0.0
+shader_parameter/outline_wobble_frequency = 10.0
+shader_parameter/outline_wobble_speed = 1.0
+shader_parameter/enable_dash = false
+shader_parameter/outline_dash_style = 1
+shader_parameter/outline_pattern = 0
+shader_parameter/outline_dash_count = 0.0
+shader_parameter/outline_dash_speed = 0.0
+shader_parameter/outline_fade_angle = 0.0
+shader_parameter/outline_fade_intensity = 0.0
+shader_parameter/outline_enable_pulsation = false
+shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_spatial_frequency = 0.0
+shader_parameter/outline_pulse_min_offset = -0.5
+shader_parameter/outline_pulse_max_offset = 0.5
+shader_parameter/outline_enable_shine = false
+shader_parameter/outline_shine_style = 1
+shader_parameter/outline_shine_half_sweep = false
+shader_parameter/outline_shine_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_intensity = 1.0
+shader_parameter/outline_shine_speed = 1.0
+shader_parameter/outline_shine_delay = 2.0
+shader_parameter/outline_shine_width = 0.15
+shader_parameter/outline_shine_softness = 0.5
+shader_parameter/outline_shine_angle = 45.0
+shader_parameter/outline_shine_reverse = false
+shader_parameter/outline_enable_shine_2 = false
+shader_parameter/outline_shine_2_style = 1
+shader_parameter/outline_shine_2_half_sweep = false
+shader_parameter/outline_shine_2_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_2_intensity = 1.0
+shader_parameter/outline_shine_2_speed = 1.0
+shader_parameter/outline_shine_2_delay = 2.0
+shader_parameter/outline_shine_2_width = 0.15
+shader_parameter/outline_shine_2_softness = 0.5
+shader_parameter/outline_shine_2_angle = 135.0
+shader_parameter/outline_shine_2_reverse = false
+shader_parameter/outline_color_steps = 0.0
+shader_parameter/outline_color_brightness = 0.0
+shader_parameter/outline_color_contrast = 1.0
+shader_parameter/outline_color_saturation = 1.0
+shader_parameter/outline_color_hue_shift_speed = 0.0
+shader_parameter/enable_scanlines = false
+shader_parameter/scanline_base_only = false
+shader_parameter/scanline_blend_mode = 0
+shader_parameter/scanline_color = Color(0, 0, 0, 1)
+shader_parameter/scanline_density = 0.0
+shader_parameter/scanline_thickness = 0.5
+shader_parameter/scanline_softness = 1.0
+shader_parameter/scanline_rotation = 0.0
+shader_parameter/scanline_offset = 0.0
+shader_parameter/scanline_speed = 0.0
+shader_parameter/scanline_curvature = 0.0
+shader_parameter/scanline_flicker_speed = 0.0
+shader_parameter/scanline_flicker_intensity = 0.0
+shader_parameter/scanline_use_gradient = false
+shader_parameter/scanline_gradient_type = 0
+shader_parameter/scanline_gradient_rotation_degrees = 0.0
+shader_parameter/scanline_gradient_scale = 1.0
+shader_parameter/scanline_gradient_smoothing = 0.5
+shader_parameter/scanline_gradient_offset = 0.0
+shader_parameter/scanline_repeat_gradient = false
+shader_parameter/scanline_opacity = 0.0
+shader_parameter/scanline_enable_opacity_map = false
+shader_parameter/scanline_opacity_type = 2
+shader_parameter/scanline_opacity_rotation_degrees = 0.0
+shader_parameter/scanline_opacity_scale = 1.0
+shader_parameter/scanline_opacity_smoothing = 0.5
+shader_parameter/scanline_opacity_offset = 0.0
+shader_parameter/scanline_opacity_repeat = false
+shader_parameter/enable_liquid_stripes = false
+shader_parameter/liquid_stripes_base_only = false
+shader_parameter/liquid_stripes_blend_mode = 0
+shader_parameter/liquid_stripes_color = Color(0.59, 0.98, 0.69, 1)
+shader_parameter/liquid_stripes_bg_color = Color(0, 0, 0, 0)
+shader_parameter/liquid_stripes_rotation = 0.0
+shader_parameter/liquid_stripes_speed = 1.0
+shader_parameter/liquid_stripes_sway = 1.0
+shader_parameter/liquid_stripes_density = 4.82
+shader_parameter/liquid_stripes_thickness = 0.45
+shader_parameter/liquid_stripes_softness = 0.05
+shader_parameter/liquid_stripes_warp = 1.0
+shader_parameter/liquid_stripes_warp_origin = -0.5
+shader_parameter/liquid_stripes_warp_falloff = 0.0
+shader_parameter/liquid_stripes_warp_direction = 0.0
+shader_parameter/liquid_stripes_warp_frequency = 15.0
+shader_parameter/liquid_stripes_warp_flow = 2.0
+shader_parameter/liquid_stripes_use_gradient = false
+shader_parameter/liquid_stripes_gradient_type = 0
+shader_parameter/liquid_stripes_gradient_rotation_degrees = 0.0
+shader_parameter/liquid_stripes_gradient_scale = 1.0
+shader_parameter/liquid_stripes_gradient_smoothing = 0.5
+shader_parameter/liquid_stripes_gradient_offset = 0.0
+shader_parameter/liquid_stripes_repeat_gradient = false
+shader_parameter/liquid_stripes_opacity = 0.5
+shader_parameter/liquid_stripes_enable_opacity_map = false
+shader_parameter/liquid_stripes_opacity_type = 2
+shader_parameter/liquid_stripes_opacity_rotation_degrees = 0.0
+shader_parameter/liquid_stripes_opacity_scale = 1.0
+shader_parameter/liquid_stripes_opacity_smoothing = 0.5
+shader_parameter/liquid_stripes_opacity_offset = 0.0
+shader_parameter/liquid_stripes_opacity_repeat = false
+shader_parameter/gamma_correction = 1.0
+shader_parameter/enable_dithering = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eijvj"]
 shader = ExtResource("4_tosqn")
@@ -40,45 +220,143 @@ vertical_scroll_mode = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/ScrollContainer" unique_id=583125266]
 layout_mode = 2
 
-[node name="ExecutionContainer1" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1352902236]
+[node name="ExecutionContainer1" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=857185412]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=1937044660]
-layout_mode = 2
-texture = ExtResource("1_pmrxt")
-expand_mode = 2
-
-[node name="ExecutionLabel1" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=1589670455]
-layout_mode = 2
-text = "1001"
-label_settings = ExtResource("2_wvfaq")
-
-[node name="ExecutionContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=799125768]
+[node name="TCC_Light1" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=525066664]
+custom_minimum_size = Vector2(42, 42)
+custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=431468705]
-layout_mode = 2
-texture = ExtResource("1_pmrxt")
-expand_mode = 2
+[node name="Light1_Off" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/TCC_Light1" unique_id=50073925]
+material = SubResource("ShaderMaterial_a7lv4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.675, 0.675)
+color = Color(1, 0.3254902, 1, 1)
 
-[node name="ExecutionLabel2" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=1155639323]
-layout_mode = 2
-text = "1100"
-label_settings = ExtResource("2_wvfaq")
+[node name="Light1_On" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/TCC_Light1" unique_id=791337539]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.27664492, 0.73423785, 0.84114033, 1)
 
-[node name="ExecutionContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=857185412]
+[node name="Control" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=10953085]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=878446564]
+[node name="ExecutionLabel1" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1" unique_id=1134453166]
 layout_mode = 2
-texture = ExtResource("1_pmrxt")
-expand_mode = 2
-
-[node name="ExecutionLabel3" type="Label" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=786689787]
-layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.31)
+theme_override_font_sizes/normal_font_size = 30
 text = "0010"
-label_settings = ExtResource("2_wvfaq")
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 autowrap_trim_flags = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExecutionContainer2" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1111539442]
+layout_mode = 2
+
+[node name="TCC_Light1" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=140104260]
+custom_minimum_size = Vector2(42, 42)
+custom_maximum_size = Vector2(42, 42)
+layout_mode = 2
+
+[node name="Light1_Off" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/TCC_Light1" unique_id=1170707848]
+material = SubResource("ShaderMaterial_a7lv4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.675, 0.675)
+color = Color(1, 0.3254902, 1, 1)
+
+[node name="Light1_On" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/TCC_Light1" unique_id=1194637610]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.27664492, 0.73423785, 0.84114033, 1)
+
+[node name="Control" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=1696254259]
+layout_mode = 2
+
+[node name="ExecutionLabel2" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2" unique_id=1946287649]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.31)
+theme_override_font_sizes/normal_font_size = 30
+text = "0010"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+autowrap_trim_flags = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExecutionContainer3" type="HBoxContainer" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=413857388]
+layout_mode = 2
+
+[node name="TCC_Light1" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=1916293737]
+custom_minimum_size = Vector2(42, 42)
+custom_maximum_size = Vector2(42, 42)
+layout_mode = 2
+
+[node name="Light1_Off" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/TCC_Light1" unique_id=973325540]
+material = SubResource("ShaderMaterial_a7lv4")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(0.675, 0.675)
+color = Color(1, 0.3254902, 1, 1)
+
+[node name="Light1_On" type="ColorRect" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/TCC_Light1" unique_id=202534059]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.27664492, 0.73423785, 0.84114033, 1)
+
+[node name="Control" type="Control" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=1670124120]
+layout_mode = 2
+
+[node name="ExecutionLabel3" type="RichTextLabel" parent="MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3" unique_id=76417346]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -1.31)
+theme_override_font_sizes/normal_font_size = 30
+text = "0010"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+autowrap_trim_flags = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="RunBtn" type="TextureButton" parent="MarginContainer/ScrollContainer/VBoxContainer" unique_id=1424465683]
 material = SubResource("ShaderMaterial_eijvj")

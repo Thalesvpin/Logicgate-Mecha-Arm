@@ -1,10 +1,10 @@
 extends PanelContainer
 
-@onready var execution_label_1: Label = $MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/ExecutionLabel1
-@onready var execution_label_2: Label = $MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/ExecutionLabel2
-@onready var execution_label_3: Label = $MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/ExecutionLabel3
+@onready var execution_label_1: RichTextLabel = $MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer1/ExecutionLabel1
+@onready var execution_label_2: RichTextLabel = $MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer2/ExecutionLabel2
+@onready var execution_label_3: RichTextLabel = $MarginContainer/ScrollContainer/VBoxContainer/ExecutionContainer3/ExecutionLabel3
 @onready var run_btn: TextureButton = $MarginContainer/ScrollContainer/VBoxContainer/RunBtn
-@onready var execution_labels: Array[Label] = [execution_label_1, execution_label_2, execution_label_3]
+@onready var execution_labels: Array[RichTextLabel] = [execution_label_1, execution_label_2, execution_label_3]
 ##How much the "Run" btn must be held to submit
 @export_custom(PROPERTY_HINT_NONE, "suffix: s") var hold_run_duration: float = 2.0
 var timer: float = 0.0
