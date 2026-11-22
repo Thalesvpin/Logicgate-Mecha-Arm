@@ -6,6 +6,9 @@ extends PanelContainer
 @onready var execution_label_3: RichTextLabel = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer/ExecutionLabel3
 @onready var run_btn: Button = $MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/ProgressShader/RunBtn
 @onready var execution_labels: Array[RichTextLabel] = [execution_label_1, execution_label_2, execution_label_3]
+@onready var light_1: Control = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/Light1
+@onready var light_2: Control = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/Light2
+@onready var light_3: Control = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/Light3
 ##How much the "Run" btn must be held to submit
 @export_custom(PROPERTY_HINT_NONE, "suffix: s") var hold_run_duration: float = 2.0
 var timer: float = 0.0
@@ -27,11 +30,16 @@ func _process(delta: float) -> void:
 
 func submit() -> void:
 	EventBus.submit_circuit.emit()
+	turn_on_light(0)
 	EventBus.pulse.emit(0)
 	await get_tree().create_timer(4).timeout
+	turn_on_light(1)
 	EventBus.pulse.emit(1)
 	await get_tree().create_timer(4).timeout
+	turn_on_light(2)
 	EventBus.pulse.emit(2)
+	await get_tree().create_timer(2).timeout
+	turn_on_light(-1)
 
 func generate_execution_sequence() -> void:
 	var list = Global.unique_random_list(execution_labels.size(), 4)
@@ -62,6 +70,26 @@ func lock_submit() -> void:
 
 func unlock_submit() -> void:
 	run_btn.disabled = false
+
+func turn_on_light(idx: int) -> void:
+	light_1.find_child('LightOff').show()
+	light_2.find_child('LightOff').show()
+	light_3.find_child('LightOff').show()
+	light_1.find_child('LightOn').hide()
+	light_2.find_child('LightOn').hide()
+	light_3.find_child('LightOn').hide()
+	match idx:
+		0:
+			light_1.find_child('LightOn').show()
+			light_1.find_child('LightOff').hide()
+		1:
+			light_2.find_child('LightOn').show()
+			light_2.find_child('LightOff').hide()
+		2:
+			light_3.find_child('LightOn').show()
+			light_3.find_child('LightOff').hide()
+		-1:
+			pass
 
 func _on_run_btn_button_down() -> void:
 	if Global.circuit_editor.sandbox.check_submit_requirements():
