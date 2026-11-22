@@ -178,6 +178,7 @@ theme_override_colors/default_color = Color(0.89411765, 0.84705883, 0.31764707, 
 text = "$ 500"
 fit_content = true
 autowrap_mode = 0
+horizontal_alignment = 1
 
 [node name="Spacer3" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer3/VBoxContainer" index="4" unique_id=163405373]
 layout_mode = 2

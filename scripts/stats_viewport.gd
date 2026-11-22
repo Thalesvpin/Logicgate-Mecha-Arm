@@ -15,6 +15,7 @@ var bot_tabs: Array[TextureRect]
 @onready var transparent_gradient: TextureRect = $SubViewportContainer/SubViewport/Tabs/Bottom/TransparentGradient
 @onready var world_environment: WorldEnvironment = $SubViewportContainer/SubViewport/WorldEnvironment
 @onready var arm_x_ray: TextureRect = $SubViewportContainer/SubViewport/Control/CanvasGroup/ArmXRay
+@onready var repair_shield: Label = $SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer/RepairShield
 
 @export var glow_tween_duration: float = 1
 @export var glow_intensity: float = 0.3
@@ -56,6 +57,9 @@ func glow() -> void:
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_IN)
 	tween.tween_property(world_environment.environment, 'glow_intensity', 0.3, glow_tween_duration)
+
+func show_action_repair_shield() -> void:
+	repair_shield.show()
 
 func _on_top_tab_1_pressed() -> void:
 	change_page(1)
