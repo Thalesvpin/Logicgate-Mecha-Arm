@@ -12,6 +12,7 @@ metadata/_live_palette_bindings = {
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
 
 [sub_resource type="Gradient" id="Gradient_gmfe7"]
+colors = PackedColorArray(0, 0, 0, 1, 0.24840015, 0.24840018, 0.24840015, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_gtatl"]
 gradient = SubResource("Gradient_gmfe7")
@@ -72,9 +73,9 @@ shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(-10, -10, -10, -10)
 shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = true
-shader_parameter/outline_width = 2.000000095
+shader_parameter/outline_width = 3.0000001425
 shader_parameter/outline_blur = 0.0
-shader_parameter/outline_sharpness = 1.0
+shader_parameter/outline_sharpness = 0.950000045125
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_a7lv4")
 shader_parameter/outline_gradient_type = 1
@@ -205,11 +206,13 @@ theme_override_constants/margin_bottom = 7
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=45604566]
 layout_mode = 2
-theme_override_constants/separation = 34
+theme_override_constants/separation = 46
 
 [node name="Attack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=787469999]
 layout_mode = 2
-alignment = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -4.49)
+alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Attack" unique_id=1998143619]
 layout_mode = 2
@@ -220,9 +223,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/Attack" unique_id=811043522]
+layout_mode = 2
+
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/Attack" unique_id=1025315031]
-custom_minimum_size = Vector2(65, 0)
-custom_maximum_size = Vector2(65, -1)
+custom_minimum_size = Vector2(66, 0)
+custom_maximum_size = Vector2(66, -1)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
@@ -239,7 +245,7 @@ color = Color(0.34901962, 0.5058824, 1, 1)
 
 [node name="AttackLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Attack/PanelContainer" unique_id=2135529206]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 25
 text = "1111"
 fit_content = true
 scroll_active = false
@@ -249,7 +255,9 @@ vertical_alignment = 1
 
 [node name="Heal" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1035517307]
 layout_mode = 2
-alignment = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -4.49)
+alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Heal" unique_id=2053778165]
 layout_mode = 2
@@ -260,9 +268,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/Heal" unique_id=1642001264]
+layout_mode = 2
+
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/HBoxContainer/Heal" unique_id=1269431004]
-custom_minimum_size = Vector2(65, 0)
-custom_maximum_size = Vector2(65, -1)
+custom_minimum_size = Vector2(66, 0)
+custom_maximum_size = Vector2(66, -1)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
@@ -279,7 +290,7 @@ color = Color(0.34901962, 0.5058824, 1, 1)
 
 [node name="HealLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Heal/PanelContainer2" unique_id=2135839556]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 25
 text = "0000"
 fit_content = true
 scroll_active = false
@@ -289,7 +300,9 @@ vertical_alignment = 1
 
 [node name="ShieldRegen" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=955659063]
 layout_mode = 2
-alignment = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -4.49)
+alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=1094760015]
 layout_mode = 2
@@ -300,9 +313,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=2008992151]
+layout_mode = 2
+
 [node name="PanelContainer3" type="PanelContainer" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=642949427]
-custom_minimum_size = Vector2(65, 0)
-custom_maximum_size = Vector2(65, -1)
+custom_minimum_size = Vector2(66, 0)
+custom_maximum_size = Vector2(66, -1)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
@@ -319,7 +335,7 @@ color = Color(0.34901962, 0.5058824, 1, 1)
 
 [node name="ShieldRegenLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ShieldRegen/PanelContainer3" unique_id=414187582]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 25
 text = "1111"
 fit_content = true
 scroll_active = false
@@ -329,7 +345,9 @@ vertical_alignment = 1
 
 [node name="SelfDamage" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1312376360]
 layout_mode = 2
-alignment = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -4.49)
+alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1964060833]
 layout_mode = 2
@@ -340,9 +358,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1632819582]
+layout_mode = 2
+
 [node name="PanelContainer4" type="PanelContainer" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1045995611]
-custom_minimum_size = Vector2(65, 0)
-custom_maximum_size = Vector2(65, -1)
+custom_minimum_size = Vector2(66, 0)
+custom_maximum_size = Vector2(66, -1)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
@@ -359,7 +380,7 @@ color = Color(0.34901962, 0.5058824, 1, 1)
 
 [node name="SelfDamageLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/SelfDamage/PanelContainer4" unique_id=468417687]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 25
 text = "1111"
 fit_content = true
 scroll_active = false
@@ -369,7 +390,9 @@ vertical_alignment = 1
 
 [node name="ChargeHeavyAttack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1259425124]
 layout_mode = 2
-alignment = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -4.49)
+alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=1374541179]
 layout_mode = 2
@@ -381,9 +404,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=1665369657]
+layout_mode = 2
+
 [node name="PanelContainer5" type="PanelContainer" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=1606791907]
-custom_minimum_size = Vector2(65, 0)
-custom_maximum_size = Vector2(65, -1)
+custom_minimum_size = Vector2(66, 0)
+custom_maximum_size = Vector2(66, -1)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
@@ -400,7 +426,7 @@ color = Color(0.34901962, 0.5058824, 1, 1)
 
 [node name="ChargeHeavyAttackLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack/PanelContainer5" unique_id=730019438]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 25
 text = "1111"
 fit_content = true
 scroll_active = false
@@ -410,7 +436,9 @@ vertical_alignment = 1
 
 [node name="HeavyAttack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=321796593]
 layout_mode = 2
-alignment = 1
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, -4.49)
+alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1589040611]
 layout_mode = 2
@@ -421,9 +449,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1455971545]
+layout_mode = 2
+
 [node name="PanelContainer6" type="PanelContainer" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1008953842]
-custom_minimum_size = Vector2(65, 0)
-custom_maximum_size = Vector2(65, -1)
+custom_minimum_size = Vector2(66, 0)
+custom_maximum_size = Vector2(66, -1)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
@@ -440,7 +471,7 @@ color = Color(0.34901962, 0.5058824, 1, 1)
 
 [node name="HeavyAttackLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/HeavyAttack/PanelContainer6" unique_id=620204568]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 25
 text = "1111"
 fit_content = true
 scroll_active = false
