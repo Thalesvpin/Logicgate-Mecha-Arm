@@ -5337,13 +5337,13 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3mfmp"]
 gradient = SubResource("Gradient_mdhfq")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ul2j5"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_a7lv4"]
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
 resource_local_to_scene = true
 shader = ExtResource("24_nwtl1")
-shader_parameter/tex = SubResource("ViewportTexture_ul2j5")
+shader_parameter/tex = SubResource("ViewportTexture_a7lv4")
 shader_parameter/curve = 0.0
 shader_parameter/aspect = 1.0
 shader_parameter/bezel_shadow_strength = 0.0
@@ -5993,7 +5993,7 @@ theme_override_constants/separation = 50
 [node name="Spacer" type="Control" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1276488936]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=2004437476]
+[node name="LightAttack" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=2004437476]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Ataque
@@ -6003,7 +6003,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label2" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=49716183]
+[node name="HeavyAttack" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=49716183]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Ataque
@@ -6013,7 +6013,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label3" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1835739516]
+[node name="ChargeHeavyAttack" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1835739516]
 custom_minimum_size = Vector2(145, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -6024,7 +6024,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label4" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1199034616]
+[node name="Heal" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1199034616]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "curar
@@ -6034,7 +6034,8 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label5" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=52081117]
+[node name="RepairShield" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=52081117]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 text = "consertar
@@ -6044,7 +6045,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 uppercase = true
 
-[node name="Label6" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1709909248]
+[node name="SelfDamage" type="Label" parent="SubViewportContainer/SubViewport/Page3/MarginContainer/VBoxContainer/AvaliableActions/VBoxContainer/HBoxContainer" unique_id=1709909248]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "dano
@@ -6117,6 +6118,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Control" type="PanelContainer" parent="SubViewportContainer/SubViewport" unique_id=895439523]
+visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5

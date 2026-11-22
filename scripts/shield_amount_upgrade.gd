@@ -27,6 +27,7 @@ func upgrade() -> void:
 		else:
 			update_price()
 		update_value()
+		get_parent().owner.show_action_repair_shield()
 		EventBus.shield_count.emit()
 
 func update_value() -> void:

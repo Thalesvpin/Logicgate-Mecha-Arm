@@ -62,6 +62,9 @@ func update_price() -> void:
 			if action_after_preset_mitigation == PriceAction.MULTIPLY:
 				current_price_mitigation *= after_preset_value_mitigation
 	mitigation_price_label.text = '$ %d' % current_price_mitigation
+	if Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] >= 70:
+		buy_button_mitigation.disabled = true
+		mitigation_price_label.text = 'MAX'
 
 func update_value() -> void:
 	var aux = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD]
@@ -98,6 +101,8 @@ func _on_buy_button_strength_button_up() -> void:
 	choice_price = 0
 
 func _on_buy_button_mitigation_button_down() -> void:
+	if Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] >= 70:
+		return
 	buy_btn = buy_button_mitigation
 	upgrade_type = Upgrade.MITIGATION
 	current_price = current_price_mitigation
@@ -108,11 +113,18 @@ func _on_buy_button_mitigation_button_up() -> void:
 	choice_price = 0
 
 func _on_buy_button_mitigation_mouse_entered() -> void:
+	if Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] >= 70:
+		return
 	upgrade_value_mitigation.text = ('+%.1f' % mitigation_increase).trim_suffix('.0')+'%'
 	upgrade_value_mitigation.show()
 	add_space(true)
 
 func _on_buy_button_mitigation_mouse_exited() -> void:
+	if Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] >= 70:
+		if upgrade_value_mitigation.is_visible_in_tree():
+			upgrade_value_mitigation.hide()
+			add_space(false)
+		return
 	upgrade_value_mitigation.hide()
 	add_space(false)
 
