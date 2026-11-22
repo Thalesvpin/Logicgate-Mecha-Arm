@@ -45,6 +45,8 @@ uniform float base_color_hue_shift_speed : hint_range(-5.0, 5.0) = 0.0;
 group_uniforms Overlay_Settings;
 uniform bool enable_overlay = false;
 uniform int overlay_blend_mode : hint_enum("Normal", "Multiply", "Add", "Screen") = 0;
+uniform bool overlay_ignore_base_distortion = true;
+uniform bool overlay_ignore_base_color_grading = false;
 
 group_uniforms Overlay_Settings.Color;
 uniform sampler2D overlay_gradient_texture : source_color, filter_linear, repeat_disable;
@@ -93,6 +95,8 @@ uniform bool use_beveled_corners = false;
 // =============================================================================
 group_uniforms Outline_Settings;
 uniform bool enable_outline = false;
+uniform bool outline_ignore_base_distortion = false;
+uniform bool outline_ignore_base_color_grading = true;
 uniform float outline_width : hint_range(0.0, 100.0) = 2.0;
 uniform float outline_blur : hint_range(0.0, 20.0) = 0.0;
 uniform float outline_sharpness : hint_range(0.0, 1.0) = 0.5;
@@ -716,24 +720,34 @@ void fragment() {
 		float base_factor = get_gradient_factor(distorted_norm_uv, v_trig_1.xy, v_inv_scales.x, gradient_type, base_offset, repeat_gradient, gradient_smoothing, base_color_steps);
 		vec4 final_color = textureLod(gradient_texture, vec2(base_factor, 0.0), 0.0);
 
+		bool has_base_cg = fract(v_ls_trig.w * 0.5) > 0.25;
+
+		// Apply Base Color Grading BEFORE Overlay when Overlay ignores Base Color Grading
+		if (has_base_cg && overlay_ignore_base_color_grading) {
+			vec4 base_rgb1 = vec4(final_color.rgb, 1.0);
+			final_color.rgb = vec3(dot(v_base_cg_0, base_rgb1), dot(v_base_cg_1, base_rgb1), dot(v_base_cg_2, base_rgb1));
+		}
+
 		// PASS 2: Overlay Color & Opacity
 		if (enable_overlay) {
+			vec2 overlay_uv = overlay_ignore_base_distortion ? UV : distorted_norm_uv;
+			float over_steps = overlay_ignore_base_color_grading ? 0.0 : base_color_steps;
 			float over_col_offset = overlay_gradient_offset + get_pulse_offset(overlay_enable_pulsation, overlay_animation_speed, overlay_pulse_spatial_frequency, base_uv_len, overlay_color_pulse_curve, overlay_pulse_min_offset, overlay_pulse_max_offset);
-			float over_col_factor = get_gradient_factor(UV, v_trig_1.zw, v_inv_scales.y, overlay_gradient_type, over_col_offset, overlay_repeat_gradient, overlay_gradient_smoothing, base_color_steps);
+			float over_col_factor = get_gradient_factor(overlay_uv, v_trig_1.zw, v_inv_scales.y, overlay_gradient_type, over_col_offset, overlay_repeat_gradient, overlay_gradient_smoothing, over_steps);
 			vec4 over_layer = textureLod(overlay_gradient_texture, vec2(over_col_factor, 0.0), 0.0);
 			
 			if (over_layer.a > 0.0) {
 				if (enable_overlay_opacity) {
 					float over_op_offset = overlay_opacity_offset + get_pulse_offset(overlay_opacity_enable_pulsation, overlay_opacity_animation_speed, overlay_opacity_pulse_spatial_frequency, base_uv_len, overlay_opacity_pulse_curve, overlay_opacity_pulse_min_offset, overlay_opacity_pulse_max_offset);
-					float over_op_factor = get_gradient_factor(UV, v_trig_2.xy, v_inv_scales.z, overlay_opacity_type, over_op_offset, overlay_opacity_repeat, overlay_opacity_smoothing, base_color_steps);
+					float over_op_factor = get_gradient_factor(overlay_uv, v_trig_2.xy, v_inv_scales.z, overlay_opacity_type, over_op_offset, overlay_opacity_repeat, overlay_opacity_smoothing, over_steps);
 					over_layer.a *= textureLod(overlay_opacity_texture, vec2(over_op_factor, 0.0), 0.0).r;
 				}
 				final_color.rgb = apply_fx_blend(final_color.rgb, over_layer, overlay_blend_mode);
 			}
 		}
 		
-		// Skip 3x4 color grading matrix multiply when base color grading is at default
-		if (fract(v_ls_trig.w * 0.5) > 0.25) {
+		// Apply Base Color Grading AFTER Overlay when Overlay does NOT ignore Base Color Grading
+		if (has_base_cg && !overlay_ignore_base_color_grading) {
 			vec4 base_rgb1 = vec4(final_color.rgb, 1.0);
 			final_color.rgb = vec3(dot(v_base_cg_0, base_rgb1), dot(v_base_cg_1, base_rgb1), dot(v_base_cg_2, base_rgb1));
 		}
@@ -816,8 +830,9 @@ void fragment() {
 
 				// Skip outline gradient, shines, and color grading inside transparent dash gaps
 				if (outline_mask > 0.0) {
+					vec2 outline_uv = outline_ignore_base_distortion ? UV : distorted_norm_uv;
 					float out_offset = outline_gradient_offset + get_pulse_offset(outline_enable_pulsation, outline_animation_speed, outline_pulse_spatial_frequency, base_uv_len, outline_pulse_curve, outline_pulse_min_offset, outline_pulse_max_offset);
-					float out_factor = get_gradient_factor(distorted_norm_uv, v_trig_2.zw, v_inv_scales.w, outline_gradient_type, out_offset, outline_repeat_gradient, outline_gradient_smoothing, outline_color_steps);
+					float out_factor = get_gradient_factor(outline_uv, v_trig_2.zw, v_inv_scales.w, outline_gradient_type, out_offset, outline_repeat_gradient, outline_gradient_smoothing, outline_color_steps);
 					vec4 out_color = textureLod(outline_gradient_texture, vec2(out_factor, 0.0), 0.0);
 
 					// SHINE 1 RENDER
@@ -848,6 +863,12 @@ void fragment() {
 					if (v_ls_trig.w > 1.5) {
 						vec4 out_rgb1 = vec4(out_color.rgb, 1.0);
 						out_color.rgb = vec3(dot(v_out_cg_0, out_rgb1), dot(v_out_cg_1, out_rgb1), dot(v_out_cg_2, out_rgb1));
+					}
+
+					// Apply Base Color Grading to Outline when Outline does NOT ignore Base Color Grading
+					if (has_base_cg && !outline_ignore_base_color_grading) {
+						vec4 out_base_rgb1 = vec4(out_color.rgb, 1.0);
+						out_color.rgb = vec3(dot(v_base_cg_0, out_base_rgb1), dot(v_base_cg_1, out_base_rgb1), dot(v_base_cg_2, out_base_rgb1));
 					}
 
 					float out_blend = outline_mask * out_color.a;

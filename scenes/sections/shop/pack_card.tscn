@@ -26,14 +26,11 @@ border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.6745098, 0.6745098, 0.6745098, 1)
+border_color = Color(0.8, 0.8, 0.8, 0)
 corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
-metadata/_live_palette_bindings = {
-"border_color": "2pjy5"
-}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdl66"]
 content_margin_left = 0.0

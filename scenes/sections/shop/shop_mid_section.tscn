@@ -29,8 +29,8 @@ offset_transform_visual_only = false
 
 [node name="Spacer" type="Control" parent="Packs" unique_id=1577645887]
 visible = false
-custom_minimum_size = Vector2(200, 0)
-custom_maximum_size = Vector2(200, -1)
+custom_minimum_size = Vector2(194, 360)
+custom_maximum_size = Vector2(194, 360)
 layout_mode = 2
 
 [node name="PackCard3" parent="Packs" unique_id=1165079472 instance=ExtResource("1_37gkg")]
@@ -40,8 +40,8 @@ offset_transform_visual_only = false
 
 [node name="SpacerSmall" type="Control" parent="Packs" unique_id=1897330578]
 visible = false
-custom_minimum_size = Vector2(200, 0)
-custom_maximum_size = Vector2(200, -1)
+custom_minimum_size = Vector2(194, 360)
+custom_maximum_size = Vector2(194, 360)
 layout_mode = 2
 
 [node name="RerollCard" parent="Packs" unique_id=357678371 instance=ExtResource("3_gl50k")]
@@ -54,8 +54,8 @@ offset_transform_visual_only = false
 
 [node name="SpacerSmall2" type="Control" parent="Packs" unique_id=86557026]
 visible = false
-custom_minimum_size = Vector2(200, 0)
-custom_maximum_size = Vector2(200, -1)
+custom_minimum_size = Vector2(194, 360)
+custom_maximum_size = Vector2(194, 360)
 layout_mode = 2
 
 [node name="PackCard2" parent="Packs" unique_id=640912437 instance=ExtResource("1_37gkg")]
@@ -65,8 +65,8 @@ offset_transform_visual_only = false
 
 [node name="Spacer2" type="Control" parent="Packs" unique_id=258746512]
 visible = false
-custom_minimum_size = Vector2(200, 0)
-custom_maximum_size = Vector2(200, -1)
+custom_minimum_size = Vector2(194, 360)
+custom_maximum_size = Vector2(194, 360)
 layout_mode = 2
 
 [node name="OpenPackHolder" type="VBoxContainer" parent="." unique_id=1185844827]
