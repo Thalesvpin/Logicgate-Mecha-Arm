@@ -14,7 +14,6 @@ var extra_stats: Dictionary[Stats.List, Variant] = {
 	Stats.List.BASE_ATTACK_DAMAGE_MULT: 1
 }
 
-
 func _ready() -> void:
 	Global.implant_manager = self
 	EventBus.tech_mod_added.connect(add_tech_mod)

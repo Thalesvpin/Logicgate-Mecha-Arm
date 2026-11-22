@@ -18,8 +18,8 @@ func _ready() -> void:
 func set_up() -> void:
 	show()
 	set_implant()
-	get_price()
 	get_rarity()
+	get_price()
 
 func set_implant() -> void:
 	implant_card.resource = implant
@@ -31,8 +31,8 @@ func set_outline_color(node: Node) -> void:
 	node.add_theme_stylebox_override("panel", style)
 
 func get_price() -> void:
-	price = 100
-	price_label.text = '$'+str(price)
+	price = Implant.PRICES[rarity]
+	price_label.text = '$%d' % price
 
 func get_rarity() -> void:
 	rarity = implant.rarity

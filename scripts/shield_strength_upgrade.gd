@@ -12,7 +12,6 @@ extends StatUpgrade
 @export var action_after_preset_mitigation: PriceAction
 @export var after_preset_value_mitigation: int = 0
 @export var mitigation_increase: float
-var choice_price: int = 0
 enum Upgrade {STRENGHT, MITIGATION}
 var upgrade_type: Upgrade
 var upgrades_count_mitigation: int = 0
@@ -83,7 +82,8 @@ func update_value() -> void:
 	mitigation_value_label.text = ('%.1f' % (Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] + Global.implant_manager.extra_stats[Stats.List.MITIGATION_PERCENT])).trim_suffix('.0') + '%'
 
 func withdraw_money() -> bool:
-	if Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] < choice_price:
+	print('choice price: ', current_price)
+	if Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] < current_price:
 		return false
 	var ef = AddMoneyEffect.new()
 	ef.amount = -current_price
@@ -98,7 +98,7 @@ func _on_buy_button_strength_button_down() -> void:
 
 func _on_buy_button_strength_button_up() -> void:
 	stop_timer()
-	choice_price = 0
+	current_price = 0
 
 func _on_buy_button_mitigation_button_down() -> void:
 	if Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] >= 70:
@@ -110,7 +110,7 @@ func _on_buy_button_mitigation_button_down() -> void:
 
 func _on_buy_button_mitigation_button_up() -> void:
 	stop_timer()
-	choice_price = 0
+	current_price = 0
 
 func _on_buy_button_mitigation_mouse_entered() -> void:
 	if Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] >= 70:

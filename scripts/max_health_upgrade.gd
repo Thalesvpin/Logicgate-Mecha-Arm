@@ -5,8 +5,6 @@ extends StatUpgrade
 @onready var label: Label = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label
 @onready var label_2: Label = $MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/Label2
 
-# exemple
-# 85/120 (100+20)
 
 func upgrade() -> void:
 	if withdraw_money():

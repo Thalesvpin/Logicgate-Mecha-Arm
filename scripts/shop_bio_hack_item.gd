@@ -41,8 +41,8 @@ func set_outline_color(node: Node) -> void:
 	node.add_theme_stylebox_override("panel", style)
 
 func get_price() -> void:
-	price = 100
-	price_label.text = '$'+str(price)
+	price = Implant.PRICES[rarity]
+	price_label.text = '$%d' % price
 
 func get_rarity() -> void:
 	rarity = implant.rarity

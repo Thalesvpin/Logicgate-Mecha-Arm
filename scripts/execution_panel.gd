@@ -16,7 +16,6 @@ func _ready() -> void:
 	EventBus.submit_circuit.connect(lock_submit)
 
 func _process(delta: float) -> void:
-	print('timer: ', timer/hold_run_duration)
 	if holding_run && timer < hold_run_duration:
 		timer += delta
 	elif holding_run && timer >= hold_run_duration:
