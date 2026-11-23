@@ -25,7 +25,18 @@ spacing_top = 3
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bv6uq"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_edi8c"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oxtry"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bv6uq"]
 shader = ExtResource("3_edi8c")
 shader_parameter/columns = 1
 shader_parameter/rows = 1
@@ -47,7 +58,7 @@ shader_parameter/square_2_spacing = 1
 shader_parameter/color1 = Color(0, 0, 0, 1)
 shader_parameter/color2 = Color(1, 1, 1, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oxtry"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_edi8c"]
 shader = ExtResource("3_edi8c")
 shader_parameter/columns = 1
 shader_parameter/rows = 1
@@ -58,7 +69,128 @@ shader_parameter/square_2_spacing = 1
 shader_parameter/color1 = Color(0, 0, 0, 1)
 shader_parameter/color2 = Color(1, 1, 1, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bv6uq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gnty3"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(1, 1, 1, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ep5nn"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(1, 1, 1, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2bnjs"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(1, 1, 1, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m1rqb"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(1, 1, 1, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5wuer"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_velh8"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5jb73"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hj8rj"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8kp1i"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lre6h"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jru03"]
+shader = ExtResource("3_edi8c")
+shader_parameter/columns = 1
+shader_parameter/rows = 1
+shader_parameter/offset_x = 0.0
+shader_parameter/offset_y = 0.0
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/color1 = Color(0, 0, 0, 1)
+shader_parameter/color2 = Color(1, 1, 1, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8jmfd"]
 shader = ExtResource("3_edi8c")
 shader_parameter/columns = 1
 shader_parameter/rows = 1
@@ -114,7 +246,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_aaut4")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Normal/PanelContainer" unique_id=754161398]
+[node name="Normal_RichTextLabel" type="RichTextLabel" parent="Normal/PanelContainer" unique_id=754161398]
 layout_mode = 2
 offset_transform_enabled = true
 mouse_filter = 2
@@ -210,7 +342,6 @@ mouse_filter = 2
 color = Color(0.5411765, 0.54509807, 0.56078434, 1)
 
 [node name="InnerLayer2A" type="MarginContainer" parent="Normal/PanelContainer/InnerEdges/InnerLayer1" unique_id=337504506]
-visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 2
@@ -218,33 +349,33 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="BottomLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=664989757]
-custom_minimum_size = Vector2(0, 2)
-layout_mode = 2
-size_flags_vertical = 8
-mouse_filter = 2
-color = Color(0.326277, 0.59500474, 0.9375877, 1)
-
-[node name="RightLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1974863445]
-custom_minimum_size = Vector2(2, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-mouse_filter = 2
-color = Color(0.78937846, 0.5840759, 0.65119547, 1)
-
 [node name="TopLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1706437774]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 size_flags_vertical = 0
 mouse_filter = 2
-color = Color(0.30466568, 0.6641328, 0.34690988, 1)
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
 
 [node name="LeftLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1230391514]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 2
-color = Color(0.36642057, 0.4956553, 0.62581205, 1)
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="RightLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1974863445]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=664989757]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
 
 [node name="InnerLayer2B" type="MarginContainer" parent="Normal/PanelContainer/InnerEdges/InnerLayer1" unique_id=2024109398]
 layout_mode = 2
@@ -255,22 +386,6 @@ theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
-
-[node name="BottomDots" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=338574964]
-material = SubResource("ShaderMaterial_edi8c")
-custom_minimum_size = Vector2(0, 3)
-layout_mode = 2
-size_flags_vertical = 8
-mouse_filter = 2
-color = Color(0.326277, 0.59500474, 0.9375877, 1)
-
-[node name="RightDots" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=840560478]
-material = SubResource("ShaderMaterial_eoch2")
-custom_minimum_size = Vector2(3, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-mouse_filter = 2
-color = Color(0.78937846, 0.5840759, 0.65119547, 1)
 
 [node name="TopDots" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=794121146]
 material = SubResource("ShaderMaterial_oxtry")
@@ -288,6 +403,22 @@ size_flags_horizontal = 0
 mouse_filter = 2
 color = Color(0.36642057, 0.4956553, 0.62581205, 1)
 
+[node name="RightDots" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=840560478]
+material = SubResource("ShaderMaterial_eoch2")
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.78937846, 0.5840759, 0.65119547, 1)
+
+[node name="BottomDots" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=338574964]
+material = SubResource("ShaderMaterial_edi8c")
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.326277, 0.59500474, 0.9375877, 1)
+
 [node name="Hover" type="Control" parent="." unique_id=1507307454]
 visible = false
 layout_mode = 1
@@ -298,7 +429,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="Hover" unique_id=1203349769]
+[node name="Background" type="ColorRect" parent="Hover" unique_id=62411954]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -306,13 +437,195 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.00020744353, 0.29921234, 0.9006061, 1)
+color = Color(0.80784315, 0.8156863, 0.8117647, 1)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Hover" unique_id=517343348]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="PanelContainer" type="PanelContainer" parent="Hover" unique_id=1782135061]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_aaut4")
+
+[node name="Hover_Background" type="ColorRect" parent="Hover/PanelContainer" unique_id=1514081054]
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0.61960787, 1)
+
+[node name="Hover_RichTextLabel" type="RichTextLabel" parent="Hover/PanelContainer" unique_id=1433269752]
+layout_mode = 2
+offset_transform_enabled = true
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_rsdbn")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "ATIVAR"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OuterEdges" type="PanelContainer" parent="Hover/PanelContainer" unique_id=1740276954]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pae1i")
+
+[node name="TopLine" type="ColorRect" parent="Hover/PanelContainer/OuterEdges" unique_id=818230962]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="LeftLine" type="ColorRect" parent="Hover/PanelContainer/OuterEdges" unique_id=1068213680]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+
+[node name="RightLine" type="ColorRect" parent="Hover/PanelContainer/OuterEdges" unique_id=738435254]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(1, 0)
+offset_transform_scale = Vector2(2, 1)
+offset_transform_visual_only = false
+mouse_filter = 2
+color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Hover/PanelContainer/OuterEdges" unique_id=2068932494]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 1)
+offset_transform_scale = Vector2(1, 2)
+offset_transform_visual_only = false
+mouse_filter = 2
+color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+
+[node name="InnerEdges" type="PanelContainer" parent="Hover/PanelContainer" unique_id=1756725579]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_bv6uq")
+
+[node name="InnerLayer1" type="MarginContainer" parent="Hover/PanelContainer/InnerEdges" unique_id=479791782]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopLine" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1" unique_id=2015738938]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="LeftLine" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1" unique_id=562851083]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RightLine" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1" unique_id=997156250]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1" unique_id=657009192]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+
+[node name="InnerLayer2A" type="MarginContainer" parent="Hover/PanelContainer/InnerEdges/InnerLayer1" unique_id=299059543]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopLine" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1572128585]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0.28533933, 0.2948829, 0.2917183, 1)
+
+[node name="LeftLine" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=301506009]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.28533933, 0.2948829, 0.2917183, 1)
+
+[node name="RightLine" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1485156576]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.28533933, 0.2948829, 0.2917183, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=415045465]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="InnerLayer2B" type="MarginContainer" parent="Hover/PanelContainer/InnerEdges/InnerLayer1" unique_id=784597725]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, -1)
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopDots" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=1520652339]
+material = SubResource("ShaderMaterial_gnty3")
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0.30466568, 0.6641328, 0.34690988, 1)
+
+[node name="LeftDots" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=1911330989]
+material = SubResource("ShaderMaterial_ep5nn")
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.36642057, 0.4956553, 0.62581205, 1)
+
+[node name="RightDots" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=1965442939]
+material = SubResource("ShaderMaterial_2bnjs")
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.78937846, 0.5840759, 0.65119547, 1)
+
+[node name="BottomDots" type="ColorRect" parent="Hover/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=666069881]
+material = SubResource("ShaderMaterial_m1rqb")
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.326277, 0.59500474, 0.9375877, 1)
 
 [node name="Pressed" type="Control" parent="." unique_id=1815691316]
 visible = false
@@ -324,7 +637,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="Pressed" unique_id=130513743]
+[node name="PanelContainer" type="MarginContainer" parent="Pressed" unique_id=1732706031]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -332,13 +645,219 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.72, 0.63600004, 0, 1)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Pressed" unique_id=788436688]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Background" type="ColorRect" parent="Pressed/PanelContainer" unique_id=1309012789]
+layout_mode = 2
 mouse_filter = 2
+color = Color(0.43529412, 0.44705883, 0.4392157, 1)
+
+[node name="OuterEdges" type="PanelContainer" parent="Pressed/PanelContainer" unique_id=1942033510]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pae1i")
+
+[node name="TopLine" type="ColorRect" parent="Pressed/PanelContainer/OuterEdges" unique_id=1641710352]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="LeftLine" type="ColorRect" parent="Pressed/PanelContainer/OuterEdges" unique_id=537020949]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="RightLine" type="ColorRect" parent="Pressed/PanelContainer/OuterEdges" unique_id=313843286]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+offset_transform_position = Vector2(1, 0)
+offset_transform_scale = Vector2(2, 1)
+offset_transform_visual_only = false
+mouse_filter = 2
+color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Pressed/PanelContainer/OuterEdges" unique_id=397359168]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+size_flags_vertical = 8
+offset_transform_position = Vector2(0, 1)
+offset_transform_scale = Vector2(1, 2)
+offset_transform_visual_only = false
+mouse_filter = 2
+color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+
+[node name="RightLine2" type="ColorRect" parent="Pressed/PanelContainer/OuterEdges" unique_id=745104020]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(2, 0)
+offset_transform_visual_only = false
+mouse_filter = 2
+color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+
+[node name="BottomLine2" type="ColorRect" parent="Pressed/PanelContainer/OuterEdges" unique_id=45807064]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 2)
+offset_transform_visual_only = false
+mouse_filter = 2
+color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+
+[node name="MarginContainer2" type="MarginContainer" parent="Pressed/PanelContainer" unique_id=871118001]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Pressed/PanelContainer/MarginContainer2" unique_id=1735396955]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Pressed_RichTextLabel" type="RichTextLabel" parent="Pressed/PanelContainer/MarginContainer2/MarginContainer" unique_id=849565037]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_rsdbn")
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
+text = "ATIVAR"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InnerEdges" type="MarginContainer" parent="Pressed/PanelContainer/MarginContainer2" unique_id=1797042870]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="InnerLayer1" type="MarginContainer" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges" unique_id=531805054]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopLine" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1" unique_id=76875425]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+
+[node name="LeftLine" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1" unique_id=942892331]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+
+[node name="RightLine" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1" unique_id=394252546]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1" unique_id=425563826]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+
+[node name="InnerLayer2A" type="MarginContainer" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1" unique_id=1969038016]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopLine" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=291380259]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="LeftLine" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1990323158]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="RightLine" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=808068817]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=285438970]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="InnerLayer2B" type="MarginContainer" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1" unique_id=57613594]
+visible = false
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, -1)
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopDots" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=752627362]
+material = SubResource("ShaderMaterial_5wuer")
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0.30466568, 0.6641328, 0.34690988, 1)
+
+[node name="LeftDots" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=875338075]
+material = SubResource("ShaderMaterial_velh8")
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.36642057, 0.4956553, 0.62581205, 1)
+
+[node name="RightDots" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=2035293768]
+material = SubResource("ShaderMaterial_5jb73")
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.78937846, 0.5840759, 0.65119547, 1)
+
+[node name="BottomDots" type="ColorRect" parent="Pressed/PanelContainer/MarginContainer2/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=80239747]
+material = SubResource("ShaderMaterial_hj8rj")
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.326277, 0.59500474, 0.9375877, 1)
 
 [node name="Disabled" type="Control" parent="." unique_id=149474106]
 visible = false
@@ -349,7 +868,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Disabled" unique_id=1531104444]
+[node name="Background" type="ColorRect" parent="Disabled" unique_id=87282750]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -357,13 +876,190 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(1, 0.3817139, 0.5853064, 1)
+color = Color(0.80784315, 0.8156863, 0.8117647, 1)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Disabled" unique_id=2139780002]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="PanelContainer" type="PanelContainer" parent="Disabled" unique_id=382943241]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_aaut4")
+
+[node name="Normal_RichTextLabel" type="RichTextLabel" parent="Disabled/PanelContainer" unique_id=237454852]
+layout_mode = 2
+offset_transform_enabled = true
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_rsdbn")
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "ATIVAR"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OuterEdges" type="PanelContainer" parent="Disabled/PanelContainer" unique_id=156477293]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pae1i")
+
+[node name="TopLine" type="ColorRect" parent="Disabled/PanelContainer/OuterEdges" unique_id=600475058]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="LeftLine" type="ColorRect" parent="Disabled/PanelContainer/OuterEdges" unique_id=309282671]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+
+[node name="RightLine" type="ColorRect" parent="Disabled/PanelContainer/OuterEdges" unique_id=2058127870]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(1, 0)
+offset_transform_scale = Vector2(2, 1)
+offset_transform_visual_only = false
+mouse_filter = 2
+color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Disabled/PanelContainer/OuterEdges" unique_id=1846040185]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 1)
+offset_transform_scale = Vector2(1, 2)
+offset_transform_visual_only = false
+mouse_filter = 2
+color = Color(0.019607844, 0.023529412, 0.03137255, 1)
+
+[node name="InnerEdges" type="PanelContainer" parent="Disabled/PanelContainer" unique_id=1586402216]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_bv6uq")
+
+[node name="InnerLayer1" type="MarginContainer" parent="Disabled/PanelContainer/InnerEdges" unique_id=1155873319]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopLine" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1" unique_id=1104942443]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+
+[node name="LeftLine" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1" unique_id=1607373772]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+
+[node name="RightLine" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1" unique_id=1894287917]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1" unique_id=302758551]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+
+[node name="InnerLayer2A" type="MarginContainer" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1" unique_id=295375390]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopLine" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1419144906]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="LeftLine" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1851570367]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="RightLine" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1473629402]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="BottomLine" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2A" unique_id=1616100364]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[node name="InnerLayer2B" type="MarginContainer" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1" unique_id=1206553979]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, -1)
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TopDots" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=75099035]
+material = SubResource("ShaderMaterial_8kp1i")
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+color = Color(0.30466568, 0.6641328, 0.34690988, 1)
+
+[node name="LeftDots" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=1337368532]
+material = SubResource("ShaderMaterial_lre6h")
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+color = Color(0.36642057, 0.4956553, 0.62581205, 1)
+
+[node name="RightDots" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=81531052]
+material = SubResource("ShaderMaterial_jru03")
+custom_minimum_size = Vector2(3, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+color = Color(0.78937846, 0.5840759, 0.65119547, 1)
+
+[node name="BottomDots" type="ColorRect" parent="Disabled/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2B" unique_id=18548843]
+material = SubResource("ShaderMaterial_8jmfd")
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+color = Color(0.326277, 0.59500474, 0.9375877, 1)
 
 [connection signal="button_down" from="." to="." method="_on_button_down"]
 [connection signal="button_up" from="." to="." method="_on_button_up"]
