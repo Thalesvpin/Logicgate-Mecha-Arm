@@ -87,7 +87,6 @@ texture = ExtResource("3_5wyd8")
 stretch_mode = 2
 
 [node name="ExtendedVersions" type="VBoxContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1284248849]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
@@ -217,17 +216,18 @@ texture_normal = ExtResource("4_0ih7b")
 stretch_mode = 0
 
 [node name="ActivatorBtnSmall" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=1797500818 instance=ExtResource("6_go8c5")]
+visible = false
 custom_minimum_size = Vector2(38, 38)
 custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 
 [node name="ActivatorBtn" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=1584510564 instance=ExtResource("6_go8c5")]
-visible = false
-custom_minimum_size = Vector2(76, 76)
-custom_maximum_size = Vector2(76, 76)
+custom_minimum_size = Vector2(76, 38)
+custom_maximum_size = Vector2(76, 38)
 layout_mode = 2
 
 [node name="CompactVersion" type="GridContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1818323556]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
