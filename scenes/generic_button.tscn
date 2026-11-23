@@ -17,6 +17,7 @@
 
 [sub_resource type="FontVariation" id="FontVariation_rsdbn"]
 base_font = ExtResource("2_ndln2")
+spacing_glyph = 1
 spacing_top = 3
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pae1i"]
@@ -27,7 +28,7 @@ spacing_top = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1834.0
+offset_right = -1826.0
 offset_bottom = -1042.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -38,7 +39,6 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_esiv2")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_veuwc")
 script = ExtResource("1_048u1")
 metadata/_edit_horizontal_guides_ = [19.0, 12.0, 26.0]
-metadata/_edit_vertical_guides_ = [37.0]
 
 [node name="Normal" type="Control" parent="." unique_id=849061061]
 layout_mode = 1
@@ -75,7 +75,7 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(1, 0)
 mouse_filter = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_rsdbn")
-theme_override_font_sizes/normal_font_size = 27
+theme_override_font_sizes/normal_font_size = 28
 bbcode_enabled = true
 text = "ATIVAR"
 fit_content = true
