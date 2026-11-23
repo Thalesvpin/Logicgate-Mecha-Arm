@@ -557,6 +557,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1lvlk")
 script = ExtResource("1_ihy3r")
+metadata/_edit_vertical_guides_ = [1869.0, 1826.0]
+metadata/_edit_horizontal_guides_ = [32.0, 51.0]
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1999844526]
 layout_mode = 2

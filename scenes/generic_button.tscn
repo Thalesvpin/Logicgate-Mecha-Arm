@@ -34,7 +34,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="Normal" unique_id=19184309]
+[node name="Background" type="ColorRect" parent="Normal" unique_id=19184309]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,9 +45,34 @@ mouse_filter = 2
 color = Color(0, 0.462974, 0.17872599, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Normal" unique_id=754161398]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -119.0
+offset_top = -58.0
+offset_right = 119.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 85
+bbcode_enabled = true
+text = "TESTE"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="Normal" unique_id=796088120]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 
 [node name="Hover" type="Control" parent="." unique_id=1507307454]

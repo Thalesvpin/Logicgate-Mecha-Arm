@@ -22,6 +22,8 @@ extends PanelContainer
 @onready var cancel_btn: Button = $SellOverlay/VBoxContainer/HBoxContainer/CancelBtn
 @onready var confirm_sell_label: RichTextLabel = $SellOverlay/VBoxContainer/HBoxContainer2/ConfirmSellLabel
 @onready var activation_count_compact: RichTextLabel = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivationUsesCompact/ActivationCountCompact
+@onready var activator_btn_small: Button = $MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivatorBtnSmall
+@onready var corrupted_spacer: Control = $MarginContainer/RarityOutline/HBoxContainer/CompactVersion/CorruptedSpacer
 
 const BIOHACK_BG_STYLEBOX_FLAT = preload("uid://dm33npd24kf11")
 const TECHMOD_BG_STYLEBOX_FLAT = preload("uid://dlegihcropccf")
@@ -78,9 +80,11 @@ func apply_resource() -> void:
 	if is_corrupted:
 		corrupted_texture.show()
 		corrupted_texture_compact.show()
+		corrupted_spacer.hide()
 	else:
 		corrupted_texture.hide()
 		corrupted_texture_compact.hide()
+		corrupted_spacer.show()
 	if is_consumable:
 		activator_holder.show()
 		activation_count.text = str(uses_amount)
@@ -103,9 +107,13 @@ func set_template(template: int):
 	if template == 1:
 		compact_version.hide()
 		extended_versions.show()
+		activator_btn_small.hide()
+		activator_btn.show()
 	if template == 2:
 		compact_version.hide()
 		extended_versions.show()
+		activator_btn_small.show()
+		activator_btn.hide()
 	if template == 3:
 		compact_version.show()
 		extended_versions.hide()
@@ -181,11 +189,11 @@ func _make_custom_tooltip(for_text: String) -> Object:
 
 func _on_resized() -> void:
 	if is_loaded:
-		if size.x > 325:
+		if size.x > 320:
 			set_template(1)
-		if size.x <= 325:
+		if size.x <= 320:
 			set_template(2)
-		if size.x <= 278:
+		if size.x <= 284:
 			set_template(3)
 
 func _on_activator_btn_button_up() -> void:
@@ -203,4 +211,8 @@ func _on_cancel_btn_button_up() -> void:
 	sell_overlay.hide()
 
 func _on_activator_btn_compact_button_up() -> void:
+	activate()
+
+
+func _on_activator_btn_small_button_up() -> void:
 	activate()

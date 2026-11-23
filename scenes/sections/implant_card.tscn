@@ -134,8 +134,8 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="RarityTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder" unique_id=997189646]
-custom_minimum_size = Vector2(37, 37)
-custom_maximum_size = Vector2(37, 37)
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 size_flags_vertical = 0
 texture = ExtResource("4_0ih7b")
@@ -143,8 +143,8 @@ expand_mode = 3
 stretch_mode = 4
 
 [node name="CorruptedTexture" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/RarityAndCorruptedHolder" unique_id=1461488900]
-custom_minimum_size = Vector2(37, 37)
-custom_maximum_size = Vector2(37, 37)
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("5_5wyd8")
@@ -156,13 +156,13 @@ size_flags_horizontal = 3
 mouse_filter = 1
 
 [node name="ActivatorHolder" type="HBoxContainer" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer" unique_id=1348600365]
+custom_maximum_size = Vector2(-1, 38)
 layout_mode = 2
 theme_override_constants/separation = 4
-alignment = 2
 
 [node name="ActivationUses" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=700298017]
-custom_minimum_size = Vector2(37, 37)
-custom_maximum_size = Vector2(37, 37)
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 size_flags_horizontal = 3
 texture = ExtResource("4_0ih7b")
@@ -208,16 +208,23 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ActivatorBtn2" type="TextureButton" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=464088979]
-custom_minimum_size = Vector2(0, 37)
-custom_maximum_size = Vector2(-1, 37)
+visible = false
+custom_minimum_size = Vector2(21.845, 37)
+custom_maximum_size = Vector2(49.995, 37)
 layout_mode = 2
 mouse_filter = 1
 texture_normal = ExtResource("4_0ih7b")
-stretch_mode = 4
+stretch_mode = 0
 
-[node name="ActivatorBtn" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=1797500818 instance=ExtResource("6_go8c5")]
-custom_minimum_size = Vector2(0, 37)
-custom_maximum_size = Vector2(-1, 37)
+[node name="ActivatorBtnSmall" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=1797500818 instance=ExtResource("6_go8c5")]
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
+layout_mode = 2
+
+[node name="ActivatorBtn" parent="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=1584510564 instance=ExtResource("6_go8c5")]
+visible = false
+custom_minimum_size = Vector2(76, 76)
+custom_maximum_size = Vector2(76, 76)
 layout_mode = 2
 
 [node name="CompactVersion" type="GridContainer" parent="MarginContainer/RarityOutline/HBoxContainer" unique_id=1818323556]
@@ -228,22 +235,30 @@ theme_override_constants/v_separation = 12
 columns = 2
 
 [node name="RarityTextureCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=391175054]
-custom_minimum_size = Vector2(37, 37)
-custom_maximum_size = Vector2(37, 37)
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 texture = ExtResource("4_0ih7b")
 expand_mode = 5
 stretch_mode = 4
 
+[node name="CorruptedSpacer" type="Control" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=1293051867]
+visible = false
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
+layout_mode = 2
+
 [node name="CorruptedTextureCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=698713144]
-custom_minimum_size = Vector2(37, 37)
-custom_maximum_size = Vector2(37, 37)
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 texture = ExtResource("5_5wyd8")
 expand_mode = 5
 stretch_mode = 4
 
 [node name="ActivationUsesCompact" type="TextureRect" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=2108366740]
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 texture = ExtResource("4_0ih7b")
 
@@ -293,6 +308,8 @@ texture_normal = ExtResource("4_0ih7b")
 stretch_mode = 4
 
 [node name="ActivatorBtnCompact" parent="MarginContainer/RarityOutline/HBoxContainer/CompactVersion" unique_id=285759920 instance=ExtResource("6_go8c5")]
+custom_minimum_size = Vector2(38, 38)
+custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 
 [node name="SellOverlay" type="PanelContainer" parent="." unique_id=1154463616]
@@ -364,6 +381,7 @@ size_flags_horizontal = 3
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="button_up" from="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivatorBtnSmall" to="." method="_on_activator_btn_small_button_up"]
 [connection signal="button_up" from="MarginContainer/RarityOutline/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivatorBtn" to="." method="_on_activator_btn_button_up"]
 [connection signal="button_up" from="MarginContainer/RarityOutline/HBoxContainer/CompactVersion/ActivatorBtnCompact" to="." method="_on_activator_btn_compact_button_up"]
 [connection signal="button_up" from="SellOverlay/VBoxContainer/HBoxContainer/ConfirmBtn" to="." method="_on_confirm_btn_button_up"]
