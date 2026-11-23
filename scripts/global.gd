@@ -279,6 +279,13 @@ func sort_rarity(path: String) -> void:
 							all_legendary.append(implant)
 		file = dir.get_next()
 	dir.list_dir_end()
+	
+	
+	print('\ncorrupted:')
+	print('\nall_commom_corrupted: ', all_commom_corrupted)
+	print('\nall_rare_corrupted: ', all_rare_corrupted)
+	print('\nall_ultra_rare_corrupted: ', all_ultra_rare_corrupted)
+	print('\nall_legendary_corrupted: ', all_legendary_corrupted)
 
 ##Do not call before sort_rarity()
 func sort_type() -> void:
@@ -347,18 +354,27 @@ func get_random_corrupted_implant(exclude: Array = [], attempt: int = 0) -> Impl
 		chance = Global.random.next() % 100
 		if chance < commom_rarity:
 			list = all_commom_corrupted
+			if list.size() == 0:
+				print('n tem corrompido comum')
 		elif chance < commom_rarity + rare_rarity:
 			list = all_rare_corrupted
+			if list.size() == 0:
+				print('n tem corrompido raro')
 		elif chance < 100 - legendary_rarity:
 			list = all_ultra_rare_corrupted
+			if list.size() == 0:
+				print('n tem corrompido ultra raro')
 		else:
 			list = all_legendary_corrupted
+			if list.size() == 0:
+				print('n tem corrompido legendario')
 	
 	chance  = Global.random.next() % list.size()
-	if exclude.has(list[chance]) && attempt < 5:
+	if exclude.has(list[chance]) && attempt < 10:
 		result = get_random_corrupted_implant(exclude, attempt+1)
 	else:
 		result = list[chance]
+		print('lista selecionada: ', list, '\nchance: ', chance)
 	return result
 
 func load_enemies() -> void:
