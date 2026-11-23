@@ -165,7 +165,8 @@ size_flags_horizontal = 3
 mouse_filter = 1
 
 [node name="ActivatorHolder" type="HBoxContainer" parent="MarginContainer/RarityOutline/MarginContainer/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer" unique_id=1348600365]
-custom_maximum_size = Vector2(-1, 38)
+custom_minimum_size = Vector2(0, 43)
+custom_maximum_size = Vector2(-1, 43)
 layout_mode = 2
 theme_override_constants/separation = 4
 
@@ -174,8 +175,9 @@ custom_minimum_size = Vector2(38, 38)
 custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
 texture = ExtResource("4_0ih7b")
-stretch_mode = 4
+stretch_mode = 5
 
 [node name="ActivationCount2" type="Label" parent="MarginContainer/RarityOutline/MarginContainer/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivationUses" unique_id=174044704]
 visible = false
@@ -232,8 +234,8 @@ custom_maximum_size = Vector2(38, 38)
 layout_mode = 2
 
 [node name="ActivatorBtn" parent="MarginContainer/RarityOutline/MarginContainer/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=1584510564 instance=ExtResource("6_go8c5")]
-custom_minimum_size = Vector2(76, 38)
-custom_maximum_size = Vector2(76, 38)
+custom_minimum_size = Vector2(101, 41)
+custom_maximum_size = Vector2(101, 41)
 layout_mode = 2
 
 [node name="CompactVersion" type="GridContainer" parent="MarginContainer/RarityOutline/MarginContainer/HBoxContainer" unique_id=1818323556]
