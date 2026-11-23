@@ -30,7 +30,5 @@ name = "tech mod 16"
 description = "em cada Turno, este Tech Mod copia e executa os efeitos de outro Tech Mod não-consumível aleatório no Inventário."
 texture = ExtResource("5_fihxu")
 rarity = 2
-effect = Array[ExtResource("3_63pdk")]([SubResource("Resource_mdoam")])
-conditions = Array[ExtResource("1_ynbvg")]([SubResource("Resource_pgmkf")])
 config = Array[ExtResource("2_fihxu")]([SubResource("Resource_alu4x")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

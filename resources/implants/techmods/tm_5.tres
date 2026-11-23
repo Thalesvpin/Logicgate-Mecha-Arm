@@ -8,10 +8,6 @@
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="3_wrern"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="5_wrern"]
 
-[sub_resource type="Resource" id="Resource_tutfl"]
-script = ExtResource("2_tutfl")
-metadata/_custom_type_script = "uid://cvla25wgnutm8"
-
 [sub_resource type="Resource" id="Resource_llx0s"]
 script = ExtResource("2_tutfl")
 metadata/_custom_type_script = "uid://cvla25wgnutm8"
@@ -29,13 +25,6 @@ effect = Array[ExtResource("2_b20gi")]([SubResource("Resource_jgyjl")])
 conditions = Array[ExtResource("1_xcgtk")]([SubResource("Resource_llx0s")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
-[sub_resource type="Resource" id="Resource_lmxru"]
-script = ExtResource("3_b20gi")
-gate = 7
-amount = -1.0
-is_permanent = true
-metadata/_custom_type_script = "uid://c47csi3yt4rfd"
-
 [resource]
 script = ExtResource("3_wrern")
 id = 5
@@ -45,7 +34,5 @@ texture = ExtResource("5_wrern")
 rarity = 3
 consumable = true
 uses_amount = 1
-effect = Array[ExtResource("2_b20gi")]([SubResource("Resource_lmxru")])
-conditions = Array[ExtResource("1_xcgtk")]([SubResource("Resource_tutfl")])
 config = Array[ExtResource("3_n6hcd")]([SubResource("Resource_kmej6")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

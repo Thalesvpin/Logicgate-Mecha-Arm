@@ -86,34 +86,41 @@ vertical_alignment = 1
 
 [node name="OuterEdges" type="PanelContainer" parent="Normal/PanelContainer" unique_id=1180382666]
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_pae1i")
 
 [node name="BottomLine" type="ColorRect" parent="Normal/PanelContainer/OuterEdges" unique_id=601873066]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 size_flags_vertical = 8
+mouse_filter = 2
 
 [node name="RightLine" type="ColorRect" parent="Normal/PanelContainer/OuterEdges" unique_id=1908176120]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_filter = 2
 
 [node name="TopLine" type="ColorRect" parent="Normal/PanelContainer/OuterEdges" unique_id=308977036]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="LeftLine" type="ColorRect" parent="Normal/PanelContainer/OuterEdges" unique_id=1565808780]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_filter = 2
 
 [node name="InnerEdges" type="PanelContainer" parent="Normal/PanelContainer" unique_id=955705435]
 layout_mode = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_bv6uq")
 
 [node name="InnerLayer1" type="MarginContainer" parent="Normal/PanelContainer/InnerEdges" unique_id=967355658]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
@@ -123,28 +130,33 @@ theme_override_constants/margin_bottom = 2
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 size_flags_vertical = 8
+mouse_filter = 2
 color = Color(0.6207834, 0.39929277, 0.5352838, 1)
 
 [node name="RightLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1" unique_id=2029121511]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_filter = 2
 color = Color(0.6207834, 0.39929277, 0.5352838, 1)
 
 [node name="TopLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1" unique_id=464452507]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 2
 color = Color(0.6207834, 0.39929277, 0.5352838, 1)
 
 [node name="LeftLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1" unique_id=870522075]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_filter = 2
 color = Color(0.6207834, 0.39929277, 0.5352838, 1)
 
 [node name="InnerLayer2" type="MarginContainer" parent="Normal/PanelContainer/InnerEdges/InnerLayer1" unique_id=337504506]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
@@ -154,24 +166,28 @@ theme_override_constants/margin_bottom = 2
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 size_flags_vertical = 8
+mouse_filter = 2
 color = Color(0.326277, 0.59500474, 0.9375877, 1)
 
 [node name="RightLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2" unique_id=1974863445]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_filter = 2
 color = Color(0.78937846, 0.5840759, 0.65119547, 1)
 
 [node name="TopLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2" unique_id=1706437774]
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 2
 color = Color(0.30466568, 0.6641328, 0.34690988, 1)
 
 [node name="LeftLine" type="ColorRect" parent="Normal/PanelContainer/InnerEdges/InnerLayer1/InnerLayer2" unique_id=1230391514]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_filter = 2
 color = Color(0.36642057, 0.4956553, 0.62581205, 1)
 
 [node name="Hover" type="Control" parent="." unique_id=1507307454]
