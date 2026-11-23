@@ -21,4 +21,11 @@ func apply(_context = null) -> void:
 
 func revert() -> void:
 	if !is_permanent:
-		add_to_player_stats(Stats.List.MAX_SHIELD, -aux, lesser, 1)
+		var _max = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
+		var current = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]
+		if aux > 0:
+			add_to_player_stats(Stats.List.CURRENT_HEALTH, aux)
+		if aux < 0 && current > _max:
+			add_to_player_stats(Stats.List.CURRENT_HEALTH, -(current-_max), range, _max, _max)
+		#add_to_player_stats(Stats.List.MAX_HEALTH, -aux, lesser, 1)
+		Global.player_stats_bar.update()

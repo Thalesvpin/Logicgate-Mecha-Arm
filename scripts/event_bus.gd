@@ -24,7 +24,7 @@ signal enemy_defeated(context)
 signal repaired_shield(context)
 signal elemental_applied(elemental, enemy)
 signal afflicted_by_elemental(elemental)
-signal player_defeated
+signal player_defeated(attacker)
 #endregion
 
 #region SHOP

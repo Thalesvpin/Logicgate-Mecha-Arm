@@ -203,37 +203,38 @@ func _input(event: InputEvent) -> void:
 	
 	
 	if event.is_action_pressed("0"):
-		print('\n\nplayer_stats: ',Global.run_stats.player_stats)
+		print('\n\nplayer_stats: ')
+		for key in Global.run_stats.player_stats:
+			print(Stats.List.keys()[key], ': ', Global.run_stats.player_stats[key])
+		print('\nextra: ')
+		for key in Global.implant_manager.extra_stats:
+			print(Stats.List.keys()[key], ': ', Global.implant_manager.extra_stats[key])
 	
 	
 	if event.is_action_pressed("7"):
-		Global.implant_manager.add_bio_hack(TM_1)
+		Global.implant_manager.add_bio_hack(BH_64)
 	if event.is_action_pressed("9"):
 		EventBus.enemy_defeated.emit()
 	
 	if event.is_action_pressed("4"):
-		Global.implant_manager.add_bio_hack(TM_2)
+		Global.implant_manager.add_bio_hack(TM_4)
 	if event.is_action_pressed("6"):
 		print('gates na sand: ', Global.circuit_editor.sandbox.total_gates_count)
 	
 	if event.is_action_pressed("1"):
-		Global.implant_manager.add_bio_hack(TM_3)
+		Global.implant_manager.add_bio_hack(TM_5)
 	if event.is_action_pressed("3"):
 		EventBus.self_damage.emit()
 	
 #region BH
-const BH_28 = preload("uid://ccgqftywcj2w7")
-const BH_30 = preload("uid://bnjeykp76mu2h")
 const BH_33 = preload("uid://c8awfm3qb8gn5")
-const BH_41 = preload("uid://m14eq07h5myj")
-const BH_42 = preload("uid://ceemd6bn606n6")
-const BH_43 = preload("uid://dyo2l8ngh1tt2")
 const BH_64 = preload("uid://bn6hkf2voidul")
 #endregion
 #region TM
 const TM_1 = preload("uid://cswsbscbyhuh2")
-const TM_2 = preload("uid://cmcqwoq53i712")
 const TM_3 = preload("uid://dpmi2d3veyfmy")
+
+
 const TM_4 = preload("uid://cgber4cjaov0l")
 const TM_5 = preload("uid://dy6wk36d0rq4p")
 const TM_6 = preload("uid://dm2y0nuwvhshu")

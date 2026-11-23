@@ -6,10 +6,23 @@ class_name AddMaxHealthFlatEffect
 #@export var who: Variant
 
 func apply(_context = null) -> void:
-	var result = add_to_player_stats(Stats.List.MAX_HEALTH, amount, lesser, 1)
-	EventBus.stat_changed.emit(Stats.List.MAX_HEALTH , result)
+	add_to_player_stats(Stats.List.MAX_HEALTH, amount, lesser, 1)
+	
+	var _max = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
+	var current = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]
+	if amount > 0:
+		add_to_player_stats(Stats.List.CURRENT_HEALTH, amount)
+	if amount < 0 && current > _max:
+		add_to_player_stats(Stats.List.CURRENT_HEALTH, -(current-_max), range, _max, _max)
+	Global.player_stats_bar.update()
 
 func revert() -> void:
 	if !is_permanent:
-		var result = add_to_player_stats(Stats.List.MAX_HEALTH, -amount, lesser, 1)
-		EventBus.stat_changed.emit(Stats.List.MAX_HEALTH , result)
+		add_to_player_stats(Stats.List.MAX_HEALTH, -amount, lesser, 1)
+		var _max = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
+		var current = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]
+		if amount > 0:
+			add_to_player_stats(Stats.List.CURRENT_HEALTH, amount)
+		if amount < 0 && current > _max:
+			add_to_player_stats(Stats.List.CURRENT_HEALTH, -(current-_max), range, _max, _max)
+		Global.player_stats_bar.update()

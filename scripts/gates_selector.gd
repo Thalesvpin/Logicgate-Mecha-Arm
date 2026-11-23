@@ -4,6 +4,7 @@ extends PanelContainer
 @onready var tokens_label: Label = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/TokensLabel
 @onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
 @onready var margin_container: MarginContainer = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer
+@onready var flow_container: FlowContainer = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer
 
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 
@@ -29,6 +30,11 @@ func _process(delta: float) -> void:
 			Global.sell_gate = true
 		else:
 			Global.sell_gate = false
+
+func update() -> void:
+	set_tokens_label()
+	for gate in flow_container.get_children():
+		gate.load_data()
 
 func handle_radial_menu_selection(id: String, position: Vector2):
 	match id:

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="HealEnemyEffect" format=3 uid="uid://do1q07omvoem4"]
+
+[ext_resource type="Script" uid="uid://b26rxx3b5pqoo" path="res://scripts/classes/implant_effects/heal_enemy.gd" id="1_leiby"]
+
+[resource]
+script = ExtResource("1_leiby")
+metadata/_custom_type_script = "uid://b26rxx3b5pqoo"

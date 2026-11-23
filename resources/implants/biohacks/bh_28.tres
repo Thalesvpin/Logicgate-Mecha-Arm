@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_6n4lp"]
 [ext_resource type="Script" uid="uid://chkj8op6nrwho" path="res://scripts/classes/implant_effects/heal.gd" id="5_l2f23"]
 [ext_resource type="Script" uid="uid://cnxgtur3oxys0" path="res://scripts/classes/implant_effects/self_destruct.gd" id="6_l2f23"]
+[ext_resource type="Script" uid="uid://b26rxx3b5pqoo" path="res://scripts/classes/implant_effects/heal_enemy.gd" id="7_x2fu6"]
 
 [sub_resource type="Resource" id="Resource_givfa"]
 script = ExtResource("3_3266a")
@@ -24,10 +25,14 @@ implant_id = 28
 type = 1
 metadata/_custom_type_script = "uid://cnxgtur3oxys0"
 
+[sub_resource type="Resource" id="Resource_a7lv4"]
+script = ExtResource("7_x2fu6")
+metadata/_custom_type_script = "uid://b26rxx3b5pqoo"
+
 [sub_resource type="Resource" id="Resource_em27s"]
 script = ExtResource("2_2yyhx")
 trigger = 20
-effect = Array[ExtResource("3_u0gbw")]([SubResource("Resource_jrcmg"), SubResource("Resource_bl63h")])
+effect = Array[ExtResource("3_u0gbw")]([SubResource("Resource_jrcmg"), SubResource("Resource_bl63h"), SubResource("Resource_a7lv4")])
 conditions = Array[ExtResource("1_dloru")]([SubResource("Resource_givfa")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 

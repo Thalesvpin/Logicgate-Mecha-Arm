@@ -24,6 +24,7 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 
 @export var config: Array[ImplantExecutionConfig]
 static var disabled: bool = false
+var _callbacks: Array[Callable] = []
 
 const PRICES: Dictionary[Global.Rarity, int] = {
 	Global.Rarity.COMMON: 300,
@@ -36,14 +37,33 @@ func connect_triggers() -> void:
 	for item in config:
 		for condition in item.conditions:
 			for ef in item.effect:
-				condition.abort.connect(ef.revert)
+				if not condition.abort.is_connected(ef.revert):
+					condition.abort.connect(ef.revert)
 	if consumable:
 		return
 	for module in config:
 		var sig: Signal = EventBus.signals_list[module.trigger]
-		sig.connect(func(context = null): check_condition(context, module))
-		#EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
-		#for ef in module.effect:
+		var cb: Callable
+		if module.trigger == Trigger.Type.ON_PURCHASE:
+			cb = func(purchased = null):
+				if purchased != self:
+					return
+				check_condition(purchased, module)
+		else:
+			cb = func(context = null): check_condition(context, module)
+		_callbacks.append(cb)
+		sig.connect(cb)
+
+func disconnect_triggers() -> void:
+	var i := 0
+	for module in config:
+		if i >= _callbacks.size():
+			break
+		var sig: Signal = EventBus.signals_list[module.trigger]
+		if sig.is_connected(_callbacks[i]):
+			sig.disconnect(_callbacks[i])
+		i += 1
+	_callbacks.clear()
 
 static func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
 	if disabled:

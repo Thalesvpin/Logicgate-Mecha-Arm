@@ -27,9 +27,9 @@ func remove_implant(implant) -> void:
 	update_counter()
 	
 func remove_implant_2(implant: Implant) -> void:
-	for bh in implants_holder:
-		if bh.resource == implant:
-			implants_holder.remove_child(bh)
+	for card in implants_holder.get_children():
+		if card.resource == implant:
+			card.queue_free()
 			update_counter()
 
 func update_counter() -> void:

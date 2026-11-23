@@ -52,6 +52,9 @@ func _ready() -> void:
 
 ##Undone
 func take_damage(value: float, _target: Node = null) -> void:
+	if stats[Stats.List.CURRENT_HEALTH] <= 0:
+		return
+	print('enemy ouch: ', value)
 	shake_anim()
 	#if !is_the_signal_for_me(target):
 		#return
@@ -61,7 +64,7 @@ func take_damage(value: float, _target: Node = null) -> void:
 		final_taken_dmg = mitigate(int(value))
 	else:
 		final_taken_dmg = int(value)
-	
+	print('enemy mitigou e tomou: ', final_taken_dmg)
 	if stats[Stats.List.CURRENT_HEALTH] - final_taken_dmg >= 0:
 		stats[Stats.List.CURRENT_HEALTH] -= final_taken_dmg
 	else:
@@ -89,7 +92,10 @@ func repair_shield() -> void:
 
 func attack() -> void:
 	shake_anim()
-	EventBus.damage_taken.emit(stats[Stats.List.BASE_ATTACK_DAMAGE])
+	EventBus.damage_taken.emit({
+		"damage": stats[Stats.List.BASE_ATTACK_DAMAGE],
+		"attacker": self,
+	})
 
 func set_stats() -> void:
 	if config.is_boss:

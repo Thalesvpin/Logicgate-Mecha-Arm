@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="3_6fxnl"]
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="4_qpe13"]
 [ext_resource type="Script" uid="uid://baqoni5l2stja" path="res://scripts/classes/implant_effects/add_shield_strength.gd" id="5_bjxrv"]
+[ext_resource type="Script" uid="uid://bsma7115xysdu" path="res://scripts/classes/implant_effects/repair_shield.gd" id="6_5xuah"]
 [ext_resource type="Script" uid="uid://b11kn64b4nt23" path="res://scripts/classes/implant_effects/add_mitigation_percent.gd" id="6_b1s8o"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="7_rp1cn"]
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="8_owhjj"]
@@ -18,6 +19,10 @@ script = ExtResource("5_bjxrv")
 amount = 1
 metadata/_custom_type_script = "uid://baqoni5l2stja"
 
+[sub_resource type="Resource" id="Resource_a7lv4"]
+script = ExtResource("6_5xuah")
+metadata/_custom_type_script = "uid://bsma7115xysdu"
+
 [sub_resource type="Resource" id="Resource_ogk28"]
 script = ExtResource("6_b1s8o")
 amount = 10.0
@@ -26,7 +31,7 @@ metadata/_custom_type_script = "uid://b11kn64b4nt23"
 [sub_resource type="Resource" id="Resource_3q7da"]
 script = ExtResource("3_6fxnl")
 trigger = 13
-effect = Array[ExtResource("4_qpe13")]([SubResource("Resource_vueux"), SubResource("Resource_ogk28")])
+effect = Array[ExtResource("4_qpe13")]([SubResource("Resource_vueux"), SubResource("Resource_a7lv4"), SubResource("Resource_ogk28")])
 conditions = Array[ExtResource("1_0oml7")]([SubResource("Resource_kd4ij")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 

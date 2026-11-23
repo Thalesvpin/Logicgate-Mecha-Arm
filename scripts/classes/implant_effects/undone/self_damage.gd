@@ -9,7 +9,7 @@ func apply(_context = null) -> void:
 	var mitigation = calculate_mitigation()
 	add_to_player_stats(Stats.List.CURRENT_HEALTH, -(amount-mitigation), lesser, 0)
 	
-	Global.player_stats_bar.take_damage(amount-mitigation)
+	Global.player_stats_bar.take_damage(amount - mitigation, "player")
 
 func revert() -> void:
 	pass

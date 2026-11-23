@@ -69,9 +69,9 @@ func repair_shield() -> void:
 	effect.apply()
 	pass
 
-func take_damage(value) -> void:
+func take_damage(context) -> void:
 	print('Take Damage')
 	
 	var effect = TakeDamageEffect.new()
-	effect.amount = value
-	effect.apply()
+	effect.amount = context["damage"]
+	effect.apply(context)

@@ -8,10 +8,10 @@ var percent: float
 var total_added: int = 0
 
 func apply(_context = null) -> void:
-	print('add_dmg_percent')
+	print('add_dmg_percent: ', amount/100)
 	#percent = get_player_stat(Stats.List.BASE_ATTACK_DAMAGE) * (amount/100)
-	add_to_extra_stats(Stats.List.BASE_ATTACK_DAMAGE_MULT, amount, lesser, 0)
-	total_added += amount
+	add_to_extra_stats(Stats.List.BASE_ATTACK_DAMAGE_MULT, amount/100, lesser, 0)
+	total_added += amount/100
 
 func revert() -> void:
 	if !is_permanent:

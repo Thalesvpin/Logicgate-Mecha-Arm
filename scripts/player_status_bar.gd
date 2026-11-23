@@ -42,15 +42,22 @@ func animate_health(value: int) -> void:
 	tween.tween_method(func(v): health_label.text = str(int(v)), int(health_label.text), value, tween_duration)
 	tween.chain().tween_callback(check_health)
 
-func take_damage(amount: int):
-	var result
-	if healthbar.value - amount >= 0:
-		result = healthbar.value - amount
-	else:
-		result = 0
-		EventBus.player_defeated.emit()
+func take_damage(amount: int, attacker = null) -> void:
+	if Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH] <= 0:
+		EventBus.player_defeated.emit(attacker)
+	animate_health(int(Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]))
+
+#func take_damage(amount: int):
+	#var result
+	#if healthbar.value - amount >= 0:
+		#result = healthbar.value - amount
+	#else:
+		#result = 0
+		#EventBus.player_defeated.emit()
+	#
+	#animate_health(result)
 	
-	animate_health(result)
+	
 	#healthbar.value = result
 	#health_label.text = str(result)
 

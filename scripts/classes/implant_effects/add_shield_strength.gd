@@ -6,6 +6,9 @@ class_name AddShieldStrengthEffect
 
 func apply(_context = null) -> void:
 	add_to_player_stats(Stats.List.SHIELD_STRENGTH, amount, lesser, 0)
+	var ef = RepairShieldEffect.new()
+	ef.amount = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT]
+	ef.apply()
 	Global.player_stats_bar.update()
 
 func revert() -> void:

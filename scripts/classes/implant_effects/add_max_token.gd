@@ -5,10 +5,10 @@ class_name AddMaxTokensEffect
 @export var amount: int = 0
 
 func apply(_context = null) -> void:
-	var result = add_to_player_stats(Stats.List.MAX_TOKENS_AMOUNT, amount, lesser, 1)
-	EventBus.stat_changed.emit(Stats.List.MAX_TOKENS_AMOUNT , result)
+	add_to_player_stats(Stats.List.MAX_TOKENS_AMOUNT, amount, lesser, 1)
+	Global.gates_selector.set_tokens_label()
 
 func revert() -> void:
 	if !is_permanent:
-		var result = add_to_player_stats(Stats.List.MAX_TOKENS_AMOUNT, -amount, lesser, 1)
-		EventBus.stat_changed.emit(Stats.List.MAX_TOKENS_AMOUNT , result)
+		add_to_player_stats(Stats.List.MAX_TOKENS_AMOUNT, -amount, lesser, 1)
+		Global.gates_selector.set_tokens_label()

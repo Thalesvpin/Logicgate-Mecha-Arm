@@ -24,11 +24,13 @@ func add_tech_mod(implant: Implant):
 	active_tech_mods.append(implant)
 	Global.tech_mods_container.add_implant(implant)
 	implant.connect_triggers()
+	EventBus.on_purchase.emit(implant)
 
 func add_bio_hack(implant: Implant):
 	active_bio_hacks.append(implant)
 	Global.bio_hacks_container.add_implant(implant)
 	implant.connect_triggers()
+	EventBus.on_purchase.emit(implant)
 
 func remove_tech_mod(implant: Node):
 	implant.resource.revert()
@@ -40,7 +42,14 @@ func remove_bio_hack(implant: Node):
 	active_bio_hacks.erase(implant.resource)
 	Global.bio_hacks_container.remove_implant(implant)
 
+func remove_tech_mod_2(implant: Implant) -> void:
+	implant.disconnect_triggers()
+	implant.revert()
+	active_tech_mods.erase(implant)
+	Global.tech_mods_container.remove_implant_2(implant)
+
 func remove_bio_hack_2(implant: Implant) -> void:
+	implant.disconnect_triggers()
 	implant.revert()
 	active_bio_hacks.erase(implant)
 	Global.bio_hacks_container.remove_implant_2(implant)
