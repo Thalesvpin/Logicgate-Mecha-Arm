@@ -16,6 +16,7 @@ metadata/_custom_type_script = "uid://cvla25wgnutm8"
 script = ExtResource("5_cd7ov")
 amount = 200
 mode = 1
+limit = 200
 metadata/_custom_type_script = "uid://qf22s6n7n8wj"
 
 [sub_resource type="Resource" id="Resource_mbutt"]
@@ -34,7 +35,5 @@ texture = ExtResource("7_aj127")
 rarity = 1
 consumable = true
 uses_amount = 1
-effect = Array[ExtResource("4_yhicf")]([SubResource("Resource_fhtex")])
-conditions = Array[ExtResource("1_ut2l2")]([SubResource("Resource_itaai")])
 config = Array[ExtResource("3_x42hq")]([SubResource("Resource_mbutt")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

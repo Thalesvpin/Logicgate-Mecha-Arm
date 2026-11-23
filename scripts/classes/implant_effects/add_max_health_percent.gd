@@ -2,15 +2,23 @@ extends ImplantEffect
 class_name AddMaxHealthPercentEffect
 
 ##To subtract, insert a nagative value
-@export_custom(PROPERTY_HINT_NONE, 'suffix:%') var amount: int = 0
+@export_custom(PROPERTY_HINT_NONE, 'suffix:%') var amount: float = 0
 #@export var who: Variant
+var aux
 
 func apply(_context = null) -> void:
-	amount = Global.run_stats.player_stats[Stats.List.MAX_HEALTH] * amount/100
-	var result = add_to_player_stats(Stats.List.MAX_HEALTH, amount, lesser, 1)
-	EventBus.stat_changed.emit(Stats.List.MAX_HEALTH , result)
+	aux = Global.run_stats.player_stats[Stats.List.MAX_HEALTH] * amount/100
+	print('AddMaxHealthPercentEffect: ', aux)
+	add_to_player_stats(Stats.List.MAX_HEALTH, aux, lesser, 1)
+	var _max = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
+	var current = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]
+	if aux > 0:
+		add_to_player_stats(Stats.List.CURRENT_HEALTH, aux)
+	if aux < 0 && current > _max:
+		add_to_player_stats(Stats.List.CURRENT_HEALTH, -(current-_max), range, _max, _max)
+	
+	Global.player_stats_bar.update()
 
 func revert() -> void:
 	if !is_permanent:
-		var result = add_to_player_stats(Stats.List.MAX_SHIELD, -amount, lesser, 1)
-		EventBus.stat_changed.emit(Stats.List.MAX_HEALTH , result)
+		add_to_player_stats(Stats.List.MAX_SHIELD, -aux, lesser, 1)

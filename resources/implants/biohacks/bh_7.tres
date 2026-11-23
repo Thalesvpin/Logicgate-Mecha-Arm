@@ -14,7 +14,6 @@ metadata/_custom_type_script = "uid://cvla25wgnutm8"
 
 [sub_resource type="Resource" id="Resource_l6bjy"]
 script = ExtResource("5_k6w22")
-amount = 20
 metadata/_custom_type_script = "uid://chkj8op6nrwho"
 
 [sub_resource type="Resource" id="Resource_hl8f5"]
@@ -32,7 +31,5 @@ type = 1
 texture = ExtResource("7_w6ext")
 consumable = true
 uses_amount = 2
-effect = Array[ExtResource("4_u5qw3")]([SubResource("Resource_l6bjy")])
-conditions = Array[ExtResource("1_scuwv")]([SubResource("Resource_l5cny")])
 config = Array[ExtResource("3_ni68n")]([SubResource("Resource_hl8f5")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

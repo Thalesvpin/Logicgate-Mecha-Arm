@@ -15,11 +15,13 @@ metadata/_custom_type_script = "uid://cvla25wgnutm8"
 
 [sub_resource type="Resource" id="Resource_q6k1v"]
 script = ExtResource("5_3la5f")
+amount = -10.0
 is_permanent = true
 metadata/_custom_type_script = "uid://byl7rod47gfwb"
 
 [sub_resource type="Resource" id="Resource_demv2"]
 script = ExtResource("6_j6xw3")
+amount = 10.0
 is_permanent = true
 metadata/_custom_type_script = "uid://biswuy47k6e35"
 
@@ -39,8 +41,5 @@ type = 1
 texture = ExtResource("8_q6k1v")
 rarity = 2
 corrupted = true
-trigger = 1
-effect = Array[ExtResource("4_o2qeu")]([SubResource("Resource_q6k1v"), SubResource("Resource_demv2")])
-conditions = Array[ExtResource("1_d7j11")]([SubResource("Resource_hco57")])
 config = Array[ExtResource("3_0wy2p")]([SubResource("Resource_i3kok")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

@@ -8,10 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_6mqew"]
 [ext_resource type="Script" uid="uid://b0v8s4w71fv8r" path="res://scripts/classes/implant_effects/add_max_token.gd" id="4_ehhxo"]
 
-[sub_resource type="Resource" id="Resource_oiq18"]
-script = ExtResource("2_2tpgg")
-metadata/_custom_type_script = "uid://cvla25wgnutm8"
-
 [sub_resource type="Resource" id="Resource_311a4"]
 script = ExtResource("2_2tpgg")
 metadata/_custom_type_script = "uid://cvla25wgnutm8"
@@ -27,18 +23,11 @@ effect = Array[ExtResource("2_6mqew")]([SubResource("Resource_tpfce")])
 conditions = Array[ExtResource("1_rtuc1")]([SubResource("Resource_311a4")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
-[sub_resource type="Resource" id="Resource_w27qo"]
-script = ExtResource("4_ehhxo")
-amount = 3
-metadata/_custom_type_script = "uid://b0v8s4w71fv8r"
-
 [resource]
 script = ExtResource("3_o4lil")
 id = 1
 name = "Mais Tokens"
 description = "Em cada Batalha em que este Tech Mod estiver no Inventário do jogador, +X Tokens de Circuito adicionais estarão disponíveis no Inventário de Portas. Os Tokens extra são garantidos no começo da Batalha, e permanecem no Inventário de Portas do jogador até o fim da Batalha, mesmo que este Tech Mod seja vendido no meio de uma Batalha."
 texture = ExtResource("4_6mqew")
-effect = Array[ExtResource("2_6mqew")]([SubResource("Resource_w27qo")])
-conditions = Array[ExtResource("1_rtuc1")]([SubResource("Resource_oiq18")])
 config = Array[ExtResource("3_5rn06")]([SubResource("Resource_40heo")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

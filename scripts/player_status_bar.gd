@@ -88,9 +88,9 @@ func repair_shield(amount: int) -> void:
 	adjust_shield()
 
 func update() -> void:
-	healthbar.max_value = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
-	healthbar.value = Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]
-	health_label.text = str(Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
+	healthbar.max_value = int(Global.run_stats.player_stats[Stats.List.MAX_HEALTH])
+	healthbar.value = int(Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH])
+	health_label.text = str(int(Global.run_stats.player_stats[Stats.List.CURRENT_HEALTH]))
 	adjust_shield()
 
 func adjust_shield():

@@ -29,11 +29,13 @@ metadata/_custom_type_script = "uid://bsma7115xysdu"
 
 [sub_resource type="Resource" id="Resource_7qcdf"]
 script = ExtResource("7_p32w8")
+amount = -10.0
 is_permanent = true
 metadata/_custom_type_script = "uid://biswuy47k6e35"
 
 [sub_resource type="Resource" id="Resource_mctcc"]
 script = ExtResource("8_ybu8r")
+amount = -10.0
 is_permanent = true
 metadata/_custom_type_script = "uid://byl7rod47gfwb"
 
@@ -54,7 +56,5 @@ rarity = 1
 corrupted = true
 consumable = true
 uses_amount = 1
-effect = Array[ExtResource("4_mxrij")]([SubResource("Resource_ifaaf"), SubResource("Resource_unt26"), SubResource("Resource_7qcdf"), SubResource("Resource_mctcc")])
-conditions = Array[ExtResource("1_otrf3")]([SubResource("Resource_8swwv")])
 config = Array[ExtResource("3_kk41s")]([SubResource("Resource_a7jdm")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

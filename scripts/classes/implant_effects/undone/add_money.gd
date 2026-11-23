@@ -12,15 +12,16 @@ enum Mode {FLAT, PERCENT}
 
 func apply(_context = null) -> void:
 	var result
+	var current = Global.run_stats.player_stats[Stats.List.CURRENT_MONEY]
 	match mode:
 		Mode.FLAT:
 			if limit > 0:
-				result = add_to_player_stats(Stats.List.CURRENT_MONEY, amount, Operator.GREATER, limit)
+				result = add_to_player_stats(Stats.List.CURRENT_MONEY, amount, Operator.GREATER, current+limit)
 			else:
 				result = add_to_player_stats(Stats.List.CURRENT_MONEY, amount, Operator.LESSER, 0)
 		Mode.PERCENT:
 			if limit > 0:
-				result = add_to_player_stats(Stats.List.CURRENT_MONEY, Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] * amount/100, Operator.GREATER, limit)
+				result = add_to_player_stats(Stats.List.CURRENT_MONEY, Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] * amount/100, Operator.GREATER, current+limit)
 			else:
 				result = add_to_player_stats(Stats.List.CURRENT_MONEY, Global.run_stats.player_stats[Stats.List.CURRENT_MONEY] * amount/100)
 	#EventBus.stat_changed.emit(Stats.List.CURRENT_MONEY, result)

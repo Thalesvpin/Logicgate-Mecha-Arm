@@ -9,21 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_sgwbv"]
 [ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="4_uhuu7"]
 
-[sub_resource type="Resource" id="Resource_oeix3"]
-script = ExtResource("2_js0my")
-gate_type = 7
-compared_value = 7
-metadata/_custom_type_script = "uid://ttahp22h6pfp"
-
-[sub_resource type="Resource" id="Resource_kbhfa"]
-script = ExtResource("3_oeix3")
-amount = 1
-metadata/_custom_type_script = "uid://cgkmf8n2ndb1w"
-
 [sub_resource type="Resource" id="Resource_qaxau"]
 script = ExtResource("2_js0my")
 gate_type = 7
-compared_value = 7
+compared_value = 3
 metadata/_custom_type_script = "uid://ttahp22h6pfp"
 
 [sub_resource type="Resource" id="Resource_ikjo6"]
@@ -42,11 +31,6 @@ effect = Array[ExtResource("2_sgwbv")]([SubResource("Resource_liluv")])
 conditions = Array[ExtResource("1_u6lna")]([SubResource("Resource_qaxau"), SubResource("Resource_ikjo6")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
-[sub_resource type="Resource" id="Resource_hdsti"]
-script = ExtResource("4_oeix3")
-amount = 200.0
-metadata/_custom_type_script = "uid://biswuy47k6e35"
-
 [resource]
 script = ExtResource("3_c4bdw")
 id = 2
@@ -54,7 +38,5 @@ name = "Gate Dmg"
 description = "caso o seu Circuito tenha exatamente X Portas Lógicas, todo Dano infligido sobre os inimigos neste Turno é triplicado. Esse efeito só acontece uma única vez durante uma Batalha."
 texture = ExtResource("4_sgwbv")
 rarity = 2
-effect = Array[ExtResource("2_sgwbv")]([SubResource("Resource_hdsti")])
-conditions = Array[ExtResource("1_u6lna")]([SubResource("Resource_oeix3"), SubResource("Resource_kbhfa")])
 config = Array[ExtResource("4_uhuu7")]([SubResource("Resource_ssc3c")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

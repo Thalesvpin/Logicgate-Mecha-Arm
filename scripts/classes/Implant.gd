@@ -18,11 +18,10 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 @export_group('')
 
 ##If consumable, trigger will be ignored
-@export var trigger: Trigger.Type
-@export var effect: Array[ImplantEffect]
+
 #@export var custom_effect: bool = false
 ##All conditions must be met to execute
-@export var conditions: Array[ImplantCondition]
+
 @export var config: Array[ImplantExecutionConfig]
 static var disabled: bool = false
 
@@ -41,8 +40,10 @@ func connect_triggers() -> void:
 	if consumable:
 		return
 	for module in config:
-		for ef in module.effect:
-			EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
+		EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
+		#for ef in module.effect:
+			#var sig: Signal = EventBus.signals_list[module.trigger]
+			#sig.connect(func(context = null): check_condition(context, module))
 
 static func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
 	if disabled:

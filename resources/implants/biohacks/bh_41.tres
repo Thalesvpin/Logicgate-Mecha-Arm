@@ -14,6 +14,7 @@ metadata/_custom_type_script = "uid://cvla25wgnutm8"
 
 [sub_resource type="Resource" id="Resource_l77rm"]
 script = ExtResource("5_xvljo")
+amount = 200
 metadata/_custom_type_script = "uid://cidfqydo35ysg"
 
 [sub_resource type="Resource" id="Resource_d33r2"]
@@ -30,8 +31,5 @@ name = "bio hack 41"
 description = "+X de Vida Máxima."
 type = 1
 texture = ExtResource("7_dusxr")
-trigger = 13
-effect = Array[ExtResource("4_cmvsa")]([SubResource("Resource_l77rm")])
-conditions = Array[ExtResource("1_de0bv")]([SubResource("Resource_fwu55")])
 config = Array[ExtResource("3_m7rn8")]([SubResource("Resource_d33r2")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

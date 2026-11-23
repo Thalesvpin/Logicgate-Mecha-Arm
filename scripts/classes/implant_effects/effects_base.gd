@@ -37,7 +37,7 @@ func add_to_player_stats(stat: Stats.List, amount: float, operator: Operator = O
 	return result
 
 func add_to_extra_stats(stat: Stats.List, amount: float, operator: Operator = Operator.NULL, case: float = 0, case2: float = 0) -> Variant:
-	var result = Global.modifier_manager.extra_stats[stat] + amount
+	var result = Global.implant_manager.extra_stats[stat] + amount
 	if operator != Operator.NULL:
 		match operator:
 			Operator.LESSER:
@@ -53,7 +53,7 @@ func add_to_extra_stats(stat: Stats.List, amount: float, operator: Operator = Op
 					result = case
 				elif result > case2:
 					result = case2
-	Global.modifier_manager.extra_stats[stat] = result
+	Global.implant_manager.extra_stats[stat] = result
 	return result
 
 func set_player_stat(stat: Stats.List, amount: float) -> void:

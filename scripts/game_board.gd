@@ -169,9 +169,8 @@ func game_over(is_victory: bool) -> void:
 	game_over_screen.show()
 
 const TECHMOD_TEST = preload("uid://3gmr422layic")
-const TM_6 = preload("uid://dm2y0nuwvhshu")
-const BH_1 = preload("uid://cdfw1je21a364")
-const BH_7 = preload("uid://c24lfewwtgac8")
+const TECHMOD = preload("uid://dm2y0nuwvhshu")
+const BIOHACK = preload("uid://c24lfewwtgac8")
 
 
 func _input(event: InputEvent) -> void:
@@ -183,9 +182,9 @@ func _input(event: InputEvent) -> void:
 		ef.amount = 1
 		ef.apply()
 	if event.is_action_pressed("B"):
-		Global.implant_manager.add_bio_hack(BH_7)
+		Global.implant_manager.add_bio_hack(BIOHACK)
 	if event.is_action_pressed("T"):
-		Global.implant_manager.add_tech_mod(TM_6)
+		Global.implant_manager.add_tech_mod(TECHMOD)
 	if event.is_action_pressed("S"):
 		EventBus.battle_ended.emit(true)
 	if event.is_action_pressed("L"):
@@ -200,3 +199,56 @@ func _input(event: InputEvent) -> void:
 		ef.amount = -10000
 		ef.apply()
 	
+	
+	
+	
+	if event.is_action_pressed("0"):
+		print('\n\nplayer_stats: ',Global.run_stats.player_stats)
+	
+	
+	if event.is_action_pressed("7"):
+		Global.implant_manager.add_bio_hack(TM_1)
+	if event.is_action_pressed("9"):
+		EventBus.enemy_defeated.emit()
+	
+	if event.is_action_pressed("4"):
+		Global.implant_manager.add_bio_hack(TM_2)
+	if event.is_action_pressed("6"):
+		EventBus.critical_hit.emit(true)
+	
+	if event.is_action_pressed("1"):
+		Global.implant_manager.add_bio_hack(TM_3)
+	if event.is_action_pressed("3"):
+		EventBus.self_damage.emit()
+	
+#region BH
+const BH_28 = preload("uid://ccgqftywcj2w7")
+const BH_30 = preload("uid://bnjeykp76mu2h")
+const BH_33 = preload("uid://c8awfm3qb8gn5")
+const BH_41 = preload("uid://m14eq07h5myj")
+const BH_42 = preload("uid://ceemd6bn606n6")
+const BH_43 = preload("uid://dyo2l8ngh1tt2")
+const BH_64 = preload("uid://bn6hkf2voidul")
+
+
+#endregion
+#region TM
+const TM_1 = preload("uid://cswsbscbyhuh2")
+const TM_2 = preload("uid://cmcqwoq53i712")
+const TM_3 = preload("uid://dpmi2d3veyfmy")
+const TM_4 = preload("uid://cgber4cjaov0l")
+const TM_5 = preload("uid://dy6wk36d0rq4p")
+const TM_6 = preload("uid://dm2y0nuwvhshu")
+const TM_7 = preload("uid://dytisrt6s3x5i")
+const TM_9 = preload("uid://qx3dyanxqyph")
+const TM_16 = preload("uid://c608np6txr6nk")
+const TM_19 = preload("uid://yj4flmkwtf36")
+const TM_26 = preload("uid://bvp8tt51e64tv")
+const TM_27 = preload("uid://dllp5egfwepqa")
+const TM_38 = preload("uid://dp7y2gimfbfvn")
+const TM_40 = preload("uid://dao2lw7lx1c71")
+const TM_42 = preload("uid://dcq1ffaygsw7b")
+const TM_43 = preload("uid://fu1vmnu5rnwk")
+const TM_46 = preload("uid://c1cgiwl6m8ila")
+const TM_47 = preload("uid://difi687gv8edj")
+#endregion
