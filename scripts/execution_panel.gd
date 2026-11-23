@@ -29,6 +29,7 @@ func _process(delta: float) -> void:
 	progress_shader.material.set_shader_parameter("progress", timer/hold_run_duration)
 
 func submit() -> void:
+	print('submit')
 	EventBus.submit_circuit.emit()
 	turn_on_light(0)
 	EventBus.pulse.emit(0)

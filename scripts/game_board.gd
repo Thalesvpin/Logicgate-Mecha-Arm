@@ -214,7 +214,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("4"):
 		Global.implant_manager.add_bio_hack(TM_2)
 	if event.is_action_pressed("6"):
-		EventBus.critical_hit.emit(true)
+		print('gates na sand: ', Global.circuit_editor.sandbox.total_gates_count)
 	
 	if event.is_action_pressed("1"):
 		Global.implant_manager.add_bio_hack(TM_3)
@@ -229,8 +229,6 @@ const BH_41 = preload("uid://m14eq07h5myj")
 const BH_42 = preload("uid://ceemd6bn606n6")
 const BH_43 = preload("uid://dyo2l8ngh1tt2")
 const BH_64 = preload("uid://bn6hkf2voidul")
-
-
 #endregion
 #region TM
 const TM_1 = preload("uid://cswsbscbyhuh2")

@@ -40,10 +40,10 @@ func connect_triggers() -> void:
 	if consumable:
 		return
 	for module in config:
-		EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
+		var sig: Signal = EventBus.signals_list[module.trigger]
+		sig.connect(func(context = null): check_condition(context, module))
+		#EventBus.signals_list[module.trigger].connect(check_condition.bind(module))
 		#for ef in module.effect:
-			#var sig: Signal = EventBus.signals_list[module.trigger]
-			#sig.connect(func(context = null): check_condition(context, module))
 
 static func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
 	if disabled:

@@ -8,21 +8,21 @@
 [ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="4_he5js"]
 [ext_resource type="Script" uid="uid://o1nr0uqt4xgo" path="res://scripts/classes/implant_effects/duplicate_pulse.gd" id="4_ryrt6"]
 
-[sub_resource type="Resource" id="Resource_wmg6f"]
+[sub_resource type="Resource" id="Resource_rpkav"]
 script = ExtResource("2_8rbls")
 metadata/_custom_type_script = "uid://cvla25wgnutm8"
 
-[sub_resource type="Resource" id="Resource_dn7y0"]
+[sub_resource type="Resource" id="Resource_0sr5w"]
 script = ExtResource("4_ryrt6")
 pulse_index = 2
-chance = 20.0
+chance = 100.0
 metadata/_custom_type_script = "uid://o1nr0uqt4xgo"
 
-[sub_resource type="Resource" id="Resource_e4srk"]
+[sub_resource type="Resource" id="Resource_hvo2c"]
 script = ExtResource("3_rpkav")
-trigger = 8
-effect = Array[ExtResource("2_he5js")]([SubResource("Resource_dn7y0")])
-conditions = Array[ExtResource("1_4wr83")]([SubResource("Resource_wmg6f")])
+trigger = 9
+effect = Array[ExtResource("2_he5js")]([SubResource("Resource_0sr5w")])
+conditions = Array[ExtResource("1_4wr83")]([SubResource("Resource_rpkav")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
 [resource]
@@ -32,5 +32,5 @@ name = "Bi-Binário"
 description = "toda vez que um Circuito é submetido, o Pulso de Input do segundo Valor Binário da Lista de Execução tem uma chance de acontecer duas vezes."
 texture = ExtResource("4_he5js")
 rarity = 3
-config = Array[ExtResource("3_rpkav")]([SubResource("Resource_e4srk")])
+config = Array[ExtResource("3_rpkav")]([SubResource("Resource_hvo2c")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"
