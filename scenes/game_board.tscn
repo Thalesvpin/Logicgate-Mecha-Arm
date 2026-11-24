@@ -92,6 +92,8 @@ split_offset = 10
 
 [node name="TechModsContainer" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=565464093 instance=ExtResource("1_0jtfi")]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
 
 [node name="CombatScreen" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
 layout_mode = 2
@@ -104,6 +106,8 @@ size_flags_horizontal = 3
 
 [node name="BioHacksContainer" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
 
 [node name="baixo" type="PanelContainer" parent="GameplayElements/VSplit" unique_id=702740337]
 layout_mode = 2
@@ -119,20 +123,20 @@ theme_override_constants/separation = 0
 drag_nested_intersections = true
 drag_area_highlight_in_editor = true
 
-[node name="GatesSelector" parent="GameplayElements/VSplit/baixo/BotHSplit" unique_id=1904067160 instance=ExtResource("1_tqoos")]
-layout_mode = 2
-size_flags_stretch_ratio = 0.2
-
 [node name="HBoxContainer" type="HBoxContainer" parent="GameplayElements/VSplit/baixo/BotHSplit" unique_id=1657022003]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CircuitEditor" parent="GameplayElements/VSplit/baixo/BotHSplit/HBoxContainer" unique_id=1881903153 instance=ExtResource("2_3wu0g")]
-layout_mode = 2
-
 [node name="ExecutionPanel" parent="GameplayElements/VSplit/baixo/BotHSplit/HBoxContainer" unique_id=1689072548 instance=ExtResource("6_qmxhh")]
 layout_mode = 2
 size_flags_horizontal = 8
+
+[node name="CircuitEditor" parent="GameplayElements/VSplit/baixo/BotHSplit/HBoxContainer" unique_id=1881903153 instance=ExtResource("2_3wu0g")]
+layout_mode = 2
+
+[node name="GatesSelector" parent="GameplayElements/VSplit/baixo/BotHSplit" unique_id=1904067160 instance=ExtResource("1_tqoos")]
+layout_mode = 2
+size_flags_stretch_ratio = 0.17
 
 [node name="ActionsHandler" type="Node" parent="." unique_id=330955696]
 script = ExtResource("12_w5uqb")
