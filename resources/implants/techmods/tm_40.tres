@@ -3,15 +3,19 @@
 [ext_resource type="Script" uid="uid://d0quvbn8wup4o" path="res://scripts/classes/implant_conditions/conditions_base.gd" id="1_dkfwg"]
 [ext_resource type="Script" uid="uid://bkcbldakg52tc" path="res://scripts/classes/ImplantExecutionConfig.gd" id="2_sxsx0"]
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_0aqpo"]
-[ext_resource type="Resource" uid="uid://bmxyhk5fk4fbb" path="res://resources/implants/conditions/none.tres" id="3_8xuaa"]
+[ext_resource type="Script" uid="uid://dagde3p4bjbpd" path="res://scripts/classes/implant_conditions/player_turn.gd" id="3_nfrs8"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_8xuaa"]
 [ext_resource type="Resource" uid="uid://bsxrkg20i5qmk" path="res://resources/implants/effects/charge_heavy_attack.tres" id="4_sxsx0"]
+
+[sub_resource type="Resource" id="Resource_o0ouf"]
+script = ExtResource("3_nfrs8")
+metadata/_custom_type_script = "uid://dagde3p4bjbpd"
 
 [sub_resource type="Resource" id="Resource_dkfwg"]
 script = ExtResource("2_sxsx0")
 trigger = 7
 effect = Array[ExtResource("3_0aqpo")]([ExtResource("4_sxsx0")])
-conditions = Array[ExtResource("1_dkfwg")]([ExtResource("3_8xuaa")])
+conditions = Array[ExtResource("1_dkfwg")]([SubResource("Resource_o0ouf")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
 [resource]

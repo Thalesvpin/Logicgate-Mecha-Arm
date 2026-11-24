@@ -60,7 +60,7 @@ func connect_signals() -> void:
 	EventBus.turn_started.connect(on_turn_started)
 
 func on_turn_started(who) -> void:
-	if who == "player":
+	if who is String && who == "player":
 		current_turn += 1
 
 func next_battle(arg) -> void:

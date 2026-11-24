@@ -220,12 +220,12 @@ func _input(event: InputEvent) -> void:
 		Global.implant_manager.add_bio_hack(BH_21)
 	
 	if event.is_action_pressed("4"):
-		Global.implant_manager.add_tech_mod(TM_47)
+		Global.implant_manager.add_tech_mod(TM_27)
 	if event.is_action_pressed("6"):
 		print('gates na sand: ', Global.circuit_editor.sandbox.total_gates_count)
 	
 	if event.is_action_pressed("1"):
-		Global.implant_manager.add_tech_mod(TM_16)
+		Global.implant_manager.add_tech_mod(TM_46)
 	if event.is_action_pressed("3"):
 		EventBus.self_damage.emit()
 	
@@ -236,6 +236,8 @@ const BH_64 = preload("uid://bn6hkf2voidul")
 #region TM
 const TM_1 = preload("uid://cswsbscbyhuh2")
 const TM_3 = preload("uid://dpmi2d3veyfmy")
+const TM_46 = preload("uid://c1cgiwl6m8ila")
+const TM_42 = preload("uid://dcq1ffaygsw7b")
 
 
 
@@ -243,10 +245,5 @@ const TM_16 = preload("uid://c608np6txr6nk")
 const TM_19 = preload("uid://yj4flmkwtf36")
 const TM_26 = preload("uid://bvp8tt51e64tv")
 const TM_27 = preload("uid://dllp5egfwepqa")
-const TM_38 = preload("uid://dp7y2gimfbfvn")
-const TM_40 = preload("uid://dao2lw7lx1c71")
-const TM_42 = preload("uid://dcq1ffaygsw7b")
-const TM_43 = preload("uid://fu1vmnu5rnwk")
-const TM_46 = preload("uid://c1cgiwl6m8ila")
-const TM_47 = preload("uid://difi687gv8edj")
+
 #endregion

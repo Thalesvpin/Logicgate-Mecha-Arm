@@ -17,7 +17,7 @@ func revert() -> void:
 
 func calculate_mitigation(dmg) -> int:
 	if Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD] > 0:
-		Global.player_stats_bar.repair_shield(-1)
+		Global.player_stats_bar.damage_shield(1)
 		return dmg * (float(Global.run_stats.player_stats[Stats.List.MITIGATION_PERCENT] + Global.implant_manager.extra_stats[Stats.List.MITIGATION_PERCENT])/100)
 	else:
 		return 0

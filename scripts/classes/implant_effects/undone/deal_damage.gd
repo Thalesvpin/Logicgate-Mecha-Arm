@@ -13,6 +13,7 @@ enum WhoExcept {NONE, CENTER, LEFT, RIGHT}
 
 func apply(_context = null) -> void:
 	print('deal_damage.gd apply()')
+	var enemy
 	var dmg := float(amount)
 	#dmg = Global.run_stats.player_stats[Stats.List.BASE_ATTACK_DAMAGE] + Global.implant_manager.extra_stats[Stats.List.BASE_ATTACK_DAMAGE]
 	#dmg *= Global.implant_manager.extra_stats[Stats.List.BASE_ATTACK_DAMAGE_MULT]
@@ -22,9 +23,11 @@ func apply(_context = null) -> void:
 		dmg *= (multiplier - 1) + Global.implant_manager.extra_stats[Stats.List.BASE_ATTACK_DAMAGE_MULT]
 		if _context is int or _context is float:
 			dmg = float(_context) * multiplier
+	var chance = float(Global.run_stats.player_stats[Stats.List.CRITIC_CHANCE]) + float(Global.implant_manager.extra_stats[Stats.List.CRITIC_CHANCE])
 	var crit := float(Global.run_stats.player_stats[Stats.List.CRITIC_MULTIPLIER]) + float(Global.implant_manager.extra_stats[Stats.List.CRITIC_MULTIPLIER])
-	if crit > 0.0:
+	if chance > 0.0 and (Global.random.next() % 100) < int(chance):
 		dmg *= crit
+		EventBus.critical_hit.emit()
 	match target:
 		Who.CENTER:
 			pos = EnemyPosition.Position.CENTER
@@ -38,7 +41,7 @@ func apply(_context = null) -> void:
 				EnemyPosition.Position.LEFT,
 				EnemyPosition.Position.RIGHT,
 			]:
-				var enemy = Global.combat_screen.get_enemy(_pos)
+				enemy = Global.combat_screen.get_enemy(_pos)
 				if enemy == null:
 					continue
 				if enemy.stats[Stats.List.CURRENT_HEALTH] <= 0:
@@ -65,7 +68,7 @@ func apply(_context = null) -> void:
 				pos = EnemyPosition.Position.values()[rng%EnemyPosition.Position.size()]
 			print('pos random: ', EnemyPosition.Position.keys()[rng%EnemyPosition.Position.size()])
 	print('causei %d de dano' % dmg)
-	var enemy = Global.combat_screen.get_enemy(pos)
+	enemy = Global.combat_screen.get_enemy(pos)
 	enemy.take_damage(dmg)
 	var context = {'enemy': enemy, 'damage': dmg}
 	EventBus.damage_dealt.emit(context)

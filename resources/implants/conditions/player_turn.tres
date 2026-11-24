@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PlayerTurnCondition" format=3 uid="uid://b3mddxp70q3a8"]
+
+[ext_resource type="Script" uid="uid://dagde3p4bjbpd" path="res://scripts/classes/implant_conditions/player_turn.gd" id="1_oemoq"]
+
+[resource]
+script = ExtResource("1_oemoq")
+metadata/_custom_type_script = "uid://dagde3p4bjbpd"

@@ -150,10 +150,17 @@ func link_to_status_bar() -> void:
 
 func turn_start(who):
 	if typeof(who) == typeof(Object) && who == self:
+		var token = Global.turn_manager.turn_token
 		turn_indicator.show()
 		await get_tree().create_timer(turn_start_delay).timeout
+		if token != Global.turn_manager.turn_token:
+			turn_indicator.hide()
+			return
 		var action
 		for i in range(config.actions_per_turn):
+			if token != Global.turn_manager.turn_token:
+				turn_indicator.hide()
+				return
 			action = actions_list[random_action()]
 			match action:
 				Enemy.Actions.ATTACK:
@@ -166,6 +173,8 @@ func turn_start(who):
 					repair_shield()
 			await get_tree().create_timer(between_actions_delay).timeout
 		turn_indicator.hide()
+		if token != Global.turn_manager.turn_token:
+			return
 		EventBus.turn_ended.emit(self)
 
 func random_action() -> int:
