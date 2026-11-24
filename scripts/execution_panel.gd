@@ -31,16 +31,35 @@ func _process(delta: float) -> void:
 func submit() -> void:
 	print('submit')
 	EventBus.submit_circuit.emit()
-	turn_on_light(0)
-	EventBus.pulse.emit(0)
-	await get_tree().create_timer(4).timeout
-	turn_on_light(1)
-	EventBus.pulse.emit(1)
-	await get_tree().create_timer(4).timeout
-	turn_on_light(2)
-	EventBus.pulse.emit(2)
-	await get_tree().create_timer(2).timeout
+	await run_pulse(0, 4.0)
+	await run_pulse(1, 4.0)
+	await run_pulse(2, 2.0)
 	turn_on_light(-1)
+
+func run_pulse(idx: int, wait: float) -> void:
+	turn_on_light(idx)
+	var repeat = wants_repeat(idx)
+	EventBus.pulse.emit(idx)
+	await get_tree().create_timer(wait).timeout
+	if not repeat:
+		return
+	EventBus.pulse_replay = true
+	turn_on_light(-1)
+	await get_tree().create_timer(0.2).timeout
+	turn_on_light(idx)
+	EventBus.pulse.emit(idx)
+	await get_tree().create_timer(wait).timeout
+	EventBus.pulse_replay = false
+
+func wants_repeat(idx: int) -> bool:
+	for implant in Global.implant_manager.active_tech_mods:
+		if implant._disabled:
+			continue
+		for module in implant.config:
+			for ef in module.effect:
+				if ef is DuplicatePulseEffect and ef.pulse_index - 1 == idx and ef.take_chance():
+					return true
+	return false
 
 func generate_execution_sequence() -> void:
 	var list = Global.unique_random_list(execution_labels.size(), 4)

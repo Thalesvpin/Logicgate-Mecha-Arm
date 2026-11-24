@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AddStatPerOwnedEffect" format=3 uid="uid://cquy8dyi3igrn"]
+
+[ext_resource type="Script" uid="uid://b800a2n5nq1vm" path="res://scripts/classes/implant_effects/add_stat_per_owned.gd" id="1_gfaoi"]
+
+[resource]
+script = ExtResource("1_gfaoi")
+metadata/_custom_type_script = "uid://b800a2n5nq1vm"

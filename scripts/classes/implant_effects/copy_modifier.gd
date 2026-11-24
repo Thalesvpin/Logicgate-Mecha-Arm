@@ -2,54 +2,55 @@ extends ImplantEffect
 class_name CopyModifierEffect
 
 @export var type: Implant.Type
-var config: Array[ImplantExecutionConfig]
 @export var prevent_consumable: bool = false
-@export var prevent_disabled: bool = false
+@export var prevent_disabled: bool = true
+@export var exclude_self: bool = true
+var source_trigger: Trigger.Type
 var implant: Implant
+var copied: Array[ImplantExecutionConfig] = []
 var callbacks: Array[Callable] = []
-var extra: Array[ImplantExecutionConfig] = []
-var ended := func(r = null): revert()
+var ended := func(_r = null): revert()
 
-func apply(_context = null) -> void:
-	var owner: Implant = Global.implant_manager.get_owned_implant_by_id(type, 64)
-	var exclude: Array[Implant] = []
-	if owner:
-		exclude.append(owner)
-	implant = Global.implant_manager.get_random_owned_implant(type, true, exclude)
+func apply(context = null) -> void:
+	revert()
+	implant = Global.implant_manager.get_random_owned_implant(type, prevent_consumable, exclude(), prevent_disabled)
 	if implant == null:
 		return
-	if implant.consumable:
-		for module in implant.config:
-			for ef in module.effect:
-				ef.apply(null)
-		return
-	config = implant.config
-	for module in config:
-		var cb := func(context = null):
-			if implant == null or implant.disabled:
+	for module in implant.config:
+		var mod: ImplantExecutionConfig = module.duplicate(true)
+		copied.append(mod)
+		var cb := func(ctx = null):
+			if implant == null || (prevent_disabled && implant._disabled):
 				return
-			Implant.check_condition(context, module)
+			Implant.check_condition(ctx, mod)
 		callbacks.append(cb)
-		EventBus.signals_list[module.trigger].connect(cb)
-		if module.trigger == Trigger.Type.BATTLE_START:
-			for ef in module.effect:
-				ef.apply(null)
-			extra.append(module)
-	EventBus.battle_ended.connect(ended)
+		EventBus.signals_list[mod.trigger].connect(cb)
+		if mod.trigger == source_trigger:
+			Implant.check_condition(context, mod)
+	if not EventBus.battle_ended.is_connected(ended):
+		EventBus.battle_ended.connect(ended)
+
+func exclude() -> Array[Implant]:
+	var exclude: Array[Implant] = []
+	if not exclude_self:
+		return exclude
+	for source in [Global.implant_manager.active_tech_mods, Global.implant_manager.active_bio_hacks]:
+		for owned in source:
+			for module in owned.config:
+				if self in module.effect:
+					exclude.append(owned)
+					break
+	return exclude
 
 func revert() -> void:
 	if EventBus.battle_ended.is_connected(ended):
 		EventBus.battle_ended.disconnect(ended)
-	for module in extra:
-		for ef in module.effect:
+	for i in copied.size():
+		for ef in copied[i].effect:
 			ef.revert()
-	extra.clear()
-	var i := 0
-	for module in config:
-		var sig: Signal = EventBus.signals_list[module.trigger]
-		if i < callbacks.size() and sig.is_connected(callbacks[i]):
+		var sig: Signal = EventBus.signals_list[copied[i].trigger]
+		if i < callbacks.size() && sig.is_connected(callbacks[i]):
 			sig.disconnect(callbacks[i])
-		i += 1
+	copied.clear()
 	callbacks.clear()
-	config = []
 	implant = null

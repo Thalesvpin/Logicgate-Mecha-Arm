@@ -89,6 +89,9 @@ func block_sandbox(who: String) -> void:
 		func():
 			block_up = true
 			clear_sandbox()
+			if Global.turn_manager.restart_player_after_block:
+				Global.turn_manager.restart_player_after_block = false
+				Global.turn_manager.call_deferred("emit_player_turn")
 	)
 
 func unblock_sandbox() -> void:

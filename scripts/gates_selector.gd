@@ -5,6 +5,7 @@ extends PanelContainer
 @onready var sub_viewport_container: SubViewportContainer = $SubViewportContainer
 @onready var margin_container: MarginContainer = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer
 @onready var flow_container: FlowContainer = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer
+@onready var label: Label = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/Label
 
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 
@@ -54,7 +55,7 @@ func handle_radial_menu_selection(id: String, position: Vector2):
 			pass
 
 func set_tokens_label() -> void:
-	tokens_label.text = str(Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS])+'/'+str(Global.run_stats.player_stats[Stats.List.MAX_TOKENS_AMOUNT])
+	tokens_label.text = '%d/%d' % [Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS], Global.run_stats.player_stats[Stats.List.MAX_TOKENS_AMOUNT]]
 
 func spend_tokens(amount: int) -> bool:
 	var curr = Global.run_stats.player_stats[Stats.List.CURRENT_TOKENS]
@@ -81,3 +82,9 @@ func gate_sold(type: Gates.Type) -> void:
 
 func gate_bought(type: Gates.Type) -> void:
 	spend_tokens(Global.run_stats.gates_price[type])
+
+func _on_resized() -> void:
+	if size.x > 235:
+		label.show()
+	else:
+		label.hide()

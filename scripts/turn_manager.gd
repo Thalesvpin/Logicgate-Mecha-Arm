@@ -4,6 +4,8 @@ var turn_sequence: Array = ['player']
 var turn_idx: int = 0
 var turn_token: int = 0
 var is_shop_open: bool = false
+var extra_player_turns: int = 0
+var restart_player_after_block: bool = false
 
 func _ready() -> void:
 	Global.turn_manager = self
@@ -21,7 +23,12 @@ func battle_started(a = null) -> void:
 
 func handle_next_turn(who) -> void:
 	turn_idx = turn_sequence.find(who)
-	if turn_idx == turn_sequence.size()-1:
+	if who is String && who == 'player' && extra_player_turns > 0:
+		extra_player_turns -= 1
+		turn_idx = 0
+		restart_player_after_block = true
+		return
+	if turn_idx == turn_sequence.size() - 1:
 		turn_idx = 0
 	else:
 		turn_idx += 1
@@ -44,9 +51,12 @@ func get_turn_index(who) -> int:
 
 ##It will never skip player's turn
 func skip_turn(amount: int) -> void:
-	#turn_idx += amount
-	#if turn_idx > turn_sequence.size()-1:
+	if turn_sequence[turn_idx] == 'player':
+		extra_player_turns = 1
+		return
 	turn_idx = 0
 	turn_token += 1
 	EventBus.turn_started.emit('player')
-	#EventBus.turn_started.emit(turn_sequence[turn_idx])
+
+func emit_player_turn() -> void:
+	EventBus.turn_started.emit('player')

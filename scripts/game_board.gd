@@ -227,30 +227,24 @@ func _input(event: InputEvent) -> void:
 		Global.implant_manager.add_bio_hack(BH_21)
 	
 	if event.is_action_pressed("4"):
-		Global.implant_manager.add_tech_mod(TM_27)
+		pass
 	if event.is_action_pressed("6"):
-		print('gates na sand: ', Global.circuit_editor.sandbox.total_gates_count)
+		pass
 	
 	if event.is_action_pressed("1"):
-		Global.implant_manager.add_tech_mod(TM_46)
+		Global.implant_manager.add_tech_mod(TM_3)
 	if event.is_action_pressed("3"):
 		EventBus.self_damage.emit()
 	
 #region BH
 const BH_33 = preload("uid://c8awfm3qb8gn5")
-const BH_64 = preload("uid://bn6hkf2voidul")
 #endregion
 #region TM
-const TM_1 = preload("uid://cswsbscbyhuh2")
 const TM_3 = preload("uid://dpmi2d3veyfmy")
 const TM_46 = preload("uid://c1cgiwl6m8ila")
 const TM_42 = preload("uid://dcq1ffaygsw7b")
-
-
-
-const TM_16 = preload("uid://c608np6txr6nk")
-const TM_19 = preload("uid://yj4flmkwtf36")
-const TM_26 = preload("uid://bvp8tt51e64tv")
-const TM_27 = preload("uid://dllp5egfwepqa")
-
 #endregion
+
+#clone effect
+const BH_64 = preload("uid://bn6hkf2voidul")
+const TM_16 = preload("uid://c608np6txr6nk")

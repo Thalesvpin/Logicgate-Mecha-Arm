@@ -40,8 +40,11 @@ signal pack_item_chosen
 signal reroll_shop
 signal skip_pack
 signal shield_count
+signal inventory_changed(implant)
 #endregion
 
+var repeat_pulse_idx: int = -1
+var pulse_replay: bool = false
 var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.BATTLE_START: battle_started,
 	Trigger.Type.BATTLE_END: battle_ended,
@@ -67,4 +70,5 @@ var signals_list: Dictionary[Trigger.Type, Variant] = {
 	Trigger.Type.PACK_ITEM_CHOSEN: pack_item_chosen,
 	Trigger.Type.REROLL_SHOP: reroll_shop,
 	Trigger.Type.SKIP_PACK: skip_pack,
+	Trigger.Type.INVENTORY_CHANGED: inventory_changed,
 }

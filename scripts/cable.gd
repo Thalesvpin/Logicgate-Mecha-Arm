@@ -83,11 +83,9 @@ func handle_drag() -> void:
 	#print('deleting: ', deleting)
 	if !point_c && !deleting:
 		if point_a && point_b == null:
-			print('teu cu ', self)
 			set_point_c()
 			point_b = point_c
 		if point_b && point_a == null:
-			print('teu cu 2 ', self)
 			set_point_c()
 			point_a = point_c
 
@@ -194,8 +192,6 @@ func set_active(value: bool):
 
 func self_delete():
 	deleting = true
-	print('vou me deletar... morri')
-	print('mas o deleteing ta ', deleting, ' - ', self)
 	if point_b != point_c:
 		point_b.connected_gate = null
 		if point_b.owner is Area2D:

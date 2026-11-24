@@ -8,36 +8,36 @@
 [ext_resource type="Script" uid="uid://biswuy47k6e35" path="res://scripts/classes/implant_effects/add_damage_percent.gd" id="5_qgdu8"]
 [ext_resource type="Script" uid="uid://btatn3i5fqsj7" path="res://scripts/classes/implant_conditions/specific_turn.gd" id="6_72d4m"]
 
-[sub_resource type="Resource" id="Resource_ddn6c"]
+[sub_resource type="Resource" id="Resource_fvti3"]
 script = ExtResource("3_hj6vh")
 metadata/_custom_type_script = "uid://cvla25wgnutm8"
 
-[sub_resource type="Resource" id="Resource_83v87"]
+[sub_resource type="Resource" id="Resource_y832f"]
 script = ExtResource("5_qgdu8")
 amount = 35.0
 metadata/_custom_type_script = "uid://biswuy47k6e35"
 
-[sub_resource type="Resource" id="Resource_eik8q"]
+[sub_resource type="Resource" id="Resource_acjne"]
 script = ExtResource("2_pfksx")
-effect = Array[ExtResource("3_2pt70")]([SubResource("Resource_83v87")])
-conditions = Array[ExtResource("1_b11l8")]([SubResource("Resource_ddn6c")])
+effect = Array[ExtResource("3_2pt70")]([SubResource("Resource_y832f")])
+conditions = Array[ExtResource("1_b11l8")]([SubResource("Resource_fvti3")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
-[sub_resource type="Resource" id="Resource_tfqyp"]
+[sub_resource type="Resource" id="Resource_kb2pn"]
 script = ExtResource("6_72d4m")
-turn = 1
+turn = 2
 metadata/_custom_type_script = "uid://btatn3i5fqsj7"
 
-[sub_resource type="Resource" id="Resource_qn8ww"]
+[sub_resource type="Resource" id="Resource_pcmmd"]
 script = ExtResource("5_qgdu8")
 amount = -45.0
 metadata/_custom_type_script = "uid://biswuy47k6e35"
 
-[sub_resource type="Resource" id="Resource_5w0vf"]
+[sub_resource type="Resource" id="Resource_0e3r4"]
 script = ExtResource("2_pfksx")
 trigger = 7
-effect = Array[ExtResource("3_2pt70")]([SubResource("Resource_qn8ww")])
-conditions = Array[ExtResource("1_b11l8")]([SubResource("Resource_tfqyp")])
+effect = Array[ExtResource("3_2pt70")]([SubResource("Resource_pcmmd")])
+conditions = Array[ExtResource("1_b11l8")]([SubResource("Resource_kb2pn")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
 [resource]
@@ -47,5 +47,5 @@ name = "tech mod 46"
 description = "Todo Ataque que acontece no Primeiro Turno do Jogador de uma Batalha causa +35% de dano, e todos os Ataques seguintes dão -10% de Dano Base até o fim da Batalha. Este Tech Mod pode ser vendido a qualquer momento para remover estes efeitos"
 rarity = 1
 corrupted = true
-config = Array[ExtResource("2_pfksx")]([SubResource("Resource_eik8q"), SubResource("Resource_5w0vf")])
+config = Array[ExtResource("2_pfksx")]([SubResource("Resource_acjne"), SubResource("Resource_0e3r4")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

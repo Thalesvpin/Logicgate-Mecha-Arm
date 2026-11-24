@@ -37,8 +37,10 @@ func connect_triggers() -> void:
 	for item in config:
 		for condition in item.conditions:
 			for ef in item.effect:
-				if not condition.abort.is_connected(ef.revert):
+				if !condition.abort.is_connected(ef.revert):
 					condition.abort.connect(ef.revert)
+				if condition is ConsecutiveTurnsCondition && !condition.deferred_apply.is_connected(ef.apply):
+					condition.deferred_apply.connect(ef.apply)
 	if consumable:
 		return
 	for module in config:
@@ -75,6 +77,8 @@ static func check_condition(context = null, module: ImplantExecutionConfig = nul
 			counter += 1
 	if module.conditions.size() == counter:
 		for ef in module.effect:
+			if ef is CopyModifierEffect:
+				ef.source_trigger = module.trigger
 			ef.apply(context)
 
 func revert() -> void:

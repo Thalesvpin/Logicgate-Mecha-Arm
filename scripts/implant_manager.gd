@@ -21,38 +21,40 @@ func _ready() -> void:
 
 func add_tech_mod(implant: Implant):
 	print('implant_manager add tech mod')
+	implant = implant.duplicate(true) as Implant
 	active_tech_mods.append(implant)
 	Global.tech_mods_container.add_implant(implant)
 	implant.connect_triggers()
+	EventBus.inventory_changed.emit(implant)
 	EventBus.on_purchase.emit(implant)
 
 func add_bio_hack(implant: Implant):
+	implant = implant.duplicate(true) as Implant
 	active_bio_hacks.append(implant)
 	Global.bio_hacks_container.add_implant(implant)
 	implant.connect_triggers()
+	EventBus.inventory_changed.emit(implant)
 	EventBus.on_purchase.emit(implant)
 
-func remove_tech_mod(implant: Node):
-	implant.resource.revert()
-	active_tech_mods.erase(implant.resource)
-	Global.tech_mods_container.remove_implant(implant)
-
-func remove_bio_hack(implant: Node):
-	implant.resource.revert()
-	active_bio_hacks.erase(implant.resource)
-	Global.bio_hacks_container.remove_implant(implant)
-
-func remove_tech_mod_2(implant: Implant) -> void:
+func remove_tech_mod(implant: Implant) -> void:
 	implant.disconnect_triggers()
 	implant.revert()
 	active_tech_mods.erase(implant)
-	Global.tech_mods_container.remove_implant_2(implant)
+	for card in Global.tech_mods_container.implants_holder.get_children():
+		if card.resource == implant:
+			Global.tech_mods_container.remove_implant(card)
+			break
+	EventBus.inventory_changed.emit(implant)
 
-func remove_bio_hack_2(implant: Implant) -> void:
+func remove_bio_hack(implant: Implant) -> void:
 	implant.disconnect_triggers()
 	implant.revert()
 	active_bio_hacks.erase(implant)
-	Global.bio_hacks_container.remove_implant_2(implant)
+	for card in Global.bio_hacks_container.implants_holder.get_children():
+		if card.resource == implant:
+			Global.bio_hacks_container.remove_implant(card)
+			break
+	EventBus.inventory_changed.emit(implant)
 
 func get_random_owned_implant_config(type: Implant.Type, prevent_consumable: bool = true) -> Array[ImplantExecutionConfig]:
 	var chance = Global.random.next()
@@ -82,13 +84,15 @@ func get_random_owned_implant2(type: Implant.Type, prevent_consumable: bool = tr
 		return active_bio_hacks[chance % active_bio_hacks.size()]
 	return null
 
-func get_random_owned_implant(type: Implant.Type, prevent_consumable: bool = true, exclude: Array[Implant] = []) -> Implant:
+func get_random_owned_implant(type: Implant.Type, prevent_consumable: bool = true, exclude: Array[Implant] = [], prevent_disabled: bool = true) -> Implant:
 	var source := active_tech_mods if type == Implant.Type.TECH_MOD else active_bio_hacks
 	var pool: Array[Implant] = []
 	for implant in source:
-		if prevent_consumable and implant.consumable:
+		if prevent_consumable && implant.consumable:
 			continue
-		if implant.disabled or implant in exclude:
+		if prevent_disabled && implant._disabled:
+			continue
+		if implant in exclude:
 			continue
 		pool.append(implant)
 	if pool.is_empty():

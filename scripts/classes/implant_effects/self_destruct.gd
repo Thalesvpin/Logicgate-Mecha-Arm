@@ -9,9 +9,9 @@ func apply(_context = null) -> void:
 	if implant == null:
 		return
 	if type == Implant.Type.TECH_MOD:
-		Global.implant_manager.remove_tech_mod_2(implant)
+		Global.implant_manager.remove_tech_mod(implant)
 	else:
-		Global.implant_manager.remove_bio_hack_2(implant)
+		Global.implant_manager.remove_bio_hack(implant)
 
 func revert() -> void:
 	pass

@@ -9,9 +9,9 @@ func is_met(context = null) -> bool:
 	if implant:
 		match implant:
 			Implant.Type.TECH_MOD:
-				return check_rarity(Global.modifier_manager.active_tech_mods)
+				return check_rarity(Global.implant_manager.active_tech_mods)
 			Implant.Type.BIO_HACK:
-				return check_rarity(Global.modifier_manager.active_bio_hacks)
+				return check_rarity(Global.implant_manager.active_bio_hacks)
 	return false
 
 func check_rarity(array: Array[Implant]) -> bool:

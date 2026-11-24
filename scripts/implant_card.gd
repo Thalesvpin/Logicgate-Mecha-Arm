@@ -154,9 +154,9 @@ func sell() -> void:
 	ef.amount = get_sell_value()
 	ef.apply()
 	if type == Type.TECH_MOD:
-		Global.implant_manager.remove_tech_mod(self)
+		Global.implant_manager.remove_tech_mod(resource)
 	if type == Type.BIO_HACK:
-		Global.implant_manager.remove_bio_hack(self)
+		Global.implant_manager.remove_bio_hack(resource)
 
 func activate() -> void:
 	if uses_amount > 0:
@@ -168,9 +168,9 @@ func activate() -> void:
 				effect.apply()
 	if uses_amount == 0:
 		if type == Type.TECH_MOD:
-			Global.implant_manager.remove_tech_mod(self)
+			Global.implant_manager.remove_tech_mod(resource)
 		if type == Type.BIO_HACK:
-			Global.implant_manager.remove_bio_hack(self)
+			Global.implant_manager.remove_bio_hack(resource)
 
 func disable() -> void:
 	modulate = Color('#353535')
