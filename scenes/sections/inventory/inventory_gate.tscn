@@ -22,7 +22,7 @@
 font_size = 30
 
 [node name="InventoryGate" type="Panel" unique_id=2018287429]
-custom_minimum_size = Vector2(130, 130)
+custom_minimum_size = Vector2(96, 96)
 clip_contents = true
 anchors_preset = 8
 anchor_left = 0.5
@@ -55,7 +55,7 @@ xnor_scene = ExtResource("16_aira5")
 def_scene = ExtResource("7_4dm03")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1096496680]
-custom_maximum_size = Vector2(130, -1)
+custom_maximum_size = Vector2(96, -1)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

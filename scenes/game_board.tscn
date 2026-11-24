@@ -93,7 +93,7 @@ split_offset = 10
 [node name="TechModsContainer" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=565464093 instance=ExtResource("1_0jtfi")]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.2
+size_flags_stretch_ratio = 0.0
 
 [node name="CombatScreen" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=2005128029 instance=ExtResource("3_8nsfp")]
 layout_mode = 2
@@ -107,7 +107,7 @@ size_flags_horizontal = 3
 [node name="BioHacksContainer" parent="GameplayElements/VSplit/cima/TopHSplit" unique_id=1296857636 instance=ExtResource("2_mq2xb")]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.2
+size_flags_stretch_ratio = 0.0
 
 [node name="baixo" type="PanelContainer" parent="GameplayElements/VSplit" unique_id=702740337]
 layout_mode = 2
@@ -136,7 +136,7 @@ layout_mode = 2
 
 [node name="GatesSelector" parent="GameplayElements/VSplit/baixo/BotHSplit" unique_id=1904067160 instance=ExtResource("1_tqoos")]
 layout_mode = 2
-size_flags_stretch_ratio = 0.17
+size_flags_stretch_ratio = 0.0
 
 [node name="ActionsHandler" type="Node" parent="." unique_id=330955696]
 script = ExtResource("12_w5uqb")
