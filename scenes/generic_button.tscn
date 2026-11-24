@@ -66,13 +66,7 @@ spacing_glyph = 1
 [sub_resource type="LabelSettings" id="LabelSettings_kf6tc"]
 font = SubResource("FontVariation_a7lv4")
 font_size = 30
-font_color = Color(0.54509807, 0.5529412, 0.54901963, 1)
-stacked_shadow_count = 2
-stacked_shadow_0/color = Color(0.43137255, 0.43137255, 0.43137255, 1)
-stacked_shadow_0/outline_size = 4
-stacked_shadow_1/offset = Vector2(2, 2)
-stacked_shadow_1/color = Color(0.8235294, 0.8235294, 0.8235294, 1)
-stacked_shadow_1/outline_size = 8
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnty3"]
 bg_color = Color(0, 0, 0.61960787, 1)
@@ -83,6 +77,10 @@ border_width_bottom = 3
 border_color = Color(0.28627452, 0.29411766, 0.2901961, 1)
 expand_margin_left = 1.0
 expand_margin_top = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_oxtry"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 30
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aaut4"]
 bg_color = Color(0.43529412, 0.44705883, 0.4392157, 1)
@@ -110,6 +108,10 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.88235295, 0.8784314, 0.8980392, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_edi8c"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 30
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pae1i"]
 bg_color = Color(0.6666667, 0.67058825, 0.6666667, 1)
 border_width_right = 2
@@ -133,6 +135,17 @@ draw_center = false
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_eoch2"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 30
+font_color = Color(0.54509807, 0.5529412, 0.54901963, 1)
+stacked_shadow_count = 2
+stacked_shadow_0/color = Color(0.43137255, 0.43137255, 0.43137255, 1)
+stacked_shadow_0/outline_size = 4
+stacked_shadow_1/offset = Vector2(2, 2)
+stacked_shadow_1/color = Color(0.8235294, 0.8235294, 0.8235294, 1)
+stacked_shadow_1/outline_size = 8
 
 [node name="GenericButton" type="Button" unique_id=1797500818]
 anchors_preset = 15
@@ -217,6 +230,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Hover" type="Control" parent="." unique_id=1507307454]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -277,11 +291,12 @@ layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 1)
 text = "ATIVAR"
-label_settings = SubResource("LabelSettings_kf6tc")
+label_settings = SubResource("LabelSettings_oxtry")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Pressed" type="Control" parent="." unique_id=1815691316]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -328,11 +343,12 @@ offset_transform_enabled = true
 offset_transform_position = Vector2(0.74, 2.2)
 offset_transform_scale = Vector2(0.94, 0.94)
 text = "ATIVAR"
-label_settings = SubResource("LabelSettings_kf6tc")
+label_settings = SubResource("LabelSettings_edi8c")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Disabled" type="Control" parent="." unique_id=149474106]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -384,7 +400,7 @@ layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 1)
 text = "ATIVAR"
-label_settings = SubResource("LabelSettings_kf6tc")
+label_settings = SubResource("LabelSettings_eoch2")
 horizontal_alignment = 1
 vertical_alignment = 1
 
