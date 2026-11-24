@@ -52,8 +52,15 @@ func is_last_firewall() -> bool:
 func is_boss() -> bool:
 	return false
 
+func battle_reward() -> void:
+	var rewards = [150,250,300]
+	var ef = AddMoneyEffect.new()
+	ef.amount = rewards[Global.run_stats.current_battle-2]
+	ef.apply()
+
 func battle_ended(is_victory: bool) -> void:
 	if is_victory:
+		battle_reward()
 		if is_boss():
 			if is_last_firewall():
 				game_over(is_victory)

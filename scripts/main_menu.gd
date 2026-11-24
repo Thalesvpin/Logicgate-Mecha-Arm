@@ -3,13 +3,18 @@ extends Control
 @onready var seed_container: HBoxContainer = $CanvasLayer/VBoxContainer/SeedContainer
 @onready var line_edit: LineEdit = $CanvasLayer/VBoxContainer/SeedContainer/LineEdit
 const TUTORIAL = preload("uid://ebj85qn4ud0i")
-const GAME_BOARD = preload("uid://btv7b87fvwj4y")
+#const GAME_BOARD = preload("uid://btv7b87fvwj4y")
+
+const GAME_BOARD2 = "uid://btv7b87fvwj4y"
 
 func _ready() -> void:
+	ResourceLoader.load_threaded_request(GAME_BOARD2)
 	pass
 
 func _on_button_pressed() -> void:
-	get_tree().change_scene_to_packed(GAME_BOARD)
+	#get_tree().change_scene_to_packed(GAME_BOARD)
+	var game: PackedScene = ResourceLoader.load_threaded_get(GAME_BOARD2)
+	get_tree().change_scene_to_packed(game)
 
 func _on_add_seed_pressed() -> void:
 	seed_container.show()
