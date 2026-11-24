@@ -395,17 +395,21 @@ hold_run_duration = 1.0
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=569691240]
 layout_mode = 2
 theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
+theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
+theme_override_constants/margin_bottom = 12
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=583125266]
+custom_minimum_size = Vector2(150, 0)
+custom_maximum_size = Vector2(150, -1)
 layout_mode = 2
 size_flags_horizontal = 0
+alignment = 2
 
 [node name="LightsGroup" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1086810345]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 0
 
 [node name="LightsGroupBackground" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup" unique_id=1349949604]
 material = SubResource("ShaderMaterial_aaut4")
@@ -597,42 +601,67 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1692241878]
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1269770991]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="BtnsGroup" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1204245773]
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1457312167]
+layout_mode = 2
+size_flags_vertical = 2
+size_flags_stretch_ratio = 0.1
+
+[node name="Control" type="BoxContainer" parent="MarginContainer/VBoxContainer" unique_id=78239721]
+custom_minimum_size = Vector2(0, 70)
+custom_maximum_size = Vector2(-1, 300)
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+alignment = 2
+vertical = true
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/BtnsGroup" unique_id=1376275835]
+[node name="BtnsGroup" type="BoxContainer" parent="MarginContainer/VBoxContainer/Control" unique_id=1644961252]
+custom_maximum_size = Vector2(-1, 300)
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+vertical = true
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/Control/BtnsGroup" unique_id=1376275835]
 layout_mode = 2
 color = Color(0.3366101, 0.5212322, 1, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BtnsGroup" unique_id=1549310634]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Control/BtnsGroup" unique_id=1549310634]
 layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
 
-[node name="ProgressShader" type="PanelContainer" parent="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer" unique_id=1412496441]
+[node name="ProgressShader" type="PanelContainer" parent="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer" unique_id=1412496441]
 material = SubResource("ShaderMaterial_e6qwf")
+custom_minimum_size = Vector2(0, 70)
+custom_maximum_size = Vector2(-1, 150)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_gtatl")
 
-[node name="RunBtn" parent="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/ProgressShader" unique_id=1797500818 instance=ExtResource("3_e6qwf")]
+[node name="RunBtn" parent="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader" unique_id=1797500818 instance=ExtResource("3_e6qwf")]
 show_behind_parent = true
-custom_minimum_size = Vector2(0, 99.98)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="InfoBtn" parent="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer" unique_id=1174500239 instance=ExtResource("3_e6qwf")]
 custom_minimum_size = Vector2(0, 70)
+custom_maximum_size = Vector2(-1, 150)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PauseBtn" parent="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer" unique_id=293556429 instance=ExtResource("3_e6qwf")]
+[node name="InfoBtn" parent="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer" unique_id=1174500239 instance=ExtResource("3_e6qwf")]
 custom_minimum_size = Vector2(0, 70)
+custom_maximum_size = Vector2(-1, 70)
 layout_mode = 2
 size_flags_vertical = 3
 
-[connection signal="button_down" from="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/ProgressShader/RunBtn" to="." method="_on_run_btn_button_down"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/ProgressShader/RunBtn" to="." method="_on_run_btn_button_up"]
-[connection signal="button_up" from="MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/PauseBtn" to="." method="_on_pause_btn_button_up"]
+[node name="PauseBtn" parent="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer" unique_id=293556429 instance=ExtResource("3_e6qwf")]
+custom_minimum_size = Vector2(0, 70)
+custom_maximum_size = Vector2(-1, 70)
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="button_down" from="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader/RunBtn" to="." method="_on_run_btn_button_down"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader/RunBtn" to="." method="_on_run_btn_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/PauseBtn" to="." method="_on_pause_btn_button_up"]

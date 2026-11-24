@@ -1,10 +1,10 @@
 extends PanelContainer
 
-@onready var progress_shader: PanelContainer = $MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/ProgressShader
+@onready var progress_shader: PanelContainer = $MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader
 @onready var execution_label_1: RichTextLabel = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/PanelContainer/ExecutionLabel1
 @onready var execution_label_2: RichTextLabel = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/PanelContainer/ExecutionLabel2
 @onready var execution_label_3: RichTextLabel = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer/ExecutionLabel3
-@onready var run_btn: Button = $MarginContainer/VBoxContainer/BtnsGroup/VBoxContainer/ProgressShader/RunBtn
+@onready var run_btn: Button = $MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader/RunBtn
 @onready var execution_labels: Array[RichTextLabel] = [execution_label_1, execution_label_2, execution_label_3]
 @onready var light_1: Control = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/Light1
 @onready var light_2: Control = $MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/Light2
