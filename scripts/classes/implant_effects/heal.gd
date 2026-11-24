@@ -11,17 +11,17 @@ class_name HealEffect
 enum Mode {FLAT, PERCENT}
 
 func apply(_context = null) -> void:
-	#var result
-	if amount == 0:
-		amount = Global.run_stats.player_stats[Stats.List.BASE_HEAL]
+	var heal_amount := amount
+	if heal_amount == 0:
+		heal_amount = Global.run_stats.player_stats[Stats.List.BASE_HEAL] + Global.implant_manager.extra_stats[Stats.List.BASE_HEAL]
 	else:
 		match mode:
 			Mode.FLAT:
-				amount = int(amount)
+				heal_amount = int(heal_amount)
 			Mode.PERCENT:
-				amount = int(Global.run_stats.player_stats[Stats.List.MAX_HEALTH] * amount/100)
-	add_to_player_stats(Stats.List.CURRENT_HEALTH, amount, greater, Global.run_stats.player_stats[Stats.List.MAX_HEALTH])
-	Global.player_stats_bar.heal(amount)
+				heal_amount = int(Global.run_stats.player_stats[Stats.List.MAX_HEALTH] * heal_amount / 100.0)
+	add_to_player_stats(Stats.List.CURRENT_HEALTH, heal_amount, greater, Global.run_stats.player_stats[Stats.List.MAX_HEALTH])
+	Global.player_stats_bar.heal(heal_amount)
 	
 	#EventBus.healed.emit(amount)
 

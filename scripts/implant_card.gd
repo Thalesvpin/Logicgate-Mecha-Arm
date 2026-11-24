@@ -52,7 +52,7 @@ func _ready() -> void:
 	_on_resized()
 
 func _process(delta: float) -> void:
-	if resource && resource.disabled:
+	if resource && resource._disabled:
 		disable()
 	else:
 		enable()

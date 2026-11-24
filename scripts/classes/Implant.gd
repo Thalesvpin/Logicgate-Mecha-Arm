@@ -23,7 +23,7 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 ##All conditions must be met to execute
 
 @export var config: Array[ImplantExecutionConfig]
-static var disabled: bool = false
+var _disabled: bool = false
 var _callbacks: Array[Callable] = []
 
 const PRICES: Dictionary[Global.Rarity, int] = {
@@ -50,7 +50,10 @@ func connect_triggers() -> void:
 					return
 				check_condition(purchased, module)
 		else:
-			cb = func(context = null): check_condition(context, module)
+			cb = func(context = null):
+				if _disabled:
+					return
+				check_condition(context, module)
 		_callbacks.append(cb)
 		sig.connect(cb)
 
@@ -66,8 +69,6 @@ func disconnect_triggers() -> void:
 	_callbacks.clear()
 
 static func check_condition(context = null, module: ImplantExecutionConfig = null) -> void:
-	if disabled:
-		return
 	var counter = 0
 	for con in module.conditions:
 		if con.is_met(context):
@@ -101,4 +102,4 @@ func revert() -> void:
 		#ef.revert()
 
 func disable(value: bool = true) -> void:
-	disabled = value
+	_disabled = value

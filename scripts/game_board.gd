@@ -210,19 +210,22 @@ func _input(event: InputEvent) -> void:
 		for key in Global.implant_manager.extra_stats:
 			print(Stats.List.keys()[key], ': ', Global.implant_manager.extra_stats[key])
 	
+	const BH_19 = preload("uid://dya6ndjmles5q")
+	const BH_21 = preload("uid://deylxfr08wc6g")
 	
 	if event.is_action_pressed("7"):
 		Global.implant_manager.add_bio_hack(BH_64)
 	if event.is_action_pressed("9"):
-		EventBus.enemy_defeated.emit()
+		Global.implant_manager.add_bio_hack(BH_19)
+		Global.implant_manager.add_bio_hack(BH_21)
 	
 	if event.is_action_pressed("4"):
-		Global.implant_manager.add_bio_hack(TM_4)
+		Global.implant_manager.add_tech_mod(TM_47)
 	if event.is_action_pressed("6"):
 		print('gates na sand: ', Global.circuit_editor.sandbox.total_gates_count)
 	
 	if event.is_action_pressed("1"):
-		Global.implant_manager.add_bio_hack(TM_5)
+		Global.implant_manager.add_tech_mod(TM_16)
 	if event.is_action_pressed("3"):
 		EventBus.self_damage.emit()
 	
@@ -235,11 +238,7 @@ const TM_1 = preload("uid://cswsbscbyhuh2")
 const TM_3 = preload("uid://dpmi2d3veyfmy")
 
 
-const TM_4 = preload("uid://cgber4cjaov0l")
-const TM_5 = preload("uid://dy6wk36d0rq4p")
-const TM_6 = preload("uid://dm2y0nuwvhshu")
-const TM_7 = preload("uid://dytisrt6s3x5i")
-const TM_9 = preload("uid://qx3dyanxqyph")
+
 const TM_16 = preload("uid://c608np6txr6nk")
 const TM_19 = preload("uid://yj4flmkwtf36")
 const TM_26 = preload("uid://bvp8tt51e64tv")

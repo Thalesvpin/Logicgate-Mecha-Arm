@@ -68,7 +68,7 @@ func get_random_owned_implant_config(type: Implant.Type, prevent_consumable: boo
 		return active_bio_hacks[chance % active_bio_hacks.size()].config
 	return []
 
-func get_random_owned_implant(type: Implant.Type, prevent_consumable: bool = true) -> Implant:
+func get_random_owned_implant2(type: Implant.Type, prevent_consumable: bool = true) -> Implant:
 	var chance = Global.random.next()
 	if type == Implant.Type.TECH_MOD:
 		if prevent_consumable:
@@ -81,6 +81,19 @@ func get_random_owned_implant(type: Implant.Type, prevent_consumable: bool = tru
 				chance = Global.random.next()
 		return active_bio_hacks[chance % active_bio_hacks.size()]
 	return null
+
+func get_random_owned_implant(type: Implant.Type, prevent_consumable: bool = true, exclude: Array[Implant] = []) -> Implant:
+	var source := active_tech_mods if type == Implant.Type.TECH_MOD else active_bio_hacks
+	var pool: Array[Implant] = []
+	for implant in source:
+		if prevent_consumable and implant.consumable:
+			continue
+		if implant.disabled or implant in exclude:
+			continue
+		pool.append(implant)
+	if pool.is_empty():
+		return null
+	return pool[Global.random.next() % pool.size()]
 
 func get_owned_implant_by_id(type: Implant.Type, id: int) -> Implant:
 	if type == Implant.Type.TECH_MOD:

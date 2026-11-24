@@ -48,7 +48,7 @@ func add_to_extra_stats(stat: Stats.List, amount: float, operator: Operator = Op
 					result = case
 			Operator.RANGE:
 				if result >= case && result <= case2:
-					result = case
+					pass
 				elif result < case:
 					result = case
 				elif result > case2:

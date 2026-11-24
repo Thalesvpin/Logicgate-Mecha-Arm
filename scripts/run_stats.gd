@@ -57,8 +57,14 @@ func _process(delta: float) -> void:
 
 func connect_signals() -> void:
 	EventBus.battle_ended.connect(next_battle)
+	EventBus.turn_started.connect(on_turn_started)
+
+func on_turn_started(who) -> void:
+	if who == "player":
+		current_turn += 1
 
 func next_battle(arg) -> void:
+	current_turn = 0
 	current_battle += 1
 	if (current_battle % 3) == 1:
 		current_firewall += 1

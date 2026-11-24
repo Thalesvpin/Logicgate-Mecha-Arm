@@ -20,7 +20,7 @@ metadata/_custom_type_script = "uid://c47csi3yt4rfd"
 
 [sub_resource type="Resource" id="Resource_0man8"]
 script = ExtResource("3_tbppx")
-effect = Array[ExtResource("2_7vkyy")]([SubResource("Resource_odrq2")])
+effect = Array[ExtResource("2_7vkyy")]([SubResource("Resource_odrq2"), SubResource("Resource_odrq2")])
 conditions = Array[ExtResource("1_ptmjm")]([SubResource("Resource_48vvl")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 

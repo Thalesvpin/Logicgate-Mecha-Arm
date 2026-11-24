@@ -58,7 +58,7 @@ func heal() -> void:
 	print('Heal')
 	Global.actions_panel_sandbox.light_up_heal()
 	var effect = HealEffect.new()
-	effect.amount = 10
+	effect.amount = 0
 	effect.apply()
 
 func repair_shield() -> void:

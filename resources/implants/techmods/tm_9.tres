@@ -15,19 +15,25 @@ metadata/_custom_type_script = "uid://pandlhx2qcv2"
 
 [sub_resource type="Resource" id="Resource_wvw2d"]
 script = ExtResource("5_j36ua")
+amount = 10.0
 metadata/_custom_type_script = "uid://dabm4854t5omc"
 
 [sub_resource type="Resource" id="Resource_lts4c"]
 script = ExtResource("2_ioa6o")
-trigger = 16
+trigger = 18
 effect = Array[ExtResource("3_wu4fs")]([SubResource("Resource_wvw2d")])
 conditions = Array[ExtResource("1_nbawj")]([SubResource("Resource_j36ua")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
+[sub_resource type="Resource" id="Resource_a7lv4"]
+script = ExtResource("5_j36ua")
+amount = -10.0
+metadata/_custom_type_script = "uid://dabm4854t5omc"
+
 [sub_resource type="Resource" id="Resource_g5rry"]
 script = ExtResource("2_ioa6o")
-trigger = 17
-effect = Array[ExtResource("3_wu4fs")]([SubResource("Resource_wvw2d")])
+trigger = 19
+effect = Array[ExtResource("3_wu4fs")]([SubResource("Resource_a7lv4")])
 conditions = Array[ExtResource("1_nbawj")]([SubResource("Resource_j36ua")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 

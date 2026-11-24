@@ -22,6 +22,9 @@ func apply(_context = null) -> void:
 		dmg *= (multiplier - 1) + Global.implant_manager.extra_stats[Stats.List.BASE_ATTACK_DAMAGE_MULT]
 		if _context is int or _context is float:
 			dmg = float(_context) * multiplier
+	var crit := float(Global.run_stats.player_stats[Stats.List.CRITIC_MULTIPLIER]) + float(Global.implant_manager.extra_stats[Stats.List.CRITIC_MULTIPLIER])
+	if crit > 0.0:
+		dmg *= crit
 	match target:
 		Who.CENTER:
 			pos = EnemyPosition.Position.CENTER
