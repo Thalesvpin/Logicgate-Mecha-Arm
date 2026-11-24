@@ -232,6 +232,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Hover" type="Control" parent="." unique_id=1507307454]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -297,6 +298,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Pressed" type="Control" parent="." unique_id=1815691316]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -348,6 +350,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Disabled" type="Control" parent="." unique_id=149474106]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
