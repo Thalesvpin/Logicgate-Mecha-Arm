@@ -71,7 +71,7 @@ shader_parameter/repulsion_pinch_amount = -2.0
 shader_parameter/repulsion_wave_freq = 5.0
 shader_parameter/hole_punch_radius = 0.0
 shader_parameter/mouse_global_pos = Vector2(-100000, -100000)
-shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 969.2634, 0, 0.37095454, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
+shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 981.5642, 0, 0.37072003, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
 shader_parameter/active_click_repulsion_count = 0
 shader_parameter/use_ripple = true
 shader_parameter/ripple_ring_count = 1
@@ -82,7 +82,7 @@ shader_parameter/ripple_decay = 1.0
 shader_parameter/ripple_grid_distortion = 0.0
 shader_parameter/use_ripple_custom_color = true
 shader_parameter/ripple_custom_color = Color(0.3, 1, 0.96500003, 1)
-shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 969.2634, 0, 0.3032058, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
+shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 981.5642, 0, 0.30305248, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
 shader_parameter/active_ripple_count = 0
 shader_parameter/main_grid_style = 0
 shader_parameter/main_line_thickness = 0.5
@@ -1372,13 +1372,14 @@ mouse_filter = 2
 [node name="ActionsPanelSandbox" parent="Control" unique_id=801856859 instance=ExtResource("11_pvlru")]
 layout_mode = 1
 anchors_preset = 12
+anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -81.0
+offset_left = 0.0
+offset_top = -59.0
 offset_right = 0.0
 offset_bottom = 0.0
-grow_horizontal = 2
 grow_vertical = 0
 
 [node name="Wall" type="Control" parent="." unique_id=200799278]

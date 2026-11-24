@@ -198,25 +198,34 @@ shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
 
 [node name="ActionsPanelSandbox" type="PanelContainer" unique_id=801856859]
-offset_right = 1085.0
-offset_bottom = 81.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -660.5
+offset_top = -9.5
+offset_right = 660.5
+offset_bottom = 40.5
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cqbp4")
 script = ExtResource("1_qui53")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=973630980]
 layout_mode = 2
 theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 7
+theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=45604566]
 layout_mode = 2
 size_flags_vertical = 8
-theme_override_constants/separation = 46
+theme_override_constants/separation = 34
 alignment = 1
 
-[node name="Attack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=787469999]
+[node name="Attack" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=564830541]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -4.49)
@@ -224,7 +233,8 @@ alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Attack" unique_id=1998143619]
 layout_mode = 2
-text = "Ataque"
+theme_override_font_sizes/normal_font_size = 18
+text = "ATAQUE "
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -261,7 +271,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Heal" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1035517307]
+[node name="Heal" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=771657072]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -4.49)
@@ -269,7 +279,8 @@ alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/Heal" unique_id=2053778165]
 layout_mode = 2
-text = "Cura"
+theme_override_font_sizes/normal_font_size = 18
+text = "CURA "
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -306,7 +317,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ShieldRegen" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=955659063]
+[node name="ShieldRegen" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=99625079]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -4.49)
@@ -314,7 +325,8 @@ alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ShieldRegen" unique_id=1094760015]
 layout_mode = 2
-text = "Regen Escudo"
+theme_override_font_sizes/normal_font_size = 18
+text = "REGENERAR ESCUDO "
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -351,7 +363,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SelfDamage" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1312376360]
+[node name="SelfDamage" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1787520730]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -4.49)
@@ -359,7 +371,8 @@ alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/SelfDamage" unique_id=1964060833]
 layout_mode = 2
-text = "Dano próprio"
+theme_override_font_sizes/normal_font_size = 18
+text = "DANO PRÓPRIO "
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -396,7 +409,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ChargeHeavyAttack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1259425124]
+[node name="ChargeHeavyAttack" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1616501290]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -4.49)
@@ -404,8 +417,8 @@ alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/ChargeHeavyAttack" unique_id=1374541179]
 layout_mode = 2
-text = "Carregar Ataque Pesado
-"
+theme_override_font_sizes/normal_font_size = 18
+text = "CARREGAR ATAQUE PESADO "
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -442,7 +455,7 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HeavyAttack" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=321796593]
+[node name="HeavyAttack" type="HBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1178307648]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -4.49)
@@ -450,7 +463,8 @@ alignment = 2
 
 [node name="Label" type="RichTextLabel" parent="MarginContainer/HBoxContainer/HeavyAttack" unique_id=1589040611]
 layout_mode = 2
-text = "Ataque Pesado"
+theme_override_font_sizes/normal_font_size = 18
+text = "ATAQUE PESADO "
 fit_content = true
 scroll_active = false
 autowrap_mode = 0

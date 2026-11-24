@@ -39,6 +39,7 @@ gradient = SubResource("Gradient_ev4s2")
 shader = ExtResource("3_ev4s2")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
 shader_parameter/gradient_type = 2
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 0.5
@@ -93,6 +94,7 @@ shader_parameter/outline_blur = 0.0
 shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -888,27 +890,27 @@ layout_mode = 2
 
 [node name="InventoryGate2" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1996500217 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = 1
+type = 3
 
 [node name="InventoryGate3" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1789753972 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = 2
+type = 1
 
 [node name="InventoryGate4" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1008198893 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = 3
+type = 4
 
 [node name="InventoryGate5" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1833420702 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = 4
+type = 5
 
 [node name="InventoryGate6" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1649248226 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = 5
+type = 6
 
 [node name="InventoryGate7" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer" unique_id=1220327291 instance=ExtResource("1_llgc5")]
 layout_mode = 2
-type = 6
+type = 2
 
 [node name="SellOverlay" type="Control" parent="SubViewportContainer/SubViewport/PanelContainer" unique_id=2024746708]
 visible = false

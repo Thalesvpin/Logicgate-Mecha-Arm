@@ -1,11 +1,11 @@
 extends PanelContainer
 
-@onready var attack: VBoxContainer = $MarginContainer/HBoxContainer/Attack
-@onready var heal: VBoxContainer = $MarginContainer/HBoxContainer/Heal
-@onready var shield_regen: VBoxContainer = $MarginContainer/HBoxContainer/ShieldRegen
-@onready var self_damage: VBoxContainer = $MarginContainer/HBoxContainer/SelfDamage
-@onready var charge_heavy_attack: VBoxContainer = $MarginContainer/HBoxContainer/ChargeHeavyAttack
-@onready var heavy_attack: VBoxContainer = $MarginContainer/HBoxContainer/HeavyAttack
+@onready var attack: HBoxContainer = $MarginContainer/HBoxContainer/Attack
+@onready var heal: HBoxContainer = $MarginContainer/HBoxContainer/Heal
+@onready var shield_regen: HBoxContainer = $MarginContainer/HBoxContainer/ShieldRegen
+@onready var self_damage: HBoxContainer = $MarginContainer/HBoxContainer/SelfDamage
+@onready var charge_heavy_attack: HBoxContainer = $MarginContainer/HBoxContainer/ChargeHeavyAttack
+@onready var heavy_attack: HBoxContainer = $MarginContainer/HBoxContainer/HeavyAttack
 @onready var attack_label: RichTextLabel = $MarginContainer/HBoxContainer/Attack/PanelContainer/AttackLabel
 @onready var heal_label: RichTextLabel = $MarginContainer/HBoxContainer/Heal/PanelContainer2/HealLabel
 @onready var shield_regen_label: RichTextLabel = $MarginContainer/HBoxContainer/ShieldRegen/PanelContainer3/ShieldRegenLabel
