@@ -261,6 +261,5 @@ material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 2
 
 [node name="TypeTechmod" type="ColorRect" parent="." unique_id=276799817]
-visible = false
 material = SubResource("ShaderMaterial_gtatl")
 layout_mode = 2
