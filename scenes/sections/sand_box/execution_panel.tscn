@@ -5,6 +5,13 @@
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="4_e6qwf"]
 [ext_resource type="Shader" uid="uid://ddtcjrx2hj74g" path="res://shaders/texture_progress.gdshader" id="4_tosqn"]
 
+[sub_resource type="Gradient" id="Gradient_7ogem"]
+offsets = PackedFloat32Array(0.7805755, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_7ogem")
+
 [sub_resource type="Gradient" id="Gradient_jydqi"]
 offsets = PackedFloat32Array(0, 0.2, 0.5, 0.8, 1)
 colors = PackedColorArray(0.5529412, 0.5529412, 0.5529412, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0.5529412, 0.5529412, 0.5529412, 1)
@@ -14,7 +21,9 @@ gradient = SubResource("Gradient_jydqi")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_aaut4"]
 shader = ExtResource("4_e6qwf")
-shader_parameter/gradient_type = 1
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/gradient_type = 4
+shader_parameter/square_corner_blend = 0.166000007885
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 0.5
@@ -70,6 +79,7 @@ shader_parameter/outline_sharpness = 0.74000003515
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_mo0oj")
 shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -182,11 +192,17 @@ shader_parameter/liquid_stripes_opacity_repeat = false
 shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bv6uq"]
+expand_margin_left = 4.0
+expand_margin_top = 6.0
+expand_margin_right = 8.0
+expand_margin_bottom = 6.0
+
 [sub_resource type="Gradient" id="Gradient_e6qwf"]
 offsets = PackedFloat32Array(0, 0.6834319, 1)
 colors = PackedColorArray(0, 0, 0, 1, 0.13319641, 0.13319641, 0.13319638, 1, 0, 0, 0, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_e6qwf"]
 gradient = SubResource("Gradient_e6qwf")
 
 [sub_resource type="Gradient" id="Gradient_b3avc"]
@@ -198,8 +214,9 @@ gradient = SubResource("Gradient_b3avc")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a7lv4"]
 shader = ExtResource("4_e6qwf")
-shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_e6qwf")
 shader_parameter/gradient_type = 2
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 0.5
@@ -255,6 +272,7 @@ shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_gtatl")
 shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -369,6 +387,193 @@ shader_parameter/enable_dithering = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
 
+[sub_resource type="Gradient" id="Gradient_oup28"]
+colors = PackedColorArray(0, 0, 0, 1, 0.52704614, 0.26291394, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_e4srk"]
+gradient = SubResource("Gradient_oup28")
+
+[sub_resource type="Gradient" id="Gradient_m4wdr"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.2, 0.4, 0.6)
+colors = PackedColorArray(0, 0, 0, 1, 0.28485027, 0.28485027, 0.28485027, 1, 0, 0, 0, 1, 0.67481387, 0.67481506, 0.6748137, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_m18i2"]
+gradient = SubResource("Gradient_m4wdr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gtatl"]
+shader = ExtResource("4_e6qwf")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_e4srk")
+shader_parameter/gradient_type = 1
+shader_parameter/square_corner_blend = 0.0
+shader_parameter/gradient_rotation_degrees = 0.0
+shader_parameter/gradient_scale = 1.0
+shader_parameter/gradient_smoothing = 0.5
+shader_parameter/gradient_offset = 0.0
+shader_parameter/repeat_gradient = false
+shader_parameter/enable_pulsation = false
+shader_parameter/animation_speed = 1.0
+shader_parameter/pulse_spatial_frequency = 0.0
+shader_parameter/pulse_min_offset = -0.5
+shader_parameter/pulse_max_offset = 0.5
+shader_parameter/distortion_strength = 0.0
+shader_parameter/distortion_speed = Vector2(0.1, 0.1)
+shader_parameter/base_color_steps = 0.0
+shader_parameter/base_color_brightness = 0.0
+shader_parameter/base_color_contrast = 1.0
+shader_parameter/base_color_saturation = 1.0
+shader_parameter/base_color_hue_shift_speed = 0.0
+shader_parameter/enable_overlay = false
+shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_ignore_base_distortion = true
+shader_parameter/overlay_ignore_base_color_grading = false
+shader_parameter/overlay_gradient_type = 2
+shader_parameter/overlay_gradient_rotation_degrees = 0.0
+shader_parameter/overlay_gradient_scale = 1.0
+shader_parameter/overlay_gradient_smoothing = 0.5
+shader_parameter/overlay_gradient_offset = 0.0
+shader_parameter/overlay_repeat_gradient = false
+shader_parameter/overlay_enable_pulsation = false
+shader_parameter/overlay_animation_speed = 1.0
+shader_parameter/overlay_pulse_spatial_frequency = 0.0
+shader_parameter/overlay_pulse_min_offset = -0.5
+shader_parameter/overlay_pulse_max_offset = 0.5
+shader_parameter/enable_overlay_opacity = false
+shader_parameter/overlay_opacity_type = 2
+shader_parameter/overlay_opacity_rotation_degrees = 0.0
+shader_parameter/overlay_opacity_scale = 1.0
+shader_parameter/overlay_opacity_smoothing = 0.5
+shader_parameter/overlay_opacity_offset = 0.0
+shader_parameter/overlay_opacity_repeat = false
+shader_parameter/overlay_opacity_enable_pulsation = false
+shader_parameter/overlay_opacity_animation_speed = 1.0
+shader_parameter/overlay_opacity_pulse_spatial_frequency = 0.0
+shader_parameter/overlay_opacity_pulse_min_offset = -0.5
+shader_parameter/overlay_opacity_pulse_max_offset = 0.5
+shader_parameter/corner_radii = Vector4(2, 2, 2, 2)
+shader_parameter/use_beveled_corners = true
+shader_parameter/enable_outline = true
+shader_parameter/outline_ignore_base_distortion = true
+shader_parameter/outline_ignore_base_color_grading = true
+shader_parameter/outline_width = 5.0000002375
+shader_parameter/outline_blur = 0.0
+shader_parameter/outline_sharpness = 1.0
+shader_parameter/outline_path_seam_offset = 0.0
+shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_m18i2")
+shader_parameter/outline_gradient_type = 4
+shader_parameter/outline_edge_corner_smoothing = 0.0
+shader_parameter/outline_gradient_rotation_degrees = 0.0
+shader_parameter/outline_gradient_scale = 1.0
+shader_parameter/outline_gradient_smoothing = 0.5
+shader_parameter/outline_gradient_offset = 0.0
+shader_parameter/outline_repeat_gradient = false
+shader_parameter/use_path_lut = false
+shader_parameter/enable_wobble = false
+shader_parameter/outline_wobble_amplitude = 0.0
+shader_parameter/outline_wobble_frequency = 10.0
+shader_parameter/outline_wobble_speed = 1.0
+shader_parameter/enable_dash = false
+shader_parameter/outline_dash_style = 1
+shader_parameter/outline_pattern = 0
+shader_parameter/outline_dash_count = 0.0
+shader_parameter/outline_dash_speed = 0.0
+shader_parameter/outline_fade_angle = 0.0
+shader_parameter/outline_fade_intensity = 0.0
+shader_parameter/outline_enable_pulsation = false
+shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_spatial_frequency = 0.0
+shader_parameter/outline_pulse_min_offset = -0.5
+shader_parameter/outline_pulse_max_offset = 0.5
+shader_parameter/outline_enable_shine = false
+shader_parameter/outline_shine_style = 1
+shader_parameter/outline_shine_half_sweep = false
+shader_parameter/outline_shine_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_intensity = 1.0
+shader_parameter/outline_shine_speed = 1.0
+shader_parameter/outline_shine_delay = 2.0
+shader_parameter/outline_shine_width = 0.15
+shader_parameter/outline_shine_softness = 0.5
+shader_parameter/outline_shine_angle = 45.0
+shader_parameter/outline_shine_reverse = false
+shader_parameter/outline_enable_shine_2 = false
+shader_parameter/outline_shine_2_style = 1
+shader_parameter/outline_shine_2_half_sweep = false
+shader_parameter/outline_shine_2_color = Color(1, 1, 1, 1)
+shader_parameter/outline_shine_2_intensity = 1.0
+shader_parameter/outline_shine_2_speed = 1.0
+shader_parameter/outline_shine_2_delay = 2.0
+shader_parameter/outline_shine_2_width = 0.15
+shader_parameter/outline_shine_2_softness = 0.5
+shader_parameter/outline_shine_2_angle = 135.0
+shader_parameter/outline_shine_2_reverse = false
+shader_parameter/outline_color_steps = 0.0
+shader_parameter/outline_color_brightness = 0.0
+shader_parameter/outline_color_contrast = 1.0
+shader_parameter/outline_color_saturation = 1.0
+shader_parameter/outline_color_hue_shift_speed = 0.0
+shader_parameter/enable_scanlines = false
+shader_parameter/scanline_base_only = false
+shader_parameter/scanline_blend_mode = 0
+shader_parameter/scanline_color = Color(0, 0, 0, 1)
+shader_parameter/scanline_density = 0.0
+shader_parameter/scanline_thickness = 0.5
+shader_parameter/scanline_softness = 1.0
+shader_parameter/scanline_rotation = 0.0
+shader_parameter/scanline_offset = 0.0
+shader_parameter/scanline_speed = 0.0
+shader_parameter/scanline_curvature = 0.0
+shader_parameter/scanline_flicker_speed = 0.0
+shader_parameter/scanline_flicker_intensity = 0.0
+shader_parameter/scanline_use_gradient = false
+shader_parameter/scanline_gradient_type = 0
+shader_parameter/scanline_gradient_rotation_degrees = 0.0
+shader_parameter/scanline_gradient_scale = 1.0
+shader_parameter/scanline_gradient_smoothing = 0.5
+shader_parameter/scanline_gradient_offset = 0.0
+shader_parameter/scanline_repeat_gradient = false
+shader_parameter/scanline_opacity = 0.0
+shader_parameter/scanline_enable_opacity_map = false
+shader_parameter/scanline_opacity_type = 2
+shader_parameter/scanline_opacity_rotation_degrees = 0.0
+shader_parameter/scanline_opacity_scale = 1.0
+shader_parameter/scanline_opacity_smoothing = 0.5
+shader_parameter/scanline_opacity_offset = 0.0
+shader_parameter/scanline_opacity_repeat = false
+shader_parameter/enable_liquid_stripes = false
+shader_parameter/liquid_stripes_base_only = false
+shader_parameter/liquid_stripes_blend_mode = 0
+shader_parameter/liquid_stripes_color = Color(0.59, 0.98, 0.69, 1)
+shader_parameter/liquid_stripes_bg_color = Color(0, 0, 0, 0)
+shader_parameter/liquid_stripes_rotation = 0.0
+shader_parameter/liquid_stripes_speed = 1.0
+shader_parameter/liquid_stripes_sway = 1.0
+shader_parameter/liquid_stripes_density = 4.82
+shader_parameter/liquid_stripes_thickness = 0.45
+shader_parameter/liquid_stripes_softness = 0.05
+shader_parameter/liquid_stripes_warp = 1.0
+shader_parameter/liquid_stripes_warp_origin = -0.5
+shader_parameter/liquid_stripes_warp_falloff = 0.0
+shader_parameter/liquid_stripes_warp_direction = 0.0
+shader_parameter/liquid_stripes_warp_frequency = 15.0
+shader_parameter/liquid_stripes_warp_flow = 2.0
+shader_parameter/liquid_stripes_use_gradient = false
+shader_parameter/liquid_stripes_gradient_type = 0
+shader_parameter/liquid_stripes_gradient_rotation_degrees = 0.0
+shader_parameter/liquid_stripes_gradient_scale = 1.0
+shader_parameter/liquid_stripes_gradient_smoothing = 0.5
+shader_parameter/liquid_stripes_gradient_offset = 0.0
+shader_parameter/liquid_stripes_repeat_gradient = false
+shader_parameter/liquid_stripes_opacity = 0.5
+shader_parameter/liquid_stripes_enable_opacity_map = false
+shader_parameter/liquid_stripes_opacity_type = 2
+shader_parameter/liquid_stripes_opacity_rotation_degrees = 0.0
+shader_parameter/liquid_stripes_opacity_scale = 1.0
+shader_parameter/liquid_stripes_opacity_smoothing = 0.5
+shader_parameter/liquid_stripes_opacity_offset = 0.0
+shader_parameter/liquid_stripes_opacity_repeat = false
+shader_parameter/gamma_correction = 1.0
+shader_parameter/enable_dithering = true
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e6qwf"]
 shader = ExtResource("4_tosqn")
 shader_parameter/progress = 0.366000017385
@@ -391,6 +596,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 script = ExtResource("1_mufj8")
 hold_run_duration = 1.0
+metadata/_edit_vertical_guides_ = [8.0, 158.0]
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=569691240]
 layout_mode = 2
@@ -410,14 +616,18 @@ alignment = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(-2, 0)
 
-[node name="LightsGroupBackground" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup" unique_id=1349949604]
+[node name="LightsGroupBackground" type="PanelContainer" parent="MarginContainer/VBoxContainer/LightsGroup" unique_id=1627703683]
 material = SubResource("ShaderMaterial_aaut4")
 layout_mode = 2
-color = Color(0.80327266, 0.37005475, 0, 1)
+offset_transform_position = Vector2(150.175, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_bv6uq")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup" unique_id=433904536]
 layout_mode = 2
+offset_transform_enabled = true
 
 [node name="ExecutionContainer1" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=857185412]
 layout_mode = 2
@@ -426,6 +636,8 @@ layout_mode = 2
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, 0)
 
 [node name="LightOff" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/Light1" unique_id=50073925]
 material = SubResource("ShaderMaterial_a7lv4")
@@ -456,21 +668,34 @@ layout_mode = 2
 custom_minimum_size = Vector2(80, 0)
 custom_maximum_size = Vector2(80, -1)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, 0)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
 [node name="ColorRect3" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=1878585462]
+material = SubResource("ShaderMaterial_gtatl")
+custom_minimum_size = Vector2(78, 36)
+custom_maximum_size = Vector2(78, 36)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
 [node name="ColorRect4" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=977191386]
 visible = false
+custom_minimum_size = Vector2(78, 36)
+custom_maximum_size = Vector2(78, 36)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
 [node name="ExecutionLabel1" type="RichTextLabel" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=1134453166]
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(0, -1.31)
+offset_transform_position = Vector2(1, -1)
 theme_override_font_sizes/normal_font_size = 30
 text = "0010"
 fit_content = true
@@ -480,6 +705,9 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=203766726]
+layout_mode = 2
+
 [node name="ExecutionContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=1111539442]
 layout_mode = 2
 
@@ -487,6 +715,8 @@ layout_mode = 2
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, 0)
 
 [node name="LightOff" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/Light2" unique_id=1170707848]
 material = SubResource("ShaderMaterial_a7lv4")
@@ -520,17 +750,27 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
 [node name="ColorRect2" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1568131741]
+material = SubResource("ShaderMaterial_gtatl")
+custom_minimum_size = Vector2(78, 36)
+custom_maximum_size = Vector2(78, 36)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
 [node name="ColorRect3" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1248231026]
+visible = false
+custom_minimum_size = Vector2(78, 36)
+custom_maximum_size = Vector2(78, 36)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
 [node name="ExecutionLabel2" type="RichTextLabel" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1946287649]
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(0, -1.31)
+offset_transform_position = Vector2(1, -1)
 theme_override_font_sizes/normal_font_size = 30
 text = "0010"
 fit_content = true
@@ -540,6 +780,9 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=933971177]
+layout_mode = 2
+
 [node name="ExecutionContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer" unique_id=413857388]
 layout_mode = 2
 
@@ -547,6 +790,8 @@ layout_mode = 2
 custom_minimum_size = Vector2(42, 42)
 custom_maximum_size = Vector2(42, 42)
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, 0)
 
 [node name="LightOff" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/Light3" unique_id=973325540]
 material = SubResource("ShaderMaterial_a7lv4")
@@ -580,18 +825,27 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=335909601]
+material = SubResource("ShaderMaterial_gtatl")
+custom_minimum_size = Vector2(78, 36)
+custom_maximum_size = Vector2(78, 36)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=2066307540]
 visible = false
+custom_minimum_size = Vector2(78, 36)
+custom_maximum_size = Vector2(78, 36)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
 [node name="ExecutionLabel3" type="RichTextLabel" parent="MarginContainer/VBoxContainer/LightsGroup/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=76417346]
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(0, -1.31)
+offset_transform_position = Vector2(1, -1)
 theme_override_font_sizes/normal_font_size = 30
 text = "0010"
 fit_content = true

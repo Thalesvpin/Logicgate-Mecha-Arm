@@ -12,7 +12,8 @@ shader_type canvas_item;
 // =============================================================================
 group_uniforms Base_Gradient;
 uniform sampler2D gradient_texture : source_color, filter_linear, repeat_disable;
-uniform int gradient_type : hint_enum("Horizontal", "Vertical", "Radial", "Mirrored") = 1;
+uniform int gradient_type : hint_enum("Horizontal", "Vertical", "Radial", "Mirrored", "Square") = 1;
+uniform float square_corner_blend : hint_range(0.0, 1.0) = 0.0;
 uniform float gradient_rotation_degrees : hint_range(0.0, 360.0) = 0.0;
 uniform float gradient_scale : hint_range(0.1, 10.0) = 1.0;
 uniform float gradient_smoothing : hint_range(0.0, 5.0) = 0.5;
@@ -103,7 +104,8 @@ uniform float outline_sharpness : hint_range(0.0, 1.0) = 0.5;
 uniform float outline_path_seam_offset : hint_range(0.0, 1.0) = 0.0;
 
 uniform sampler2D outline_gradient_texture : source_color, filter_linear, repeat_disable;
-uniform int outline_gradient_type : hint_enum("Horizontal", "Vertical", "Radial", "Mirrored") = 1;
+uniform int outline_gradient_type : hint_enum("Horizontal", "Vertical", "Radial", "Mirrored", "Edge Outward") = 1;
+uniform float outline_edge_corner_smoothing : hint_range(0.0, 1.0) = 0.0;
 uniform float outline_gradient_rotation_degrees : hint_range(0.0, 360.0) = 0.0;
 uniform float outline_gradient_scale : hint_range(0.1, 10.0) = 1.0;
 uniform float outline_gradient_smoothing : hint_range(0.0, 5.0) = 0.5;
@@ -351,7 +353,8 @@ float get_path_t(vec2 p, vec2 h, float r, float offset) {
 	return fract((path_pos / max(total_len, 0.0001)) + offset);
 }
 
-float get_gradient_factor(vec2 normalized_uv, vec2 trig, float inv_scale, int type, float final_offset, bool rep, float smooth_val, float steps) {
+// Types: 0 = Horizontal, 1 = Vertical, 2 = Radial, 3 = Mirrored, 4 = Square
+float get_gradient_factor(vec2 normalized_uv, vec2 trig, float inv_scale, int type, float final_offset, bool rep, float smooth_val, float steps, float corner_blend) {
 	float factor = 0.0;
 	if (type == 0) {
 		factor = dot(normalized_uv, vec2(trig.y, -trig.x) * inv_scale) - final_offset;
@@ -360,8 +363,18 @@ float get_gradient_factor(vec2 normalized_uv, vec2 trig, float inv_scale, int ty
 	} else if (type == 2) {
 		vec2 uv = vec2(dot(normalized_uv, vec2(trig.y, -trig.x)), dot(normalized_uv, trig));
 		factor = (distance(uv, vec2(0.5)) * 2.0 * inv_scale) - final_offset;
-	} else {
+	} else if (type == 3) {
 		factor = (abs(dot(normalized_uv, trig) - 0.5) * 2.0 * inv_scale) - final_offset;
+	} else {
+		vec2 uv_c = (normalized_uv - 0.5) * 2.0;
+		vec2 a = abs(vec2(dot(uv_c, vec2(trig.y, -trig.x)), dot(uv_c, trig)));
+		float sq_dist = max(a.x, a.y);
+		if (corner_blend > 0.0) {
+			float s0 = corner_blend * 0.25;
+			float t = max(1.0 - abs(a.x - a.y) / corner_blend, 0.0);
+			sq_dist = (sq_dist - s0 * (1.0 - t * t)) / (1.0 - s0);
+		}
+		factor = (sq_dist * inv_scale) - final_offset;
 	}
 
 	factor = rep ? fract(factor) : clamp(factor, 0.0, 1.0);
@@ -376,7 +389,7 @@ vec4 sample_mapped_texture(sampler2D tex, vec2 normalized_uv, vec2 trig, float i
 		uv = rep ? fract(uv) : clamp(uv, 0.0, 1.0);
 		return textureLod(tex, uv, 0.0);
 	}
-	float factor = get_gradient_factor(normalized_uv, trig, inv_scale, type, final_offset, rep, smooth_val, 0.0);
+	float factor = get_gradient_factor(normalized_uv, trig, inv_scale, type, final_offset, rep, smooth_val, 0.0, 0.0);
 	return textureLod(tex, vec2(factor, 0.0), 0.0);
 }
 
@@ -582,7 +595,7 @@ void fragment() {
 		vec2 base_trig = vec2(sin(base_rad), cos(base_rad));
 		float inv_base_scale = 1.0 / max(gradient_scale, 0.001);
 		float base_offset = gradient_offset + get_pulse_offset(enable_pulsation, animation_speed, pulse_spatial_frequency, base_uv_len, base_pulse_curve, pulse_min_offset, pulse_max_offset);
-		float base_factor = get_gradient_factor(distorted_norm_uv, base_trig, inv_base_scale, gradient_type, base_offset, repeat_gradient, gradient_smoothing, base_color_steps);
+		float base_factor = get_gradient_factor(distorted_norm_uv, base_trig, inv_base_scale, gradient_type, base_offset, repeat_gradient, gradient_smoothing, base_color_steps, square_corner_blend);
 		vec4 final_color = textureLod(gradient_texture, vec2(base_factor, 0.0), 0.0);
 
 		bool has_base_cg = (base_color_brightness != 0.0) || (base_color_contrast != 1.0) || (base_color_saturation != 1.0) || (base_color_hue_shift_speed != 0.0);
@@ -607,7 +620,7 @@ void fragment() {
 			vec2 over_trig = vec2(sin(over_rad), cos(over_rad));
 			float inv_over_scale = 1.0 / max(overlay_gradient_scale, 0.001);
 			float over_col_offset = overlay_gradient_offset + get_pulse_offset(overlay_enable_pulsation, overlay_animation_speed, overlay_pulse_spatial_frequency, base_uv_len, overlay_color_pulse_curve, overlay_pulse_min_offset, overlay_pulse_max_offset);
-			float over_col_factor = get_gradient_factor(overlay_uv, over_trig, inv_over_scale, overlay_gradient_type, over_col_offset, overlay_repeat_gradient, overlay_gradient_smoothing, over_steps);
+			float over_col_factor = get_gradient_factor(overlay_uv, over_trig, inv_over_scale, overlay_gradient_type, over_col_offset, overlay_repeat_gradient, overlay_gradient_smoothing, over_steps, 0.0);
 			vec4 over_layer = textureLod(overlay_gradient_texture, vec2(over_col_factor, 0.0), 0.0);
 			
 			if (over_layer.a > 0.0) {
@@ -616,7 +629,7 @@ void fragment() {
 					vec2 over_op_trig = vec2(sin(over_op_rad), cos(over_op_rad));
 					float inv_over_op_scale = 1.0 / max(overlay_opacity_scale, 0.001);
 					float over_op_offset = overlay_opacity_offset + get_pulse_offset(overlay_opacity_enable_pulsation, overlay_opacity_animation_speed, overlay_opacity_pulse_spatial_frequency, base_uv_len, overlay_opacity_pulse_curve, overlay_opacity_pulse_min_offset, overlay_opacity_pulse_max_offset);
-					float over_op_factor = get_gradient_factor(overlay_uv, over_op_trig, inv_over_op_scale, overlay_opacity_type, over_op_offset, overlay_opacity_repeat, overlay_opacity_smoothing, over_steps);
+					float over_op_factor = get_gradient_factor(overlay_uv, over_op_trig, inv_over_op_scale, overlay_opacity_type, over_op_offset, overlay_opacity_repeat, overlay_opacity_smoothing, over_steps, 0.0);
 					over_layer.a *= textureLod(overlay_opacity_texture, vec2(over_op_factor, 0.0), 0.0).r;
 				}
 				final_color.rgb = apply_fx_blend(final_color.rgb, over_layer, overlay_blend_mode);
@@ -693,12 +706,49 @@ void fragment() {
 				}
 
 				if (outline_mask > 0.0) {
-					vec2 outline_uv = outline_ignore_base_distortion ? UV : distorted_norm_uv;
-					float out_rad = radians(outline_gradient_rotation_degrees);
-					vec2 out_trig = vec2(sin(out_rad), cos(out_rad));
 					float inv_out_scale = 1.0 / max(outline_gradient_scale, 0.001);
 					float out_offset = outline_gradient_offset + get_pulse_offset(outline_enable_pulsation, outline_animation_speed, outline_pulse_spatial_frequency, base_uv_len, outline_pulse_curve, outline_pulse_min_offset, outline_pulse_max_offset);
-					float out_factor = get_gradient_factor(outline_uv, out_trig, inv_out_scale, outline_gradient_type, out_offset, outline_repeat_gradient, outline_gradient_smoothing, outline_color_steps);
+					float out_factor = 0.0;
+					if (outline_gradient_type == 4) {
+						float inv_out_w = 1.0 / max(outline_width, 0.001);
+						float edge_t = out_d * inv_out_w;
+						if (outline_edge_corner_smoothing > 0.0) {
+							float max_r = min(half_size.x, half_size.y);
+							float smooth_r = mix(r, max_r, outline_edge_corner_smoothing);
+							vec2 abs_p = abs(pixel_pos);
+
+							// Outward unit normal of the base SDF to locate the outer outline boundary
+							vec2 q_raw = abs_p - half_size + vec2(r);
+							vec2 q0 = max(q_raw, 0.0);
+							vec2 n_abs = vec2(0.0);
+							if (q0.x <= 0.0 && q0.y <= 0.0) {
+								n_abs = (q_raw.x > q_raw.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+							} else if (use_beveled_corners && q0.x > 0.0 && q0.y > 0.0 && (q0.x + q0.y) * 0.70710678 > max(q0.x, q0.y)) {
+								n_abs = vec2(0.70710678);
+							} else {
+								n_abs = q0 / max(length(q0), 0.0001);
+							}
+
+							vec2 abs_p_out = abs_p + max(outline_width - d, 0.0) * n_abs;
+
+							vec2 sq_mid = abs_p - half_size + vec2(smooth_r);
+							float s_mid = length(max(sq_mid, 0.0)) + min(max(sq_mid.x, sq_mid.y), 0.0) - smooth_r;
+
+							vec2 sq_out = abs_p_out - half_size + vec2(smooth_r);
+							float s_out = length(max(sq_out, 0.0)) + min(max(sq_out.x, sq_out.y), 0.0) - smooth_r;
+
+							edge_t = (s_mid / max(s_out, 0.0001)) + (out_d - d) * inv_out_w;
+						}
+						out_factor = (edge_t * inv_out_scale) - out_offset;
+						out_factor = outline_repeat_gradient ? fract(out_factor) : clamp(out_factor, 0.0, 1.0);
+						out_factor = calculate_smoothed_factor(out_factor, outline_gradient_smoothing);
+						if (outline_color_steps > 0.0) out_factor = floor(out_factor * outline_color_steps) / outline_color_steps;
+					} else {
+						vec2 outline_uv = outline_ignore_base_distortion ? UV : distorted_norm_uv;
+						float out_rad = radians(outline_gradient_rotation_degrees);
+						vec2 out_trig = vec2(sin(out_rad), cos(out_rad));
+						out_factor = get_gradient_factor(outline_uv, out_trig, inv_out_scale, outline_gradient_type, out_offset, outline_repeat_gradient, outline_gradient_smoothing, outline_color_steps, 0.0);
+					}
 					out_color = textureLod(outline_gradient_texture, vec2(out_factor, 0.0), 0.0);
 
 					// SHINE 1 RENDER (uniform sweep phase skipped entirely during delay pause)
