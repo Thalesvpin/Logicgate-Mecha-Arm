@@ -6,15 +6,15 @@
 [ext_resource type="Shader" uid="uid://ddtcjrx2hj74g" path="res://shaders/texture_progress.gdshader" id="4_tosqn"]
 
 [sub_resource type="Gradient" id="Gradient_7ogem"]
-offsets = PackedFloat32Array(0.7805755, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0.8415493, 1)
+colors = PackedColorArray(0.19747594, 0.26171732, 0.27454597, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
 gradient = SubResource("Gradient_7ogem")
 
 [sub_resource type="Gradient" id="Gradient_jydqi"]
-offsets = PackedFloat32Array(0, 0.2, 0.5, 0.8, 1)
-colors = PackedColorArray(0.5529412, 0.5529412, 0.5529412, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0.5529412, 0.5529412, 0.5529412, 1)
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.53303695, 0.53303665, 0.5330366, 1, 0.86898494, 0.86898494, 0.8689847, 1, 0.53303695, 0.53303665, 0.5330366, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_mo0oj"]
 gradient = SubResource("Gradient_jydqi")
