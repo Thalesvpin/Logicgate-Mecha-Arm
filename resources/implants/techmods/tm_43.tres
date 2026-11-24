@@ -33,7 +33,7 @@ metadata/_custom_type_script = "uid://bfbbwqg3h5ki8"
 
 [sub_resource type="Resource" id="Resource_iqd2h"]
 script = ExtResource("2_7fyh3")
-trigger = 4
+trigger = 5
 effect = Array[ExtResource("3_8kouu")]([SubResource("Resource_ico5e")])
 conditions = Array[ExtResource("1_kpmrd")]([SubResource("Resource_rk0m6")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"

@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b5isfynyfgm5c" path="res://scripts/classes/implant_effects/effects_base.gd" id="3_nu3wg"]
 [ext_resource type="Script" uid="uid://bljex6smxx3gr" path="res://scripts/classes/Implant.gd" id="4_1hrua"]
 [ext_resource type="Script" uid="uid://bih58ndmso5b6" path="res://scripts/classes/implant_conditions/times_can_happen.gd" id="4_nu3wg"]
+[ext_resource type="Script" uid="uid://cv8hcf7ki7b8t" path="res://scripts/classes/implant_effects/undone/skip_enemy_turn.gd" id="6_j05rw"]
 
 [sub_resource type="Resource" id="Resource_nu3wg"]
 script = ExtResource("3_btndn")
@@ -16,15 +17,22 @@ script = ExtResource("4_nu3wg")
 amount = 1
 metadata/_custom_type_script = "uid://bih58ndmso5b6"
 
+[sub_resource type="Resource" id="Resource_a7lv4"]
+script = ExtResource("6_j05rw")
+amount = 3
+metadata/_custom_type_script = "uid://cv8hcf7ki7b8t"
+
 [sub_resource type="Resource" id="Resource_8e6ev"]
 script = ExtResource("2_btndn")
-trigger = 10
+trigger = 11
+effect = Array[ExtResource("3_nu3wg")]([SubResource("Resource_a7lv4")])
 conditions = Array[ExtResource("1_8e6ev")]([SubResource("Resource_nu3wg"), SubResource("Resource_1hrua")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
 [resource]
 script = ExtResource("4_1hrua")
 id = 47
+name = "tech mod 47"
 description = "quando o último Escudo do jogador quebra, todos os inimigos perdem seu próximo Turno, efetivamente “perdendo a vez”. Só acontece uma vez por Batalha"
 config = Array[ExtResource("2_btndn")]([SubResource("Resource_8e6ev")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

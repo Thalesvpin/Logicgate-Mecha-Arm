@@ -72,17 +72,13 @@ func repair_shield(amount: int) -> void:
 	var max_shield_count = Stats.List.MAX_SHIELD_COUNT
 	var new_value = Global.run_stats.player_stats[curr_shield] + amount
 	
-	
+	#overheal
 	if new_value > Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[curr_shield_count]:
 		new_value = Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[curr_shield_count]
 	
-	
-	
-	
-	
-	
-	
+	#overheal
 	if new_value > Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[curr_shield_count]:
+		#has no empty shield -> curr shield gets max amount
 		if Global.run_stats.player_stats[curr_shield_count] == Global.run_stats.player_stats[max_shield_count]:
 			Global.run_stats.player_stats[curr_shield] = Global.run_stats.player_stats[shield_strength]*Global.run_stats.player_stats[max_shield_count]
 		else:
@@ -90,8 +86,18 @@ func repair_shield(amount: int) -> void:
 			#new_value -= Global.run_stats.player_stats[shield_strength]
 			Global.run_stats.player_stats[curr_shield] = new_value
 	else:
-		print('agr aqi: ', new_value)
 		Global.run_stats.player_stats[curr_shield] = new_value
+	adjust_shield()
+
+func damage_shield(amount: int) -> void:
+	var curr_shield_count = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT]
+	var shield_strength = Global.run_stats.player_stats[Stats.List.SHIELD_STRENGTH]
+	var new_value = Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD] - amount
+	
+	if new_value < shield_strength * curr_shield_count:
+		Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD_COUNT] -= 1
+		EventBus.shield_break.emit()
+	Global.run_stats.player_stats[Stats.List.CURRENT_SHIELD] = new_value
 	adjust_shield()
 
 func update() -> void:

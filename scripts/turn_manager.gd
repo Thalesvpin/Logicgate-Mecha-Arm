@@ -2,6 +2,7 @@ extends Node
 
 var turn_sequence: Array = ['player']
 var turn_idx: int = 0
+var turn_token: int = 0
 var is_shop_open: bool = false
 
 func _ready() -> void:
@@ -16,14 +17,15 @@ func battle_ended(result) -> void:
 
 func battle_started(a = null) -> void:
 	is_shop_open = false
+	EventBus.turn_started.emit(0)
 
 func handle_next_turn(who) -> void:
-	print('handle_next_turn')
 	turn_idx = turn_sequence.find(who)
 	if turn_idx == turn_sequence.size()-1:
 		turn_idx = 0
 	else:
 		turn_idx += 1
+	print('handle_next_turn: ', turn_idx)
 	EventBus.turn_started.emit(turn_sequence[turn_idx])
 
 func add_to_turn_sequence(who) -> void:
@@ -42,7 +44,9 @@ func get_turn_index(who) -> int:
 
 ##It will never skip player's turn
 func skip_turn(amount: int) -> void:
-	turn_idx += amount
-	if turn_idx > turn_sequence.size()-1:
-		turn_idx = 0
-	EventBus.turn_started.emit(turn_sequence[turn_idx])
+	#turn_idx += amount
+	#if turn_idx > turn_sequence.size()-1:
+	turn_idx = 0
+	turn_token += 1
+	EventBus.turn_started.emit('player')
+	#EventBus.turn_started.emit(turn_sequence[turn_idx])
