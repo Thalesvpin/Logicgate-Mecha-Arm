@@ -61,6 +61,7 @@ shader_parameter/cutout_color = Color(0, 0, 0, 0)
 
 [sub_resource type="FontVariation" id="FontVariation_a7lv4"]
 base_font = ExtResource("2_ndln2")
+variation_transform = Transform2D(1.06, 0, 0, 1.06, 0, 0)
 spacing_glyph = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_kf6tc"]
@@ -161,7 +162,8 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_0vipy")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_esiv2")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_veuwc")
 script = ExtResource("1_048u1")
-metadata/_edit_horizontal_guides_ = [19.0, 12.0, 26.0]
+metadata/_edit_horizontal_guides_ = [19.0, 10.0, 28.0]
+metadata/_edit_vertical_guides_ = [9.0, 21.0, 76.0, 90.0]
 
 [node name="Normal" type="Control" parent="." unique_id=849061061]
 layout_mode = 1
@@ -221,16 +223,15 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="Label" type="Label" parent="Normal/PanelContainer2" unique_id=1244853831]
+texture_filter = 1
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(0, 1)
 text = "ATIVAR"
 label_settings = SubResource("LabelSettings_kf6tc")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Hover" type="Control" parent="." unique_id=1507307454]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -287,8 +288,8 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Label" type="Label" parent="Hover/PanelContainer2" unique_id=1582713972]
+texture_filter = 1
 layout_mode = 2
-offset_transform_enabled = true
 offset_transform_position = Vector2(0, 1)
 text = "ATIVAR"
 label_settings = SubResource("LabelSettings_oxtry")
@@ -296,7 +297,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Pressed" type="Control" parent="." unique_id=1815691316]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -340,7 +340,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_gtatl")
 [node name="Label" type="Label" parent="Pressed/PanelContainer/InnerLayer2A" unique_id=413531992]
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(0.74, 2.2)
+offset_transform_position = Vector2(0.74, 1.28)
 offset_transform_scale = Vector2(0.94, 0.94)
 text = "ATIVAR"
 label_settings = SubResource("LabelSettings_edi8c")
@@ -348,7 +348,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Disabled" type="Control" parent="." unique_id=149474106]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -397,7 +396,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_bv6uq")
 
 [node name="Label" type="Label" parent="Disabled/PanelContainer" unique_id=437963504]
 layout_mode = 2
-offset_transform_enabled = true
 offset_transform_position = Vector2(0, 1)
 text = "ATIVAR"
 label_settings = SubResource("LabelSettings_eoch2")
