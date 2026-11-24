@@ -27,179 +27,147 @@ spacing_top = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oxtry"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bv6uq"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eoch2"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_edi8c"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gnty3"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(1, 1, 1, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ep5nn"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(1, 1, 1, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2bnjs"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(1, 1, 1, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_m1rqb"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(1, 1, 1, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5wuer"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_velh8"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5jb73"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hj8rj"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 1)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8kp1i"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 0.15686275)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lre6h"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 0.15686275)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jru03"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 0.15686275)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8jmfd"]
 shader = ExtResource("3_8yqnl")
-shader_parameter/columns = 1
-shader_parameter/rows = 1
-shader_parameter/offset_x = 0.0
-shader_parameter/offset_y = 0.0
+shader_parameter/square_size = 32.0
+shader_parameter/offset = Vector2(0, 0)
 shader_parameter/square_1_spacing = 1
 shader_parameter/square_2_spacing = 1
-shader_parameter/color1 = Color(0, 0, 0, 0.15686275)
-shader_parameter/color2 = Color(1, 1, 1, 0)
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 1)
 
 [node name="ActivatorBtn" type="Button" unique_id=449798917]
 custom_minimum_size = Vector2(101, 41)
