@@ -26,9 +26,10 @@ func set_implant() -> void:
 	implant_card.load_resource()
 
 func set_outline_color(node: Node) -> void:
-	var style: StyleBoxFlat = node.get_theme_stylebox("panel").duplicate()
-	style.border_color = Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]])
-	node.add_theme_stylebox_override("panel", style)
+	#var style: StyleBoxFlat = node.get_theme_stylebox("panel").duplicate()
+	#style.border_color = Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]])
+	#node.add_theme_stylebox_override("panel", style)
+	pass
 
 func get_price() -> void:
 	price = Implant.PRICES[rarity]

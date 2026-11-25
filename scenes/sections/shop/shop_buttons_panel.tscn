@@ -2,7 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="1_a7046"]
 [ext_resource type="Script" uid="uid://cslyi5amaspr2" path="res://scripts/shop_buttons_panel.gd" id="1_ipg35"]
-[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="2_3twxq"]
+[ext_resource type="PackedScene" uid="uid://c50wi134ugf4" path="res://scenes/buttons/info_btn.tscn" id="2_25nks"]
+[ext_resource type="PackedScene" uid="uid://nh10q0f8nh47" path="res://scenes/buttons/next_battle_btn.tscn" id="3_hy6od"]
+[ext_resource type="PackedScene" uid="uid://dq48paf0larlj" path="res://scenes/buttons/pause_btn.tscn" id="4_hy6od"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ipg35"]
 content_margin_left = 0.0
@@ -72,32 +74,33 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 layout_mode = 2
 mouse_filter = 2
 
-[node name="InfoBtn" parent="Control" unique_id=1797500818 instance=ExtResource("2_3twxq")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
-layout_mode = 1
-offset_left = 30.0
+[node name="InfoBtn" parent="Control" unique_id=160565505 instance=ExtResource("2_25nks")]
+custom_minimum_size = Vector2(101, 41)
+custom_maximum_size = Vector2(101, 41)
+layout_mode = 0
+offset_left = 19.0
 offset_top = 62.0
-offset_right = -366.0
-offset_bottom = -21.0
+offset_right = 120.0
+offset_bottom = 103.0
 
-[node name="NextBattleBtn" parent="Control" unique_id=1879065629 instance=ExtResource("2_3twxq")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
+[node name="NextBattleBtn" parent="Control" unique_id=736487776 instance=ExtResource("3_hy6od")]
 layout_mode = 1
-offset_left = 198.0
-offset_top = 50.0
-offset_right = -198.0
-offset_bottom = -33.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="PauseBtn" parent="Control" unique_id=913668172 instance=ExtResource("2_3twxq")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
-layout_mode = 1
-offset_left = 368.0
-offset_top = 65.0
-offset_right = -28.0
-offset_bottom = -18.0
+[node name="PauseBtn" parent="Control" unique_id=1069609369 instance=ExtResource("4_hy6od")]
+custom_minimum_size = Vector2(101, 41)
+custom_maximum_size = Vector2(101, 41)
+layout_mode = 0
+offset_left = 358.0
+offset_top = 62.0
+offset_right = 459.0
+offset_bottom = 103.0
 
 [node name="InfoBtn2" type="TextureButton" parent="Control" unique_id=1206417515]
 visible = false
@@ -125,7 +128,3 @@ offset_top = 65.0
 offset_right = 453.0
 offset_bottom = 102.0
 texture_normal = ExtResource("1_a7046")
-
-[connection signal="button_up" from="Control/InfoBtn" to="." method="_on_info_btn_button_up"]
-[connection signal="button_up" from="Control/NextBattleBtn" to="." method="_on_next_battle_btn_button_up"]
-[connection signal="button_up" from="Control/PauseBtn" to="." method="_on_pause_btn_button_up"]

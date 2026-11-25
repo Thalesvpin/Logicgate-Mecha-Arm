@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bj62b4fw5kt8w" path="res://assets/TCC_icon_shop_reroll.png" id="1_kfjrl"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="2_7cj1s"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_f6yic"]
-[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="3_huhil"]
+[ext_resource type="PackedScene" uid="uid://bs1gakg8gal1d" path="res://scenes/buttons/reroll_btn.tscn" id="4_7cj1s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -39,6 +39,7 @@ gradient = SubResource("Gradient_h58jw")
 shader = ExtResource("2_7cj1s")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
 shader_parameter/gradient_type = 1
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 0.5
@@ -58,6 +59,8 @@ shader_parameter/base_color_saturation = 1.0
 shader_parameter/base_color_hue_shift_speed = 0.0
 shader_parameter/enable_overlay = false
 shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_ignore_base_distortion = true
+shader_parameter/overlay_ignore_base_color_grading = false
 shader_parameter/overlay_gradient_type = 2
 shader_parameter/overlay_gradient_rotation_degrees = 0.0
 shader_parameter/overlay_gradient_scale = 1.0
@@ -84,12 +87,15 @@ shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(6, 6, 6, 6)
 shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = true
+shader_parameter/outline_ignore_base_distortion = false
+shader_parameter/outline_ignore_base_color_grading = true
 shader_parameter/outline_width = 6.000000285
 shader_parameter/outline_blur = 0.0
 shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_mdl15")
 shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -212,6 +218,7 @@ gradient = SubResource("Gradient_sdem3")
 shader = ExtResource("2_7cj1s")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_a7lv4")
 shader_parameter/gradient_type = 1
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 1.0000000475
@@ -231,6 +238,8 @@ shader_parameter/base_color_saturation = 1.0
 shader_parameter/base_color_hue_shift_speed = 0.0
 shader_parameter/enable_overlay = false
 shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_ignore_base_distortion = true
+shader_parameter/overlay_ignore_base_color_grading = false
 shader_parameter/overlay_gradient_type = 2
 shader_parameter/overlay_gradient_rotation_degrees = 0.0
 shader_parameter/overlay_gradient_scale = 1.0
@@ -257,12 +266,15 @@ shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(6, 6, 6, 6)
 shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = true
+shader_parameter/outline_ignore_base_distortion = false
+shader_parameter/outline_ignore_base_color_grading = true
 shader_parameter/outline_width = 3.0000001425
 shader_parameter/outline_blur = 0.0
 shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_h58jw")
 shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -446,9 +458,7 @@ texture = ExtResource("1_kfjrl")
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="BuyBtn" parent="MarginContainer/VBoxContainer" unique_id=1797500818 instance=ExtResource("3_huhil")]
-custom_minimum_size = Vector2(100, 50)
-custom_maximum_size = Vector2(100, 50)
+[node name="BuyBtn" parent="MarginContainer/VBoxContainer" unique_id=1380488110 instance=ExtResource("4_7cj1s")]
 layout_mode = 2
 
 [node name="TextureButton2" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=979949122]
@@ -459,5 +469,3 @@ layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("2_f6yic")
 stretch_mode = 0
-
-[connection signal="button_up" from="MarginContainer/VBoxContainer/BuyBtn" to="." method="_on_buy_btn_button_up"]

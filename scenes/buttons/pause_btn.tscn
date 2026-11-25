@@ -151,6 +151,8 @@ stacked_shadow_1/outline_size = 8
 [node name="PauseBtn" type="Button" unique_id=2039448951]
 custom_minimum_size = Vector2(149, 71)
 custom_maximum_size = Vector2(149, 71)
+offset_right = 149.0
+offset_bottom = 71.0
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxEmpty_mjyp6")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_eetg5")
