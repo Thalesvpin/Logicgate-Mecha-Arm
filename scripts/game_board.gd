@@ -235,8 +235,15 @@ func _input(event: InputEvent) -> void:
 		Global.implant_manager.add_bio_hack(BH_21)
 	
 	if event.is_action_pressed("4"):
+		var ef = HealEffect.new()
+		ef.amount = 100
+		ef.apply()
 		pass
+		
 	if event.is_action_pressed("6"):
+		var ef = AddDamageFlatEffect.new()
+		ef.amount = 100
+		ef.apply()
 		pass
 	
 	if event.is_action_pressed("1"):

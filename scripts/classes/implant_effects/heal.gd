@@ -8,7 +8,7 @@ class_name HealEffect
 ##Mode is ignored if amount is set to 0
 @export var mode: Mode
 
-enum Mode {FLAT, PERCENT}
+enum Mode {PERCENT, FLAT}
 
 func apply(_context = null) -> void:
 	var heal_amount := amount
