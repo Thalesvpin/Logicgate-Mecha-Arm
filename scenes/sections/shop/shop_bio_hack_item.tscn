@@ -22,6 +22,12 @@ colors = PackedColorArray(0.4960547, 0.6172711, 7.70092e-07, 1, 0, 0, 0, 1)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_kjigr"]
 gradient = SubResource("Gradient_kjigr")
 
+[sub_resource type="Gradient" id="Gradient_tj53q"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_tj53q")
+
 [sub_resource type="Gradient" id="Gradient_h754m"]
 colors = PackedColorArray(0.6560397, 0.556561, 0, 1, 0, 0, 0, 1)
 
@@ -49,7 +55,8 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
 gradient = SubResource("Gradient_wf03m")
 
 [sub_resource type="Gradient" id="Gradient_sc01o"]
-colors = PackedColorArray(0.28485027, 0.28485027, 0.28485027, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.6522911)
+colors = PackedColorArray(0.4045111, 0.40451118, 0.40451103, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_kbhfa"]
 gradient = SubResource("Gradient_sc01o")
@@ -58,6 +65,7 @@ gradient = SubResource("Gradient_sc01o")
 shader = ExtResource("2_h754m")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_kjigr")
 shader_parameter/gradient_type = 0
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 0.5
@@ -78,6 +86,8 @@ shader_parameter/base_color_saturation = 1.0
 shader_parameter/base_color_hue_shift_speed = 0.0
 shader_parameter/enable_overlay = true
 shader_parameter/overlay_blend_mode = 1
+shader_parameter/overlay_ignore_base_distortion = true
+shader_parameter/overlay_ignore_base_color_grading = false
 shader_parameter/overlay_gradient_texture = SubResource("GradientTexture1D_rmuo1")
 shader_parameter/overlay_gradient_type = 0
 shader_parameter/overlay_gradient_rotation_degrees = 0.0
@@ -106,11 +116,15 @@ shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(22, 0, 0, 22)
 shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = true
+shader_parameter/outline_ignore_base_distortion = false
+shader_parameter/outline_ignore_base_color_grading = true
 shader_parameter/outline_width = 4.00000019
 shader_parameter/outline_blur = 0.0
+shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.250000011875
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_cwri3")
 shader_parameter/outline_gradient_type = 0
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -163,7 +177,7 @@ shader_parameter/outline_color_brightness = 0.0
 shader_parameter/outline_color_contrast = 1.0
 shader_parameter/outline_color_saturation = 1.0
 shader_parameter/outline_color_hue_shift_speed = 0.0
-shader_parameter/enable_scanlines = true
+shader_parameter/enable_scanlines = false
 shader_parameter/scanline_base_only = true
 shader_parameter/scanline_blend_mode = 0
 shader_parameter/scanline_color = Color(0, 0, 0, 1)
@@ -191,22 +205,22 @@ shader_parameter/scanline_opacity_scale = 1.0
 shader_parameter/scanline_opacity_smoothing = 0.5
 shader_parameter/scanline_opacity_offset = 0.0
 shader_parameter/scanline_opacity_repeat = false
-shader_parameter/enable_liquid_stripes = false
+shader_parameter/enable_liquid_stripes = true
 shader_parameter/liquid_stripes_base_only = true
 shader_parameter/liquid_stripes_blend_mode = 0
 shader_parameter/liquid_stripes_color = Color(0.59, 0.98, 0.69, 1)
 shader_parameter/liquid_stripes_bg_color = Color(0, 0, 0, 0)
 shader_parameter/liquid_stripes_rotation = 0.0
-shader_parameter/liquid_stripes_speed = 0.2000004845000003
+shader_parameter/liquid_stripes_speed = 0.25000048687500076
 shader_parameter/liquid_stripes_sway = 5.0
 shader_parameter/liquid_stripes_density = 11.72500055367762
 shader_parameter/liquid_stripes_thickness = 0.8510000404225
 shader_parameter/liquid_stripes_softness = 0.05
-shader_parameter/liquid_stripes_warp = 1.406000066785
-shader_parameter/liquid_stripes_warp_origin = -0.5
+shader_parameter/liquid_stripes_warp = 2.0
+shader_parameter/liquid_stripes_warp_origin = -0.030999953972499994
 shader_parameter/liquid_stripes_warp_falloff = 0.0
 shader_parameter/liquid_stripes_warp_direction = 106.1750050433125
-shader_parameter/liquid_stripes_warp_frequency = 3.710000176225
+shader_parameter/liquid_stripes_warp_frequency = 50.0
 shader_parameter/liquid_stripes_warp_flow = 7.253000819517499
 shader_parameter/liquid_stripes_use_gradient = false
 shader_parameter/liquid_stripes_gradient_type = 0
@@ -216,8 +230,9 @@ shader_parameter/liquid_stripes_gradient_smoothing = 0.5
 shader_parameter/liquid_stripes_gradient_offset = 0.0
 shader_parameter/liquid_stripes_repeat_gradient = false
 shader_parameter/liquid_stripes_opacity = 0.210000009975
-shader_parameter/liquid_stripes_enable_opacity_map = false
-shader_parameter/liquid_stripes_opacity_type = 2
+shader_parameter/liquid_stripes_enable_opacity_map = true
+shader_parameter/liquid_stripes_opacity_texture = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/liquid_stripes_opacity_type = 0
 shader_parameter/liquid_stripes_opacity_rotation_degrees = 0.0
 shader_parameter/liquid_stripes_opacity_scale = 1.0
 shader_parameter/liquid_stripes_opacity_smoothing = 0.5
