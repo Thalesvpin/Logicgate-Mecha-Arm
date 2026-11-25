@@ -33,6 +33,13 @@ func _ready() -> void:
 	#background.material = bg_shader
 	pass
 
+func reset_items() -> void:
+	drawn.clear()
+	for child in background.get_children():
+		child.queue_free()
+	for child in icon_holder.get_children():
+		child.queue_free()
+
 func randomize_pack() -> void:
 	var chance = Global.random.next() % 100
 	if chance < 15:
