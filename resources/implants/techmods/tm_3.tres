@@ -15,7 +15,7 @@ metadata/_custom_type_script = "uid://cvla25wgnutm8"
 [sub_resource type="Resource" id="Resource_0sr5w"]
 script = ExtResource("4_ryrt6")
 pulse_index = 2
-chance = 100
+chance = 40
 metadata/_custom_type_script = "uid://o1nr0uqt4xgo"
 
 [sub_resource type="Resource" id="Resource_hvo2c"]

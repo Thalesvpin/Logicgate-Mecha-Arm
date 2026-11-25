@@ -12,7 +12,7 @@
 [sub_resource type="Resource" id="Resource_qaxau"]
 script = ExtResource("2_js0my")
 gate_type = 7
-compared_value = 3
+compared_value = 5
 metadata/_custom_type_script = "uid://ttahp22h6pfp"
 
 [sub_resource type="Resource" id="Resource_ikjo6"]
@@ -55,7 +55,7 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 script = ExtResource("3_c4bdw")
 id = 2
 name = "Gate Dmg"
-description = "caso o seu Circuito tenha exatamente X Portas Lógicas, todo Dano infligido sobre os inimigos neste Turno é triplicado. Esse efeito só acontece uma única vez durante uma Batalha."
+description = "caso o seu Circuito tenha exatamente 5 Portas Lógicas, todo Dano infligido sobre os inimigos neste Turno é triplicado. Esse efeito só acontece uma única vez durante uma Batalha."
 texture = ExtResource("4_sgwbv")
 rarity = 2
 config = Array[ExtResource("4_uhuu7")]([SubResource("Resource_ssc3c"), SubResource("Resource_13s0i")])

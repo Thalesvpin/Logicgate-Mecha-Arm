@@ -21,6 +21,7 @@ metadata/_custom_type_script = "uid://baqoni5l2stja"
 
 [sub_resource type="Resource" id="Resource_a7lv4"]
 script = ExtResource("6_5xuah")
+amount = 1
 metadata/_custom_type_script = "uid://bsma7115xysdu"
 
 [sub_resource type="Resource" id="Resource_ogk28"]
@@ -39,7 +40,7 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 script = ExtResource("7_rp1cn")
 id = 42
 name = "bio hack 42"
-description = "+X de Durabilidade e Mitigação de Dano dos Escudos."
+description = "+1 de Durabilidade e +10% de Mitigação de Dano dos Escudos."
 type = 1
 texture = ExtResource("8_owhjj")
 config = Array[ExtResource("3_6fxnl")]([SubResource("Resource_3q7da")])

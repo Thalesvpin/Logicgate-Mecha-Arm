@@ -16,7 +16,7 @@ metadata/_custom_type_script = "uid://cvla25wgnutm8"
 script = ExtResource("5_cd7ov")
 amount = 200
 mode = 1
-limit = 200
+limit = 400
 metadata/_custom_type_script = "uid://qf22s6n7n8wj"
 
 [sub_resource type="Resource" id="Resource_mbutt"]
@@ -29,7 +29,7 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 script = ExtResource("6_ij547")
 id = 23
 name = "bio hack 23"
-description = "quando ativado, instantaneamente ganhe o dobro do seu Dinheiro (limitado a ganhar, no máximo, $X). Pode ser ativado até 1 vez (por padrão)."
+description = "quando ativado, instantaneamente ganhe o dobro do seu Dinheiro (limitado a ganhar, no máximo, $400). Pode ser ativado até 1 vez (por padrão)."
 type = 1
 texture = ExtResource("7_aj127")
 rarity = 1

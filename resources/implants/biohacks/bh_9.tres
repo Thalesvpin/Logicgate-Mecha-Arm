@@ -33,7 +33,5 @@ type = 1
 texture = ExtResource("7_i8dcp")
 consumable = true
 uses_amount = 3
-effect = Array[ExtResource("4_7nm7x")]([SubResource("Resource_m8er1")])
-conditions = Array[ExtResource("1_fea3c")]([SubResource("Resource_jcl8f")])
 config = Array[ExtResource("3_c87wj")]([SubResource("Resource_sj4r1")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

@@ -22,7 +22,9 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 [resource]
 script = ExtResource("7_0hfd6")
 id = 64
-description = "No início de cada Batalha, um Bio Hack aleatório é desabilitado, e um outro Bio Hack aleatório tem seu efeito dobrado, até o final da Batalha. Este Bio Hack pode ser vendido a qualquer momento durante uma Batalha para remover este efeito, fazendo com que os dois Bio Hacks afetados voltem ao normal."
+name = "bio hack 64"
+description = "Um Bio Hack aleatório tem seu efeito dobrado por batalha. Este Bio Hack pode ser vendido a qualquer momento durante uma Batalha para remover os efeitos"
+description_corrupted = "Um outro Bio Hack aleatório é desabilitado por batalha"
 type = 1
 rarity = 3
 corrupted = true

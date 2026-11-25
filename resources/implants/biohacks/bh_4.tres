@@ -13,22 +13,22 @@
 script = ExtResource("2_fpuuu")
 metadata/_custom_type_script = "uid://cvla25wgnutm8"
 
-[sub_resource type="Resource" id="Resource_q6k1v"]
+[sub_resource type="Resource" id="Resource_wsid6"]
 script = ExtResource("5_3la5f")
 amount = -10.0
 is_permanent = true
 metadata/_custom_type_script = "uid://byl7rod47gfwb"
 
-[sub_resource type="Resource" id="Resource_demv2"]
+[sub_resource type="Resource" id="Resource_5fu87"]
 script = ExtResource("6_j6xw3")
 amount = 10.0
 is_permanent = true
 metadata/_custom_type_script = "uid://biswuy47k6e35"
 
-[sub_resource type="Resource" id="Resource_i3kok"]
+[sub_resource type="Resource" id="Resource_u6jre"]
 script = ExtResource("3_0wy2p")
 trigger = 1
-effect = Array[ExtResource("4_o2qeu")]([SubResource("Resource_q6k1v"), SubResource("Resource_demv2")])
+effect = Array[ExtResource("4_o2qeu")]([SubResource("Resource_wsid6"), SubResource("Resource_5fu87")])
 conditions = Array[ExtResource("1_d7j11")]([SubResource("Resource_hco57")])
 metadata/_custom_type_script = "uid://bkcbldakg52tc"
 
@@ -36,11 +36,11 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 script = ExtResource("7_weh3a")
 id = 4
 name = "Marca da Besta"
-description = "no fim de toda Batalha, ganhe +Y% pontos de Dano Base permanentemente."
-description_corrupted = "no fim de toda Batalha, perca -X% de Vida Máxima permanentemente"
+description = "no fim de toda Batalha, ganhe +10% pontos de Dano Base permanentemente."
+description_corrupted = "no fim de toda Batalha, perca -10% de Vida Máxima permanentemente"
 type = 1
 texture = ExtResource("8_q6k1v")
 rarity = 2
 corrupted = true
-config = Array[ExtResource("3_0wy2p")]([SubResource("Resource_i3kok")])
+config = Array[ExtResource("3_0wy2p")]([SubResource("Resource_u6jre")])
 metadata/_custom_type_script = "uid://bljex6smxx3gr"

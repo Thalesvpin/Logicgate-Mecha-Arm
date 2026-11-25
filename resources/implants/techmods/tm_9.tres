@@ -10,12 +10,12 @@
 
 [sub_resource type="Resource" id="Resource_j36ua"]
 script = ExtResource("2_wu4fs")
-gate = 3
+gate = 6
 metadata/_custom_type_script = "uid://pandlhx2qcv2"
 
 [sub_resource type="Resource" id="Resource_wvw2d"]
 script = ExtResource("5_j36ua")
-amount = 10.0
+amount = 20.0
 metadata/_custom_type_script = "uid://dabm4854t5omc"
 
 [sub_resource type="Resource" id="Resource_lts4c"]
@@ -41,7 +41,7 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 script = ExtResource("4_j36ua")
 id = 9
 name = "tech mod 9"
-description = "cada Porta X que o jogador adiciona ao Circuito aumenta os Pontos de Cura ganhos em +X% quando a Ação de Cura é executada neste Turno."
+description = "cada Porta XNOR que o jogador adiciona ao Circuito aumenta os Pontos de Cura ganhos em +20% quando a Ação de Cura é executada neste Turno."
 texture = ExtResource("5_ioa6o")
 rarity = 1
 config = Array[ExtResource("2_ioa6o")]([SubResource("Resource_lts4c"), SubResource("Resource_g5rry")])

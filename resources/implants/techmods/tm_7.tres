@@ -10,12 +10,12 @@
 
 [sub_resource type="Resource" id="Resource_e4srk"]
 script = ExtResource("2_o355x")
-gate = 2
+gate = 5
 metadata/_custom_type_script = "uid://pandlhx2qcv2"
 
 [sub_resource type="Resource" id="Resource_gtatl"]
 script = ExtResource("5_xo2qt")
-amount = 5.0
+amount = 15.0
 metadata/_custom_type_script = "uid://bfbbwqg3h5ki8"
 
 [sub_resource type="Resource" id="Resource_a7lv4"]
@@ -46,7 +46,7 @@ metadata/_custom_type_script = "uid://bkcbldakg52tc"
 script = ExtResource("4_xo2qt")
 id = 7
 name = "tech mod 7"
-description = "cada Porta X que o jogador adiciona ao Circuito aumenta o Dano Crítico em +X% neste Turno."
+description = "cada Porta XOR que o jogador adiciona ao Circuito aumenta o Dano Crítico em +15% neste Turno."
 texture = ExtResource("5_o7ebn")
 rarity = 1
 config = Array[ExtResource("2_o7ebn")]([SubResource("Resource_a7lv4"), SubResource("Resource_bl63h")])
