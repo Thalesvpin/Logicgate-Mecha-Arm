@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d2wxpuaj88jlh"]
 
 [ext_resource type="Script" uid="uid://b84g2j5iwlbtv" path="res://scripts/execution_panel.gd" id="1_mufj8"]
-[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="3_e6qwf"]
+[ext_resource type="PackedScene" uid="uid://cwjqlmpqlwy24" path="res://scenes/buttons/run_btn.tscn" id="4_b3avc"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="4_e6qwf"]
 [ext_resource type="Shader" uid="uid://ddtcjrx2hj74g" path="res://shaders/texture_progress.gdshader" id="4_tosqn"]
 [ext_resource type="PackedScene" uid="uid://c50wi134ugf4" path="res://scenes/buttons/info_btn.tscn" id="5_e6qwf"]
@@ -1099,12 +1099,8 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_gtatl")
 
-[node name="RunBtn" parent="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader" unique_id=1797500818 instance=ExtResource("3_e6qwf")]
-show_behind_parent = true
-custom_minimum_size = Vector2(149, 71)
-custom_maximum_size = Vector2(149, 151)
+[node name="RunBtn" parent="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader" unique_id=1465875356 instance=ExtResource("4_b3avc")]
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="InfoBtn" parent="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer" unique_id=160565505 instance=ExtResource("5_e6qwf")]
 layout_mode = 2
