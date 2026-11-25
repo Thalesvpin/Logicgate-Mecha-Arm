@@ -75,6 +75,7 @@ func update(animate: bool = false) -> void:
 	stats = enemy.stats
 	set_health_value(stats[Stats.List.CURRENT_HEALTH], animate)
 	set_shield_value(stats[Stats.List.CURRENT_SHIELD])
+	set_turn_idx()
 	
 	#set_afflicted_element(stats[Stats.List.CURRENT_AFFLICTED_ELEMENT], enemy['afflicted_count'])
 	#set_elemental(stats[Stats.List.CURRENT_ELEMENTALS], enemy['elemental_lvl'])
@@ -112,6 +113,9 @@ func progress_bar_animation(bar: Node, new_value: int, callback = null) -> void:
 	tween.tween_property(bar, 'value', new_value, progress_bar_tween_duration)
 	if callback != null:
 		tween.tween_callback(callback)
+
+func set_turn_idx() -> void:
+	turn_index_label.text = '%d' % (Global.turn_manager.turn_sequence.find(enemy))
 
 func set_health_value(value: float, animate: bool = false) -> void:
 	var percentage = (value/stats[Stats.List.MAX_HEALTH])*100
