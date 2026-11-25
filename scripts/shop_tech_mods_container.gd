@@ -46,6 +46,8 @@ func get_random_implant(last = null) -> Implant:
 	else:
 		list = Global.tm_legendary
 	
+	if list.is_empty():
+		return result
 	chance  = Global.random.next() % list.size()
 	if last == list[chance]:
 		result = get_random_implant(last)

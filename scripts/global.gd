@@ -260,8 +260,9 @@ func sort_rarity(path: String) -> void:
 	var file := (dir.get_next())
 	var implant
 	while file != "":
-		if !dir.current_is_dir() && file.ends_with(".tres"):
-			implant = load(path.path_join(file))
+		var resource_file := file.trim_suffix(".remap")
+		if !dir.current_is_dir() && resource_file.ends_with(".tres"):
+			implant = load(path.path_join(resource_file))
 			if implant is Implant:
 				if implant.corrupted:
 					match implant.rarity:
@@ -342,6 +343,8 @@ func get_random_implant(exclude: Array = [], type: Implant.Type = -1, attempts: 
 	else:
 		list = all_legendary if type == -1 else tm_legendary if type == Implant.Type.TECH_MOD else tm_legendary
 	
+	if list.is_empty():
+		return result
 	chance  = Global.random.next() % list.size()
 	if exclude.has(list[chance]):
 		if attempts > 10:
@@ -392,8 +395,9 @@ func load_enemies() -> void:
 	var file := (dir.get_next())
 	var enemy
 	while file != "":
-		if !dir.current_is_dir() && file.ends_with(".tres"):
-			enemy = load(enemies_path.path_join(file))
+		var resource_file := file.trim_suffix(".remap")
+		if !dir.current_is_dir() && resource_file.ends_with(".tres"):
+			enemy = load(enemies_path.path_join(resource_file))
 			if !enemy.is_boss:
 				minion_enemies.append(enemy)
 				match enemy.status_preset:

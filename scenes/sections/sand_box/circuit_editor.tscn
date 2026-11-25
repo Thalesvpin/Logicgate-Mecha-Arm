@@ -270,6 +270,7 @@ shader_parameter/show_luminance_heatmap = false
 shader_parameter/channel_isolation = 0
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tjqua"]
+resource_local_to_scene = true
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]

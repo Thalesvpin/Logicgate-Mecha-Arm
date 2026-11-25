@@ -140,10 +140,14 @@ func get_random_enemies(amount:int, unique:bool = true, boss:bool = false, attem
 	for i in range(amount):
 		var chance = Global.random.next()
 		if boss:
+			if Global.boss_enemies.is_empty():
+				return result
 			enemy = Global.boss_enemies[chance%Global.boss_enemies.size()]
 		else:
 			match Global.run_stats.current_battle % 3:
 				1:
+					if Global.weak_enemies.is_empty():
+						return result
 					if Global.run_stats.current_firewall == 1:
 						chance = chance % Global.weak_enemies.size()
 						enemy = Global.weak_enemies[chance]

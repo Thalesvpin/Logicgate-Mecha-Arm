@@ -5340,6 +5340,7 @@ colors = PackedColorArray(0, 0, 0, 1, 1, 0, 0, 1, 0.73194927, 0.22874692, 1, 1)
 gradient = SubResource("Gradient_mdhfq")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_mjyp6"]
+resource_local_to_scene = true
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0vipy"]
