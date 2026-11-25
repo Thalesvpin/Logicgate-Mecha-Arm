@@ -145,7 +145,6 @@ visible = false
 layout_mode = 2
 
 [node name="MiniTMBG" parent="Background" unique_id=1833758582 instance=ExtResource("3_f17gs")]
-visible = false
 layout_mode = 2
 
 [node name="MiniBHBG" parent="Background" unique_id=1374437363 instance=ExtResource("4_51eft")]
@@ -165,6 +164,7 @@ visible = false
 layout_mode = 2
 
 [node name="CorruptedMixBG" parent="Background" unique_id=824652736 instance=ExtResource("8_d4gmy")]
+visible = false
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=232244669]
