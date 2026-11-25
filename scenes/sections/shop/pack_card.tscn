@@ -149,6 +149,7 @@ visible = false
 layout_mode = 2
 
 [node name="MiniBHBG" parent="Background" unique_id=1374437363 instance=ExtResource("4_51eft")]
+visible = false
 layout_mode = 2
 
 [node name="BigMixBG" parent="Background" unique_id=1105738710 instance=ExtResource("5_gqn2p")]
