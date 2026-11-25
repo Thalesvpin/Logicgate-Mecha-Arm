@@ -52,18 +52,18 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ContinueBtn" parent="Background/VBoxContainer/VBoxContainer" unique_id=1797500818 instance=ExtResource("2_2wrho")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
+custom_minimum_size = Vector2(104, 37)
+custom_maximum_size = Vector2(104, 37)
 layout_mode = 2
 
 [node name="CopySeed" parent="Background/VBoxContainer/VBoxContainer" unique_id=1480534752 instance=ExtResource("2_2wrho")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
+custom_minimum_size = Vector2(104, 37)
+custom_maximum_size = Vector2(104, 37)
 layout_mode = 2
 
 [node name="MainMenu" parent="Background/VBoxContainer/VBoxContainer" unique_id=1428896820 instance=ExtResource("2_2wrho")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
+custom_minimum_size = Vector2(104, 37)
+custom_maximum_size = Vector2(104, 37)
 layout_mode = 2
 
 [node name="ContinueBtn2" type="TextureButton" parent="Background/VBoxContainer/VBoxContainer" unique_id=1505107572]

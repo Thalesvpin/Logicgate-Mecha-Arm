@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://cjoedcy0dgx2g" path="res://scenes/sections/game_over_screen.tscn" id="14_axant"]
 [ext_resource type="Script" uid="uid://cqg5fsucajwhn" path="res://scripts/turn_manager.gd" id="15_cac7a"]
 [ext_resource type="PackedScene" uid="uid://e736fy4hsxec" path="res://scenes/menus/pause_menu.tscn" id="16_hl2y5"]
+[ext_resource type="PackedScene" uid="uid://c1gmf20ahycwb" path="res://scenes/menus/info_menu.tscn" id="17_8auva"]
 
 [node name="GameBoard" type="Control" unique_id=862493716]
 propagate_maximum_size = true
@@ -151,5 +152,9 @@ grow_horizontal = 1
 grow_vertical = 1
 
 [node name="PauseMenu" parent="." unique_id=1725882964 instance=ExtResource("16_hl2y5")]
+visible = false
+layout_mode = 1
+
+[node name="InfoMenu" parent="." unique_id=170968791 instance=ExtResource("17_8auva")]
 visible = false
 layout_mode = 1

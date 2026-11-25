@@ -1114,4 +1114,5 @@ layout_mode = 2
 
 [connection signal="button_down" from="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader/RunBtn" to="." method="_on_run_btn_button_down"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/ProgressShader/RunBtn" to="." method="_on_run_btn_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/InfoBtn" to="." method="_on_info_btn_button_up"]
 [connection signal="button_up" from="MarginContainer/VBoxContainer/Control/BtnsGroup/VBoxContainer/PauseBtn" to="." method="_on_pause_btn_button_up"]

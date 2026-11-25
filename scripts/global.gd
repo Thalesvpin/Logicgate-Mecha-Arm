@@ -185,8 +185,14 @@ func _ready() -> void:
 	load_enemies()
 	pass
 
-func pause_game(value: bool) -> void:
+func pause_game(value: bool = true) -> void:
 	game_board.pause_game(value)
+
+func open_pause_menu(value: bool = true) -> void:
+	game_board.open_pause_menu(value)
+
+func open_info_screen(value: bool = true) -> void:
+	game_board.open_info_screen(value)
 
 func dec_to_bin(decimal: int) -> int:
 	var result := 0

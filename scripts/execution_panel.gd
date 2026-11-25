@@ -120,4 +120,9 @@ func _on_run_btn_button_up() -> void:
 	stop_timer()
 
 func _on_pause_btn_button_up() -> void:
-	Global.pause_game(true)
+	Global.pause_game()
+	Global.open_pause_menu()
+
+
+func _on_info_btn_button_up() -> void:
+	Global.open_info_screen(true)
