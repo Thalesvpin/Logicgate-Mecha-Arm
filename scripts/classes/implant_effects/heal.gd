@@ -12,14 +12,17 @@ enum Mode {PERCENT, FLAT}
 
 func apply(_context = null) -> void:
 	var heal_amount := amount
+	var max_health = Global.run_stats.player_stats[Stats.List.MAX_HEALTH]
+	var base_heal = Global.run_stats.player_stats[Stats.List.BASE_HEAL]
+	var extra_base_heal = Global.implant_manager.extra_stats[Stats.List.BASE_HEAL]
 	if heal_amount == 0:
-		heal_amount = Global.run_stats.player_stats[Stats.List.BASE_HEAL] + Global.implant_manager.extra_stats[Stats.List.BASE_HEAL]
+		heal_amount = int(max_health * (base_heal + extra_base_heal)/100)
 	else:
 		match mode:
 			Mode.FLAT:
 				heal_amount = int(heal_amount)
 			Mode.PERCENT:
-				heal_amount = int(Global.run_stats.player_stats[Stats.List.MAX_HEALTH] * heal_amount / 100.0)
+				heal_amount = int(max_health * heal_amount / 100.0)
 	add_to_player_stats(Stats.List.CURRENT_HEALTH, heal_amount, greater, Global.run_stats.player_stats[Stats.List.MAX_HEALTH])
 	Global.player_stats_bar.heal(heal_amount)
 	
