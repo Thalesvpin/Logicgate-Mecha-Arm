@@ -136,7 +136,6 @@ layout_mode = 2
 
 [node name="GatesSelector" parent="GameplayElements/VSplit/baixo/BotHSplit" unique_id=1904067160 instance=ExtResource("1_tqoos")]
 layout_mode = 2
-size_flags_stretch_ratio = 0.0
 
 [node name="ActionsHandler" type="Node" parent="." unique_id=330955696]
 script = ExtResource("12_w5uqb")
