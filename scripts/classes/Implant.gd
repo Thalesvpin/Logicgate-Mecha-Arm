@@ -7,6 +7,7 @@ enum Type {TECH_MOD=0, BIO_HACK=1}
 @export var id: int
 @export var name: String
 @export_multiline var description: String
+@export_multiline var description_corrupted: String
 @export_enum('Tech Mod', 'Bio Hack') var type: int
 @export var texture: Texture2D
 @export var rarity: Global.Rarity

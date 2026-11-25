@@ -185,7 +185,7 @@ func enable() -> void:
 
 func _make_custom_tooltip(for_text: String) -> Object:
 	var _tooltip = tooltip.instantiate()
-	_tooltip.config("\t"+for_text)
+	_tooltip.config(resource)
 	return _tooltip
 
 func _on_resized() -> void:

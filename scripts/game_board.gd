@@ -233,6 +233,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("1"):
 		Global.implant_manager.add_tech_mod(TM_3)
+		Global.implant_manager.add_bio_hack(BH_4)
 	if event.is_action_pressed("3"):
 		EventBus.self_damage.emit()
 	
@@ -248,3 +249,8 @@ const TM_42 = preload("uid://dcq1ffaygsw7b")
 #clone effect
 const BH_64 = preload("uid://bn6hkf2voidul")
 const TM_16 = preload("uid://c608np6txr6nk")
+
+
+
+
+const BH_4 = preload("uid://c60ukh26kfenp")

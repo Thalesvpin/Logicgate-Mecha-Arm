@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bus2twh8u8sjx"]
 
-[ext_resource type="Script" uid="uid://blm6qwi254e1f" path="res://scripts/custom_tooltip.gd" id="1_cxexl"]
+[ext_resource type="Script" uid="uid://dwahycrh12gwk" path="res://scripts/implant_tooltip.gd" id="1_ay5pv"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="2_ay5pv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gtatl"]
@@ -15,6 +15,7 @@ gradient = SubResource("Gradient_26ilv")
 shader = ExtResource("2_ay5pv")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_pae1i")
 shader_parameter/gradient_type = 1
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 0.5
@@ -34,6 +35,8 @@ shader_parameter/base_color_saturation = 1.0
 shader_parameter/base_color_hue_shift_speed = 0.0
 shader_parameter/enable_overlay = false
 shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_ignore_base_distortion = true
+shader_parameter/overlay_ignore_base_color_grading = false
 shader_parameter/overlay_gradient_type = 2
 shader_parameter/overlay_gradient_rotation_degrees = 0.0
 shader_parameter/overlay_gradient_scale = 1.0
@@ -60,10 +63,14 @@ shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(0, 0, 0, 0)
 shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = false
+shader_parameter/outline_ignore_base_distortion = false
+shader_parameter/outline_ignore_base_color_grading = true
 shader_parameter/outline_width = 2.0
 shader_parameter/outline_blur = 0.0
+shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -182,7 +189,7 @@ custom_maximum_size = Vector2(432, -1)
 offset_right = 432.0
 offset_bottom = 386.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_gtatl")
-script = ExtResource("1_cxexl")
+script = ExtResource("1_ay5pv")
 
 [node name="Background" type="ColorRect" parent="." unique_id=2002982610]
 material = SubResource("ShaderMaterial_bv6uq")
@@ -263,6 +270,7 @@ fit_content = true
 autowrap_mode = 2
 
 [node name="DescriptionCorrupted" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=301002370]
+visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 0
@@ -278,6 +286,7 @@ custom_maximum_size = Vector2(-1, 5)
 layout_mode = 2
 
 [node name="StatValue" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1765964338]
+visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 0
@@ -289,6 +298,7 @@ autowrap_mode = 2
 horizontal_alignment = 2
 
 [node name="StatValueCorrupted" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1748026678]
+visible = false
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_vertical = 0
