@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://pe75kh038ap6"]
+
+[ext_resource type="Shader" uid="uid://b26lv7m1ofwld" path="res://shaders/checkboardedges.gdshader" id="1_7dnk7"]
+[ext_resource type="FontFile" uid="uid://dpg6g0sfuslpi" path="res://fonts/VileR Oldschool Fonts/windows_command_prompt.ttf" id="2_paif6"]
+[ext_resource type="Texture2D" uid="uid://bgkbo1o850p45" path="res://assets/pixeltriangle.png" id="3_4ke35"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omff0"]
+bg_color = Color(0.80784315, 0.8156863, 0.8117647, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgdku"]
+bg_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gvopa"]
+bg_color = Color(0.80784315, 0.8156863, 0.8117647, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6fasb"]
+shader = ExtResource("1_7dnk7")
+shader_parameter/square_size = 3.000000095
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/match_rect_color_1 = true
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 0)
+shader_parameter/edge_only = true
+shader_parameter/edge_top = 3.0
+shader_parameter/edge_bottom = 3.0
+shader_parameter/edge_left = 3.0
+shader_parameter/edge_right = 3.0
+shader_parameter/cutout_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_a7lv4"]
+base_font = ExtResource("2_paif6")
+variation_transform = Transform2D(1.06, 0, 0, 1.06, 0, 0)
+spacing_glyph = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_oy0is"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 30
+font_color = Color(0, 0, 0, 1)
+
+[node name="PanelContainer2" type="MarginContainer" unique_id=365069802]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1882.0
+offset_bottom = -1042.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="PanelContainer" parent="." unique_id=400580755]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_omff0")
+
+[node name="InnerLayer" type="MarginContainer" parent="." unique_id=1206455338]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="InnerLayer" unique_id=401779218]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dgdku")
+
+[node name="PanelContainer3" type="PanelContainer" parent="InnerLayer" unique_id=178982284]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gvopa")
+
+[node name="InnerLayer2B" type="MarginContainer" parent="." unique_id=1856764854]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, -1)
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="DotsEdges" type="ColorRect" parent="InnerLayer2B" unique_id=740086688]
+material = SubResource("ShaderMaterial_6fasb")
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="." unique_id=1746374716]
+visible = false
+texture_filter = 1
+layout_mode = 2
+offset_transform_enabled = true
+text = "ATIVAR"
+label_settings = SubResource("LabelSettings_oy0is")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=460322423]
+modulate = Color(0, 0, 0, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(22, 22)
+custom_maximum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+texture = ExtResource("3_4ke35")
+stretch_mode = 5

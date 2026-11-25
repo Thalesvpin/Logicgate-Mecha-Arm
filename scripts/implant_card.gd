@@ -117,6 +117,7 @@ func set_template(template: int):
 	if template == 3:
 		compact_version.show()
 		extended_versions.hide()
+	update_minimum_size()
 
 func open_radial_menu() -> void:
 	var radial_menu = RADIAL_MENU.instantiate()
@@ -189,11 +190,11 @@ func _make_custom_tooltip(for_text: String) -> Object:
 
 func _on_resized() -> void:
 	if is_loaded:
-		if size.x > 320:
+		if size.x > 350:
 			set_template(1)
-		if size.x <= 320:
+		if size.x <= 350:
 			set_template(2)
-		if size.x <= 284:
+		if size.x <= 320:
 			set_template(3)
 
 func _on_activator_btn_button_up() -> void:
