@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_ypclj"]
 [ext_resource type="PackedScene" uid="uid://n0to1icpi65j" path="res://scenes/sections/shop/packs/backgrounds/mini_tmbg.tscn" id="3_f17gs"]
 [ext_resource type="PackedScene" uid="uid://dyyvg0g1cohxd" path="res://scenes/sections/shop/packs/backgrounds/mini_bhbg.tscn" id="4_51eft"]
-[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="4_q8owf"]
 [ext_resource type="PackedScene" uid="uid://b1r4hatkdn6jg" path="res://scenes/sections/shop/packs/backgrounds/big_mix_bg.tscn" id="5_gqn2p"]
 [ext_resource type="PackedScene" uid="uid://jdur5fb4brjo" path="res://scenes/sections/shop/packs/backgrounds/big_tmbg.tscn" id="6_f0gy6"]
 [ext_resource type="PackedScene" uid="uid://butgrhxumarmx" path="res://scenes/sections/shop/packs/backgrounds/big_bhbg.tscn" id="7_dol7n"]
@@ -19,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://cjqkwge3hkqt2" path="res://scenes/sections/shop/packs/icons/big_tm_icon.tscn" id="14_ggd2o"]
 [ext_resource type="PackedScene" uid="uid://b0w3xksyb2vyw" path="res://scenes/sections/shop/packs/icons/big_bh_icon.tscn" id="15_78wax"]
 [ext_resource type="PackedScene" uid="uid://bwm0lu08jd05m" path="res://scenes/sections/shop/packs/icons/corrupted_mix_icon.tscn" id="16_rxnwj"]
+[ext_resource type="PackedScene" uid="uid://b1yr8boobx6ea" path="res://scenes/buttons/open_pack_btn.tscn" id="18_2mo74"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -256,10 +256,9 @@ scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BuyBtn" parent="MarginContainer/VBoxContainer" unique_id=1797500818 instance=ExtResource("4_q8owf")]
-custom_minimum_size = Vector2(134, 60)
-custom_maximum_size = Vector2(134, 60)
+[node name="BuyBtn" parent="MarginContainer/VBoxContainer" unique_id=916805194 instance=ExtResource("18_2mo74")]
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="BuyBtn2" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=819162156]
 visible = false

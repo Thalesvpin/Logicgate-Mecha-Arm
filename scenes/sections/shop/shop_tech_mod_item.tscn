@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bl0opshwfo4n7" path="res://scripts/shop_tech_mod_item.gd" id="1_juyk0"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="2_1xo13"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="3_wy4nr"]
-[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="3_xicvb"]
+[ext_resource type="PackedScene" uid="uid://cv37rufeds3j4" path="res://scenes/buttons/shop_techmod_buy_btn.tscn" id="4_1xo13"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a7lv4"]
 
@@ -365,9 +365,7 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2062197333]
 layout_mode = 2
 
-[node name="BuyBtn" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1797500818 instance=ExtResource("3_xicvb")]
-custom_minimum_size = Vector2(104, 53)
-custom_maximum_size = Vector2(104, 53)
+[node name="BuyBtn" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=78649431 instance=ExtResource("4_1xo13")]
 layout_mode = 2
 
 [node name="BuyBtn2" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1892759312]

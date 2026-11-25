@@ -59,14 +59,14 @@ shader_parameter/edge_left = 3.0
 shader_parameter/edge_right = 3.0
 shader_parameter/cutout_color = Color(0, 0, 0, 0)
 
-[sub_resource type="FontVariation" id="FontVariation_a7lv4"]
+[sub_resource type="FontVariation" id="FontVariation_fun86"]
 base_font = ExtResource("3_yoc5a")
 variation_transform = Transform2D(1.06, 0, 0, 1.06, 0, 0)
 spacing_glyph = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_kf6tc"]
-font = SubResource("FontVariation_a7lv4")
-font_size = 30
+font = SubResource("FontVariation_fun86")
+font_size = 28
 font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnty3"]
@@ -80,8 +80,8 @@ expand_margin_left = 1.0
 expand_margin_top = 1.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_oxtry"]
-font = SubResource("FontVariation_a7lv4")
-font_size = 30
+font = SubResource("FontVariation_fun86")
+font_size = 28
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aaut4"]
 bg_color = Color(0.43529412, 0.44705883, 0.4392157, 1)
@@ -110,8 +110,8 @@ border_width_bottom = 2
 border_color = Color(0.88235295, 0.8784314, 0.8980392, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_edi8c"]
-font = SubResource("FontVariation_a7lv4")
-font_size = 30
+font = SubResource("FontVariation_fun86")
+font_size = 28
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pae1i"]
 bg_color = Color(0.6666667, 0.67058825, 0.6666667, 1)
@@ -138,8 +138,8 @@ border_width_bottom = 2
 border_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_eoch2"]
-font = SubResource("FontVariation_a7lv4")
-font_size = 30
+font = SubResource("FontVariation_fun86")
+font_size = 28
 font_color = Color(0.54509807, 0.5529412, 0.54901963, 1)
 stacked_shadow_count = 2
 stacked_shadow_0/color = Color(0.43137255, 0.43137255, 0.43137255, 1)
@@ -149,8 +149,8 @@ stacked_shadow_1/color = Color(0.8235294, 0.8235294, 0.8235294, 1)
 stacked_shadow_1/outline_size = 8
 
 [node name="BuyBtn" type="Button" unique_id=1380488110]
-custom_minimum_size = Vector2(173, 71)
-custom_maximum_size = Vector2(173, 71)
+custom_minimum_size = Vector2(161, 47)
+custom_maximum_size = Vector2(161, 47)
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxEmpty_mjyp6")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_eetg5")

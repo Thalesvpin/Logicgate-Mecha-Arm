@@ -402,8 +402,8 @@ metadata/_live_palette_bindings = {
 font_size = 34
 
 [node name="RerollCard" type="PanelContainer" unique_id=357678371]
-custom_minimum_size = Vector2(175, 250)
-custom_maximum_size = Vector2(175, 250)
+custom_minimum_size = Vector2(203, 250)
+custom_maximum_size = Vector2(180, 250)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -460,6 +460,7 @@ size_flags_vertical = 3
 
 [node name="BuyBtn" parent="MarginContainer/VBoxContainer" unique_id=1380488110 instance=ExtResource("4_7cj1s")]
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="TextureButton2" type="TextureButton" parent="MarginContainer/VBoxContainer" unique_id=979949122]
 visible = false
