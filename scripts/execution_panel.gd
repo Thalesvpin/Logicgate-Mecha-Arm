@@ -125,4 +125,5 @@ func _on_pause_btn_button_up() -> void:
 
 
 func _on_info_btn_button_up() -> void:
+	Global.pause_game()
 	Global.open_info_screen(true)

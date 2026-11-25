@@ -469,3 +469,5 @@ layout_mode = 2
 size_flags_horizontal = 4
 texture_normal = ExtResource("2_f6yic")
 stretch_mode = 0
+
+[connection signal="button_up" from="MarginContainer/VBoxContainer/BuyBtn" to="." method="_on_buy_btn_button_up"]

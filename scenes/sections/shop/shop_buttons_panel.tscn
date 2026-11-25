@@ -128,3 +128,7 @@ offset_top = 65.0
 offset_right = 453.0
 offset_bottom = 102.0
 texture_normal = ExtResource("1_a7046")
+
+[connection signal="button_up" from="Control/InfoBtn" to="." method="_on_info_btn_button_up"]
+[connection signal="button_up" from="Control/NextBattleBtn" to="." method="_on_next_battle_btn_button_up"]
+[connection signal="button_up" from="Control/PauseBtn" to="." method="_on_pause_btn_button_up"]

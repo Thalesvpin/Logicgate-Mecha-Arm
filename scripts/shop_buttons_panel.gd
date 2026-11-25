@@ -11,7 +11,9 @@ func _on_next_battle_btn_button_up() -> void:
 	EventBus.battle_started.emit()
 
 func _on_info_btn_button_up() -> void:
-	pass # Replace with function body.
+	Global.pause_game()
+	Global.open_info_screen(true)
 
 func _on_pause_btn_button_up() -> void:
 	Global.pause_game(true)
+	Global.open_pause_menu(true)
