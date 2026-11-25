@@ -18,16 +18,24 @@ noise = SubResource("FastNoiseLite_gtatl")
 seamless = true
 
 [sub_resource type="Gradient" id="Gradient_dvpkh"]
-offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.8, 1)
+colors = PackedColorArray(1, 0, 0, 1, 0.2946382, 3.218744e-07, 8.4228816e-08, 1, 1, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
 gradient = SubResource("Gradient_dvpkh")
+
+[sub_resource type="Curve" id="Curve_gtatl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5084175, 0.74336284), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_a7lv4"]
+curve = SubResource("Curve_gtatl")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gyjy2"]
 shader = ExtResource("1_dvpkh")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_fwtm1")
 shader_parameter/gradient_type = 1
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.4580000659951202
 shader_parameter/gradient_smoothing = 1.0000000475
@@ -78,12 +86,13 @@ shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = true
 shader_parameter/outline_ignore_base_distortion = true
 shader_parameter/outline_ignore_base_color_grading = true
-shader_parameter/outline_width = 4.00000019
+shader_parameter/outline_width = 6.000000285
 shader_parameter/outline_blur = 0.0
-shader_parameter/outline_sharpness = 0.7790000370025
+shader_parameter/outline_sharpness = 0.50000002375
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_a7lv4")
-shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_gradient_type = 4
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -91,7 +100,7 @@ shader_parameter/outline_gradient_offset = 0.0
 shader_parameter/outline_repeat_gradient = false
 shader_parameter/use_path_lut = false
 shader_parameter/enable_wobble = false
-shader_parameter/outline_wobble_amplitude = 0.0
+shader_parameter/outline_wobble_amplitude = 0.9430000447925
 shader_parameter/outline_wobble_frequency = 10.0
 shader_parameter/outline_wobble_speed = 1.0
 shader_parameter/enable_dash = false
@@ -102,7 +111,8 @@ shader_parameter/outline_dash_speed = 0.0
 shader_parameter/outline_fade_angle = 0.0
 shader_parameter/outline_fade_intensity = 0.0
 shader_parameter/outline_enable_pulsation = false
-shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_curve = SubResource("CurveTexture_a7lv4")
+shader_parameter/outline_animation_speed = 0.2000000095
 shader_parameter/outline_pulse_spatial_frequency = 0.0
 shader_parameter/outline_pulse_min_offset = -0.5
 shader_parameter/outline_pulse_max_offset = 0.5

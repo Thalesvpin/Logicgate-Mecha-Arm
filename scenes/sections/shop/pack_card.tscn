@@ -141,21 +141,27 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jdl66")
 
 [node name="MiniMixBG" parent="Background" unique_id=1386331461 instance=ExtResource("2_apndb")]
+visible = false
 layout_mode = 2
 
 [node name="MiniTMBG" parent="Background" unique_id=1833758582 instance=ExtResource("3_f17gs")]
+visible = false
 layout_mode = 2
 
 [node name="MiniBHBG" parent="Background" unique_id=1374437363 instance=ExtResource("4_51eft")]
+visible = false
 layout_mode = 2
 
 [node name="BigMixBG" parent="Background" unique_id=1105738710 instance=ExtResource("5_gqn2p")]
+visible = false
 layout_mode = 2
 
 [node name="BigTMBG" parent="Background" unique_id=2021017595 instance=ExtResource("6_f0gy6")]
+visible = false
 layout_mode = 2
 
 [node name="BigBHBG" parent="Background" unique_id=83565309 instance=ExtResource("7_dol7n")]
+visible = false
 layout_mode = 2
 
 [node name="CorruptedMixBG" parent="Background" unique_id=824652736 instance=ExtResource("8_d4gmy")]
