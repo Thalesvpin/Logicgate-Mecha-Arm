@@ -2,19 +2,55 @@
 
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="1_fa8fj"]
 
-[sub_resource type="Gradient" id="Gradient_vu2ws"]
+[sub_resource type="Gradient" id="Gradient_fa8fj"]
+offsets = PackedFloat32Array(0, 0.5874674, 1)
+colors = PackedColorArray(0.008039338, 0.1308085, 0.052332625, 1, 0.013999999, 0.2, 0.08840002, 1, 9.62615e-07, 0.6271962, 0.27730897, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_tqjf5"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vu2ws"]
+gradient = SubResource("Gradient_fa8fj")
+
+[sub_resource type="Gradient" id="Gradient_vu2ws"]
+offsets = PackedFloat32Array(0, 0.4, 0.9108635, 1)
+colors = PackedColorArray(0.08625621, 0.50561494, 0.26825547, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08625621, 0.50561494, 0.26825547, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
 gradient = SubResource("Gradient_vu2ws")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6efd5"]
+[sub_resource type="Gradient" id="Gradient_tj53q"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tqjf5"]
+gradient = SubResource("Gradient_tj53q")
+
+[sub_resource type="Gradient" id="Gradient_tqjf5"]
+offsets = PackedFloat32Array(0, 0.8, 1)
+colors = PackedColorArray(0.14509805, 0.8901961, 0.48235294, 1, 0, 0, 0, 1, 0.14509805, 0.8901961, 0.48235294, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6efd5"]
+gradient = SubResource("Gradient_tqjf5")
+
+[sub_resource type="Curve" id="Curve_5gl28"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5084175, 0.74336284), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_fdow2"]
+curve = SubResource("Curve_5gl28")
+
+[sub_resource type="Gradient" id="Gradient_io04r"]
+offsets = PackedFloat32Array(0.48746517, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.35660896, 0.57140344, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_vjjkp"]
+gradient = SubResource("Gradient_io04r")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_imyo1"]
 shader = ExtResource("1_fa8fj")
-shader_parameter/gradient_texture = SubResource("GradientTexture1D_tqjf5")
+shader_parameter/gradient_texture = SubResource("GradientTexture1D_vu2ws")
 shader_parameter/gradient_type = 1
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
-shader_parameter/gradient_scale = 1.0
-shader_parameter/gradient_smoothing = 0.5
-shader_parameter/gradient_offset = 0.0
+shader_parameter/gradient_scale = 1.4580000659951202
+shader_parameter/gradient_smoothing = 1.0000000475
+shader_parameter/gradient_offset = -0.11899991065250017
 shader_parameter/repeat_gradient = false
 shader_parameter/enable_pulsation = false
 shader_parameter/animation_speed = 1.0
@@ -30,6 +66,8 @@ shader_parameter/base_color_saturation = 1.0
 shader_parameter/base_color_hue_shift_speed = 0.0
 shader_parameter/enable_overlay = false
 shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_ignore_base_distortion = true
+shader_parameter/overlay_ignore_base_color_grading = true
 shader_parameter/overlay_gradient_type = 2
 shader_parameter/overlay_gradient_rotation_degrees = 0.0
 shader_parameter/overlay_gradient_scale = 1.0
@@ -56,11 +94,15 @@ shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(12, 12, 12, 12)
 shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = true
-shader_parameter/outline_width = 4.00000019
+shader_parameter/outline_ignore_base_distortion = true
+shader_parameter/outline_ignore_base_color_grading = true
+shader_parameter/outline_width = 6.000000285
 shader_parameter/outline_blur = 0.0
-shader_parameter/outline_sharpness = 0.7790000370025
+shader_parameter/outline_sharpness = 0.50000002375
 shader_parameter/outline_path_seam_offset = 0.0
-shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_6efd5")
+shader_parameter/outline_gradient_type = 4
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -68,7 +110,7 @@ shader_parameter/outline_gradient_offset = 0.0
 shader_parameter/outline_repeat_gradient = false
 shader_parameter/use_path_lut = false
 shader_parameter/enable_wobble = false
-shader_parameter/outline_wobble_amplitude = 0.0
+shader_parameter/outline_wobble_amplitude = 0.9430000447925
 shader_parameter/outline_wobble_frequency = 10.0
 shader_parameter/outline_wobble_speed = 1.0
 shader_parameter/enable_dash = false
@@ -79,7 +121,8 @@ shader_parameter/outline_dash_speed = 0.0
 shader_parameter/outline_fade_angle = 0.0
 shader_parameter/outline_fade_intensity = 0.0
 shader_parameter/outline_enable_pulsation = false
-shader_parameter/outline_animation_speed = 1.0
+shader_parameter/outline_pulse_curve = SubResource("CurveTexture_fdow2")
+shader_parameter/outline_animation_speed = 0.2000000095
 shader_parameter/outline_pulse_spatial_frequency = 0.0
 shader_parameter/outline_pulse_min_offset = -0.5
 shader_parameter/outline_pulse_max_offset = 0.5
@@ -111,26 +154,27 @@ shader_parameter/outline_color_contrast = 1.0
 shader_parameter/outline_color_saturation = 1.0
 shader_parameter/outline_color_hue_shift_speed = 0.0
 shader_parameter/enable_scanlines = false
-shader_parameter/scanline_base_only = false
-shader_parameter/scanline_blend_mode = 0
-shader_parameter/scanline_color = Color(0, 0, 0, 1)
-shader_parameter/scanline_density = 0.0
+shader_parameter/scanline_base_only = true
+shader_parameter/scanline_blend_mode = 3
+shader_parameter/scanline_color = Color(1, 1, 1, 1)
+shader_parameter/scanline_density = 200.0
 shader_parameter/scanline_thickness = 0.5
 shader_parameter/scanline_softness = 1.0
-shader_parameter/scanline_rotation = 0.0
+shader_parameter/scanline_rotation = 90.000004275
 shader_parameter/scanline_offset = 0.0
-shader_parameter/scanline_speed = 0.0
+shader_parameter/scanline_speed = 2.8110006085225
 shader_parameter/scanline_curvature = 0.0
 shader_parameter/scanline_flicker_speed = 0.0
 shader_parameter/scanline_flicker_intensity = 0.0
-shader_parameter/scanline_use_gradient = false
-shader_parameter/scanline_gradient_type = 0
+shader_parameter/scanline_use_gradient = true
+shader_parameter/scanline_gradient_texture = SubResource("GradientTexture1D_vjjkp")
+shader_parameter/scanline_gradient_type = 1
 shader_parameter/scanline_gradient_rotation_degrees = 0.0
 shader_parameter/scanline_gradient_scale = 1.0
 shader_parameter/scanline_gradient_smoothing = 0.5
 shader_parameter/scanline_gradient_offset = 0.0
 shader_parameter/scanline_repeat_gradient = false
-shader_parameter/scanline_opacity = 0.0
+shader_parameter/scanline_opacity = 0.5030000238925
 shader_parameter/scanline_enable_opacity_map = false
 shader_parameter/scanline_opacity_type = 2
 shader_parameter/scanline_opacity_rotation_degrees = 0.0
@@ -138,33 +182,35 @@ shader_parameter/scanline_opacity_scale = 1.0
 shader_parameter/scanline_opacity_smoothing = 0.5
 shader_parameter/scanline_opacity_offset = 0.0
 shader_parameter/scanline_opacity_repeat = false
-shader_parameter/enable_liquid_stripes = false
-shader_parameter/liquid_stripes_base_only = false
+shader_parameter/enable_liquid_stripes = true
+shader_parameter/liquid_stripes_base_only = true
 shader_parameter/liquid_stripes_blend_mode = 0
 shader_parameter/liquid_stripes_color = Color(0.59, 0.98, 0.69, 1)
 shader_parameter/liquid_stripes_bg_color = Color(0, 0, 0, 0)
 shader_parameter/liquid_stripes_rotation = 0.0
-shader_parameter/liquid_stripes_speed = 1.0
-shader_parameter/liquid_stripes_sway = 1.0
-shader_parameter/liquid_stripes_density = 4.82
-shader_parameter/liquid_stripes_thickness = 0.45
+shader_parameter/liquid_stripes_speed = 0.25000048687500076
+shader_parameter/liquid_stripes_sway = 5.0
+shader_parameter/liquid_stripes_density = 11.72500055367762
+shader_parameter/liquid_stripes_thickness = 1.0
 shader_parameter/liquid_stripes_softness = 0.05
-shader_parameter/liquid_stripes_warp = 1.0
-shader_parameter/liquid_stripes_warp_origin = -0.5
+shader_parameter/liquid_stripes_warp = 2.0
+shader_parameter/liquid_stripes_warp_origin = -0.03099995397249999
 shader_parameter/liquid_stripes_warp_falloff = 0.0
-shader_parameter/liquid_stripes_warp_direction = 0.0
-shader_parameter/liquid_stripes_warp_frequency = 15.0
-shader_parameter/liquid_stripes_warp_flow = 2.0
-shader_parameter/liquid_stripes_use_gradient = false
-shader_parameter/liquid_stripes_gradient_type = 0
+shader_parameter/liquid_stripes_warp_direction = 106.1750050433125
+shader_parameter/liquid_stripes_warp_frequency = 50.0
+shader_parameter/liquid_stripes_warp_flow = 7.253000819517499
+shader_parameter/liquid_stripes_use_gradient = true
+shader_parameter/liquid_stripes_gradient_texture = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/liquid_stripes_gradient_type = 1
 shader_parameter/liquid_stripes_gradient_rotation_degrees = 0.0
 shader_parameter/liquid_stripes_gradient_scale = 1.0
 shader_parameter/liquid_stripes_gradient_smoothing = 0.5
 shader_parameter/liquid_stripes_gradient_offset = 0.0
 shader_parameter/liquid_stripes_repeat_gradient = false
-shader_parameter/liquid_stripes_opacity = 0.5
+shader_parameter/liquid_stripes_opacity = 0.2150000102125
 shader_parameter/liquid_stripes_enable_opacity_map = false
-shader_parameter/liquid_stripes_opacity_type = 2
+shader_parameter/liquid_stripes_opacity_texture = SubResource("GradientTexture1D_tqjf5")
+shader_parameter/liquid_stripes_opacity_type = 1
 shader_parameter/liquid_stripes_opacity_rotation_degrees = 0.0
 shader_parameter/liquid_stripes_opacity_scale = 1.0
 shader_parameter/liquid_stripes_opacity_smoothing = 0.5
@@ -174,6 +220,6 @@ shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
 
 [node name="MiniBHBG" type="ColorRect" unique_id=1374437363]
-material = SubResource("ShaderMaterial_6efd5")
+material = SubResource("ShaderMaterial_imyo1")
 offset_right = 194.0
 offset_bottom = 360.0
