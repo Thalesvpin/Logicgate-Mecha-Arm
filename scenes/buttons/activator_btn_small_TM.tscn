@@ -239,6 +239,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 offset_transform_enabled = true
+mouse_filter = 2
 texture = ExtResource("4_uhamf")
 stretch_mode = 5
 
@@ -300,6 +301,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="Label" type="Label" parent="Hover/PanelContainer2" unique_id=270599895]
+visible = false
 texture_filter = 1
 layout_mode = 2
 offset_transform_position = Vector2(0, 1)
@@ -307,6 +309,18 @@ text = "ATIVAR"
 label_settings = SubResource("LabelSettings_oxtry")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Hover/PanelContainer2" unique_id=1746007468]
+texture_filter = 1
+custom_minimum_size = Vector2(22, 22)
+custom_maximum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+mouse_filter = 2
+texture = ExtResource("4_uhamf")
+stretch_mode = 5
 
 [node name="Pressed" type="Control" parent="." unique_id=342779461]
 visible = false
@@ -351,6 +365,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gtatl")
 
 [node name="Label" type="Label" parent="Pressed/PanelContainer/InnerLayer2A" unique_id=1377472580]
+visible = false
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0.74, 1.28)
@@ -359,6 +374,18 @@ text = "ATIVAR"
 label_settings = SubResource("LabelSettings_edi8c")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Pressed/PanelContainer" unique_id=916386257]
+texture_filter = 1
+custom_minimum_size = Vector2(19, 19)
+custom_maximum_size = Vector2(19, 19)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+mouse_filter = 2
+texture = ExtResource("4_uhamf")
+stretch_mode = 5
 
 [node name="Disabled" type="Control" parent="." unique_id=1824661217]
 visible = false
@@ -409,12 +436,54 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bv6uq")
 
 [node name="Label" type="Label" parent="Disabled/PanelContainer" unique_id=1301275905]
+visible = false
 layout_mode = 2
 offset_transform_position = Vector2(0, 1)
 text = "ATIVAR"
 label_settings = SubResource("LabelSettings_eoch2")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Disabled/PanelContainer" unique_id=1591677898]
+modulate = Color(0.8235294, 0.8235294, 0.8235294, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(22, 22)
+custom_maximum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(2, 3)
+mouse_filter = 2
+texture = ExtResource("4_uhamf")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="Disabled/PanelContainer" unique_id=156092003]
+modulate = Color(0.43137255, 0.43137255, 0.43137255, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(22, 22)
+custom_maximum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(1, 2)
+mouse_filter = 2
+texture = ExtResource("4_uhamf")
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="Disabled/PanelContainer" unique_id=911585134]
+modulate = Color(0.54509807, 0.5529412, 0.54901963, 1)
+texture_filter = 1
+custom_minimum_size = Vector2(22, 22)
+custom_maximum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+mouse_filter = 2
+texture = ExtResource("4_uhamf")
+stretch_mode = 5
 
 [connection signal="button_down" from="." to="." method="_on_button_down"]
 [connection signal="button_up" from="." to="." method="_on_button_up"]
