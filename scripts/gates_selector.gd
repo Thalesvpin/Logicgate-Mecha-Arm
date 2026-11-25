@@ -6,7 +6,9 @@ extends PanelContainer
 @onready var margin_container: MarginContainer = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer
 @onready var flow_container: FlowContainer = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer
 @onready var label: Label = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar/Label
+@onready var inventory_gate: Panel = $SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/FlowContainer/InventoryGate
 
+var loaded: bool = false
 const RADIAL_MENU = preload("uid://iopwhmejcr8b")
 
 func _ready() -> void:
@@ -14,6 +16,7 @@ func _ready() -> void:
 	EventBus.gate_removed_from_sandbox.connect(gate_sold)
 	set_tokens_label()
 	sub_viewport_container.custom_minimum_size = margin_container.get_combined_minimum_size()
+	loaded = true
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton && event.button_index == MOUSE_BUTTON_RIGHT && event.is_released():
@@ -84,7 +87,9 @@ func gate_bought(type: Gates.Type) -> void:
 	spend_tokens(Global.run_stats.gates_price[type])
 
 func _on_resized() -> void:
-	if size.x > 235:
-		label.show()
-	else:
-		label.hide()
+	if loaded:
+		if size.x > 235:
+			label.show()
+		else:
+			label.hide()
+		sub_viewport_container.custom_minimum_size.x = 128

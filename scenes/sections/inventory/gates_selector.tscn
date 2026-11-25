@@ -768,6 +768,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_rn4rn")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=959896710]
+custom_minimum_size = Vector2(95, 0)
 layout_mode = 2
 stretch = true
 
@@ -819,7 +820,6 @@ size_flags_vertical = 0
 
 [node name="Label" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=1716915267]
 layout_mode = 2
-size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.20392157, 1, 0.67058825, 1)
 text = "Tokens"
 label_settings = SubResource("LabelSettings_3e3yi")
@@ -830,6 +830,7 @@ uppercase = true
 custom_minimum_size = Vector2(0, 46)
 custom_maximum_size = Vector2(-1, 46)
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="TokenIcon" type="Control" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/VBoxContainer/MarginContainer/PanelContainer/TitleBar" unique_id=2086941264]
 custom_minimum_size = Vector2(40, 40)
@@ -962,3 +963,5 @@ visible = false
 material = SubResource("ShaderMaterial_mjyp6")
 layout_mode = 2
 mouse_filter = 2
+
+[connection signal="resized" from="." to="." method="_on_resized"]
