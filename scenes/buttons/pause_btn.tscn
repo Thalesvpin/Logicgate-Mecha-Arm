@@ -1,0 +1,407 @@
+[gd_scene format=3 uid="uid://dq48paf0larlj"]
+
+[ext_resource type="Script" uid="uid://dj7rummrj4f2e" path="res://scripts/generic_button.gd" id="1_qp1vw"]
+[ext_resource type="Shader" uid="uid://b26lv7m1ofwld" path="res://shaders/checkboardedges.gdshader" id="2_dvyu1"]
+[ext_resource type="FontFile" uid="uid://dpg6g0sfuslpi" path="res://fonts/VileR Oldschool Fonts/windows_command_prompt.ttf" id="3_ndvt1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eetg5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0vipy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_esiv2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_veuwc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eoch2"]
+bg_color = Color(0.80784315, 0.8156863, 0.8117647, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oxtry"]
+bg_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ep5nn"]
+bg_color = Color(0.80784315, 0.8156863, 0.8117647, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bv6uq"]
+shader = ExtResource("2_dvyu1")
+shader_parameter/square_size = 3.000000095
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/square_1_spacing = 1
+shader_parameter/square_2_spacing = 1
+shader_parameter/match_rect_color_1 = true
+shader_parameter/color_1 = Color(0, 0, 0, 1)
+shader_parameter/color_2 = Color(1, 1, 1, 0)
+shader_parameter/edge_only = true
+shader_parameter/edge_top = 3.0
+shader_parameter/edge_bottom = 3.0
+shader_parameter/edge_left = 3.0
+shader_parameter/edge_right = 3.0
+shader_parameter/cutout_color = Color(0, 0, 0, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_a7lv4"]
+base_font = ExtResource("3_ndvt1")
+variation_transform = Transform2D(1.06, 0, 0, 1.06, 0, 0)
+spacing_glyph = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_kf6tc"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 30
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnty3"]
+bg_color = Color(0, 0, 0.61960787, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.28627452, 0.29411766, 0.2901961, 1)
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_oxtry"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aaut4"]
+bg_color = Color(0.43529412, 0.44705883, 0.4392157, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
+bg_color = Color(0.43529412, 0.44705883, 0.4392157, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtatl"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_edi8c"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pae1i"]
+bg_color = Color(0.6666667, 0.67058825, 0.6666667, 1)
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22352941, 0.22352941, 0.22352941, 1)
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aaut4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edi8c"]
+bg_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bv6uq"]
+bg_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+draw_center = false
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_eoch2"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 30
+font_color = Color(0.54509807, 0.5529412, 0.54901963, 1)
+stacked_shadow_count = 2
+stacked_shadow_0/color = Color(0.43137255, 0.43137255, 0.43137255, 1)
+stacked_shadow_0/outline_size = 4
+stacked_shadow_1/offset = Vector2(2, 2)
+stacked_shadow_1/color = Color(0.8235294, 0.8235294, 0.8235294, 1)
+stacked_shadow_1/outline_size = 8
+
+[node name="PauseBtn" type="Button" unique_id=2039448951]
+custom_minimum_size = Vector2(149, 71)
+custom_maximum_size = Vector2(149, 71)
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mjyp6")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_eetg5")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_0vipy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_esiv2")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_veuwc")
+script = ExtResource("1_qp1vw")
+metadata/_edit_horizontal_guides_ = [19.0, 10.0, 28.0]
+metadata/_edit_vertical_guides_ = [9.0, 21.0, 76.0, 90.0]
+
+[node name="Normal" type="Control" parent="." unique_id=119002995]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PanelContainer2" type="MarginContainer" parent="Normal" unique_id=1284804928]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="PanelContainer" parent="Normal/PanelContainer2" unique_id=1862135678]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eoch2")
+
+[node name="InnerLayer" type="MarginContainer" parent="Normal/PanelContainer2" unique_id=230295095]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Normal/PanelContainer2/InnerLayer" unique_id=451436140]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_oxtry")
+
+[node name="PanelContainer3" type="PanelContainer" parent="Normal/PanelContainer2/InnerLayer" unique_id=893194727]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ep5nn")
+
+[node name="InnerLayer2B" type="MarginContainer" parent="Normal/PanelContainer2" unique_id=1943903189]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, -1)
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="DotsEdges" type="ColorRect" parent="Normal/PanelContainer2/InnerLayer2B" unique_id=1866866250]
+material = SubResource("ShaderMaterial_bv6uq")
+layout_mode = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="Normal/PanelContainer2" unique_id=1222203626]
+texture_filter = 1
+layout_mode = 2
+offset_transform_enabled = true
+text = "PAUSE"
+label_settings = SubResource("LabelSettings_kf6tc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hover" type="Control" parent="." unique_id=1282073018]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PanelContainer2" type="MarginContainer" parent="Hover" unique_id=665317658]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="PanelContainer" parent="Hover/PanelContainer2" unique_id=1282677893]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eoch2")
+
+[node name="InnerLayer" type="MarginContainer" parent="Hover/PanelContainer2" unique_id=1094199308]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Hover/PanelContainer2/InnerLayer" unique_id=1549962001]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_oxtry")
+
+[node name="PanelContainer3" type="PanelContainer" parent="Hover/PanelContainer2/InnerLayer" unique_id=457592632]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gnty3")
+
+[node name="InnerLayer2B" type="MarginContainer" parent="Hover/PanelContainer2" unique_id=1586307284]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-1, -1)
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="DotsEdges" type="ColorRect" parent="Hover/PanelContainer2/InnerLayer2B" unique_id=933683502]
+material = SubResource("ShaderMaterial_bv6uq")
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Hover/PanelContainer2" unique_id=1141066595]
+texture_filter = 1
+layout_mode = 2
+offset_transform_position = Vector2(0, 1)
+text = "PAUSE"
+label_settings = SubResource("LabelSettings_oxtry")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Pressed" type="Control" parent="." unique_id=795766121]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PanelContainer" type="MarginContainer" parent="Pressed" unique_id=424313463]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="PanelContainer" parent="Pressed/PanelContainer" unique_id=1472489202]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aaut4")
+
+[node name="InnerLayer2A" type="MarginContainer" parent="Pressed/PanelContainer" unique_id=788347661]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="Background2" type="PanelContainer" parent="Pressed/PanelContainer/InnerLayer2A" unique_id=912875777]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
+
+[node name="Background3" type="PanelContainer" parent="Pressed/PanelContainer/InnerLayer2A" unique_id=537437152]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gtatl")
+
+[node name="Label" type="Label" parent="Pressed/PanelContainer/InnerLayer2A" unique_id=2139870159]
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0.74, 1.28)
+offset_transform_scale = Vector2(0.94, 0.94)
+text = "PAUSE"
+label_settings = SubResource("LabelSettings_edi8c")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Disabled" type="Control" parent="." unique_id=1243364159]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background2" type="PanelContainer" parent="Disabled" unique_id=256316071]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pae1i")
+
+[node name="PanelContainer" type="PanelContainer" parent="Disabled" unique_id=1736482792]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_aaut4")
+
+[node name="InnerLayer" type="MarginContainer" parent="Disabled/PanelContainer" unique_id=1875443460]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Disabled/PanelContainer/InnerLayer" unique_id=248641929]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_edi8c")
+
+[node name="PanelContainer2" type="PanelContainer" parent="Disabled/PanelContainer/InnerLayer" unique_id=1143326579]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bv6uq")
+
+[node name="Label" type="Label" parent="Disabled/PanelContainer" unique_id=1967599308]
+layout_mode = 2
+offset_transform_position = Vector2(0, 1)
+text = "PAUSE"
+label_settings = SubResource("LabelSettings_eoch2")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
