@@ -207,11 +207,11 @@ func _input(event: InputEvent) -> void:
 		top_h_split.dragging_enabled = !top_h_split.dragging_enabled
 	if event.is_action_pressed("M"):
 		var ef = AddMoneyEffect.new()
-		ef.amount = 123456789
+		ef.amount = 100
 		ef.apply()
 	if event.is_action_pressed("N"):
 		var ef = AddMoneyEffect.new()
-		ef.amount = -10000
+		ef.amount = -100
 		ef.apply()
 	
 	
@@ -236,15 +236,20 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("4"):
 		var ef = HealEffect.new()
-		ef.amount = 100
+		ef.amount = 25
+		ef.mode = 0 #percent
 		ef.apply()
 		pass
+	
+	if event.is_action_pressed("5"):
+		var ef = DealDamageEffect.new()
+		ef.amount = 100 #flat
+		ef.apply()
 		
 	if event.is_action_pressed("6"):
-		var ef = AddDamageFlatEffect.new()
-		ef.amount = 100
+		var ef = TakeDamageEffect.new()
+		ef.amount = 100 #flat
 		ef.apply()
-		pass
 	
 	if event.is_action_pressed("1"):
 		Global.implant_manager.add_tech_mod(TM_3)

@@ -4,7 +4,7 @@ extends PanelContainer
 @onready var price_container: PanelContainer = $MarginContainer/VBoxContainer/HBoxContainer/PriceContainer
 @onready var buy_btn: Button = $MarginContainer/VBoxContainer/HBoxContainer/BuyBtn
 @onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
-@onready var background: PanelContainer = $Background
+@onready var background: PanelContainer = $Control/Background
 
 const TECHMOD_TEST = preload("uid://3gmr422layic")
 
@@ -24,11 +24,24 @@ func set_up() -> void:
 func set_implant() -> void:
 	implant_card.resource = implant
 	implant_card.load_resource()
+	#set_outline_color(self)
+	set_outline_color(price_container)
+	set_gradient_color('gradient_texture', Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]]))
+	set_gradient_color('outline_gradient_texture', Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]]))
+
+func set_gradient_color(parameter: String, color: Color) -> void:
+	var mat = background.material.duplicate() as ShaderMaterial
+	var tex = (mat.get_shader_parameter(parameter) as GradientTexture1D).duplicate() as GradientTexture1D
+	var gradient := tex.gradient.duplicate() as Gradient
+	gradient.colors = PackedColorArray([Color.BLACK, color])
+	tex.gradient = gradient
+	mat.set_shader_parameter(parameter, tex)
+	background.material = mat
 
 func set_outline_color(node: Node) -> void:
-	#var style: StyleBoxFlat = node.get_theme_stylebox("panel").duplicate()
-	#style.border_color = Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]])
-	#node.add_theme_stylebox_override("panel", style)
+	var style: StyleBoxFlat = node.get_theme_stylebox("panel").duplicate()
+	style.border_color = Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]])
+	node.add_theme_stylebox_override("panel", style)
 	pass
 
 func get_price() -> void:
