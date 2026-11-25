@@ -24,16 +24,19 @@ func set_up() -> void:
 func set_implant() -> void:
 	implant_card.resource = implant
 	implant_card.load_resource()
-	set_outline_color(self)
+	#set_outline_color(self)
 	set_outline_color(price_container)
 	set_gradient_color('gradient_texture', Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]]))
 	set_gradient_color('outline_gradient_texture', Color(LivePalette.RARITY[Global.Rarity.keys()[implant.rarity]]))
 
 func set_gradient_color(parameter: String, color: Color) -> void:
-	var param = background.material.get_shader_parameter(parameter)
-	var gradient = param.gradient
-	gradient.colors = [color, Color.BLACK]
-	
+	var mat = background.material.duplicate() as ShaderMaterial
+	var tex = (mat.get_shader_parameter(parameter) as GradientTexture1D).duplicate() as GradientTexture1D
+	var gradient := tex.gradient.duplicate() as Gradient
+	gradient.colors = PackedColorArray([color, Color.BLACK])
+	tex.gradient = gradient
+	mat.set_shader_parameter(parameter, tex)
+	background.material = mat
 
 func set_outline_color(node: Node) -> void:
 	var style: StyleBoxFlat = node.get_theme_stylebox("panel").duplicate()
