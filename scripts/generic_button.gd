@@ -5,8 +5,6 @@ extends Button
 @onready var _pressed: Control = $Pressed
 @onready var _disabled: Control = $Disabled
 
-const INFO_MENU = preload("uid://c1gmf20ahycwb")
-
 func _ready() -> void:
 	disable(disabled)
 
