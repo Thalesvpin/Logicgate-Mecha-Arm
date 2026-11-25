@@ -58,5 +58,4 @@ func precalculate_output():
 			aux = aux << 1 | int(out.get_child(0).precalculate_output()[bit])
 		results.append(aux)
 	
-	print('precalculou: ', results)
 	return results

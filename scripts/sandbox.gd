@@ -98,15 +98,15 @@ func trace_line(point):
 
 func check_submit_requirements() -> bool:
 	if !game_input_manager.check_submit_requirements():
-		print('missing requirement at InputBar')
+		#print('missing requirement at InputBar')
 		return false
 	if !game_output_manager.check_submit_requirements():
-		print('missing requirement at OutputBar')
+		#print('missing requirement at OutputBar')
 		return false
 	
 	for gate in gate_layer.get_children():
 		if !gate.check_submit_requirements():
-			print('missing requirement at gate ', Gates.Type.keys()[gate.type],'  node: ', gate)
+			#print('missing requirement at gate ', Gates.Type.keys()[gate.type],'  node: ', gate)
 			return false
 	return true
 

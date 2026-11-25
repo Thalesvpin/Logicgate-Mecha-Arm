@@ -102,7 +102,8 @@ func set_stats() -> void:
 		stats[Stats.List.MAX_HEALTH] = Enemy.status_boss[Stats.List.MAX_HEALTH]
 		stats[Stats.List.CURRENT_HEALTH] = stats[Stats.List.MAX_HEALTH]
 		stats[Stats.List.BASE_HEAL] = Enemy.status_boss[Stats.List.BASE_HEAL]
-		stats[Stats.List.MAX_SHIELD] = apply_random_shield()
+		#stats[Stats.List.MAX_SHIELD] = apply_random_shield()
+		stats[Stats.List.MAX_SHIELD] = Enemy.status_boss[Stats.List.MAX_SHIELD]
 		stats[Stats.List.CURRENT_SHIELD] = stats[Stats.List.MAX_SHIELD]
 		stats[Stats.List.BASE_SHIELD_REPAIR] = Enemy.status_boss[Stats.List.BASE_SHIELD_REPAIR]
 		stats[Stats.List.BASE_ATTACK_DAMAGE] = Enemy.status_boss[Stats.List.BASE_ATTACK_DAMAGE]
@@ -115,7 +116,8 @@ func set_stats() -> void:
 		stats[Stats.List.MAX_HEALTH] = Enemy.status_preset[config.status_preset][Stats.List.MAX_HEALTH]
 		stats[Stats.List.CURRENT_HEALTH] = stats[Stats.List.MAX_HEALTH]
 		stats[Stats.List.BASE_HEAL] = Enemy.status_preset[config.status_preset][Stats.List.BASE_HEAL]
-		stats[Stats.List.MAX_SHIELD] = apply_random_shield()
+		stats[Stats.List.MAX_SHIELD] = Enemy.status_preset[config.status_preset][Stats.List.MAX_SHIELD]
+		#stats[Stats.List.MAX_SHIELD] = apply_random_shield()
 		stats[Stats.List.CURRENT_SHIELD] = stats[Stats.List.MAX_SHIELD]
 		stats[Stats.List.BASE_SHIELD_REPAIR] = Enemy.status_preset[config.status_preset][Stats.List.BASE_SHIELD_REPAIR]
 		stats[Stats.List.BASE_ATTACK_DAMAGE] = Enemy.status_preset[config.status_preset][Stats.List.BASE_ATTACK_DAMAGE]
@@ -207,8 +209,9 @@ func shake_anim() -> void:
 	tween.chain().tween_property(texture_rect, 'offset_transform_position', Vector2(0, -20), 0.1)
 	tween.chain().tween_property(texture_rect, 'offset_transform_position', Vector2(0, 0), 0.05)
 
-func apply_random_shield() -> int:
-	return Global.random.next() % 5
+#func apply_random_shield() -> int:
+	#return Global.random.next() % 5
+	
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dcgt60u8ek4ic" path="res://scenes/sections/sand_box/game_input_manager.tscn" id="6_lwkx8"]
 [ext_resource type="Shader" uid="uid://k5vjj0n722od" path="res://shaders/CRT1.gdshader" id="8_kaha7"]
 [ext_resource type="Shader" uid="uid://cmehagb3xita0" path="res://shaders/color-postprocess-adjustments.gdshader" id="8_psau8"]
+[ext_resource type="PackedScene" uid="uid://di5eghgwbp858" path="res://scenes/sections/sand_box/output_preview.tscn" id="8_swglj"]
 [ext_resource type="PackedScene" uid="uid://chjmp8lbsyviq" path="res://scenes/sections/sand_box/actions_panel_sandbox.tscn" id="11_pvlru"]
 [ext_resource type="Texture2D" uid="uid://cpplx5sp6mv0j" path="res://assets/Circuit Wall/tooth.png" id="11_yybyw"]
 [ext_resource type="Texture2D" uid="uid://jsqgr78xx5k" path="res://assets/Circuit Wall/bolthousing.png" id="13_6k8el"]
@@ -70,8 +71,8 @@ shader_parameter/repulsion_swirl_angle = 2.0
 shader_parameter/repulsion_pinch_amount = -2.0
 shader_parameter/repulsion_wave_freq = 5.0
 shader_parameter/hole_punch_radius = 0.0
-shader_parameter/mouse_global_pos = Vector2(-100000, -100000)
-shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 981.5642, 0, 0.37072003, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
+shader_parameter/mouse_global_pos = Vector2(3.8787537, 14.343384)
+shader_parameter/repulsion_click_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
 shader_parameter/active_click_repulsion_count = 0
 shader_parameter/use_ripple = true
 shader_parameter/ripple_ring_count = 1
@@ -82,7 +83,7 @@ shader_parameter/ripple_decay = 1.0
 shader_parameter/ripple_grid_distortion = 0.0
 shader_parameter/use_ripple_custom_color = true
 shader_parameter/ripple_custom_color = Color(0.3, 1, 0.96500003, 1)
-shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 981.5642, 0, 0.30305248, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
+shader_parameter/ripple_sources_v4 = PackedVector4Array(-100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0, -100000, 0, 0, 0)
 shader_parameter/active_ripple_count = 0
 shader_parameter/main_grid_style = 0
 shader_parameter/main_line_thickness = 0.5
@@ -270,7 +271,6 @@ shader_parameter/show_luminance_heatmap = false
 shader_parameter/channel_isolation = 0
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_tjqua"]
-resource_local_to_scene = true
 viewport_path = NodePath("SubViewportContainer/SubViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eofqg"]
@@ -1320,6 +1320,12 @@ script = ExtResource("1_n5154")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SubViewportContainer/SubViewport/Sandbox/CircuitCamera/Area2D" unique_id=401609003]
 shape = SubResource("RectangleShape2D_eofqg")
 debug_color = Color(0, 1, 0, 0.41960785)
+
+[node name="OutputPreview" parent="SubViewportContainer/SubViewport/Sandbox" unique_id=1313799886 instance=ExtResource("8_swglj")]
+offset_left = 667.0
+offset_top = -42.0
+offset_right = 751.0
+offset_bottom = 100.0
 
 [node name="Control2" type="Control" parent="SubViewportContainer/SubViewport" unique_id=609642782]
 layout_mode = 3

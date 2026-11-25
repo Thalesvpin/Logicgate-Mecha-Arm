@@ -68,5 +68,18 @@ func drop_inputs_outputs() -> void:
 			original_node.last_position = Vector2.ZERO
 	reset()
 
+func drag_output_preview(node: Control) -> void:
+	setup(node)
+
+func drop_output_preview() -> void:
+	var is_inside_sandbox = Global.circuit_editor.sandbox.cursor_in
+	if !is_inside_sandbox:
+		if original_node.last_position:
+			original_node.position = original_node.last_position
+		else:
+			original_node.position = Vector2.ZERO
+			original_node.last_position = Vector2.ZERO
+	reset()
+
 func am_i_dragged(node: Node) -> bool:
 	return dragging && original_node == node
