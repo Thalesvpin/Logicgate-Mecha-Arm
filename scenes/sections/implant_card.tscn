@@ -7,10 +7,11 @@
 [ext_resource type="FontFile" uid="uid://dpg6g0sfuslpi" path="res://fonts/VileR Oldschool Fonts/windows_command_prompt.ttf" id="4_fb24f"]
 [ext_resource type="Texture2D" uid="uid://cmge5yrejrvvy" path="res://assets/TCC_icon_rarity_corrupted.png" id="5_5wyd8"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="5_mt2m6"]
-[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="6_go8c5"]
 [ext_resource type="Texture2D" uid="uid://3dcqftonh2pd" path="res://assets/info.png" id="7_0ih7b"]
 [ext_resource type="PackedScene" uid="uid://bkieiiiyeeupx" path="res://scenes/buttons/activator_btn_small_TM.tscn" id="7_c3wqw"]
+[ext_resource type="PackedScene" uid="uid://dbey1o2ma2ef7" path="res://scenes/buttons/sell_confirm_btn.tscn" id="9_4ngid"]
 [ext_resource type="PackedScene" uid="uid://c6diq6ayrcv1k" path="res://scenes/buttons/activator_btn_TM.tscn" id="9_le1od"]
+[ext_resource type="PackedScene" uid="uid://bvxvqk5pylkxg" path="res://scenes/buttons/sell_cancel_btn.tscn" id="12_kqo0f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqbp4"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -356,11 +357,8 @@ mouse_filter = 0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ConfirmBtn" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=2095314149 instance=ExtResource("6_go8c5")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
+[node name="ConfirmBtn" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=2031095423 instance=ExtResource("9_4ngid")]
 layout_mode = 2
-size_flags_vertical = 0
 
 [node name="ConfirmBtn2" type="TextureButton" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=627705637]
 visible = false
@@ -373,11 +371,8 @@ texture_hover = ExtResource("7_0ih7b")
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CancelBtn" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=1125281117 instance=ExtResource("6_go8c5")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
+[node name="CancelBtn" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=1040832777 instance=ExtResource("12_kqo0f")]
 layout_mode = 2
-size_flags_vertical = 0
 
 [node name="CancelBtn2" type="TextureButton" parent="SellOverlay/VBoxContainer/HBoxContainer" unique_id=52374698]
 visible = false
