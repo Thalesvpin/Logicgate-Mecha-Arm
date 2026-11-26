@@ -17,12 +17,36 @@
 [ext_resource type="PackedScene" uid="uid://b7xt4eo5rn4tt" path="res://scenes/gates/nor_gate.tscn" id="14_lgv0f"]
 [ext_resource type="PackedScene" uid="uid://b44ep74kw45m4" path="res://scenes/gates/xor_gate.tscn" id="15_58uri"]
 [ext_resource type="PackedScene" uid="uid://d2v4gydixspon" path="res://scenes/gates/xnor_gate.tscn" id="16_aira5"]
+[ext_resource type="FontFile" uid="uid://b8ki4shgeg6xy" path="res://fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf" id="18_kx48m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.8, 0.8, 0.60784316)
+
+[sub_resource type="FontVariation" id="FontVariation_gtatl"]
+base_font = ExtResource("18_kx48m")
+variation_embolden = 0.7
+spacing_bottom = -1
 
 [sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
-font_size = 30
+font = SubResource("FontVariation_gtatl")
+font_size = 28
+
+[sub_resource type="FontVariation" id="FontVariation_a7lv4"]
+base_font = ExtResource("18_kx48m")
+variation_embolden = 0.7
+
+[sub_resource type="LabelSettings" id="LabelSettings_wun44"]
+font = SubResource("FontVariation_a7lv4")
+font_size = 22
 
 [node name="InventoryGate" type="Panel" unique_id=2018287429]
 custom_minimum_size = Vector2(96, 96)
+custom_maximum_size = Vector2(96, 96)
 clip_contents = true
 anchors_preset = 8
 anchor_left = 0.5
@@ -36,6 +60,7 @@ offset_bottom = 65.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_a7lv4")
 script = ExtResource("1_1k65l")
 and_icon = ExtResource("2_wun44")
 or_icon = ExtResource("3_kx48m")
@@ -53,6 +78,7 @@ nor_scene = ExtResource("14_lgv0f")
 xor_scene = ExtResource("15_58uri")
 xnor_scene = ExtResource("16_aira5")
 def_scene = ExtResource("7_4dm03")
+metadata/_edit_horizontal_guides_ = [582.0]
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1096496680]
 custom_maximum_size = Vector2(96, -1)
@@ -69,7 +95,8 @@ offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
 offset_transform_enabled = true
-offset_transform_pivot_ratio = Vector2(0, 0)
+offset_transform_position = Vector2(0, -10)
+offset_transform_scale = Vector2(0.9, 0.9)
 offset_transform_visual_only = false
 texture = ExtResource("2_1k65l")
 stretch_mode = 5
@@ -81,8 +108,8 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -23.0
+offset_left = -30.0
+offset_top = -39.0
 grow_horizontal = 0
 grow_vertical = 0
 offset_transform_enabled = true
@@ -90,4 +117,18 @@ offset_transform_position = Vector2(-5, 0)
 text = "2"
 label_settings = SubResource("LabelSettings_eofqg")
 horizontal_alignment = 2
-vertical_alignment = 1
+vertical_alignment = 2
+
+[node name="NameLabel" type="Label" parent="." unique_id=1205006091]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+offset_right = 85.0
+grow_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(6, 0)
+text = "XNOR"
+label_settings = SubResource("LabelSettings_wun44")
+vertical_alignment = 2
