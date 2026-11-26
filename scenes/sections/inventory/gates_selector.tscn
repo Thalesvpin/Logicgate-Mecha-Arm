@@ -917,7 +917,7 @@ type = 6
 layout_mode = 2
 type = 2
 
-[node name="ActivatorBtnSmall" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer" unique_id=493314035 instance=ExtResource("6_o2dey")]
+[node name="HintBtn" parent="SubViewportContainer/SubViewport/PanelContainer/MarginContainer" unique_id=493314035 instance=ExtResource("6_o2dey")]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
@@ -975,3 +975,4 @@ layout_mode = 2
 mouse_filter = 2
 
 [connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="button_up" from="SubViewportContainer/SubViewport/PanelContainer/MarginContainer/HintBtn" to="." method="_on_hint_btn_button_up"]

@@ -93,3 +93,6 @@ func _on_resized() -> void:
 		else:
 			label.hide()
 		sub_viewport_container.custom_minimum_size.x = 128
+
+func _on_hint_btn_button_up() -> void:
+	EventBus.toggle_hint_name.emit()

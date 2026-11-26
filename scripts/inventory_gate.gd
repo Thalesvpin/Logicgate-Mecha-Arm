@@ -2,6 +2,7 @@ extends Panel
 
 @onready var texture_rect: TextureRect = $TextureRect
 @onready var cost_label: Label = $CostLabel
+@onready var name_label: Label = $NameLabel
 
 #enum Types: String {"AND", "OR", "DEF"} 
 
@@ -33,8 +34,16 @@ var cost: int
 
 func _ready() -> void:
 	load_data()
+	EventBus.toggle_hint_name.connect(toggle_hint)
+
+func toggle_hint() -> void:
+	name_label.visible = !name_label.visible
+	var style: StyleBoxFlat = get_theme_stylebox("panel").duplicate()
+	style.border_color.a = 155 if name_label.visible else 0
+	add_theme_stylebox_override("panel", style)
 
 func load_data():
+	name_label.text = Gates.Type.keys()[type]
 	match type:
 		Gates.Type.AND:
 			icon = and_icon

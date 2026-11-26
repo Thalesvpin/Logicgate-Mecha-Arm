@@ -26,10 +26,13 @@ var cursor_offset: Vector2
 var original_scale: Vector2 = Vector2.ZERO
 var gate_hover: bool = false
 var terminal_hover: bool = false
+var hint_labels: Array[RichTextLabel]
 
 func _ready() -> void:
 	add_terminals()
 	EventBus.gate_added_to_sandbox.emit(type)
+	EventBus.toggle_hint_name.connect(toggle_hint)
+	set_hint_labels()
 
 func _process(delta):
 	output.set_active(calculate_output())
@@ -59,6 +62,18 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	
 	if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT:
 		open_radial_menu()
+
+func toggle_hint() -> void:
+	for label in hint_labels:
+		label.visible = !label.visible
+
+func set_hint_labels() -> void:
+	for child in outline_sprite.get_children():
+		if child is RichTextLabel:
+			hint_labels.append(child)
+	for child in fill_sprite.get_children():
+		if child is RichTextLabel:
+			hint_labels.append(child)
 
 func open_radial_menu() -> void:
 	var radial_menu = RADIAL_MENU.instantiate()

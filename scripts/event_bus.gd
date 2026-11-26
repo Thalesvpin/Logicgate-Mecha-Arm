@@ -9,6 +9,7 @@ signal pulse(execution_sequence_idx: int)
 signal gate_added_to_sandbox(gate)
 signal gate_removed_from_sandbox(gate)
 signal tick
+signal toggle_hint_name
 
 #region COMBAT
 signal damage_taken(context)

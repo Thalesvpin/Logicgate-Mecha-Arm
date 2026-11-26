@@ -29,9 +29,10 @@ var deleting: bool = false
 var custom_color = null
 var inactive_color = Color('red')
 var active_color = Color('green')
-
 var _line: Line2D
 var is_active: bool = false
+var shader = preload("uid://do2cpbs3rfn8")
+var mat: ShaderMaterial
 
 func _ready() -> void:
 	_line = Line2D.new()
@@ -42,6 +43,9 @@ func _ready() -> void:
 	_line.begin_cap_mode = Line2D.LINE_CAP_ROUND
 	_line.end_cap_mode = Line2D.LINE_CAP_ROUND
 	_line.antialiased = true
+	_line.texture_mode = Line2D.LINE_TEXTURE_TILE
+	mat = ShaderMaterial.new()
+	mat.shader = shader
 	add_child(_line)
 
 func _process(_delta: float) -> void:
@@ -137,8 +141,10 @@ func check_input_value() -> void:
 	
 	if is_active:
 		_line.default_color = active_color
+		_line.material = mat
 	if !is_active:
 		_line.default_color = inactive_color
+		_line.material = null
 	if custom_color != null:
 		_line.default_color = custom_color
 
