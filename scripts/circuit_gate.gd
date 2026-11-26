@@ -216,7 +216,7 @@ func apply_gate_logic(_input_values: Array) -> bool:
 				if i:
 					count += 1
 			
-			if count > 1:
+			if count > 1 || count == 0:
 				return false
 			return true
 		Gates.Type.XNOR:
