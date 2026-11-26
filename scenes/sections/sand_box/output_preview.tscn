@@ -935,7 +935,7 @@ shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mjyp6"]
-size = Vector2(106, 164)
+size = Vector2(160.5, 250)
 
 [node name="OutputPreview" type="PanelContainer" unique_id=1313799886]
 z_index = 1
@@ -973,8 +973,8 @@ mouse_filter = 2
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1714552089]
-custom_minimum_size = Vector2(121, 0)
-custom_maximum_size = Vector2(121, -1)
+custom_minimum_size = Vector2(139, 0)
+custom_maximum_size = Vector2(139, -1)
 layout_mode = 2
 
 [node name="NameRect" type="ColorRect" parent="VBoxContainer/PanelContainer" unique_id=500735250]
@@ -988,14 +988,14 @@ color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 layout_mode = 2
 size_flags_horizontal = 4
 offset_transform_enabled = true
-offset_transform_position = Vector2(-1, 0)
+offset_transform_position = Vector2(-1, 2)
 theme_override_colors/default_color = Color(2.5990605e-06, 0.7694202, 0.66399103, 1)
 theme_override_constants/line_separation = -8
 theme_override_constants/outline_size = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_a7lv4")
 theme_override_font_sizes/normal_font_size = 26
-text = "OUTPUT
-PREVIEW"
+text = "PRÉVIA DE
+OUTPUT"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
@@ -1168,11 +1168,10 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="DragArea" type="Area2D" parent="." unique_id=1337417043]
-visible = false
 position = Vector2(44, 69)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DragArea" unique_id=1726355450]
-position = Vector2(0, 2)
+position = Vector2(27, 46)
 shape = SubResource("RectangleShape2D_mjyp6")
 
 [connection signal="input_event" from="DragArea" to="." method="_on_drag_area_input_event"]
