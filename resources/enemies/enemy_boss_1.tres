@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_h4blm")
-_name = "boss 1"
+_name = "Zumbi Ciborgue Bodybuilder Anabolizado"
 texture = ExtResource("2_go23e")
 actions_list = Array[int]([0, 2])
 actions_weight = Array[float]([75.0, 25.0])

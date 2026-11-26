@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_yiv4l")
-_name = "boss 2"
+_name = "Sargento Coronel General Zumbi Ciborgue"
 texture = ExtResource("2_rs3wd")
 actions_list = Array[int]([0, 2, 3])
 actions_weight = Array[float]([55.0, 30.0, 15.0])

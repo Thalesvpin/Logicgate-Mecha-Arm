@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_pd7ho")
-_name = "enemy 1"
+_name = "Zumbi Ciborgue Porradeiro"
 texture = ExtResource("2_vje40")
 status_preset = 1
 actions_list = Array[int]([0])
