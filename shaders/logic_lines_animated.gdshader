@@ -2,11 +2,11 @@ shader_type canvas_item;
 
 uniform vec4 square_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 
-uniform float line_thickness : hint_range(0.0, 1.0, 0.01) = 0.5;
-uniform float spacing : hint_range(2.0, 256.0, 1.0) = 32.0;
-uniform float square_length : hint_range(0.05, 0.95, 0.01) = 0.5;
+uniform float line_thickness : hint_range(0.0, 1.0, 0.01) = 1.0;
+uniform float spacing : hint_range(2.0, 256.0, 1.0) = 12.0;
+uniform float square_length : hint_range(0.05, 0.95, 0.01) = 0.45;
 uniform float square_thickness : hint_range(0.05, 1.0, 0.01) = 1.0;
-uniform float speed : hint_range(0.0, 500.0, 1.0) = 60.0;
+uniform float speed : hint_range(0.0, 500.0, 1.0) = 5.0;
 uniform bool invert_trajectory = false;
 
 varying float v_inv_spacing;

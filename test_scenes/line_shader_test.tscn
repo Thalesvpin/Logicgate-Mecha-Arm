@@ -9,15 +9,36 @@ shader_parameter/line_thickness = 0.999999977648
 shader_parameter/spacing = 12.0
 shader_parameter/square_length = 0.44999999180426
 shader_parameter/square_thickness = 0.99999997951066
-shader_parameter/speed = 3.0
+shader_parameter/speed = 5.0
 shader_parameter/invert_trajectory = false
 
 [node name="LineShaderTest" type="Node2D" unique_id=1822498338]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1993279421]
+offset_right = 913.0
+offset_bottom = 708.0
+color = Color(0.078431375, 0.078431375, 0.09803922, 1)
 
 [node name="Line2D" type="Line2D" parent="." unique_id=604255162]
 material = SubResource("ShaderMaterial_bv6uq")
 position = Vector2(111, 193)
 points = PackedVector2Array(0, 0, 36, -109, 41, -120, 48, -130, 55, -140, 64, -148, 73, -155, 79, -158, 84, -160, 90, -161, 97, -162, 104, -162, 111, -161, 117, -159, 125, -155, 132, -151, 138, -147, 143, -143, 147, -138, 150, -134, 152, -130, 153, -127, 154, -123, 155, -119, 160, -65, 162, -59, 165, -54, 167.44957, -51.550415, 170, -49, 175, -45, 181, -42, 189, -39, 196, -37, 202.3298, -36.42456, 207, -36, 242, -32, 321, -7, 363, -49, 299, -86, 335, -115, 448, -93, 593, -104)
 width = 12.0
-default_color = Color(0, 1, 0.20000005, 1)
+default_color = Color(0, 1, 0, 1)
+texture_mode = 1
+
+[node name="Line2D2" type="Line2D" parent="." unique_id=857323566]
+material = SubResource("ShaderMaterial_bv6uq")
+position = Vector2(111, 393)
+points = PackedVector2Array(0, 0, 36, -109, 41, -120, 48, -130, 55, -140, 64, -148, 73, -155, 79, -158, 84, -160, 90, -161, 97, -162, 104, -162, 111, -161, 117, -159, 125, -155, 132, -151, 138, -147, 143, -143, 147, -138, 150, -134, 152, -130, 153, -127, 154, -123, 155, -119, 160, -65, 162, -59, 165, -54, 167.44957, -51.550415, 170, -49, 175, -45, 181, -42, 189, -39, 196, -37, 202.3298, -36.42456, 207, -36, 242, -32, 321, -7, 363, -49, 299, -86, 335, -115, 448, -93, 593, -104)
+width = 12.0
+default_color = Color(1, 0, 0, 1)
+texture_mode = 1
+
+[node name="Line2D3" type="Line2D" parent="." unique_id=1965442220]
+material = SubResource("ShaderMaterial_bv6uq")
+position = Vector2(111, 593)
+points = PackedVector2Array(0, 0, 36, -109, 41, -120, 48, -130, 55, -140, 64, -148, 73, -155, 79, -158, 84, -160, 90, -161, 97, -162, 104, -162, 111, -161, 117, -159, 125, -155, 132, -151, 138, -147, 143, -143, 147, -138, 150, -134, 152, -130, 153, -127, 154, -123, 155, -119, 160, -65, 162, -59, 165, -54, 167.44957, -51.550415, 170, -49, 175, -45, 181, -42, 189, -39, 196, -37, 202.3298, -36.42456, 207, -36, 242, -32, 321, -7, 363, -49, 299, -86, 335, -115, 448, -93, 593, -104)
+width = 12.0
+default_color = Color(0.627451, 0.1254902, 0.9411765, 1)
 texture_mode = 1
