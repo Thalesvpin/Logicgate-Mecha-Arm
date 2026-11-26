@@ -61,6 +61,8 @@ grow_vertical = 2
 layout_mode = 2
 
 [node name="ShopTechModsContainer" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer" unique_id=817944177 instance=ExtResource("1_emyvy")]
+custom_minimum_size = Vector2(373, 0)
+custom_maximum_size = Vector2(373, -1)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -88,12 +90,12 @@ size_flags_vertical = 8
 
 [node name="PackButtonPanel" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer/VBoxContainer" unique_id=1468448522 instance=ExtResource("5_5qvrb")]
 visible = false
-custom_minimum_size = Vector2(0, 100)
-custom_maximum_size = Vector2(-1, 100)
 layout_mode = 2
 offset_transform_position = Vector2(0, 120)
 
 [node name="ShopBioHacksContainer" parent="SubViewportContainer/SubViewport/PanelContainer/HBoxContainer" unique_id=1030358402 instance=ExtResource("2_yfiyx")]
+custom_minimum_size = Vector2(373, 0)
+custom_maximum_size = Vector2(373, -1)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4

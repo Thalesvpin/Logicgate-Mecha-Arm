@@ -114,6 +114,8 @@ shader_parameter/overlay_opacity_pulse_min_offset = -0.5
 shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(0, 30, 30, 0)
 shader_parameter/use_beveled_corners = true
+shader_parameter/enable_independent_beveled_corners = false
+shader_parameter/independent_beveled_corners = 0
 shader_parameter/enable_outline = true
 shader_parameter/outline_ignore_base_distortion = false
 shader_parameter/outline_ignore_base_color_grading = true
@@ -337,8 +339,8 @@ layout_mode = 2
 [node name="Background" type="PanelContainer" parent="Control" unique_id=93553966]
 material = SubResource("ShaderMaterial_kaglx")
 layout_mode = 0
-offset_left = -145.0
-offset_right = 303.0
+offset_left = -108.0
+offset_right = 340.0
 offset_bottom = 205.0
 
 [node name="Background" type="PanelContainer" parent="." unique_id=1862513921]
