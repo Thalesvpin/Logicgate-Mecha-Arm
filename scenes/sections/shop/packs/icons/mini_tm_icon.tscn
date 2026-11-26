@@ -1,15 +1,196 @@
 [gd_scene format=3 uid="uid://i72ah0lnnipl"]
 
-[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_106jc"]
+[ext_resource type="Shader" uid="uid://bji5r4oemxoe5" path="res://scenes/sections/inventory/texpadded_outline.gdshader" id="1_22vlw"]
+[ext_resource type="Texture2D" uid="uid://c0bj0xploj0q2" path="res://assets/pack_folder_icon.png" id="2_23hch"]
+[ext_resource type="Texture2D" uid="uid://b0j3w13jlhof7" path="res://assets/pack_corrupted_icon.png" id="3_xyfie"]
+[ext_resource type="Texture2D" uid="uid://li8v4sppeijg" path="res://assets/pack_tech_icon.png" id="4_mdf6r"]
+[ext_resource type="Texture2D" uid="uid://crnv4cxanumt7" path="res://assets/pack_bio_icon.png" id="5_k51qf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
+
+[sub_resource type="Gradient" id="Gradient_qc1ht"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_qc1ht")
+
+[sub_resource type="Gradient" id="Gradient_6cgc4"]
+offsets = PackedFloat32Array(0.13577023, 1)
+colors = PackedColorArray(0.9673469, 0.9673469, 0.9673469, 1, 0.06879827, 0.06879828, 0.06879828, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_eech2"]
+gradient = SubResource("Gradient_6cgc4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5nslc"]
+shader = ExtResource("1_22vlw")
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/use_outline_gradient = true
+shader_parameter/outline_gradient = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_softness = 0.249999994412
+shader_parameter/alpha_threshold = 0.5
+shader_parameter/include_diagonals = true
+shader_parameter/round_corners = true
+shader_parameter/pulse_speed = 0.0
+shader_parameter/pulse_min_alpha = 0.35
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_color = Color(1, 0, 0, 1)
+shader_parameter/overlay_strength = 0.999999977648
+shader_parameter/overlay_mode = 0
+shader_parameter/use_overlay_gradient = true
+shader_parameter/overlay_gradient = SubResource("GradientTexture1D_eech2")
+shader_parameter/gradient_angle = 45.0
+shader_parameter/gradient_use_2d_uv = false
+
+[sub_resource type="Gradient" id="Gradient_7nqu7"]
+offsets = PackedFloat32Array(0.5)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ew072"]
+gradient = SubResource("Gradient_7nqu7")
+
+[sub_resource type="Gradient" id="Gradient_3j157"]
+offsets = PackedFloat32Array(0, 0.6)
+colors = PackedColorArray(0.84263474, 3.5616756e-06, 4.813075e-07, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_pae1i"]
+gradient = SubResource("Gradient_3j157")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_teds4"]
+shader = ExtResource("1_22vlw")
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/use_outline_gradient = true
+shader_parameter/outline_gradient = SubResource("GradientTexture1D_ew072")
+shader_parameter/outline_width = 52.5
+shader_parameter/outline_softness = 0.499999988824
+shader_parameter/alpha_threshold = 0.00999999977648
+shader_parameter/include_diagonals = true
+shader_parameter/round_corners = true
+shader_parameter/pulse_speed = 0.0
+shader_parameter/pulse_min_alpha = 0.35
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_color = Color(1, 1, 1, 1)
+shader_parameter/overlay_strength = 0.999999977648
+shader_parameter/overlay_mode = 0
+shader_parameter/use_overlay_gradient = true
+shader_parameter/overlay_gradient = SubResource("GradientTexture1D_pae1i")
+shader_parameter/gradient_angle = 45.0
+shader_parameter/gradient_use_2d_uv = false
+
+[sub_resource type="Gradient" id="Gradient_22vlw"]
+offsets = PackedFloat32Array(0, 0.3)
+colors = PackedColorArray(0, 0, 0.61960787, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_23hch"]
+gradient = SubResource("Gradient_22vlw")
+
+[sub_resource type="Gradient" id="Gradient_xyfie"]
+offsets = PackedFloat32Array(0, 0.6)
+colors = PackedColorArray(0.714, 0.7686, 0.84, 1, 0.85, 0.915, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mdf6r"]
+gradient = SubResource("Gradient_xyfie")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k51qf"]
+shader = ExtResource("1_22vlw")
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/use_outline_gradient = true
+shader_parameter/outline_gradient = SubResource("GradientTexture1D_23hch")
+shader_parameter/outline_width = 52.5
+shader_parameter/outline_softness = 0.499999988824
+shader_parameter/alpha_threshold = 0.00999999977648
+shader_parameter/include_diagonals = true
+shader_parameter/round_corners = true
+shader_parameter/pulse_speed = 0.0
+shader_parameter/pulse_min_alpha = 0.35
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_color = Color(1, 1, 1, 1)
+shader_parameter/overlay_strength = 0.999999977648
+shader_parameter/overlay_mode = 0
+shader_parameter/use_overlay_gradient = true
+shader_parameter/overlay_gradient = SubResource("GradientTexture1D_mdf6r")
+shader_parameter/gradient_angle = 45.0
+shader_parameter/gradient_use_2d_uv = false
+
+[sub_resource type="Gradient" id="Gradient_djspr"]
+offsets = PackedFloat32Array(0.5)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kyxwj"]
+gradient = SubResource("Gradient_djspr")
+
+[sub_resource type="Gradient" id="Gradient_ysl6e"]
+offsets = PackedFloat32Array(0, 0.6)
+colors = PackedColorArray(0.13261375, 0.7819836, 0.42276675, 1, 0.14509805, 0.8901961, 0.48235294, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ek0oo"]
+gradient = SubResource("Gradient_ysl6e")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tlr36"]
+shader = ExtResource("1_22vlw")
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/use_outline_gradient = true
+shader_parameter/outline_gradient = SubResource("GradientTexture1D_kyxwj")
+shader_parameter/outline_width = 52.5
+shader_parameter/outline_softness = 0.499999988824
+shader_parameter/alpha_threshold = 0.00999999977648
+shader_parameter/include_diagonals = true
+shader_parameter/round_corners = true
+shader_parameter/pulse_speed = 0.0
+shader_parameter/pulse_min_alpha = 0.35
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_color = Color(1, 1, 1, 1)
+shader_parameter/overlay_strength = 0.999999977648
+shader_parameter/overlay_mode = 0
+shader_parameter/use_overlay_gradient = true
+shader_parameter/overlay_gradient = SubResource("GradientTexture1D_ek0oo")
+shader_parameter/gradient_angle = 45.0
+shader_parameter/gradient_use_2d_uv = false
 
 [node name="MiniTMIcon" type="PanelContainer" unique_id=1482645143]
 custom_minimum_size = Vector2(194, 92)
 custom_maximum_size = Vector2(194, 92)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
-[node name="TextureRect" type="TextureRect" parent="." unique_id=766713046]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=482889230]
+material = SubResource("ShaderMaterial_5nslc")
 layout_mode = 2
-texture = ExtResource("1_106jc")
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 5)
+offset_transform_scale = Vector2(1.35, 1.35)
+texture = ExtResource("2_23hch")
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="." unique_id=575347789]
+visible = false
+material = SubResource("ShaderMaterial_teds4")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-20, 5)
+offset_transform_scale = Vector2(0.55, 0.55)
+texture = ExtResource("3_xyfie")
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="." unique_id=1170907128]
+material = SubResource("ShaderMaterial_k51qf")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-24, 6)
+offset_transform_scale = Vector2(0.665, 0.665)
+texture = ExtResource("4_mdf6r")
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1844022811]
+visible = false
+material = SubResource("ShaderMaterial_tlr36")
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(-24, 7)
+offset_transform_scale = Vector2(0.7, 0.7)
+texture = ExtResource("5_k51qf")
 stretch_mode = 5
