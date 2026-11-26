@@ -3,7 +3,9 @@ shader_type canvas_item;
 group_uniforms Outline;
 uniform bool enable_outline = true;
 uniform vec4 outline_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
-uniform float outline_width : hint_range(0.0, 32.0, 0.5) = 2.0;
+uniform bool use_outline_gradient = false;
+uniform sampler2D outline_gradient : source_color, hint_default_white;
+uniform float outline_width : hint_range(0.0, 128.0, 0.5) = 2.0;
 uniform float outline_softness : hint_range(0.0, 0.5, 0.01) = 0.0;
 uniform float alpha_threshold : hint_range(0.01, 0.99, 0.01) = 0.5;
 uniform bool include_diagonals = true;
@@ -116,10 +118,19 @@ float sample_ring_max_alpha(sampler2D tex, vec2 uv, vec2 px, float radius_scale)
 			max_a = max(max_a, texture(tex, clamp(uv + sq_dir * step_px, vec2(0.0), vec2(1.0))).a);
 			if (max_a >= alpha_threshold) return max_a;
 		}
-		// Pass 2: 8 edge midpoints only when wider than 2.5px
+		// Pass 2: 8 edge midpoints when wider than 2.5px
 		if (effective_width > 2.5) {
 			for (int i = 0; i < 8; i++) {
 				vec2 d = DIRS_MID_8[i];
+				vec2 sq_dir = d / max(abs(d.x), abs(d.y));
+				max_a = max(max_a, texture(tex, clamp(uv + sq_dir * step_px, vec2(0.0), vec2(1.0))).a);
+				if (max_a >= alpha_threshold) return max_a;
+			}
+		}
+		// Pass 3: 16 fine edge points for very wide sharp outlines (> 12px)
+		if (effective_width > 12.0) {
+			for (int i = 0; i < 16; i++) {
+				vec2 d = DIRS_FINE_16[i];
 				vec2 sq_dir = d / max(abs(d.x), abs(d.y));
 				max_a = max(max_a, texture(tex, clamp(uv + sq_dir * step_px, vec2(0.0), vec2(1.0))).a);
 				if (max_a >= alpha_threshold) return max_a;
@@ -153,6 +164,70 @@ float sample_ring_max_alpha(sampler2D tex, vec2 uv, vec2 px, float radius_scale)
 	return max_a;
 }
 
+// Returns normalized distance from sprite edge (0.0) to outer outline edge (1.0), or 2.0 if outside
+float compute_smooth_outline_dist(sampler2D tex, vec2 uv, vec2 px, float center_a) {
+	if (center_a >= alpha_threshold) {
+		return 0.0;
+	}
+
+	float low_frac = 0.0;
+	float low_a = center_a;
+	float high_frac = 2.0;
+	float high_a = 0.0;
+
+	if (outline_width <= 16.0) {
+		float outer_a = sample_ring_max_alpha(tex, uv, px, 1.0);
+		if (outer_a < alpha_threshold) {
+			return 2.0;
+		}
+		high_frac = 1.0;
+		high_a = outer_a;
+
+		for (int r = 1; r <= 3; r++) {
+			float frac = float(r) * 0.25;
+			float ring_a = sample_ring_max_alpha(tex, uv, px, frac);
+			if (ring_a >= alpha_threshold) {
+				high_frac = frac;
+				high_a = ring_a;
+				break;
+			}
+			low_frac = frac;
+			low_a = ring_a;
+		}
+	} else {
+		for (int r = 1; r <= 8; r++) {
+			float frac = float(r) * 0.125;
+			float ring_a = sample_ring_max_alpha(tex, uv, px, frac);
+			if (ring_a >= alpha_threshold) {
+				high_frac = frac;
+				high_a = ring_a;
+				break;
+			}
+			low_frac = frac;
+			low_a = ring_a;
+		}
+		if (high_frac > 1.0) {
+			return 2.0;
+		}
+	}
+
+	// 3 binary-search refinements eliminate concentric banding across wide gradients
+	for (int b = 0; b < 3; b++) {
+		float mid_frac = 0.5 * (low_frac + high_frac);
+		float mid_a = sample_ring_max_alpha(tex, uv, px, mid_frac);
+		if (mid_a >= alpha_threshold) {
+			high_frac = mid_frac;
+			high_a = mid_a;
+		} else {
+			low_frac = mid_frac;
+			low_a = mid_a;
+		}
+	}
+
+	float t = (alpha_threshold - low_a) / max(high_a - low_a, 0.0001);
+	return mix(low_frac, high_frac, clamp(t, 0.0, 1.0));
+}
+
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
 	vec4 subject = tex;
@@ -168,11 +243,27 @@ void fragment() {
 	} else {
 		vec2 px = TEXTURE_PIXEL_SIZE * outline_width;
 		float outline_mask = 0.0;
+		float outline_t = 0.0;
 
-		if (outline_softness <= 0.001) {
+		if (use_outline_gradient) {
+			float exact_dist = compute_smooth_outline_dist(TEXTURE, UV, px, tex.a);
+			outline_t = clamp(exact_dist, 0.0, 1.0);
+			if (outline_softness <= 0.001) {
+				outline_mask = step(exact_dist, 1.0);
+			} else {
+				float feather = outline_softness * 2.0;
+				float edge_start = min(max(0.0, 1.0 - feather), 0.999);
+				outline_mask = 1.0 - smoothstep(edge_start, 1.0, exact_dist);
+			}
+		} else if (outline_softness <= 0.001) {
 			float outer_a = sample_ring_max_alpha(TEXTURE, UV, px, 1.0);
 			if (outer_a >= alpha_threshold) {
 				outline_mask = 1.0;
+			} else if (outline_width > 8.0) {
+				if (sample_ring_max_alpha(TEXTURE, UV, px, 0.66) >= alpha_threshold ||
+					sample_ring_max_alpha(TEXTURE, UV, px, 0.33) >= alpha_threshold) {
+					outline_mask = 1.0;
+				}
 			} else if (outline_width > 1.5 && outer_a > 0.001) {
 				float mid_a = sample_ring_max_alpha(TEXTURE, UV, px, 0.5);
 				outline_mask = step(alpha_threshold, mid_a);
@@ -203,7 +294,11 @@ void fragment() {
 			? mix(pulse_min_alpha, 1.0, 0.5 + 0.5 * sin(TIME * pulse_speed))
 			: 1.0;
 
-		vec4 outline = vec4(outline_color.rgb, outline_color.a * outline_mask * pulse);
+		vec4 active_outline_color = use_outline_gradient
+			? texture(outline_gradient, vec2(outline_t, 0.5))
+			: outline_color;
+
+		vec4 outline = vec4(active_outline_color.rgb, active_outline_color.a * outline_mask * pulse);
 
 		// True straight-alpha compositing (prevents any gap on anti-aliased borders)
 		float out_a = subject.a + outline.a * (1.0 - subject.a);
