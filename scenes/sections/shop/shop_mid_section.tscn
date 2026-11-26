@@ -72,7 +72,7 @@ layout_mode = 2
 [node name="OpenPackHolder" type="VBoxContainer" parent="." unique_id=1185844827]
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 25
+theme_override_constants/separation = 20
 
 [node name="PackItems" type="HBoxContainer" parent="OpenPackHolder" unique_id=1398702616]
 layout_mode = 2
@@ -80,12 +80,12 @@ size_flags_horizontal = 4
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, -37)
 offset_transform_visual_only = false
-theme_override_constants/separation = 53
+theme_override_constants/separation = 30
 
 [node name="Instruction" type="RichTextLabel" parent="OpenPackHolder" unique_id=370242196]
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(0, -12)
+offset_transform_position = Vector2(0, -30)
 theme_override_font_sizes/normal_font_size = 32
 text = "Escolha X Implantes"
 fit_content = true

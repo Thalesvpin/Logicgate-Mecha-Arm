@@ -5,8 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://cti7mt7x4b6bt" path="res://scenes/implant_type_animated.tscn" id="2_3j0t4"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_lhu5f"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="2_m4ylp"]
+[ext_resource type="FontFile" uid="uid://b8ki4shgeg6xy" path="res://fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf" id="3_m4ylp"]
 [ext_resource type="Texture2D" uid="uid://3dcqftonh2pd" path="res://assets/info.png" id="4_0tatm"]
-[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="7_3j0t4"]
+[ext_resource type="PackedScene" uid="uid://rcxuxoyhubse" path="res://scenes/buttons/openpackitem_implant_button.tscn" id="8_m4ylp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eofqg"]
 bg_color = Color(0, 0, 0, 0)
@@ -40,6 +41,7 @@ gradient = SubResource("Gradient_yie28")
 shader = ExtResource("2_m4ylp")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_gtatl")
 shader_parameter/gradient_type = 1
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 0.5
@@ -59,6 +61,8 @@ shader_parameter/base_color_saturation = 1.0
 shader_parameter/base_color_hue_shift_speed = 0.0
 shader_parameter/enable_overlay = false
 shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_ignore_base_distortion = true
+shader_parameter/overlay_ignore_base_color_grading = false
 shader_parameter/overlay_gradient_type = 2
 shader_parameter/overlay_gradient_rotation_degrees = 0.0
 shader_parameter/overlay_gradient_scale = 1.0
@@ -85,11 +89,15 @@ shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(20, 20, 20, 20)
 shader_parameter/use_beveled_corners = false
 shader_parameter/enable_outline = true
+shader_parameter/outline_ignore_base_distortion = false
+shader_parameter/outline_ignore_base_color_grading = true
 shader_parameter/outline_width = 4.5910002180725
 shader_parameter/outline_blur = 0.0
+shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_a7lv4")
 shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -214,6 +222,7 @@ gradient = SubResource("Gradient_eka5u")
 shader = ExtResource("2_m4ylp")
 shader_parameter/gradient_texture = SubResource("GradientTexture1D_gtatl")
 shader_parameter/gradient_type = 1
+shader_parameter/square_corner_blend = 0.0
 shader_parameter/gradient_rotation_degrees = 0.0
 shader_parameter/gradient_scale = 1.0
 shader_parameter/gradient_smoothing = 0.5
@@ -233,6 +242,8 @@ shader_parameter/base_color_saturation = 1.0
 shader_parameter/base_color_hue_shift_speed = 0.0
 shader_parameter/enable_overlay = false
 shader_parameter/overlay_blend_mode = 0
+shader_parameter/overlay_ignore_base_distortion = true
+shader_parameter/overlay_ignore_base_color_grading = false
 shader_parameter/overlay_gradient_type = 2
 shader_parameter/overlay_gradient_rotation_degrees = 0.0
 shader_parameter/overlay_gradient_scale = 1.0
@@ -259,11 +270,15 @@ shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(40, 40, 40, 40)
 shader_parameter/use_beveled_corners = true
 shader_parameter/enable_outline = true
+shader_parameter/outline_ignore_base_distortion = false
+shader_parameter/outline_ignore_base_color_grading = true
 shader_parameter/outline_width = 4.5910002180725
 shader_parameter/outline_blur = 0.0
+shader_parameter/outline_sharpness = 0.5
 shader_parameter/outline_path_seam_offset = 0.0
 shader_parameter/outline_gradient_texture = SubResource("GradientTexture1D_tu06r")
 shader_parameter/outline_gradient_type = 1
+shader_parameter/outline_edge_corner_smoothing = 0.0
 shader_parameter/outline_gradient_rotation_degrees = 0.0
 shader_parameter/outline_gradient_scale = 1.0
 shader_parameter/outline_gradient_smoothing = 0.5
@@ -376,7 +391,15 @@ shader_parameter/liquid_stripes_opacity_repeat = false
 shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
 
+[sub_resource type="FontVariation" id="FontVariation_a7lv4"]
+base_font = ExtResource("3_m4ylp")
+variation_embolden = 0.75
+opentype_features = {
+1936928820: 1
+}
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjqua"]
+content_margin_left = 4.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [node name="OpenPackItem" type="PanelContainer" unique_id=211604801]
@@ -385,12 +408,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -194.0
-offset_top = -94.5
-offset_right = 114.0
-offset_bottom = 94.5
+offset_left = -236.5
+offset_top = -106.0
+offset_right = 112.5
+offset_bottom = 145.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_eofqg")
 script = ExtResource("1_lhu5f")
@@ -404,51 +428,72 @@ material = SubResource("ShaderMaterial_bv6uq")
 layout_mode = 2
 
 [node name="TechModMain" type="ColorRect" parent="PanelContainer" unique_id=1404477990]
-visible = false
 material = SubResource("ShaderMaterial_0g3k1")
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=120908509]
+custom_minimum_size = Vector2(341, 245)
+custom_maximum_size = Vector2(341, 241)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=144731477]
-custom_minimum_size = Vector2(280, 0)
-custom_maximum_size = Vector2(280, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = 10
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1451329192]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_fonts/normal_font = SubResource("FontVariation_a7lv4")
+theme_override_font_sizes/normal_font_size = 26
+text = "IMPLANT_TYPE"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Spacer2" type="Control" parent="MarginContainer/VBoxContainer" unique_id=458081807]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
 
 [node name="ImplantCard" parent="MarginContainer/VBoxContainer" unique_id=1355907985 instance=ExtResource("1_jsoma")]
+custom_minimum_size = Vector2(347, 114)
+custom_maximum_size = Vector2(347, 114)
 layout_mode = 2
+size_flags_horizontal = 1
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1576253345]
-custom_minimum_size = Vector2(0, 16.33)
-custom_maximum_size = Vector2(0, 28.37)
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1576253345]
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=282480656]
+custom_minimum_size = Vector2(395, 0)
+custom_maximum_size = Vector2(395, -1)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1947811812]
 modulate = Color(1, 1, 1, 0.25490198)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjqua")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer" unique_id=898246499]
-layout_mode = 2
-theme_override_constants/margin_right = 7
-
-[node name="ImplantTypeAnimated" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer" unique_id=227737294 instance=ExtResource("2_3j0t4")]
+[node name="ImplantTypeAnimated" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer" unique_id=227737294 instance=ExtResource("2_3j0t4")]
 layout_mode = 2
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=864525239]
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="ChooseBtn2" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=164201110]
 visible = false
@@ -460,9 +505,12 @@ texture_normal = ExtResource("2_lhu5f")
 texture_hover = ExtResource("4_0tatm")
 stretch_mode = 0
 
-[node name="ChooseBtn" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1797500818 instance=ExtResource("7_3j0t4")]
-custom_minimum_size = Vector2(134.21, 50)
-custom_maximum_size = Vector2(134.21, 50)
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1567704592]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="ChooseBtn" parent="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2" unique_id=1411504567 instance=ExtResource("8_m4ylp")]
 layout_mode = 2
 
-[connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/ChooseBtn" to="." method="_on_choose_btn_button_up"]
+[connection signal="button_up" from="MarginContainer/VBoxContainer/HBoxContainer/PanelContainer2/ChooseBtn" to="." method="_on_choose_btn_button_up"]

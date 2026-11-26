@@ -1,10 +1,11 @@
 extends PanelContainer
 
-@onready var background: ColorRect = $Mask/Background
-@onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
-@onready var implant_type_animated: PanelContainer = $MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/MarginContainer/ImplantTypeAnimated
 @onready var bio_hack_main: ColorRect = $PanelContainer/BioHackMain
 @onready var tech_mod_main: ColorRect = $PanelContainer/TechModMain
+@onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
+@onready var implant_type_animated: PanelContainer = $MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/ImplantTypeAnimated
+
+
 
 const ICON_MINI_BIOHACKS = preload("uid://byrpiwaihcjtv")
 const ICON_MINI_TECHMODS = preload("uid://s0uva87wtgws")

@@ -244,8 +244,8 @@ shader_parameter/outline_gradient_offset = 0.0
 shader_parameter/outline_repeat_gradient = false
 
 [node name="ImplantTypeAnimated" type="PanelContainer" unique_id=227737294]
-custom_minimum_size = Vector2(100, 50)
-custom_maximum_size = Vector2(100, 50)
+custom_minimum_size = Vector2(125, 55)
+custom_maximum_size = Vector2(125, 55)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -256,10 +256,10 @@ grow_vertical = 2
 script = ExtResource("1_nvjen")
 
 [node name="TypeBiohack" type="ColorRect" parent="." unique_id=1555287089]
-visible = false
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 2
 
 [node name="TypeTechmod" type="ColorRect" parent="." unique_id=276799817]
+visible = false
 material = SubResource("ShaderMaterial_gtatl")
 layout_mode = 2

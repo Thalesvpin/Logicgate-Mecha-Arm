@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://6qttfehwrh0v" path="res://scripts/pack_button_panel.gd" id="1_5suhj"]
 [ext_resource type="Texture2D" uid="uid://bb84g5o4b08f3" path="res://assets/activator.png" id="2_5gvoh"]
-[ext_resource type="PackedScene" uid="uid://du5nn3tvuuxhx" path="res://scenes/generic_button.tscn" id="2_nvocj"]
+[ext_resource type="PackedScene" uid="uid://lsuwmxht7c5o" path="res://scenes/buttons/skip_pack_btn.tscn" id="2_nvocj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oje0l"]
 content_margin_left = 0.0
@@ -29,8 +29,8 @@ metadata/_live_palette_bindings = {
 }
 
 [node name="PackButtonPanel" type="PanelContainer" unique_id=1468448522]
-custom_minimum_size = Vector2(0, 120)
-custom_maximum_size = Vector2(-1, 120)
+custom_minimum_size = Vector2(0, 100)
+custom_maximum_size = Vector2(-1, 100)
 offset_right = 480.0
 offset_bottom = 120.0
 offset_transform_enabled = true
@@ -49,14 +49,17 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_nvocj")
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Skip" parent="Control" unique_id=1797500818 instance=ExtResource("2_nvocj")]
-custom_minimum_size = Vector2(84, 37)
-custom_maximum_size = Vector2(84, 37)
+[node name="Skip" parent="Control" unique_id=1935370627 instance=ExtResource("2_nvocj")]
 layout_mode = 1
-offset_left = 198.0
-offset_top = 46.0
-offset_right = -198.0
-offset_bottom = -37.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -18.5
+offset_right = 42.0
+offset_bottom = 18.5
 
 [node name="Skip2" type="TextureButton" parent="Control" unique_id=456526295]
 visible = false

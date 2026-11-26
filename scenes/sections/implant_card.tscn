@@ -234,6 +234,7 @@ stretch_mode = 0
 layout_mode = 2
 
 [node name="ActivatorBtn" parent="MarginContainer/RarityOutline/MarginContainer/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder" unique_id=1268291202 instance=ExtResource("9_le1od")]
+visible = false
 layout_mode = 2
 
 [node name="CompactVersion" type="GridContainer" parent="MarginContainer/RarityOutline/MarginContainer/HBoxContainer" unique_id=1818323556]
