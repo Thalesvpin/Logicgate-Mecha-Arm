@@ -6,6 +6,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
 
 [sub_resource type="Gradient" id="Gradient_co24r"]
+offsets = PackedFloat32Array(0.13577023, 1)
 colors = PackedColorArray(0.9673469, 0.9673469, 0.9673469, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
@@ -15,11 +16,11 @@ gradient = SubResource("Gradient_co24r")
 shader = ExtResource("1_co24r")
 shader_parameter/enable_outline = true
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_width = 14.0
-shader_parameter/outline_softness = 0.499999988824
-shader_parameter/alpha_threshold = 0.00999999977648
+shader_parameter/outline_width = 20.0
+shader_parameter/outline_softness = 0.0
+shader_parameter/alpha_threshold = 0.5
 shader_parameter/include_diagonals = true
-shader_parameter/round_corners = false
+shader_parameter/round_corners = true
 shader_parameter/pulse_speed = 0.0
 shader_parameter/pulse_min_alpha = 0.35
 shader_parameter/enable_overlay = true
@@ -40,7 +41,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 2
 offset_transform_enabled = true
-offset_transform_position = Vector2(0, 8)
+offset_transform_position = Vector2(0, 5)
 offset_transform_scale = Vector2(1.35, 1.35)
 texture = ExtResource("1_16sls")
 stretch_mode = 5
