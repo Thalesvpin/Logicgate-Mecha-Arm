@@ -75,17 +75,17 @@ bg_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_color = Color(1, 1, 1, 1)
+border_color = Color(1, 0.7490196, 0, 1)
 expand_margin_left = 3.0
 expand_margin_top = 3.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnty3"]
-bg_color = Color(0, 0, 0.61960787, 1)
+bg_color = Color(1, 0.7490196, 0, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(0.28627452, 0.29411766, 0.2901961, 1)
+border_color = Color(1, 0.7490196, 0, 1)
 expand_margin_left = 1.0
 expand_margin_top = 1.0
 
@@ -98,8 +98,18 @@ spacing_glyph = 1
 font = SubResource("FontVariation_a7lv4")
 font_size = 30
 
+[sub_resource type="FontVariation" id="FontVariation_0mqr6"]
+base_font = ExtResource("3_uscdr")
+variation_transform = Transform2D(1.06, 0, 0, 1.06, 0, 0)
+spacing_bottom = -3
+
+[sub_resource type="LabelSettings" id="LabelSettings_uscdr"]
+font = SubResource("FontVariation_0mqr6")
+font_size = 42
+font_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aaut4"]
-bg_color = Color(0.43529412, 0.44705883, 0.4392157, 1)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 5
@@ -109,30 +119,41 @@ expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7lv4"]
-bg_color = Color(0.43529412, 0.44705883, 0.4392157, 1)
+bg_color = Color(1, 0.7490196, 0, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.6901961, 0.7019608, 0.69803923, 1)
+border_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gtatl"]
+bg_color = Color(0, 0, 0, 1)
 draw_center = false
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.88235295, 0.8784314, 0.8980392, 1)
+border_color = Color(1, 0.7490196, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_edi8c"]
 font = SubResource("FontVariation_a7lv4")
 font_size = 30
 
+[sub_resource type="FontVariation" id="FontVariation_uscdr"]
+base_font = ExtResource("3_uscdr")
+variation_transform = Transform2D(1.06, 0, 0, 1.06, 0, 0)
+spacing_bottom = -3
+
+[sub_resource type="LabelSettings" id="LabelSettings_47cwi"]
+font = SubResource("FontVariation_uscdr")
+font_size = 35
+font_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pae1i"]
-bg_color = Color(0.6666667, 0.67058825, 0.6666667, 1)
+bg_color = Color(0, 0, 0, 1)
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.22352941, 0.22352941, 0.22352941, 1)
+border_color = Color(0, 0, 0, 1)
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
@@ -151,6 +172,15 @@ draw_center = false
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.5411765, 0.54509807, 0.56078434, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_47cwi"]
+base_font = ExtResource("3_uscdr")
+spacing_bottom = -3
+
+[sub_resource type="LabelSettings" id="LabelSettings_4u4af"]
+font = SubResource("FontVariation_47cwi")
+font_size = 48
+font_color = Color(1, 0.7490196, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_eoch2"]
 font = SubResource("FontVariation_a7lv4")
@@ -312,6 +342,7 @@ theme_override_constants/margin_bottom = 4
 material = SubResource("ShaderMaterial_bv6uq")
 layout_mode = 2
 mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="Label" type="Label" parent="Hover/PanelContainer2" unique_id=1959410523]
 visible = false
@@ -324,6 +355,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="Hover/PanelContainer2" unique_id=1953123890]
+visible = false
 texture_filter = 1
 custom_minimum_size = Vector2(22, 22)
 custom_maximum_size = Vector2(22, 22)
@@ -334,6 +366,18 @@ offset_transform_enabled = true
 mouse_filter = 2
 texture = ExtResource("4_47cwi")
 stretch_mode = 5
+
+[node name="Label" type="Label" parent="Hover" unique_id=478838816]
+texture_filter = 1
+layout_mode = 0
+offset_left = 11.0
+offset_top = 3.0
+offset_right = 29.0
+offset_bottom = 37.0
+text = "?"
+label_settings = SubResource("LabelSettings_uscdr")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Pressed" type="Control" parent="." unique_id=2041123226]
 visible = false
@@ -388,7 +432,16 @@ label_settings = SubResource("LabelSettings_edi8c")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Label2" type="Label" parent="Pressed/PanelContainer/InnerLayer2A" unique_id=37181336]
+texture_filter = 1
+layout_mode = 2
+text = "?"
+label_settings = SubResource("LabelSettings_47cwi")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="TextureRect" type="TextureRect" parent="Pressed/PanelContainer" unique_id=462794929]
+visible = false
 texture_filter = 1
 custom_minimum_size = Vector2(19, 19)
 custom_maximum_size = Vector2(19, 19)
@@ -433,20 +486,36 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_aaut4")
 [node name="InnerLayer" type="MarginContainer" parent="Disabled/PanelContainer" unique_id=559281519]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Disabled/PanelContainer/InnerLayer" unique_id=798578480]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_edi8c")
 
 [node name="PanelContainer2" type="PanelContainer" parent="Disabled/PanelContainer/InnerLayer" unique_id=607702102]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_bv6uq")
+
+[node name="Label" type="Label" parent="Disabled/PanelContainer/InnerLayer" unique_id=2024254528]
+texture_filter = 1
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(2, -4)
+text = "x"
+label_settings = SubResource("LabelSettings_4u4af")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DotsEdges" type="ColorRect" parent="Disabled/PanelContainer/InnerLayer" unique_id=2109755695]
+material = SubResource("ShaderMaterial_bv6uq")
+layout_mode = 2
+mouse_filter = 2
+color = Color(1, 0.7490196, 0, 1)
 
 [node name="Label" type="Label" parent="Disabled/PanelContainer" unique_id=1956912398]
 visible = false
@@ -456,47 +525,6 @@ text = "ATIVAR"
 label_settings = SubResource("LabelSettings_eoch2")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="Disabled/PanelContainer" unique_id=224603159]
-modulate = Color(0.8235294, 0.8235294, 0.8235294, 1)
-texture_filter = 1
-custom_minimum_size = Vector2(22, 22)
-custom_maximum_size = Vector2(22, 22)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-offset_transform_position = Vector2(2, 3)
-mouse_filter = 2
-texture = ExtResource("4_47cwi")
-stretch_mode = 5
-
-[node name="TextureRect2" type="TextureRect" parent="Disabled/PanelContainer" unique_id=197625402]
-modulate = Color(0.43137255, 0.43137255, 0.43137255, 1)
-texture_filter = 1
-custom_minimum_size = Vector2(22, 22)
-custom_maximum_size = Vector2(22, 22)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-offset_transform_position = Vector2(1, 2)
-mouse_filter = 2
-texture = ExtResource("4_47cwi")
-stretch_mode = 5
-
-[node name="TextureRect3" type="TextureRect" parent="Disabled/PanelContainer" unique_id=1913832410]
-modulate = Color(0.54509807, 0.5529412, 0.54901963, 1)
-texture_filter = 1
-custom_minimum_size = Vector2(22, 22)
-custom_maximum_size = Vector2(22, 22)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-offset_transform_enabled = true
-mouse_filter = 2
-texture = ExtResource("4_47cwi")
-stretch_mode = 5
 
 [connection signal="button_down" from="." to="." method="_on_button_down"]
 [connection signal="button_up" from="." to="." method="_on_button_up"]
