@@ -387,5 +387,8 @@ size_flags_horizontal = 3
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="button_up" from="MarginContainer/RarityOutline/MarginContainer/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivatorBtnSmall" to="." method="_on_activator_btn_small_button_up"]
+[connection signal="button_up" from="MarginContainer/RarityOutline/MarginContainer/HBoxContainer/ExtendedVersions/PanelContainer2/HBoxContainer/ActivatorHolder/ActivatorBtn" to="." method="_on_activator_btn_button_up"]
+[connection signal="button_up" from="MarginContainer/RarityOutline/MarginContainer/HBoxContainer/CompactVersion/ActivatorBtnCompact" to="." method="_on_activator_btn_compact_button_up"]
 [connection signal="button_up" from="SellOverlay/VBoxContainer/HBoxContainer/ConfirmBtn" to="." method="_on_confirm_btn_button_up"]
 [connection signal="button_up" from="SellOverlay/VBoxContainer/HBoxContainer/CancelBtn" to="." method="_on_cancel_btn_button_up"]

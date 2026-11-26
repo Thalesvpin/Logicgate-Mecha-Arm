@@ -214,6 +214,5 @@ func _on_cancel_btn_button_up() -> void:
 func _on_activator_btn_compact_button_up() -> void:
 	activate()
 
-
 func _on_activator_btn_small_button_up() -> void:
 	activate()

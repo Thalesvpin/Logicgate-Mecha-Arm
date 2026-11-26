@@ -65,6 +65,11 @@ func battle_reward() -> void:
 	var ef = AddMoneyEffect.new()
 	ef.amount = rewards[Global.run_stats.current_battle-2]
 	ef.apply()
+	
+	ef = HealEffect.new()
+	ef.amount = 30
+	ef.mode = 0 #percent
+	ef.apply()
 
 func battle_ended(is_victory: bool) -> void:
 	if is_victory:
