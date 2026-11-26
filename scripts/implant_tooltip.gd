@@ -8,6 +8,7 @@ extends PanelContainer
 @onready var power: RichTextLabel = $MarginContainer/VBoxContainer/HBoxContainer/Power
 
 var _implant: Implant
+var rarity_names: Array[String] = ['Comum', 'Raro', 'Ultra Raro', 'Lendário']
 
 func _ready() -> void:
 	apply()
@@ -18,9 +19,9 @@ func config(implant: Implant) -> void:
 func apply() -> void:
 	name_label.text = _implant.name
 	description.text = '\t'+_implant.description
-	type.text = Implant.Type.keys()[_implant.type]
+	type.text = 'TECH MOD' if _implant.type == Implant.Type.TECH_MOD else 'BIO HACK'
 	context.text = 'Venda: %d' % int(Implant.PRICES[_implant.rarity]*0.4)
-	power.text = Global.Rarity.keys()[_implant.rarity]
+	power.text = rarity_names[_implant.rarity]
 	if _implant.corrupted:
 		description_corrupted.show()
 		description_corrupted.text = '\t'+_implant.description_corrupted

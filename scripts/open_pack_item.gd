@@ -4,8 +4,7 @@ extends PanelContainer
 @onready var tech_mod_main: ColorRect = $PanelContainer/TechModMain
 @onready var implant_card: PanelContainer = $MarginContainer/VBoxContainer/ImplantCard
 @onready var implant_type_animated: PanelContainer = $MarginContainer/VBoxContainer/HBoxContainer/PanelContainer/ImplantTypeAnimated
-
-
+@onready var implant_type_label: RichTextLabel = $MarginContainer/VBoxContainer/ImplantTypeLabel
 
 const ICON_MINI_BIOHACKS = preload("uid://byrpiwaihcjtv")
 const ICON_MINI_TECHMODS = preload("uid://s0uva87wtgws")
@@ -19,6 +18,7 @@ func load_implant(implant: Implant) -> void:
 	set_rarity(implant.rarity)
 	implant_card.resource = implant
 	implant_card.load_resource()
+	implant_type_label.text = 'TECH MOD' if implant.type == Implant.Type.TECH_MOD else 'BIO HACK'
 	if implant.type == Implant.Type.TECH_MOD:
 		implant_type_animated.set_techmod()
 		bio_hack_main.visible = false

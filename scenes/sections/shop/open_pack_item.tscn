@@ -449,7 +449,7 @@ size_flags_vertical = 4
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1451329192]
+[node name="ImplantTypeLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1451329192]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
