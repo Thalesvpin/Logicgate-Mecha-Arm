@@ -1,8 +1,35 @@
 [gd_scene format=3 uid="uid://bwm0lu08jd05m"]
 
-[ext_resource type="Texture2D" uid="uid://b6okv4o605ffy" path="res://assets/mod_icon.png" id="1_16sls"]
+[ext_resource type="Texture2D" uid="uid://c0bj0xploj0q2" path="res://assets/pack_folder_icon.png" id="1_16sls"]
+[ext_resource type="Shader" uid="uid://bji5r4oemxoe5" path="res://scenes/sections/inventory/texpadded_outline.gdshader" id="1_co24r"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
+
+[sub_resource type="Gradient" id="Gradient_co24r"]
+colors = PackedColorArray(0.9673469, 0.9673469, 0.9673469, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+gradient = SubResource("Gradient_co24r")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a7lv4"]
+shader = ExtResource("1_co24r")
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_width = 14.0
+shader_parameter/outline_softness = 0.499999988824
+shader_parameter/alpha_threshold = 0.00999999977648
+shader_parameter/include_diagonals = true
+shader_parameter/round_corners = false
+shader_parameter/pulse_speed = 0.0
+shader_parameter/pulse_min_alpha = 0.35
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_color = Color(1, 0, 0, 1)
+shader_parameter/overlay_strength = 0.999999977648
+shader_parameter/overlay_mode = 0
+shader_parameter/use_overlay_gradient = true
+shader_parameter/overlay_gradient = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/gradient_angle = 45.0
+shader_parameter/gradient_use_2d_uv = false
 
 [node name="CorruptedMixIcon" type="PanelContainer" unique_id=1131481690]
 custom_minimum_size = Vector2(194, 92)
@@ -10,6 +37,10 @@ custom_maximum_size = Vector2(194, 92)
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=2061242021]
+material = SubResource("ShaderMaterial_a7lv4")
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 8)
+offset_transform_scale = Vector2(1.35, 1.35)
 texture = ExtResource("1_16sls")
 stretch_mode = 5

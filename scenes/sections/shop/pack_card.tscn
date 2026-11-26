@@ -165,7 +165,6 @@ visible = false
 layout_mode = 2
 
 [node name="CorruptedMixBG" parent="Background" unique_id=824652736 instance=ExtResource("8_d4gmy")]
-visible = false
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=232244669]
@@ -213,28 +212,40 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_a7lv4")
 
 [node name="PackIconTemplate" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1594143323 instance=ExtResource("2_pfw6h")]
+visible = false
 layout_mode = 2
 
 [node name="MiniMixIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=11691536 instance=ExtResource("10_2mo74")]
+visible = false
 layout_mode = 2
 
 [node name="MiniTMIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1482645143 instance=ExtResource("11_rdwww")]
+visible = false
 layout_mode = 2
 
 [node name="MiniBHIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=894489568 instance=ExtResource("12_6uq87")]
+visible = false
 layout_mode = 2
 
 [node name="BigMixIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=764457910 instance=ExtResource("13_ynrof")]
+visible = false
 layout_mode = 2
 
 [node name="BigTMIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=402126777 instance=ExtResource("14_ggd2o")]
+visible = false
 layout_mode = 2
 
 [node name="BigBHIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1602925104 instance=ExtResource("15_78wax")]
+visible = false
 layout_mode = 2
+offset_transform_position = Vector2(0, 8)
+offset_transform_scale = Vector2(1.055, 1.055)
 
 [node name="CorruptedMixIcon" parent="MarginContainer/VBoxContainer/IconHolder" unique_id=1131481690 instance=ExtResource("16_rxnwj")]
+visible = false
 layout_mode = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 8)
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=633118401]
 visible = false
@@ -247,6 +258,7 @@ stretch_mode = 2
 custom_minimum_size = Vector2(0, 62)
 custom_maximum_size = Vector2(-1, 62)
 layout_mode = 2
+theme_override_constants/outline_size = 10
 theme_override_font_sizes/normal_font_size = 22
 bbcode_enabled = true
 text = "pack_corrompido

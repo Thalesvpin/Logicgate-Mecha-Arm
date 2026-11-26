@@ -16,6 +16,10 @@ uniform bool enable_overlay = false;
 uniform vec4 overlay_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform float overlay_strength : hint_range(0.0, 1.0, 0.01) = 0.5;
 uniform int overlay_mode : hint_enum("Flat Mix", "Multiply Tint", "Additive Glow") = 0;
+uniform bool use_overlay_gradient = false;
+uniform sampler2D overlay_gradient : source_color, hint_default_white;
+uniform float gradient_angle : hint_range(0.0, 360.0, 1.0) = 90.0;
+uniform bool gradient_use_2d_uv = false;
 group_uniforms;
 
 varying vec4 v_modulate;
@@ -24,23 +28,38 @@ void vertex() {
 	v_modulate = COLOR;
 }
 
-vec3 apply_overlay(vec3 base_rgb) {
-	float amount = overlay_strength * overlay_color.a;
+vec3 apply_overlay(vec3 base_rgb, vec4 tint) {
+	float amount = overlay_strength * tint.a;
 	if (overlay_mode == 1) {
-		return mix(base_rgb, base_rgb * overlay_color.rgb, amount);
+		return mix(base_rgb, base_rgb * tint.rgb, amount);
 	} else if (overlay_mode == 2) {
-		return base_rgb + (overlay_color.rgb * amount);
+		return base_rgb + (tint.rgb * amount);
 	}
-	return mix(base_rgb, overlay_color.rgb, amount);
+	return mix(base_rgb, tint.rgb, amount);
+}
+
+vec4 get_overlay_sample(vec2 uv) {
+	if (!use_overlay_gradient) {
+		return overlay_color;
+	}
+	if (gradient_use_2d_uv) {
+		return texture(overlay_gradient, uv);
+	}
+	float rad = radians(gradient_angle);
+	vec2 dir = vec2(cos(rad), sin(rad));
+	float span = abs(dir.x) + abs(dir.y);
+	float t = clamp(dot(uv - 0.5, dir) / span + 0.5, 0.0, 1.0);
+	return texture(overlay_gradient, vec2(t, 0.5));
 }
 
 void fragment() {
 	vec4 tex = texture(TEXTURE, UV);
 	vec4 subject = tex;
 
-	// Apply color overlay across all non-transparent pixels, including anti-aliased edges
+	// Apply flat or gradient color overlay across non-transparent pixels
 	if (enable_overlay && overlay_strength > 0.0 && tex.a > 0.0) {
-		subject.rgb = apply_overlay(tex.rgb);
+		vec4 active_overlay = get_overlay_sample(UV);
+		subject.rgb = apply_overlay(tex.rgb, active_overlay);
 	}
 
 	// Fast path: skip neighbor lookups when outline is off, zero-width, or pixel is fully opaque
@@ -87,7 +106,7 @@ void fragment() {
 
 		vec4 outline = vec4(outline_color.rgb, outline_color.a * outline_mask * pulse);
 
-		// True straight-alpha "subject over outline" compositing (no edge darkening or gap)
+		// True straight-alpha "subject over outline" compositing
 		float out_a = subject.a + outline.a * (1.0 - subject.a);
 		vec3 out_rgb = (out_a > 0.0)
 			? (subject.rgb * subject.a + outline.rgb * outline.a * (1.0 - subject.a)) / out_a
