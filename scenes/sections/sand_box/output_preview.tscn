@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b2up6q7bap0ld" path="res://scripts/output_preview.gd" id="1_ofhfq"]
 [ext_resource type="Shader" uid="uid://clugnodh13dv8" path="res://shaders/gradientRect_master_shader.gdshader" id="1_yt7kv"]
+[ext_resource type="FontFile" uid="uid://b8ki4shgeg6xy" path="res://fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf" id="3_d3tpv"]
 
 [sub_resource type="Gradient" id="Gradient_d3tpv"]
 offsets = PackedFloat32Array(0.8415493, 1)
@@ -384,6 +385,9 @@ shader_parameter/liquid_stripes_opacity_offset = 0.0
 shader_parameter/liquid_stripes_opacity_repeat = false
 shader_parameter/gamma_correction = 1.0
 shader_parameter/enable_dithering = true
+
+[sub_resource type="FontVariation" id="FontVariation_a7lv4"]
+base_font = ExtResource("3_d3tpv")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjyp6"]
 
@@ -955,32 +959,50 @@ size_flags_vertical = 4
 offset_transform_enabled = true
 mouse_filter = 2
 
-[node name="NameRect" type="ColorRect" parent="VBoxContainer" unique_id=500735250]
+[node name="Spacer3" type="Control" parent="VBoxContainer" unique_id=1966928804]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer" unique_id=1714552089]
+layout_mode = 2
+
+[node name="NameRect" type="ColorRect" parent="VBoxContainer/PanelContainer" unique_id=500735250]
 material = SubResource("ShaderMaterial_3iwch")
 custom_minimum_size = Vector2(78, 36)
-custom_maximum_size = Vector2(78, 36)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
 mouse_filter = 2
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/PanelContainer" unique_id=2024346677]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_a7lv4")
+theme_override_font_sizes/normal_font_size = 27
+text = "OUTPUT
+PREVIEW"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Spacer2" type="Control" parent="VBoxContainer" unique_id=999002723]
 custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ExecutionContainer1" type="HBoxContainer" parent="VBoxContainer" unique_id=366753814]
+[node name="PanelContainer2" type="PanelContainer" parent="VBoxContainer" unique_id=628667826]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer2" unique_id=1457680688]
+layout_mode = 2
+
+[node name="ExecutionContainer1" type="HBoxContainer" parent="VBoxContainer/PanelContainer2/VBoxContainer" unique_id=366753814]
 layout_mode = 2
 size_flags_vertical = 8
 mouse_filter = 2
 
-[node name="Spacer" type="Control" parent="VBoxContainer/ExecutionContainer1" unique_id=1682542400]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/ExecutionContainer1" unique_id=1246439569]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer1" unique_id=1246439569]
 custom_minimum_size = Vector2(80, 0)
 custom_maximum_size = Vector2(80, -1)
 layout_mode = 2
@@ -991,7 +1013,7 @@ offset_transform_position = Vector2(-1, 0)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
-[node name="ColorRect3" type="ColorRect" parent="VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=1559756218]
+[node name="ColorRect3" type="ColorRect" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=1559756218]
 material = SubResource("ShaderMaterial_0u6ou")
 custom_minimum_size = Vector2(78, 36)
 custom_maximum_size = Vector2(78, 36)
@@ -1001,7 +1023,7 @@ size_flags_vertical = 4
 mouse_filter = 2
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
-[node name="ColorRect4" type="ColorRect" parent="VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=458267061]
+[node name="ColorRect4" type="ColorRect" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=458267061]
 visible = false
 custom_minimum_size = Vector2(78, 36)
 custom_maximum_size = Vector2(78, 36)
@@ -1011,7 +1033,7 @@ size_flags_vertical = 4
 mouse_filter = 2
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
-[node name="ExecutionLabel1" type="RichTextLabel" parent="VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=643158773]
+[node name="ExecutionLabel1" type="RichTextLabel" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer1/PanelContainer" unique_id=643158773]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(1, -1)
@@ -1025,28 +1047,23 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control" type="Control" parent="VBoxContainer" unique_id=2138249477]
+[node name="Control" type="Control" parent="VBoxContainer/PanelContainer2/VBoxContainer" unique_id=2138249477]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ExecutionContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=2112954255]
+[node name="ExecutionContainer2" type="HBoxContainer" parent="VBoxContainer/PanelContainer2/VBoxContainer" unique_id=2112954255]
 layout_mode = 2
 size_flags_vertical = 8
 mouse_filter = 2
 
-[node name="Spacer" type="Control" parent="VBoxContainer/ExecutionContainer2" unique_id=1971163752]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/ExecutionContainer2" unique_id=592062269]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer2" unique_id=592062269]
 custom_minimum_size = Vector2(80, 0)
 custom_maximum_size = Vector2(80, -1)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
-[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1814443507]
+[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1814443507]
 material = SubResource("ShaderMaterial_4qbvm")
 custom_minimum_size = Vector2(78, 36)
 custom_maximum_size = Vector2(78, 36)
@@ -1056,7 +1073,7 @@ size_flags_vertical = 4
 mouse_filter = 2
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
-[node name="ColorRect3" type="ColorRect" parent="VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=555728998]
+[node name="ColorRect3" type="ColorRect" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=555728998]
 visible = false
 custom_minimum_size = Vector2(78, 36)
 custom_maximum_size = Vector2(78, 36)
@@ -1066,7 +1083,7 @@ size_flags_vertical = 4
 mouse_filter = 2
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
-[node name="ExecutionLabel2" type="RichTextLabel" parent="VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1980469058]
+[node name="ExecutionLabel2" type="RichTextLabel" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer2/PanelContainer" unique_id=1980469058]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(1, -1)
@@ -1080,28 +1097,23 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control2" type="Control" parent="VBoxContainer" unique_id=569758257]
+[node name="Control2" type="Control" parent="VBoxContainer/PanelContainer2/VBoxContainer" unique_id=569758257]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ExecutionContainer3" type="HBoxContainer" parent="VBoxContainer" unique_id=1460660807]
+[node name="ExecutionContainer3" type="HBoxContainer" parent="VBoxContainer/PanelContainer2/VBoxContainer" unique_id=1460660807]
 layout_mode = 2
 size_flags_vertical = 8
 mouse_filter = 2
 
-[node name="Spacer" type="Control" parent="VBoxContainer/ExecutionContainer3" unique_id=1291011939]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/ExecutionContainer3" unique_id=965499830]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer3" unique_id=965499830]
 custom_minimum_size = Vector2(80, 0)
 custom_maximum_size = Vector2(80, -1)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_mjyp6")
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=1555739509]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=1555739509]
 material = SubResource("ShaderMaterial_5mgvc")
 custom_minimum_size = Vector2(78, 36)
 custom_maximum_size = Vector2(78, 36)
@@ -1111,7 +1123,7 @@ size_flags_vertical = 4
 mouse_filter = 2
 color = Color(0.8239189, 0.23110667, 0.7637393, 1)
 
-[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=1305432726]
+[node name="ColorRect2" type="ColorRect" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=1305432726]
 visible = false
 custom_minimum_size = Vector2(78, 36)
 custom_maximum_size = Vector2(78, 36)
@@ -1121,7 +1133,7 @@ size_flags_vertical = 4
 mouse_filter = 2
 color = Color(4.3317675e-07, 0.62802905, 0.41131386, 1)
 
-[node name="ExecutionLabel3" type="RichTextLabel" parent="VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=833835995]
+[node name="ExecutionLabel3" type="RichTextLabel" parent="VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer3/PanelContainer" unique_id=833835995]
 layout_mode = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(1, -1)
@@ -1135,7 +1147,7 @@ autowrap_trim_flags = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Spacer" type="Control" parent="VBoxContainer" unique_id=1316557301]
+[node name="Spacer" type="Control" parent="VBoxContainer/PanelContainer2/VBoxContainer" unique_id=1316557301]
 layout_mode = 2
 
 [node name="DragArea" type="Area2D" parent="." unique_id=1337417043]

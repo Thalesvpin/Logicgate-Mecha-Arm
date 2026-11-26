@@ -1,8 +1,10 @@
 extends PanelContainer
 
-@onready var execution_label_1: RichTextLabel = $VBoxContainer/ExecutionContainer1/PanelContainer/ExecutionLabel1
-@onready var execution_label_2: RichTextLabel = $VBoxContainer/ExecutionContainer2/PanelContainer/ExecutionLabel2
-@onready var execution_label_3: RichTextLabel = $VBoxContainer/ExecutionContainer3/PanelContainer/ExecutionLabel3
+@onready var execution_label_1: RichTextLabel = $VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer1/PanelContainer/ExecutionLabel1
+@onready var execution_label_2: RichTextLabel = $VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer2/PanelContainer/ExecutionLabel2
+@onready var execution_label_3: RichTextLabel = $VBoxContainer/PanelContainer2/VBoxContainer/ExecutionContainer3/PanelContainer/ExecutionLabel3
+
+
 
 var labels: Array
 var cursor_offset: Vector2
