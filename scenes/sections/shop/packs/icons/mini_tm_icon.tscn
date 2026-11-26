@@ -12,14 +12,14 @@
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0, 0, 0, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_a7lv4"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_22vlw"]
 gradient = SubResource("Gradient_qc1ht")
 
 [sub_resource type="Gradient" id="Gradient_6cgc4"]
 offsets = PackedFloat32Array(0.13577023, 1)
 colors = PackedColorArray(0.9673469, 0.9673469, 0.9673469, 1, 0.06879827, 0.06879828, 0.06879828, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_eech2"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_23hch"]
 gradient = SubResource("Gradient_6cgc4")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5nslc"]
@@ -27,7 +27,7 @@ shader = ExtResource("1_22vlw")
 shader_parameter/enable_outline = true
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/use_outline_gradient = true
-shader_parameter/outline_gradient = SubResource("GradientTexture1D_a7lv4")
+shader_parameter/outline_gradient = SubResource("GradientTexture1D_22vlw")
 shader_parameter/outline_width = 20.0
 shader_parameter/outline_softness = 0.249999994412
 shader_parameter/alpha_threshold = 0.5
@@ -40,7 +40,7 @@ shader_parameter/overlay_color = Color(1, 0, 0, 1)
 shader_parameter/overlay_strength = 0.999999977648
 shader_parameter/overlay_mode = 0
 shader_parameter/use_overlay_gradient = true
-shader_parameter/overlay_gradient = SubResource("GradientTexture1D_eech2")
+shader_parameter/overlay_gradient = SubResource("GradientTexture1D_23hch")
 shader_parameter/gradient_angle = 45.0
 shader_parameter/gradient_use_2d_uv = false
 
@@ -48,14 +48,14 @@ shader_parameter/gradient_use_2d_uv = false
 offsets = PackedFloat32Array(0.5)
 colors = PackedColorArray(0, 0, 0, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ew072"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xyfie"]
 gradient = SubResource("Gradient_7nqu7")
 
 [sub_resource type="Gradient" id="Gradient_3j157"]
 offsets = PackedFloat32Array(0, 0.6)
 colors = PackedColorArray(0.84263474, 3.5616756e-06, 4.813075e-07, 1, 1, 0, 0, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_pae1i"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mdf6r"]
 gradient = SubResource("Gradient_3j157")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_teds4"]
@@ -63,43 +63,7 @@ shader = ExtResource("1_22vlw")
 shader_parameter/enable_outline = true
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/use_outline_gradient = true
-shader_parameter/outline_gradient = SubResource("GradientTexture1D_ew072")
-shader_parameter/outline_width = 52.5
-shader_parameter/outline_softness = 0.499999988824
-shader_parameter/alpha_threshold = 0.00999999977648
-shader_parameter/include_diagonals = true
-shader_parameter/round_corners = true
-shader_parameter/pulse_speed = 0.0
-shader_parameter/pulse_min_alpha = 0.35
-shader_parameter/enable_overlay = true
-shader_parameter/overlay_color = Color(1, 1, 1, 1)
-shader_parameter/overlay_strength = 0.999999977648
-shader_parameter/overlay_mode = 0
-shader_parameter/use_overlay_gradient = true
-shader_parameter/overlay_gradient = SubResource("GradientTexture1D_pae1i")
-shader_parameter/gradient_angle = 45.0
-shader_parameter/gradient_use_2d_uv = false
-
-[sub_resource type="Gradient" id="Gradient_22vlw"]
-offsets = PackedFloat32Array(0, 0.3)
-colors = PackedColorArray(0, 0, 0.61960787, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_23hch"]
-gradient = SubResource("Gradient_22vlw")
-
-[sub_resource type="Gradient" id="Gradient_xyfie"]
-offsets = PackedFloat32Array(0, 0.6)
-colors = PackedColorArray(0.714, 0.7686, 0.84, 1, 0.85, 0.915, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_mdf6r"]
-gradient = SubResource("Gradient_xyfie")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k51qf"]
-shader = ExtResource("1_22vlw")
-shader_parameter/enable_outline = true
-shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/use_outline_gradient = true
-shader_parameter/outline_gradient = SubResource("GradientTexture1D_23hch")
+shader_parameter/outline_gradient = SubResource("GradientTexture1D_xyfie")
 shader_parameter/outline_width = 52.5
 shader_parameter/outline_softness = 0.499999988824
 shader_parameter/alpha_threshold = 0.00999999977648
@@ -116,26 +80,26 @@ shader_parameter/overlay_gradient = SubResource("GradientTexture1D_mdf6r")
 shader_parameter/gradient_angle = 45.0
 shader_parameter/gradient_use_2d_uv = false
 
-[sub_resource type="Gradient" id="Gradient_djspr"]
-offsets = PackedFloat32Array(0.5)
-colors = PackedColorArray(0, 0, 0, 1)
+[sub_resource type="Gradient" id="Gradient_22vlw"]
+offsets = PackedFloat32Array(0, 0.3)
+colors = PackedColorArray(0, 0, 0.61960787, 1, 0, 0, 0, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_kyxwj"]
-gradient = SubResource("Gradient_djspr")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k51qf"]
+gradient = SubResource("Gradient_22vlw")
 
-[sub_resource type="Gradient" id="Gradient_ysl6e"]
+[sub_resource type="Gradient" id="Gradient_y78a3"]
 offsets = PackedFloat32Array(0, 0.6)
-colors = PackedColorArray(0.13261375, 0.7819836, 0.42276675, 1, 0.14509805, 0.8901961, 0.48235294, 1)
+colors = PackedColorArray(0.714, 0.7686, 0.84, 1, 0.65, 0.8016667, 1, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ek0oo"]
-gradient = SubResource("Gradient_ysl6e")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qc1ht"]
+gradient = SubResource("Gradient_y78a3")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tlr36"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k51qf"]
 shader = ExtResource("1_22vlw")
 shader_parameter/enable_outline = true
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/use_outline_gradient = true
-shader_parameter/outline_gradient = SubResource("GradientTexture1D_kyxwj")
+shader_parameter/outline_gradient = SubResource("GradientTexture1D_k51qf")
 shader_parameter/outline_width = 52.5
 shader_parameter/outline_softness = 0.499999988824
 shader_parameter/alpha_threshold = 0.00999999977648
@@ -148,7 +112,43 @@ shader_parameter/overlay_color = Color(1, 1, 1, 1)
 shader_parameter/overlay_strength = 0.999999977648
 shader_parameter/overlay_mode = 0
 shader_parameter/use_overlay_gradient = true
-shader_parameter/overlay_gradient = SubResource("GradientTexture1D_ek0oo")
+shader_parameter/overlay_gradient = SubResource("GradientTexture1D_qc1ht")
+shader_parameter/gradient_angle = 45.0
+shader_parameter/gradient_use_2d_uv = false
+
+[sub_resource type="Gradient" id="Gradient_djspr"]
+offsets = PackedFloat32Array(0.5)
+colors = PackedColorArray(0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6cgc4"]
+gradient = SubResource("Gradient_djspr")
+
+[sub_resource type="Gradient" id="Gradient_ysl6e"]
+offsets = PackedFloat32Array(0, 0.6)
+colors = PackedColorArray(0.13261375, 0.7819836, 0.42276675, 1, 0.14509805, 0.8901961, 0.48235294, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5nslc"]
+gradient = SubResource("Gradient_ysl6e")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tlr36"]
+shader = ExtResource("1_22vlw")
+shader_parameter/enable_outline = true
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/use_outline_gradient = true
+shader_parameter/outline_gradient = SubResource("GradientTexture1D_6cgc4")
+shader_parameter/outline_width = 52.5
+shader_parameter/outline_softness = 0.499999988824
+shader_parameter/alpha_threshold = 0.00999999977648
+shader_parameter/include_diagonals = true
+shader_parameter/round_corners = true
+shader_parameter/pulse_speed = 0.0
+shader_parameter/pulse_min_alpha = 0.35
+shader_parameter/enable_overlay = true
+shader_parameter/overlay_color = Color(1, 1, 1, 1)
+shader_parameter/overlay_strength = 0.999999977648
+shader_parameter/overlay_mode = 0
+shader_parameter/use_overlay_gradient = true
+shader_parameter/overlay_gradient = SubResource("GradientTexture1D_5nslc")
 shader_parameter/gradient_angle = 45.0
 shader_parameter/gradient_use_2d_uv = false
 
