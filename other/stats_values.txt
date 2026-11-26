@@ -1,6 +1,6 @@
 Inimigo
-vida = 200 - 300 - 400 (x1.5 por firewall layer)
-dano base = 100 - 150 - 200 (x1.5 por firewall layer)
+vida = fraco 300, médio 425, forte 550, boss 700 (x1.5 por firewall layer A PARTIR DA SEGUNDA)
+dano base = 50 - 100 - 150 - 200 (x1.5 por firewall layer A PARTIR DA SEGUNDA)
 
 BOSSES
 vida = 700
@@ -28,5 +28,6 @@ mult de critico = 1.3 (+0.1 por upgrade)
 força dos escudos = 1 (vida de cada escudo - soft ceiling = 5)
 mitigação dos escudos = 10% (+3% por upgrade) (soft ceiling = 40%)
 cura = 30% da vida maxima
+cura de fim de batalha = 20% da vida máxima (PLATEST = 30%)
 reparo do escudo = 1
 self damage = 50% dano base

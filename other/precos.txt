@@ -1,25 +1,27 @@
-eliminação - $150
-eliminação de boss - $300
-batalha concluida - $150 - $250 - $300
+Recompensas:
+eliminação - fraco $150 - médio $200 - forte $250 (+$50 FLAT a cada Firewall)
+eliminação de boss - boss $400 (+$100 FLAT a cada Firewall)
+batalha concluida - batalha fácil $150 - difícil $250 - boss $300 - FLAT PRA SEMPRE
 
 
 implante solto - $300 - $400 - $500 - $600
 pacote barato - $300
+pacote corrompido - $400
 pacote caro - $600
 reroll - $200 - $300 - fibonacci ...
 
 vida = 1000 (+200) $200 sempre
-dano base = 100 (+20 a 25) $200 sempre
-chance de critico = 10% (+2,5% por upgrade)(soft ceiling = 35% - hard ceiling = 100%) $100 $150 $200 $300 $500 $1000 $1500 $2000 | $2500 $3000 $4000 $5000 +1000...
-mult de critico = x1.3 (+0.1 por upgrade)(soft ceiling x2.5) $100 $200 $350 $500 $700 $900 $1000 \ $1200 $1500 $1800 $2100 $2500 | +1000...
+dano base = 150 (+25) $200 sempre
+chance de critico = 15% (+2,5% por upgrade)(soft ceiling = 35% - hard ceiling = 100%) $100 $150 $200 $300 $500 $1000 $1500 $2000 | $2500 $3000 $4000 $5000 +1000...
+mult de critico = x1.4 (+0.1 por upgrade)(soft ceiling x2.5) $100 $200 $350 $500 $700 $900 $1000 \ $1200 $1500 $1800 $2100 $2500 | +1000...
 força dos escudos = 1 (vida de cada escudo - soft ceiling = 5) $500 $1000 $2000 $5000 | $10k $25k $50k +25k...
 mitigação dos escudos = 10% (+3% por upgrade) (soft ceiling = 40% - hard ceiling = 70%) $200 $400 $600 +200...
-qtd escudos - $500 - $1000 - $1500
+qtd escudos - $500 - $1000 - $1500 (PLAYTEST APENAS: $250 - $500 - $750)
 
 legenda:
 \ - espera-se q o player fique aqui por n valer mt a pena continuar
 | - soft ceiling
 
-B1 - $600
+B1 - $600 - GARANTIDO SEMPRE (Firewall 1 - B1 spawna apenas inimigos fracos)
 B2 - $700
-B3 - $900
+B3 - $1000
