@@ -89,7 +89,9 @@ uniform float overlay_opacity_pulse_max_offset : hint_range(-2.0, 2.0) = 0.5;
 // =============================================================================
 group_uniforms Shape_And_Geometry;
 uniform vec4 corner_radii = vec4(0.0); // TL, TR, BR, BL
-uniform bool use_beveled_corners = false; 
+uniform bool use_beveled_corners = false;
+uniform bool enable_independent_beveled_corners = false;
+uniform bvec4 independent_beveled_corners = bvec4(false); // TL, TR, BR, BL
 
 // =============================================================================
 // MAIN GROUP 4: Outline Settings
@@ -303,11 +305,6 @@ void get_cg_rows(float bright, float cont, float sat, float hue_speed, out vec4 
 	r2 = vec4(out_mat[0][2], out_mat[1][2], out_mat[2][2], out_off.z);
 }
 
-vec2 get_rot_trig(float deg) {
-	float rad = radians(deg);
-	return vec2(sin(rad), cos(rad));
-}
-
 float calculate_smoothed_factor(float factor, float smoothing) {
 	if (smoothing == 0.5) return factor;
 	if (smoothing < 0.5) return mix(step(0.5, factor), factor, smoothing * 2.0);
@@ -367,7 +364,7 @@ float get_gradient_factor(vec2 normalized_uv, vec2 trig, float inv_scale, int ty
 		factor = dot(normalized_uv, trig * inv_scale) - final_offset;
 	} else if (type == 2) {
 		vec2 uv = vec2(dot(normalized_uv, vec2(trig.y, -trig.x)), dot(normalized_uv, trig));
-		factor = (distance(uv, vec2(0.5)) * 2.0 * inv_scale) - final_offset;
+		factor = (length(uv - 0.5) * 2.0 * inv_scale) - final_offset;
 	} else if (type == 3) {
 		factor = (abs(dot(normalized_uv, trig) - 0.5) * 2.0 * inv_scale) - final_offset;
 	} else {
@@ -398,10 +395,37 @@ vec4 sample_mapped_texture(sampler2D tex, vec2 normalized_uv, vec2 trig, float i
 	return textureLod(tex, vec2(factor, 0.0), 0.0);
 }
 
-float get_pulse_offset(bool enable, float phase_base, float spatial_freq, float uv_len, sampler2D curve, float min_off, float max_off) {
+float get_pulse_offset(bool enable, float e_time_base, float spatial_freq, float uv_len, sampler2D curve, float min_off, float max_off) {
 	if (!enable) return 0.0;
-	float e_time = phase_base - (uv_len * spatial_freq);
+	float e_time = e_time_base - (uv_len * spatial_freq);
 	return mix(min_off, max_off, textureLod(curve, vec2(fract(e_time), 0.0), 0.0).r);
+}
+
+// Precomputes uniform-only shine sweep state once per frame so per-pixel code skips trig/mod/divisions
+vec4 prepare_shine_state(
+	bool enable, int style, bool half_sweep,
+	float speed, float delay, float width, float softness, bool reverse_dir,
+	float angle_deg, out vec2 shine_trig
+) {
+	shine_trig = vec2(0.0, 1.0);
+	if (!enable) return vec4(0.0, 0.0, 0.0, 0.0);
+
+	bool is_cont = (delay == 0.0);
+	float sweep_dist = (style == 0) ? (half_sweep ? 0.5 : 1.5) : (half_sweep ? 0.5 : 1.0);
+	float s_start = (style == 0) ? (-0.25 - width) : (is_cont ? 0.0 : -width);
+	float s_span = (style == 0) ? (sweep_dist + width * 2.0) : (is_cont ? sweep_dist : sweep_dist + width * 2.0);
+	float s_origin = reverse_dir ? (s_start + s_span) : s_start;
+	float s_cycle = s_span + delay * speed;
+	float s_sweep_time = mod(TIME * speed, s_cycle);
+	float s_time_norm = s_sweep_time / max(s_span, 0.001);
+
+	if (s_time_norm > 1.0) return vec4(0.0, 0.0, s_time_norm, 0.0);
+
+	float s_rad = radians(angle_deg);
+	shine_trig = vec2(sin(s_rad), cos(s_rad));
+	float s_pos = s_origin + (reverse_dir ? -s_sweep_time : s_sweep_time);
+	float s_soft_w = width * (1.0 - softness);
+	return vec4(s_pos, s_soft_w, s_time_norm, 1.0);
 }
 
 float get_shine_alpha(
@@ -439,22 +463,6 @@ float get_shine_alpha(
 
 	float shine_power = 1.0 - smoothstep(soft_w, width, dist);
 	return shine_power * textureLod(opacity_curve, vec2(time_norm, 0.0), 0.0).r;
-}
-
-void apply_outline_shine(
-	inout vec4 out_color, int style, bool half_sweep, vec4 shine_col, float intensity,
-	sampler2D opacity_curve, float width, float softness, float delay,
-	float time_norm, float shine_pos, vec2 shine_trig, float path_t, vec2 uv
-) {
-	if (time_norm <= 1.0) {
-		float soft_w = width * (1.0 - softness);
-		float added_shine_alpha = shine_col.a * get_shine_alpha(
-			style, half_sweep, path_t, uv, shine_trig, delay, width,
-			soft_w, shine_pos, time_norm, opacity_curve
-		);
-		out_color.rgb += shine_col.rgb * added_shine_alpha * intensity;
-		out_color.a = clamp(out_color.a + added_shine_alpha, 0.0, 1.0);
-	}
 }
 
 // Unified blend modes: 0 = Normal, 1 = Multiply, 2 = Add, 3 = Screen
@@ -554,17 +562,20 @@ vec4 evaluate_liquid_stripes(
 // FRAGMENT SHADER
 // =============================================================================
 void fragment() {
-	// Uniform-only setup hoisted outside pixel branches for compiler constant-hoisting
+	// -------------------------------------------------------------------------
+	// 1. UNIFORM-ONLY PRECOMPUTATION (Hoisted once per draw call on GPU)
+	// -------------------------------------------------------------------------
 	float sharp_scale = enable_outline ? max((1.0 - outline_sharpness) * 2.0, 0.001) : 1.0;
 	float outer_aa = 1.5 * sharp_scale;
 	float exp_pad = max(2.0, outer_aa + 0.5);
 	if (enable_outline) exp_pad += outline_width + outline_blur;
 	float exp_double = exp_pad * 2.0;
 
-	vec2 base_trig = get_rot_trig(gradient_rotation_degrees);
+	float base_rad = radians(gradient_rotation_degrees);
+	vec2 base_trig = vec2(sin(base_rad), cos(base_rad));
 	float inv_base_scale = 1.0 / max(gradient_scale, 0.001);
-	float base_pulse_phase = enable_pulsation ? fract(TIME * animation_speed) : 0.0;
-	vec2 distort_time_phase = (distortion_strength > 0.0) ? fract(TIME * distortion_speed) : vec2(0.0);
+	float base_pulse_time = enable_pulsation ? fract(TIME * animation_speed) : 0.0;
+	vec2 noise_scroll = (distortion_strength > 0.0) ? fract(TIME * distortion_speed) : vec2(0.0);
 
 	bool has_base_cg = (base_color_brightness != 0.0) || (base_color_contrast != 1.0) || (base_color_saturation != 1.0) || (base_color_hue_shift_speed != 0.0);
 	vec4 base_cg_0 = vec4(1.0, 0.0, 0.0, 0.0);
@@ -574,90 +585,127 @@ void fragment() {
 		get_cg_rows(base_color_brightness, base_color_contrast, base_color_saturation, base_color_hue_shift_speed, base_cg_0, base_cg_1, base_cg_2);
 	}
 
-	vec2 over_trig = enable_overlay ? get_rot_trig(overlay_gradient_rotation_degrees) : vec2(0.0);
-	float inv_over_scale = enable_overlay ? (1.0 / max(overlay_gradient_scale, 0.001)) : 1.0;
-	float over_pulse_phase = (enable_overlay && overlay_enable_pulsation) ? fract(TIME * overlay_animation_speed) : 0.0;
-	vec2 over_op_trig = (enable_overlay && enable_overlay_opacity) ? get_rot_trig(overlay_opacity_rotation_degrees) : vec2(0.0);
-	float inv_over_op_scale = (enable_overlay && enable_overlay_opacity) ? (1.0 / max(overlay_opacity_scale, 0.001)) : 1.0;
-	float over_op_pulse_phase = (enable_overlay && enable_overlay_opacity && overlay_opacity_enable_pulsation) ? fract(TIME * overlay_opacity_animation_speed) : 0.0;
+	vec2 over_trig = vec2(0.0, 1.0);
+	float inv_over_scale = 1.0;
+	float over_pulse_time = 0.0;
+	vec2 over_op_trig = vec2(0.0, 1.0);
+	float inv_over_op_scale = 1.0;
+	float over_op_pulse_time = 0.0;
+	if (enable_overlay) {
+		float over_rad = radians(overlay_gradient_rotation_degrees);
+		over_trig = vec2(sin(over_rad), cos(over_rad));
+		inv_over_scale = 1.0 / max(overlay_gradient_scale, 0.001);
+		if (overlay_enable_pulsation) over_pulse_time = fract(TIME * overlay_animation_speed);
+		if (enable_overlay_opacity) {
+			float over_op_rad = radians(overlay_opacity_rotation_degrees);
+			over_op_trig = vec2(sin(over_op_rad), cos(over_op_rad));
+			inv_over_op_scale = 1.0 / max(overlay_opacity_scale, 0.001);
+			if (overlay_opacity_enable_pulsation) over_op_pulse_time = fract(TIME * overlay_opacity_animation_speed);
+		}
+	}
 
-	vec2 out_trig = (enable_outline && outline_gradient_type != 4) ? get_rot_trig(outline_gradient_rotation_degrees) : vec2(0.0);
-	float inv_out_scale = enable_outline ? (1.0 / max(outline_gradient_scale, 0.001)) : 1.0;
-	float out_pulse_phase = (enable_outline && outline_enable_pulsation) ? fract(TIME * outline_animation_speed) : 0.0;
-	float wobble_phase = (enable_outline && enable_wobble && outline_wobble_amplitude > 0.0) ? mod(TIME * outline_wobble_speed, PI_TWO) : 0.0;
-	float dash_phase = (enable_outline && enable_dash && outline_dash_count > 0.0) ? fract(TIME * outline_dash_speed) : 0.0;
-	vec2 fade_trig = (enable_outline && outline_fade_intensity > 0.0) ? get_rot_trig(outline_fade_angle) : vec2(0.0);
-
-	bool has_out_cg = enable_outline && ((outline_color_brightness != 0.0) || (outline_color_contrast != 1.0) || (outline_color_saturation != 1.0) || (outline_color_hue_shift_speed != 0.0));
+	bool has_outline_geometry = enable_outline && (outline_width > 0.0 || outline_blur > 0.0 || (enable_wobble && outline_wobble_amplitude > 0.0));
+	float wobble_phase = 0.0;
+	float dash_time_offset = 0.0;
+	vec2 fade_trig = vec2(0.0, 1.0);
+	vec2 out_trig = vec2(0.0, 1.0);
+	float inv_out_scale = 1.0;
+	float out_pulse_time = 0.0;
+	vec2 s1_trig = vec2(0.0, 1.0);
+	vec4 s1_state = vec4(0.0);
+	vec2 s2_trig = vec2(0.0, 1.0);
+	vec4 s2_state = vec4(0.0);
+	bool has_out_cg = false;
 	vec4 out_cg_0 = vec4(1.0, 0.0, 0.0, 0.0);
 	vec4 out_cg_1 = vec4(0.0, 1.0, 0.0, 0.0);
 	vec4 out_cg_2 = vec4(0.0, 0.0, 1.0, 0.0);
-	if (has_out_cg) {
-		get_cg_rows(outline_color_brightness, outline_color_contrast, outline_color_saturation, outline_color_hue_shift_speed, out_cg_0, out_cg_1, out_cg_2);
-	}
-
-	// Precompute Shine 1 & Shine 2 uniform cycle parameters once
-	float s1_time_norm = 2.0;
-	float s1_pos = 0.0;
-	vec2 s1_trig = vec2(0.0);
-	if (enable_outline && outline_enable_shine) {
-		bool s1_cont = outline_shine_delay == 0.0;
-		float sweep_dist_1 = outline_shine_half_sweep ? 0.5 : 1.0;
-		float s1_s = (outline_shine_style == 0) ? (-0.25 - outline_shine_width) : (s1_cont ? 0.0 : -outline_shine_width);
-		float s1_D = (outline_shine_style == 0) ? ((outline_shine_half_sweep ? 0.5 : 1.5) + outline_shine_width * 2.0) : (s1_cont ? sweep_dist_1 : sweep_dist_1 + outline_shine_width * 2.0);
-		float s1_origin = outline_shine_reverse ? (s1_s + s1_D) : s1_s;
-		float s1_cycle = s1_D + outline_shine_delay * outline_shine_speed;
-		float s1_sweep_time = mod(TIME * outline_shine_speed, s1_cycle);
-		s1_time_norm = s1_sweep_time / max(s1_D, 0.001);
-		if (s1_time_norm <= 1.0) {
-			s1_pos = s1_origin + (outline_shine_reverse ? -s1_sweep_time : s1_sweep_time);
-			s1_trig = get_rot_trig(outline_shine_angle);
+	if (has_outline_geometry) {
+		if (enable_wobble && outline_wobble_amplitude > 0.0) wobble_phase = mod(TIME * outline_wobble_speed, PI_TWO);
+		if (enable_dash && outline_dash_count > 0.0) dash_time_offset = fract(TIME * outline_dash_speed);
+		if (outline_fade_intensity > 0.0) {
+			float fade_rad = radians(outline_fade_angle);
+			fade_trig = vec2(sin(fade_rad), cos(fade_rad));
+		}
+		inv_out_scale = 1.0 / max(outline_gradient_scale, 0.001);
+		if (outline_gradient_type != 4) {
+			float out_rad = radians(outline_gradient_rotation_degrees);
+			out_trig = vec2(sin(out_rad), cos(out_rad));
+		}
+		if (outline_enable_pulsation) out_pulse_time = fract(TIME * outline_animation_speed);
+		s1_state = prepare_shine_state(
+			outline_enable_shine, outline_shine_style, outline_shine_half_sweep,
+			outline_shine_speed, outline_shine_delay, outline_shine_width, outline_shine_softness,
+			outline_shine_reverse, outline_shine_angle, s1_trig
+		);
+		s2_state = prepare_shine_state(
+			outline_enable_shine_2, outline_shine_2_style, outline_shine_2_half_sweep,
+			outline_shine_2_speed, outline_shine_2_delay, outline_shine_2_width, outline_shine_2_softness,
+			outline_shine_2_reverse, outline_shine_2_angle, s2_trig
+		);
+		has_out_cg = (outline_color_brightness != 0.0) || (outline_color_contrast != 1.0) || (outline_color_saturation != 1.0) || (outline_color_hue_shift_speed != 0.0);
+		if (has_out_cg) {
+			get_cg_rows(outline_color_brightness, outline_color_contrast, outline_color_saturation, outline_color_hue_shift_speed, out_cg_0, out_cg_1, out_cg_2);
 		}
 	}
 
-	float s2_time_norm = 2.0;
-	float s2_pos = 0.0;
-	vec2 s2_trig = vec2(0.0);
-	if (enable_outline && outline_enable_shine_2) {
-		bool s2_cont = outline_shine_2_delay == 0.0;
-		float sweep_dist_2 = outline_shine_2_half_sweep ? 0.5 : 1.0;
-		float s2_s = (outline_shine_2_style == 0) ? (-0.25 - outline_shine_2_width) : (s2_cont ? 0.0 : -outline_shine_2_width);
-		float s2_D = (outline_shine_2_style == 0) ? ((outline_shine_2_half_sweep ? 0.5 : 1.5) + outline_shine_2_width * 2.0) : (s2_cont ? sweep_dist_2 : sweep_dist_2 + outline_shine_2_width * 2.0);
-		float s2_origin = outline_shine_2_reverse ? (s2_s + s2_D) : s2_s;
-		float s2_cycle = s2_D + outline_shine_2_delay * outline_shine_2_speed;
-		float s2_sweep_time = mod(TIME * outline_shine_2_speed, s2_cycle);
-		s2_time_norm = s2_sweep_time / max(s2_D, 0.001);
-		if (s2_time_norm <= 1.0) {
-			s2_pos = s2_origin + (outline_shine_2_reverse ? -s2_sweep_time : s2_sweep_time);
-			s2_trig = get_rot_trig(outline_shine_2_angle);
-		}
-	}
-
-	float scan_flicker = (enable_scanlines && scanline_flicker_intensity > 0.0)
+	float scan_flicker = (scanline_flicker_intensity > 0.0)
 		? (1.0 - (sin(mod(TIME * scanline_flicker_speed, PI_TWO)) * 0.5 + 0.5) * scanline_flicker_intensity)
 		: 1.0;
 	bool active_scanlines = enable_scanlines && scanline_opacity > 0.0 && scan_flicker > 0.0 && (scanline_use_gradient || scanline_color.a > 0.0);
-	int scan_unified_blend = (scanline_blend_mode + 1) & 3;
-	float scan_phase = active_scanlines ? (mod(TIME * scanline_speed, PI_TWO) + scanline_offset * PI_TWO) : 0.0;
-	vec2 scan_trig = active_scanlines ? get_rot_trig(scanline_rotation) : vec2(0.0);
-	vec2 scan_grad_trig = (active_scanlines && scanline_use_gradient) ? get_rot_trig(scanline_gradient_rotation_degrees) : vec2(0.0);
-	float inv_scan_grad_scale = (active_scanlines && scanline_use_gradient) ? (1.0 / max(scanline_gradient_scale, 0.001)) : 1.0;
-	vec2 scan_op_trig = (active_scanlines && scanline_enable_opacity_map) ? get_rot_trig(scanline_opacity_rotation_degrees) : vec2(0.0);
-	float inv_scan_op_scale = (active_scanlines && scanline_enable_opacity_map) ? (1.0 / max(scanline_opacity_scale, 0.001)) : 1.0;
+	int scan_unified_blend = 0;
+	float scan_phase = 0.0;
+	vec2 scan_trig = vec2(0.0, 1.0);
+	vec2 sc_grad_trig = vec2(0.0, 1.0);
+	float inv_sc_grad_scale = 1.0;
+	vec2 sc_op_trig = vec2(0.0, 1.0);
+	float inv_sc_op_scale = 1.0;
+	if (active_scanlines) {
+		scan_unified_blend = (scanline_blend_mode + 1) & 3;
+		scan_phase = mod(TIME * scanline_speed, PI_TWO) + scanline_offset * PI_TWO;
+		float scan_rad = radians(scanline_rotation);
+		scan_trig = vec2(sin(scan_rad), cos(scan_rad));
+		if (scanline_use_gradient) {
+			float sc_grad_rad = radians(scanline_gradient_rotation_degrees);
+			sc_grad_trig = vec2(sin(sc_grad_rad), cos(sc_grad_rad));
+			inv_sc_grad_scale = 1.0 / max(scanline_gradient_scale, 0.001);
+		}
+		if (scanline_enable_opacity_map) {
+			float sc_op_rad = radians(scanline_opacity_rotation_degrees);
+			sc_op_trig = vec2(sin(sc_op_rad), cos(sc_op_rad));
+			inv_sc_op_scale = 1.0 / max(scanline_opacity_scale, 0.001);
+		}
+	}
 
 	bool active_liquid_stripes = enable_liquid_stripes && liquid_stripes_opacity > 0.0 && (liquid_stripes_thickness > 0.0 || liquid_stripes_bg_color.a > 0.0);
-	float ls_time = active_liquid_stripes ? mod(TIME * liquid_stripes_speed, PI_TWO) : 0.0;
-	float ls_angle = active_liquid_stripes ? (radians(liquid_stripes_rotation) - 0.2 + sin(ls_time) * (0.05 * liquid_stripes_sway)) : 0.0;
-	vec2 ls_trig = active_liquid_stripes ? vec2(sin(ls_angle), cos(ls_angle)) : vec2(0.0);
-	float ls_warp_amp = active_liquid_stripes ? (cos(radians(liquid_stripes_warp_direction)) * (0.2 * liquid_stripes_warp)) : 0.0;
-	vec2 ls_grad_trig = (active_liquid_stripes && liquid_stripes_use_gradient) ? get_rot_trig(liquid_stripes_gradient_rotation_degrees) : vec2(0.0);
-	float inv_ls_grad_scale = (active_liquid_stripes && liquid_stripes_use_gradient) ? (1.0 / max(liquid_stripes_gradient_scale, 0.001)) : 1.0;
-	vec2 ls_op_trig = (active_liquid_stripes && liquid_stripes_enable_opacity_map) ? get_rot_trig(liquid_stripes_opacity_rotation_degrees) : vec2(0.0);
-	float inv_ls_op_scale = (active_liquid_stripes && liquid_stripes_enable_opacity_map) ? (1.0 / max(liquid_stripes_opacity_scale, 0.001)) : 1.0;
+	float ls_time = 0.0;
+	vec2 ls_trig = vec2(0.0, 1.0);
+	float ls_warp_amp = 0.0;
+	vec2 ls_grad_trig = vec2(0.0, 1.0);
+	float inv_ls_grad_scale = 1.0;
+	vec2 ls_op_trig = vec2(0.0, 1.0);
+	float inv_ls_op_scale = 1.0;
+	if (active_liquid_stripes) {
+		ls_time = mod(TIME * liquid_stripes_speed, PI_TWO);
+		float ls_angle = radians(liquid_stripes_rotation) - 0.2 + sin(ls_time) * (0.05 * liquid_stripes_sway);
+		ls_trig = vec2(sin(ls_angle), cos(ls_angle));
+		ls_warp_amp = cos(radians(liquid_stripes_warp_direction)) * (0.2 * liquid_stripes_warp);
+		if (liquid_stripes_use_gradient) {
+			float ls_grad_rad = radians(liquid_stripes_gradient_rotation_degrees);
+			ls_grad_trig = vec2(sin(ls_grad_rad), cos(ls_grad_rad));
+			inv_ls_grad_scale = 1.0 / max(liquid_stripes_gradient_scale, 0.001);
+		}
+		if (liquid_stripes_enable_opacity_map) {
+			float ls_op_rad = radians(liquid_stripes_opacity_rotation_degrees);
+			ls_op_trig = vec2(sin(ls_op_rad), cos(ls_op_rad));
+			inv_ls_op_scale = 1.0 / max(liquid_stripes_opacity_scale, 0.001);
+		}
+	}
 
 	float inv_gamma = (gamma_correction != 1.0) ? (1.0 / max(gamma_correction, 0.0001)) : 1.0;
 
-	// Per-pixel geometry & SDF evaluation
+	// -------------------------------------------------------------------------
+	// 2. PER-PIXEL GEOMETRY & SDF EVALUATION
+	// -------------------------------------------------------------------------
 	vec2 uv_cen = UV - 0.5;
 	vec2 expanded_size = fwidth(local_pos) / max(fwidth(UV), vec2(0.00001));
 	vec2 rect_size = expanded_size - exp_double;
@@ -666,7 +714,9 @@ void fragment() {
 
 	float r = 0.0;
 	float d = 0.0;
-	if (corner_radii == vec4(0.0) && !use_beveled_corners) {
+	float corner_is_beveled = 0.0;
+	bool has_any_bevel = enable_independent_beveled_corners ? any(independent_beveled_corners) : use_beveled_corners;
+	if (corner_radii == vec4(0.0) && !has_any_bevel) {
 		vec2 q_box = abs(pixel_pos) - half_size;
 		d = length(max(q_box, 0.0)) + min(max(q_box.x, q_box.y), 0.0);
 	} else {
@@ -674,11 +724,24 @@ void fragment() {
 		r = mix(mix(corner_radii.w, corner_radii.z, q_sign.x), mix(corner_radii.x, corner_radii.y, q_sign.x), q_sign.y);
 		r = min(r, min(half_size.x, half_size.y));
 
+		if (enable_independent_beveled_corners) {
+			vec4 bevel_vec = vec4(independent_beveled_corners);
+			corner_is_beveled = mix(
+				mix(bevel_vec.w, bevel_vec.z, q_sign.x),
+				mix(bevel_vec.x, bevel_vec.y, q_sign.x),
+				q_sign.y
+			);
+		} else {
+			corner_is_beveled = use_beveled_corners ? 1.0 : 0.0;
+		}
+
 		vec2 q_box = abs(pixel_pos) - half_size + vec2(r);
 		vec2 max_q_vec = max(q_box, 0.0);
 		float max_q = max(q_box.x, q_box.y);
 		float dist_inner = min(max_q, 0.0) - r;
-		d = use_beveled_corners ? max(max_q, (max_q_vec.x + max_q_vec.y) * 0.70710678) + dist_inner : length(max_q_vec) + dist_inner;
+		d = (corner_is_beveled > 0.5)
+			? max(max_q, (max_q_vec.x + max_q_vec.y) * 0.70710678) + dist_inner
+			: length(max_q_vec) + dist_inner;
 	}
 
 	float alpha_edge = enable_outline ? outline_width : 0.0;
@@ -688,18 +751,18 @@ void fragment() {
 		COLOR = vec4(0.0);
 	} else {
 		float base_uv_len = 0.0;
-		if (enable_pulsation || (enable_overlay && overlay_enable_pulsation) || (enable_outline && outline_enable_pulsation)) {
+		if (enable_pulsation || (enable_overlay && overlay_enable_pulsation) || (has_outline_geometry && outline_enable_pulsation)) {
 			vec2 uv_to_rect = expanded_size / max(rect_size, vec2(0.001));
 			base_uv_len = length(uv_cen * uv_to_rect);
 		}
 
 		vec2 distorted_norm_uv = UV;
 		if (distortion_strength > 0.0) {
-			distorted_norm_uv += vec2(textureLod(noise_texture, UV + distort_time_phase, 0.0).r - 0.5) * distortion_strength;
+			distorted_norm_uv += vec2(texture(noise_texture, UV + noise_scroll).r - 0.5) * distortion_strength;
 		}
 
 		// PASS 1: Base Multi-Color Gradient
-		float base_offset = gradient_offset + get_pulse_offset(enable_pulsation, base_pulse_phase, pulse_spatial_frequency, base_uv_len, base_pulse_curve, pulse_min_offset, pulse_max_offset);
+		float base_offset = gradient_offset + get_pulse_offset(enable_pulsation, base_pulse_time, pulse_spatial_frequency, base_uv_len, base_pulse_curve, pulse_min_offset, pulse_max_offset);
 		float base_factor = get_gradient_factor(distorted_norm_uv, base_trig, inv_base_scale, gradient_type, base_offset, repeat_gradient, gradient_smoothing, base_color_steps, square_corner_blend);
 		vec4 final_color = textureLod(gradient_texture, vec2(base_factor, 0.0), 0.0);
 
@@ -712,13 +775,13 @@ void fragment() {
 		if (enable_overlay) {
 			vec2 overlay_uv = overlay_ignore_base_distortion ? UV : distorted_norm_uv;
 			float over_steps = overlay_ignore_base_color_grading ? 0.0 : base_color_steps;
-			float over_col_offset = overlay_gradient_offset + get_pulse_offset(overlay_enable_pulsation, over_pulse_phase, overlay_pulse_spatial_frequency, base_uv_len, overlay_color_pulse_curve, overlay_pulse_min_offset, overlay_pulse_max_offset);
+			float over_col_offset = overlay_gradient_offset + get_pulse_offset(overlay_enable_pulsation, over_pulse_time, overlay_pulse_spatial_frequency, base_uv_len, overlay_color_pulse_curve, overlay_pulse_min_offset, overlay_pulse_max_offset);
 			float over_col_factor = get_gradient_factor(overlay_uv, over_trig, inv_over_scale, overlay_gradient_type, over_col_offset, overlay_repeat_gradient, overlay_gradient_smoothing, over_steps, 0.0);
 			vec4 over_layer = textureLod(overlay_gradient_texture, vec2(over_col_factor, 0.0), 0.0);
 			
 			if (over_layer.a > 0.0) {
 				if (enable_overlay_opacity) {
-					float over_op_offset = overlay_opacity_offset + get_pulse_offset(overlay_opacity_enable_pulsation, over_op_pulse_phase, overlay_opacity_pulse_spatial_frequency, base_uv_len, overlay_opacity_pulse_curve, overlay_opacity_pulse_min_offset, overlay_opacity_pulse_max_offset);
+					float over_op_offset = overlay_opacity_offset + get_pulse_offset(overlay_opacity_enable_pulsation, over_op_pulse_time, overlay_opacity_pulse_spatial_frequency, base_uv_len, overlay_opacity_pulse_curve, overlay_opacity_pulse_min_offset, overlay_opacity_pulse_max_offset);
 					float over_op_factor = get_gradient_factor(overlay_uv, over_op_trig, inv_over_op_scale, overlay_opacity_type, over_op_offset, overlay_opacity_repeat, overlay_opacity_smoothing, over_steps, 0.0);
 					over_layer.a *= textureLod(overlay_opacity_texture, vec2(over_op_factor, 0.0), 0.0).r;
 				}
@@ -734,7 +797,6 @@ void fragment() {
 		// PASS 3: Outline Gradient & FX
 		vec4 out_color = vec4(0.0);
 		float out_blend = 0.0;
-		bool has_outline_geometry = enable_outline && (outline_width > 0.0 || outline_blur > 0.0 || (enable_wobble && outline_wobble_amplitude > 0.0));
 		if (has_outline_geometry) {
 			float out_d = d;
 			float pixel_angle = 0.0;
@@ -748,11 +810,10 @@ void fragment() {
 			if (out_d > 0.0) {
 				float inner_aa = sharp_scale + outline_blur;
 				float outline_mask = smoothstep(0.0, inner_aa, out_d);
-				float inv_out_w = 1.0 / max(outline_width, 0.001);
 
 				float path_t = 0.0;
-				bool need_path_t = (outline_enable_shine && outline_shine_style != 0)
-								|| (outline_enable_shine_2 && outline_shine_2_style != 0)
+				bool need_path_t = (s1_state.w > 0.0 && outline_shine_style != 0)
+								|| (s2_state.w > 0.0 && outline_shine_2_style != 0)
 								|| (enable_dash && outline_dash_count > 0.0 && outline_dash_style == 1);
 				if (need_path_t) {
 					path_t = use_path_lut ? fract(textureLod(path_lut_texture, UV, 0.0).r + outline_path_seam_offset) : get_path_t(pixel_pos, half_size, r, outline_path_seam_offset);
@@ -767,13 +828,14 @@ void fragment() {
 						dash_t = pixel_angle * INV_PI_TWO;
 					}
 					float actual_dash_count = (outline_dash_style == 1) ? max(round(outline_dash_count), 1.0) : outline_dash_count;
-					float dash_val = dash_t * actual_dash_count + dash_phase;
+					float dash_val = dash_t * actual_dash_count + dash_time_offset;
 					
 					if (outline_pattern == 0) {
 						outline_mask *= step(fract(dash_val), 0.5); 
 					} else {
-						float perimeter = 4.0 * (half_size.x + half_size.y) + (PI_TWO - 8.0) * r;
 						vec2 pat_uv;
+						float perimeter = 4.0 * (half_size.x + half_size.y) + (PI_TWO - 8.0) * r;
+						float inv_out_w = 1.0 / max(outline_width, 0.001);
 						pat_uv.x = (fract(dash_val) - 0.5) * (perimeter / actual_dash_count) * inv_out_w;
 						pat_uv.y = (d - outline_width * 0.5) * inv_out_w; 
 						
@@ -791,24 +853,29 @@ void fragment() {
 				}
 
 				if (outline_mask > 0.0) {
-					float out_offset = outline_gradient_offset + get_pulse_offset(outline_enable_pulsation, out_pulse_phase, outline_pulse_spatial_frequency, base_uv_len, outline_pulse_curve, outline_pulse_min_offset, outline_pulse_max_offset);
+					float out_offset = outline_gradient_offset + get_pulse_offset(outline_enable_pulsation, out_pulse_time, outline_pulse_spatial_frequency, base_uv_len, outline_pulse_curve, outline_pulse_min_offset, outline_pulse_max_offset);
 					float out_factor = 0.0;
 					if (outline_gradient_type == 4) {
-						float edge_t = out_d * inv_out_w;
+						float inv_out_w = 1.0 / max(outline_width, 0.001);
+						float edge_d = out_d;
+						float corner_warp = 0.0;
 						if (outline_edge_corner_smoothing > 0.0) {
 							vec2 q_corner = max(abs(pixel_pos) - half_size + vec2(r), 0.0);
-							if (q_corner.x > 0.0 && q_corner.y > 0.0) {
-								if (use_beveled_corners) {
-									float round_d = length(q_corner) - r + (out_d - d);
-									edge_t = mix(edge_t, round_d * inv_out_w, outline_edge_corner_smoothing);
-								}
-								float corner_weight = clamp((q_corner.x * q_corner.y) / max(d * d, 0.0001) * 2.0, 0.0, 1.0);
-								float eased_t = clamp(edge_t, 0.0, 1.0);
-								eased_t = eased_t * eased_t * (3.0 - 2.0 * eased_t);
-								edge_t = mix(edge_t, eased_t, corner_weight * outline_edge_corner_smoothing);
+							if (corner_is_beveled > 0.5) {
+								float round_d = length(q_corner) - r;
+								edge_d = mix(d, round_d, outline_edge_corner_smoothing) + (out_d - d);
+							}
+							float q_len_sq = dot(q_corner, q_corner);
+							if (q_len_sq > 0.0) {
+								corner_warp = ((2.0 * q_corner.x * q_corner.y) / q_len_sq) * outline_edge_corner_smoothing;
 							}
 						}
-						out_factor = (edge_t * inv_out_scale) - out_offset;
+						float raw_edge_t = edge_d * inv_out_w;
+						float edge_t = clamp(raw_edge_t, 0.0, 1.0);
+						if (corner_warp > 0.0) {
+							edge_t = mix(edge_t, edge_t * edge_t * (3.0 - 2.0 * edge_t), corner_warp);
+						}
+						out_factor = ((edge_t + max(raw_edge_t - 1.0, 0.0)) * inv_out_scale) - out_offset;
 						out_factor = outline_repeat_gradient ? fract(out_factor) : clamp(out_factor, 0.0, 1.0);
 						out_factor = calculate_smoothed_factor(out_factor, outline_gradient_smoothing);
 						if (outline_color_steps > 0.0) out_factor = floor(out_factor * outline_color_steps) / outline_color_steps;
@@ -818,19 +885,26 @@ void fragment() {
 					}
 					out_color = textureLod(outline_gradient_texture, vec2(out_factor, 0.0), 0.0);
 
-					if (outline_enable_shine) {
-						apply_outline_shine(
-							out_color, outline_shine_style, outline_shine_half_sweep, outline_shine_color, outline_shine_intensity,
-							outline_shine_opacity_curve, outline_shine_width, outline_shine_softness, outline_shine_delay,
-							s1_time_norm, s1_pos, s1_trig, path_t, UV
+					// SHINE 1 RENDER
+					if (s1_state.w > 0.0) {
+						float added_shine_alpha = outline_shine_color.a * get_shine_alpha(
+							outline_shine_style, outline_shine_half_sweep,
+							path_t, UV, s1_trig, outline_shine_delay, outline_shine_width,
+							s1_state.y, s1_state.x, s1_state.z, outline_shine_opacity_curve
 						);
+						out_color.rgb += outline_shine_color.rgb * added_shine_alpha * outline_shine_intensity;
+						out_color.a = clamp(out_color.a + added_shine_alpha, 0.0, 1.0);
 					}
-					if (outline_enable_shine_2) {
-						apply_outline_shine(
-							out_color, outline_shine_2_style, outline_shine_2_half_sweep, outline_shine_2_color, outline_shine_2_intensity,
-							outline_shine_2_opacity_curve, outline_shine_2_width, outline_shine_2_softness, outline_shine_2_delay,
-							s2_time_norm, s2_pos, s2_trig, path_t, UV
+					
+					// SHINE 2 RENDER
+					if (s2_state.w > 0.0) {
+						float added_shine_alpha = outline_shine_2_color.a * get_shine_alpha(
+							outline_shine_2_style, outline_shine_2_half_sweep,
+							path_t, UV, s2_trig, outline_shine_2_delay, outline_shine_2_width,
+							s2_state.y, s2_state.x, s2_state.z, outline_shine_2_opacity_curve
 						);
+						out_color.rgb += outline_shine_2_color.rgb * added_shine_alpha * outline_shine_2_intensity;
+						out_color.a = clamp(out_color.a + added_shine_alpha, 0.0, 1.0);
 					}
 
 					if (has_out_cg) {
@@ -851,7 +925,7 @@ void fragment() {
 		// GLOBAL POLISH & FX
 		vec4 scan_tint = vec4(0.0);
 		if (active_scanlines && (!scanline_base_only || out_blend < 1.0)) {
-			scan_tint = evaluate_scanlines(uv_cen, UV, scan_trig, scan_flicker, scan_phase, scan_grad_trig, inv_scan_grad_scale, scan_op_trig, inv_scan_op_scale);
+			scan_tint = evaluate_scanlines(uv_cen, UV, scan_trig, scan_flicker, scan_phase, sc_grad_trig, inv_sc_grad_scale, sc_op_trig, inv_sc_op_scale);
 			if (scanline_base_only) {
 				final_color.rgb = apply_fx_blend(final_color.rgb, scan_tint, scan_unified_blend);
 			}
