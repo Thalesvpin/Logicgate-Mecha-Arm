@@ -995,7 +995,7 @@ theme_override_constants/outline_size = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_a7lv4")
 theme_override_font_sizes/normal_font_size = 26
 text = "PRÉVIA DE
-OUTPUT"
+OUTPUTS"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0

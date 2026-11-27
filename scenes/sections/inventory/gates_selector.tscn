@@ -87,6 +87,8 @@ shader_parameter/overlay_opacity_pulse_min_offset = -0.5
 shader_parameter/overlay_opacity_pulse_max_offset = 0.5
 shader_parameter/corner_radii = Vector4(100, 100, 100, 100)
 shader_parameter/use_beveled_corners = false
+shader_parameter/enable_independent_beveled_corners = false
+shader_parameter/independent_beveled_corners = 0
 shader_parameter/enable_outline = false
 shader_parameter/outline_ignore_base_distortion = false
 shader_parameter/outline_ignore_base_color_grading = true
@@ -212,6 +214,7 @@ shader_parameter/enable_dithering = true
 shader = ExtResource("3_1wme1")
 shader_parameter/enable_outline = true
 shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/use_outline_gradient = false
 shader_parameter/outline_width = 2.0
 shader_parameter/outline_softness = 0.0
 shader_parameter/alpha_threshold = 0.5
@@ -223,14 +226,17 @@ shader_parameter/enable_overlay = true
 shader_parameter/overlay_color = Color(0, 0, 0, 1)
 shader_parameter/overlay_strength = 0.999999977648
 shader_parameter/overlay_mode = 0
+shader_parameter/use_overlay_gradient = false
+shader_parameter/gradient_angle = 90.0
+shader_parameter/gradient_use_2d_uv = false
 
 [sub_resource type="LabelSettings" id="LabelSettings_abqy0"]
 font_size = 24
 font_color = Color(1, 0.7490196, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_eofqg"]
-font_size = 41
-font_color = Color(0.7137255, 1, 0.6901961, 1)
+font_size = 36
+font_color = Color(0.8965202, 0.99999994, 0.8860513, 1)
 
 [sub_resource type="Environment" id="Environment_mjyp6"]
 background_mode = 3
@@ -929,26 +935,27 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/PanelContainer/SellOverlay" unique_id=1346230491]
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 648.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0.8509804, 0, 0.49411765)
 
 [node name="Label" type="Label" parent="SubViewportContainer/SubViewport/PanelContainer/SellOverlay" unique_id=395334036]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 13
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -576.0
-offset_top = -324.0
-offset_right = 576.0
-offset_bottom = 324.0
+anchor_bottom = 1.0
+offset_left = -111.5
+offset_right = 111.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 1
-text = "Vender"
+text = "Arraste aqui 
+para vender"
 label_settings = SubResource("LabelSettings_eofqg")
 horizontal_alignment = 1
 vertical_alignment = 1

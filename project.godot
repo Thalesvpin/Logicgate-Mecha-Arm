@@ -13,6 +13,7 @@ config_version=5
 config/name="Logicgate_Mech_Arm"
 run/main_scene="uid://gjnsre4vgni8"
 config/features=PackedStringArray("4.7", "Forward Plus")
+boot_splash/bg_color=Color(0, 0, 0, 1)
 config/icon="res://icon.svg"
 
 [autoload]
